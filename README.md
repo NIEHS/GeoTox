@@ -11,7 +11,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/GeoToxPackage)](https://CRAN.R-project.org/package=GeoToxPackage)
 <!-- badges: end -->
 
-The goal of GeoToxPackage is to …
+The GeoToxPackage can <x y z plus other stuff>, as introduced in [Eccles KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh JF, Messier KP. A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. Sci Total Environ. 2023 Jan 10;855:158905. doi: 10.1016/j.scitotenv.2022.158905. Epub 2022 Sep 21. PMID: 36152849; PMCID: PMC9979101.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
