@@ -72,39 +72,35 @@ simulated_IR <- lapply(simulated_age, simulate_inhalation_rate)
 simulated_exposure <- lapply(cyp1a1, simulate_exposure, n = MC_iter)
 ```
 
-### Compute inhalation dose
+### Compute internal dose
 
 ```{r compute_ID}
-inhalation_dose <- mapply(
-  function(exposure, IR) {
-    exposure / 1000 * IR
-  },
-  simulated_exposure,
-  simulated_IR,
+internal_dose <- mapply(
+  calc_internal_dose,
+  C_ext = lapply(simulated_exposure, function(x) x / 1000),
+  IR = simulated_IR,
   SIMPLIFY = FALSE
 )
 ```
 
-### Compute in vitro dose
+### Compute in vitro concentration
 
 ```{r compute_invitro}
-invitro_dose <- mapply(
-  function(ID, Css) {
-    ID * Css
-  },
-  inhalation_dose,
-  css.sensitivity.age,
+invitro_concentration <- mapply(
+  calc_invitro_concentration,
+  D_int = internal_dose,
+  C_ss = css.sensitivity.age,
   SIMPLIFY = FALSE
 )
 ```
 
-### Compute dose response
+### Compute concentration response
 
-```{r compute_dose_response}
-dose_response <- mapply(
-  calc_dose_response,
+```{r compute_concentration_response}
+concentration_response <- mapply(
+  calc_concentration_response,
   resp = cyp1a1,
-  dose = invitro_dose,
+  concentration = invitro_concentration,
   SIMPLIFY = FALSE
 )
 ```
