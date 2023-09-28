@@ -2,11 +2,14 @@
 #'
 #' @param resp data frame with columns "tp", "logAC50", "resp_max", "logc_min",
 #' "logc_max".
-#' @param dose dose
+#' @param concentration concentration
 #'
 #' @return data frame
 #' @export
-calc_dose_response <- function(resp, dose) {
+calc_concentration_response <- function(resp, concentration) {
+
+  # TODO add input for linear/log concentration
+  # TODO maybe add option for ln(resp) or not
 
   interval <- c(-50,50)
 
@@ -26,16 +29,17 @@ calc_dose_response <- function(resp, dose) {
     sd   = 0 # resp$logAC50.sd
   )
 
-  GCA.eff <- IA.eff <- GCA.HQ.10 <-IA.HQ.10 <- rep(NA, nrow(dose))
-  for (i in 1:nrow(dose)) {
+  GCA.eff <- IA.eff <- GCA.HQ.10 <-IA.HQ.10 <- rep(NA, nrow(concentration))
+  for (i in 1:nrow(concentration)) {
 
-    Ci <- dose[i,]
+    Ci <- concentration[i,]
     AC50 <- 10^logAC50
     mixture.result <- stats::optimize(
       obj_GCA, interval = interval, Ci = Ci, tp = tp, AC50 = AC50
     )
     GCA.eff[i] <- exp(mixture.result$minimum)
 
+    # TODO replace with positive control value if given
     Emax_resp <- stats::optimize(
       obj_GCA, interval = interval, Ci = Ci * 10^14, tp = tp, AC50 = AC50
     )

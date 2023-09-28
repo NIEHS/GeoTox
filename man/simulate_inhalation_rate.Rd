@@ -4,10 +4,14 @@
 \alias{simulate_inhalation_rate}
 \title{Simulate inhalation rates}
 \usage{
-simulate_inhalation_rate(ages)
+simulate_inhalation_rate(ages, params = NULL)
 }
 \arguments{
 \item{ages}{array of ages.}
+
+\item{params}{data frame with columns "age", "mean" and "sd". The age column
+should be in ascending order and represent the lower value of age groups for
+the corresponding mean and sd values.}
 }
 \value{
 array of inhalation rates.
