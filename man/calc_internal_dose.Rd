@@ -19,7 +19,7 @@ calc_internal_dose(C_ext, IR, time = 1, BW = 1)
 internal chemical dose in \eqn{\frac{mg}{kg}}
 }
 \description{
-TODO A short description...
+Estimate the internal dose from inhalation of a chemical given inhalation rate, time, and body weight
 }
 \details{
 TODO Additional details...

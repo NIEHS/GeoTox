@@ -2,19 +2,21 @@
 % Please edit documentation in R/calc_concentration_response.R
 \name{calc_concentration_response}
 \alias{calc_concentration_response}
-\title{Title}
+\title{Calculate the mixture response from one of three different approaches: IA, GCA ,or Hazard Quotient}
 \usage{
-calc_concentration_response(resp, concentration)
+calc_concentration_response(resp, concentration, fixed = FALSE)
 }
 \arguments{
 \item{resp}{data frame with columns "tp", "logAC50", "resp_max", "logc_min",
 "logc_max".}
 
 \item{concentration}{concentration}
+
+\item{fixed}{}
 }
 \value{
 data frame
 }
 \description{
-Title
+Calculate the combined response of multiple chemicals. It calculates the generalized concentration addition response, the independent actionr response, and a hazard quotient
 }
