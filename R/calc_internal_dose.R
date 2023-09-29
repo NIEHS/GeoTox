@@ -1,7 +1,7 @@
 #' Calculate internal chemical dose
 #'
 #' @description
-#' TODO A short description...
+#' Estimate the internal dose from inhalation of a chemical given inhalation rate, time, and body weight
 #'
 #' @param C_ext ambient chemical concentration in \eqn{\frac{mg}{m^3}}
 #' @param IR inhalation rate in \eqn{\frac{m^3}{day}}
