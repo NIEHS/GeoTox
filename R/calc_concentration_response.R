@@ -1,9 +1,11 @@
-#' Title
+#' Calculate the mixture response from one of three different approaches: IA, GCA ,or Hazard Quotient
 #'
 #' @param resp data frame with columns "tp", "logAC50", "resp_max", "logc_min",
 #' "logc_max".
 #' @param concentration concentration
 #'
+#' @description 
+#' Calculate the combined response of multiple chemicals. It calculates the generalized concentration addition response, the independent actionr response, and a hazard quotient
 #' @return data frame
 #' @export
 calc_concentration_response <- function(resp, concentration) {
