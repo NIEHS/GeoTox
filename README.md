@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 [![test-coverage](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graph/badge.svg?token=I1L9BZJ58Y)](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
