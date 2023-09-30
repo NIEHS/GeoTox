@@ -32,7 +32,7 @@ devtools::install_github("Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage"
 ```
 
 ## Code Coverage
-https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graphs/sunburst.svg?token=I1L9BZJ58Y
+![Code Coverage Visualization](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graphs/sunburst.svg?token=I1L9BZJ58Y)
 
 
 ## Example
