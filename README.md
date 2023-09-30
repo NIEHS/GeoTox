@@ -31,6 +31,10 @@ You can install the development version of GeoToxPackage from
 devtools::install_github("Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage")
 ```
 
+## Code Coverage
+https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graphs/sunburst.svg?token=I1L9BZJ58Y
+
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
