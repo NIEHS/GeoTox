@@ -1,21 +1,24 @@
 #' Simulate external exposure
 #'
-#' @param x data frame with a "concentration_mean" column.
+#' @param mean array of concentration mean values.
+#' @param sd array of concentration standard deviations, leave as 0 for fixed
+#' external concentrations.
 #' @param n simulated sample size.
 #'
-#' @return matrix of inhalation rates.
+#' @return matrix \eqn{_{n \,\times\, length(mean)}} of inhalation rates.
 #' @export
 #'
 #' @examples
-#' x <- data.frame(concentration_mean = 1:3)
-#' simulate_exposure(x, 10)
-simulate_exposure <- function(x, n = 1e3) {
-  # NOTE: This is written based only on 01-Sensitivity.R so far.
-  #       If it doesn't become more complex later on, then the replication
-  #       part can be removed.
-  if (nrow(x) == 0) {
+#' simulate_exposure(mean = 1:3, n = 10)
+#' simulate_exposure(mean = c(1, 10, 100), sd = c(0, 1, 5), n = 10)
+simulate_exposure <- function(mean, sd = 0, n = 1e3) {
+  if (length(mean) == 0) {
     matrix(0, nrow = n, ncol = 0)
+  } else if (length(sd) == 1 && sd == 0) {
+    t(replicate(n, mean))
   } else {
-    t(replicate(n, x$concentration_mean))
+    t(sapply(1:n, function(x) {
+      truncnorm::rtruncnorm(1, a = 0, b = Inf, mean = mean, sd = sd)
+    }))
   }
 }

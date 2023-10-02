@@ -4,20 +4,23 @@
 \alias{simulate_exposure}
 \title{Simulate external exposure}
 \usage{
-simulate_exposure(x, n = 1000)
+simulate_exposure(mean, sd = 0, n = 1000)
 }
 \arguments{
-\item{x}{data frame with a "concentration_mean" column.}
+\item{mean}{array of concentration mean values.}
+
+\item{sd}{array of concentration standard deviations, leave as 0 for fixed
+external concentrations.}
 
 \item{n}{simulated sample size.}
 }
 \value{
-matrix of inhalation rates.
+matrix \eqn{_{n \,\times\, length(mean)}} of inhalation rates.
 }
 \description{
 Simulate external exposure
 }
 \examples{
-x <- data.frame(concentration_mean = 1:3)
-simulate_exposure(x, 10)
+simulate_exposure(mean = 1:3, n = 10)
+simulate_exposure(mean = c(1, 10, 100), sd = c(0, 1, 5), n = 10)
 }
