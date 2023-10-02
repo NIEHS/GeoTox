@@ -17,8 +17,21 @@ simulate_exposure <- function(mean, sd = 0, n = 1e3) {
   } else if (length(sd) == 1 && sd == 0) {
     t(replicate(n, mean))
   } else {
-    t(sapply(1:n, function(x) {
-      truncnorm::rtruncnorm(1, a = 0, b = Inf, mean = mean, sd = sd)
-    }))
+    mapply(
+      function(mean, sd, n) {
+        if (mean == 0) {
+          rep(0, n)
+        } else if (mean > 0 & is.na(sd)) {
+          rep(mean, n)
+        } else {
+          truncnorm::rtruncnorm(
+            n, a = 0, b = Inf, mean = mean, sd = sd
+          )
+        }
+      },
+      mean = mean,
+      sd = sd,
+      n = n
+    )
   }
 }
