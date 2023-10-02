@@ -1,8 +1,8 @@
 ---
-title: "Steps 01-02 of GeoToxMIE Sensitivity scripts"
+title: "Steps 01-05 of GeoToxMIE Sensitivity scripts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dev-sensitivity}
+  %\VignetteIndexEntry{Steps 01-05 of GeoToxMIE Sensitivity scripts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -64,21 +64,22 @@ if (step == 4 | step == 5) {
   } else {
     load("~/dev/GeoTox/data/css_by_county_20220228.RData")
   }
-  # TODO update this
-  for (i in 1:length(css.by.county)){
-    for (j in 1:41){
-      idx <- is.na(css.by.county[[i]][,j])
-      if (sum(idx)>0){
-        css.mean <- mean(css.by.county[[i]][!idx,j])
-        css.by.county[[i]][idx,j] <- css.mean
+  # Replace missing values with mean
+  for (i in 1:length(css.by.county)) {
+    for (j in 1:ncol(css.by.county[[i]])) {
+      idx <- is.na(css.by.county[[i]][, j])
+      if (any(idx)) {
+        css.by.county[[i]][idx, j] <- mean(css.by.county[[i]][!idx, j])
       }
     }
   }
-  css.by.county.median <- lapply(css.by.county, FUN= function (x) median(x))
-  css.by.county.median <- lapply(css.by.county.median, FUN = function (x) {
-    replicate(MC_iter, x)
-  })
-  C_ss <- css.by.county.median
+  # Use median values
+  # TODO why mean-impute then use median?
+  #      why not just use median of non-NA values?
+  C_ss <- lapply(
+    css.by.county,
+    function(x) rep(median(x), length.out = MC_iter)
+  )
 }
 ```
 
