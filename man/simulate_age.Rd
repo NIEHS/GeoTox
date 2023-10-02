@@ -4,14 +4,12 @@
 \alias{simulate_age}
 \title{Simulate age data}
 \usage{
-simulate_age(x, n = 1000, return_mean = FALSE)
+simulate_age(x, n = 1000)
 }
 \arguments{
 \item{x}{data frame containing population data for age groups.}
 
 \item{n}{simulated sample size.}
-
-\item{return_mean}{return mean age.}
 }
 \value{
 array of simulated ages.
@@ -22,5 +20,4 @@ Simulate age data
 \examples{
 x <- data.frame(AGEGRP = 0:18, TOT_POP = c(sum(1:18), 1:18))
 simulate_age(x, 10)
-simulate_age(x, 10, TRUE)
 }

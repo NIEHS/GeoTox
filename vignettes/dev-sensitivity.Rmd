@@ -1,0 +1,172 @@
+---
+title: "Steps 01-05 of GeoToxMIE Sensitivity scripts"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Steps 01-05 of GeoToxMIE Sensitivity scripts}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(GeoToxPackage)
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+```
+
+### Param settings
+
+```{r params}
+MC_iter <- 10 # Max 1000 when using pre-generated C_ss values
+
+# step <- 1 # vary age
+# step <- 2 # vary obesity
+# step <- 3 # vary httk
+step <- 4 # vary dose-response params
+# step <- 5 # vary external concentration
+```
+
+### Load data
+
+These data are not included in the package. Update paths to point where they are located on your computer.
+
+```{r load_data}
+# Load "county_cyp1a1_up"
+load("~/dev/GeoTox/data/county_cyp1a1_up_20220201.RData")
+# Load age data
+age.data <- read.csv("~/dev/GeoTox/data/cc-est2019-alldata.csv")
+# Load "css.sensitivity.age" and trim to MC_iter size
+if (step == 1) {
+  load("~/dev/GeoTox/data/css_by_county_sensitivity_age_20220228.RData")
+  C_ss <- lapply(css.sensitivity.age, function(mat) mat[1:MC_iter, ])
+}
+# Load "css.sensitivity.obesity" and trim to MC_iter size
+if (step == 2) {
+  load("~/dev/GeoTox/data/css_by_county_sensitivity_obesity_20220228.RData")
+  C_ss <- lapply(css.sensitivity.obesity, function(mat) mat[1:MC_iter, ])
+}
+# Load "css.sensitivity.httk" and trim to MC_iter size
+if (step == 3) {
+  load("~/dev/GeoTox/data/css_by_county_sensitivity_httk_20220228.RData")
+  C_ss <- lapply(css.sensitivity.httk, function(mat) mat[1:MC_iter, ])
+}
+# Load "css.by.county"
+if (step == 4 | step == 5) {
+  # TODO 04 uses 20220201, 05 uses 20220228
+  if (step == 4) {
+    load("~/dev/GeoTox/data/css_by_county_20220201.RData")
+  } else {
+    load("~/dev/GeoTox/data/css_by_county_20220228.RData")
+  }
+  # Replace missing values with mean
+  for (i in 1:length(css.by.county)) {
+    for (j in 1:ncol(css.by.county[[i]])) {
+      idx <- is.na(css.by.county[[i]][, j])
+      if (any(idx)) {
+        css.by.county[[i]][idx, j] <- mean(css.by.county[[i]][!idx, j])
+      }
+    }
+  }
+  # Use median values
+  # TODO why mean-impute then use median?
+  #      why not just use median of non-NA values?
+  C_ss <- lapply(
+    css.by.county,
+    function(x) rep(median(x), length.out = MC_iter)
+  )
+}
+```
+
+### Format data
+
+```{r format_data}
+cyp1a1 <- split(county_cyp1a1_up, ~FIPS)
+
+age <- age.data %>%
+  filter(YEAR == 7) %>% # 7/1/2014 Census population
+  mutate(FIPS = as.numeric(sprintf("%d%03d", STATE, COUNTY))) %>%
+  select(FIPS, AGEGRP, TOT_POP) %>%
+  # Update FIPS: https://www.ddorn.net/data/FIPS_County_Code_Changes.pdf
+  mutate(FIPS = if_else(FIPS == 46102, 46113, FIPS)) %>% 
+  filter(FIPS %in% unique(.env$county_cyp1a1_up$FIPS))
+```
+
+### Simulate age
+
+```{r sim_age}
+simulated_age <- lapply(split(age, ~FIPS), simulate_age, n = MC_iter)
+
+# Replace sampled age values with median when age is fixed
+if (step != 1) {
+  simulated_age <- lapply(
+    simulated_age,
+    function(x) rep(median(x), length.out = MC_iter)
+  )
+}
+```
+
+### Simulate inhalation rate
+
+```{r sim_IR}
+simulated_IR <- lapply(simulated_age, simulate_inhalation_rate)
+```
+
+### Simulate external exposure
+
+```{r sim_exposure}
+if (step != 5) {
+  simulated_exposure <- lapply(
+    lapply(cyp1a1, "[[", "concentration_mean"),
+    simulate_exposure,
+    n = MC_iter
+  )
+} else {
+  simulated_exposure <- mapply(
+    simulate_exposure,
+    mean = lapply(cyp1a1, "[[", "concentration_mean"),
+    sd = lapply(cyp1a1, "[[", "concentration_sd"),
+    n = MC_iter,
+    SIMPLIFY = FALSE
+  )
+}
+```
+
+### Compute internal dose
+
+```{r compute_ID}
+internal_dose <- mapply(
+  calc_internal_dose,
+  C_ext = lapply(simulated_exposure, function(x) x / 1000),
+  IR = simulated_IR,
+  SIMPLIFY = FALSE
+)
+```
+
+### Compute in vitro concentration
+
+```{r compute_invitro}
+invitro_concentration <- mapply(
+  calc_invitro_concentration,
+  D_int = internal_dose,
+  C_ss = C_ss,
+  SIMPLIFY = FALSE
+)
+```
+
+### Compute concentration response
+
+```{r compute_concentration_response}
+concentration_response <- mapply(
+  calc_concentration_response,
+  resp = cyp1a1,
+  concentration = invitro_concentration,
+  fixed = step != 4,
+  SIMPLIFY = FALSE
+)
+```
