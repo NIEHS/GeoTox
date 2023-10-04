@@ -166,6 +166,7 @@ concentration_response <- mapply(
   calc_concentration_response,
   resp = cyp1a1,
   concentration = invitro_concentration,
+  tp_b_mult = ifelse(step == 4, 1.2, 1.5),
   fixed = step != 4,
   SIMPLIFY = FALSE
 )
