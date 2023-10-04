@@ -3,14 +3,19 @@
 #' @description
 #' Calculate the concentration in regular space for a given value
 #'
-#' @param val response value
+#' @param resp response value
 #' @param tp top asymptote
 #' @param ga AC50
 #' @param gw hill coefficient
 #'
 #' @return concentration in regular space
-tcplHillConc <- function(val, tp, ga, gw) {
+tcplHillConc <- function(resp, tp, ga, gw) {
 
-  ga * (tp/val - 1)^(-1/gw)
+  # TODO add "bt" as input to match tcplHillVal.R?
+  # ga * ((tp - bt) / (resp - bt) - 1)^(-1 / gw)
+
+  # TODO add checks so bt < resp < tp?
+
+  ga * (tp / resp - 1)^(-1 / gw)
 
 }

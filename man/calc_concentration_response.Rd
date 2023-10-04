@@ -2,21 +2,31 @@
 % Please edit documentation in R/calc_concentration_response.R
 \name{calc_concentration_response}
 \alias{calc_concentration_response}
-\title{Calculate the mixture response from one of three different approaches: IA, GCA ,or Hazard Quotient}
+\title{Calculate the mixture response from one of three different approaches:
+IA, GCA ,or Hazard Quotient}
 \usage{
-calc_concentration_response(resp, concentration, fixed = FALSE)
+calc_concentration_response(
+  resp,
+  concentration,
+  tp_b_mult = 1.5,
+  fixed = FALSE
+)
 }
 \arguments{
-\item{resp}{data frame with columns "tp", "logAC50", "resp_max", "logc_min",
-"logc_max".}
+\item{resp}{data frame with columns "tp", "tp.sd", "logAC50", "logAC50.sd",
+"resp_max", "logc_min", "logc_max".}
 
 \item{concentration}{concentration}
 
-\item{fixed}{}
+\item{tp_b_mult}{upper bound multiplier for tp rtruncnorm}
+
+\item{fixed}{if TRUE, sd = 0}
 }
 \value{
 data frame
 }
 \description{
-Calculate the combined response of multiple chemicals. It calculates the generalized concentration addition response, the independent actionr response, and a hazard quotient
+Calculate the combined response of multiple chemicals. It calculates the
+generalized concentration addition response, the independent action
+response, and a hazard quotient
 }

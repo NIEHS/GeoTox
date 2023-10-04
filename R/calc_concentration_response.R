@@ -1,15 +1,21 @@
-#' Calculate the mixture response from one of three different approaches: IA, GCA ,or Hazard Quotient
+#' Calculate the mixture response from one of three different approaches:
+#' IA, GCA ,or Hazard Quotient
 #'
-#' @param resp data frame with columns "tp", "logAC50", "resp_max", "logc_min",
-#' "logc_max".
+#' @param resp data frame with columns "tp", "tp.sd", "logAC50", "logAC50.sd",
+#' "resp_max", "logc_min", "logc_max".
 #' @param concentration concentration
-#' @param fixed
+#' @param tp_b_mult upper bound multiplier for tp rtruncnorm
+#' @param fixed if TRUE, sd = 0
 #'
 #' @description
-#' Calculate the combined response of multiple chemicals. It calculates the generalized concentration addition response, the independent actionr response, and a hazard quotient
+#' Calculate the combined response of multiple chemicals. It calculates the
+#' generalized concentration addition response, the independent action
+#' response, and a hazard quotient
 #' @return data frame
 #' @export
-calc_concentration_response <- function(resp, concentration, fixed = FALSE) {
+calc_concentration_response <- function(
+    resp, concentration, tp_b_mult = 1.5, fixed = FALSE
+) {
 
   # TODO make inputs more general
   # TODO add input for linear/log concentration
@@ -23,7 +29,7 @@ calc_concentration_response <- function(resp, concentration, fixed = FALSE) {
     truncnorm::rtruncnorm(
       1,
       a    = 0,
-      b    = resp$resp_max * 1.2,
+      b    = resp$resp_max * tp_b_mult,
       mean = resp$tp,
       sd   = if (fixed) 0 else resp$tp.sd
     )

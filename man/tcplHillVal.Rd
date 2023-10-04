@@ -4,10 +4,10 @@
 \alias{tcplHillVal}
 \title{TCPL Hill model}
 \usage{
-tcplHillVal(c, tp, ga, gw, bt = 0)
+tcplHillVal(conc, tp, ga, gw, bt = 0)
 }
 \arguments{
-\item{c}{concentration in regular space}
+\item{conc}{concentration in regular space}
 
 \item{tp}{top asymptote}
 

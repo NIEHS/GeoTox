@@ -4,10 +4,10 @@
 \alias{tcplHillConc}
 \title{TCPL Hill model}
 \usage{
-tcplHillConc(val, tp, ga, gw)
+tcplHillConc(resp, tp, ga, gw)
 }
 \arguments{
-\item{val}{response value}
+\item{resp}{response value}
 
 \item{tp}{top asymptote}
 

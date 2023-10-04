@@ -1,0 +1,59 @@
+#' Fit 2-parameter Hill model
+#'
+#' @param log10_conc base-10 log scale concentration
+#' @param resp response
+#'
+#' @return fit and other stats
+fit_hill_2par <- function(log10_conc, resp) {
+
+  # Compute initial values
+  resp_medians <- tapply(resp, log10_conc, stats::median)
+  resp_mad <- stats::mad(resp)
+
+  resp_init <- resp_medians[which.max(abs(resp_medians))]
+  conc_init <- as.numeric(names(resp_init)) - 0.5
+  err_init <- ifelse(resp_mad > 0, log(resp_mad), .Machine$double.eps)
+
+  par_init <- c(resp_init, conc_init, err_init)
+
+  # Determine bounds
+  resp_max <- max(resp)
+  resp_min <- min(resp)
+  log10_conc_min <- min(log10_conc)
+  log10_conc_max <- max(log10_conc)
+
+  lb <- c(0, log10_conc_min - 2, -Inf)
+  ub <- c(1.2 * resp_max, log10_conc_max + 0.5, Inf)
+
+  # Fit data
+  fit <- stats::optim(
+    par_init,
+    fn = obj_hill_2par,
+    method = "L-BFGS-B",
+    log10_conc = log10_conc,
+    resp = resp,
+    lower = lb,
+    upper = ub,
+    hessian = TRUE,
+    control = list(
+      fnscale = -1,
+      maxit = 10000
+    )
+  )
+
+  # Return results
+  out <- list(
+    par = fit$par,
+    sds = sqrt(diag(solve(-fit$hessian))),
+    val = fit$value,
+    convergence = fit$convergence,
+    AIC = 2 * length(fit$par) - 2 * fit$value,
+    logc_max = log10_conc_max,
+    logc_min = log10_conc_min,
+    resp_max = resp_max,
+    resp_min = resp_min
+  )
+  names(out$par) <- names(out$sds) <- c("tp", "logAC50", "t-error")
+
+  out
+}
