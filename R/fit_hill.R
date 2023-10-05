@@ -26,12 +26,17 @@ fit_hill <- function(log10_conc, resp, fixed_slope = TRUE) {
   log10_conc_min <- min(log10_conc)
   log10_conc_max <- max(log10_conc)
 
+  bounds <- as.data.frame(rbind(
+    c(                 0,       1.2 * resp_max), # top asymptote
+    c(log10_conc_min - 2, log10_conc_max + 0.5), # log10(AC50)
+    c(               0.3,                    8), # slope
+    c(              -Inf,                  Inf)  # err
+  ))
+  colnames(bounds) <- c("lower", "upper")
+
   if (fixed_slope) {
-    lb <- c(0, log10_conc_min - 2, -Inf)
-    ub <- c(1.2 * resp_max, log10_conc_max + 0.5, Inf)
-  } else {
-    lb <- c(0, log10_conc_min - 2, 0.3, -Inf)
-    ub <- c(1.2 * resp_max, log10_conc_max + 0.5, 8, Inf)
+    # remove slope bound
+    bounds <- bounds[-3, ]
   }
 
   # Fit data
@@ -41,8 +46,8 @@ fit_hill <- function(log10_conc, resp, fixed_slope = TRUE) {
     method = "L-BFGS-B",
     log10_conc = log10_conc,
     resp = resp,
-    lower = lb,
-    upper = ub,
+    lower = bounds$lower,
+    upper = bounds$upper,
     hessian = TRUE,
     control = list(
       fnscale = -1,
