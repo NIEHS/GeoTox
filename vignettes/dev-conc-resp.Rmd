@@ -26,11 +26,6 @@ library(tidyverse)
 # Load dose response data
 load("~/dev/GeoTox/data/LTEA_HepaRG_CYP1A1_up 41 chems for Kyle 220131.RData")
 ice_data <- cdat; rm(cdat)
-
-# Load "county_cyp1a1_up"
-# Contains TCPL 3-parameter Hill fits for comparison
-# TODO sensitivity vignette uses county_cyp1a1_up_20220201.RData, different?
-load("~/dev/GeoTox/data/archived_outputs/county_cyp1a1_up_20211109.RData")
 ```
 
 ### Format data
@@ -38,21 +33,15 @@ load("~/dev/GeoTox/data/archived_outputs/county_cyp1a1_up_20211109.RData")
 ```{r format_data}
 # Split dose response data by chemical
 ice_conc_resp <- split(as.data.frame(ice_data), ~casn)
-
-# Extract TCPL fits for specified chemicals
-tcpl <- county_cyp1a1_up %>%
-  distinct(casrn, .keep_all = TRUE) %>%
-  filter(casrn %in% names(ice_conc_resp))
 ```
 
 ### 2-parameter Hill fit
 
 ```{r fits}
 fits <- lapply(ice_conc_resp, function(df) {
-  fit <- fit_hill(df$logc, df$resp)
-  fit$chnm <- df$chnm[1]
-  fit$casn <- df$casn[1]
-  fit
+  suppressWarnings(
+    fit_hill(df$logc, df$resp)
+  )
 })
 ```
 
@@ -71,10 +60,8 @@ fit_params <- do.call(
       ) %>%
       select(
         tp, tp.sd, logAC50, logAC50.sd,
-        logc_min, logc_max, resp_min, resp_max,
-        AIC, chnm, casn
-      ) %>% 
-      mutate(across(tp:AIC, ~ as.numeric(.x)))
+        logc_min, logc_max, resp_min, resp_max, AIC
+      )
   })
 )
 ```
@@ -111,14 +98,14 @@ ggplot(fit_params, aes(logAC50, logAC50.sd)) +
 ### Plot fits
 
 ```{r plot_fits}
-log10_x <- seq(-3, 3, length.out = 1000)
+log10_x <- seq(-3, 3, length.out = 100)
 
 y <- as.matrix(
-  apply(fit_params[, c("tp", "logAC50")], 1, function(x) {
-    x["tp"] / (1 + 10^(x["logAC50"] - log10_x))
+  apply(fit_params[, c("tp", "logAC50")], 1, function(par) {
+    par["tp"] / (1 + 10^(par["logAC50"] - log10_x))
   })
 )
-colnames(y) <- fit_params$casn
+colnames(y) <- names(ice_conc_resp)
 y <- as_tibble(y) %>% mutate(x = 10^log10_x, .before = 1)
 
 ggplot(y %>% pivot_longer(!x), aes(x, value, color = name)) +
