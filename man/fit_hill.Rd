@@ -10,6 +10,8 @@ fit_hill(log10_conc, resp, fixed_slope = TRUE)
 \item{log10_conc}{base-10 log scale concentration}
 
 \item{resp}{response}
+
+\item{fixed_slope}{if TRUE, slope is fixed at 1}
 }
 \value{
 fit and other stats
