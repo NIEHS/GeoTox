@@ -16,8 +16,10 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(GeoToxPackage)
-options(tidyverse.quiet = TRUE)
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
 ```
 
 ### Load data
