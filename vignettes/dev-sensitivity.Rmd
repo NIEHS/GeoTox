@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(GeoToxPackage)
-options(tidyverse.quiet = TRUE)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
 
 ### Param settings
@@ -100,7 +100,16 @@ age <- age.data %>%
 ### Simulate age
 
 ```{r sim_age}
-simulated_age <- lapply(split(age, ~FIPS), simulate_age, n = MC_iter)
+age_split <- split(age, ~FIPS)
+
+# Adjust order due to changing FIPS 46102 to 46113
+# TODO used to match GeoToxMIE output, but does this adjustment line up with
+#      other input data, e.g. C_ss?
+idx <- 1:length(age_split)
+idx[2379:2384] <- c(2384, 2379:2383)
+age_split <- age_split[idx]
+
+simulated_age <- lapply(age_split, simulate_age, n = MC_iter)
 
 # Replace sampled age values with median when age is fixed
 if (step != 1) {

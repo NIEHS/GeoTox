@@ -2,8 +2,10 @@
 #'
 #' @param log10_conc base-10 log scale concentration
 #' @param resp response
+#' @param fixed_slope if TRUE, slope is fixed at 1
 #'
 #' @return fit and other stats
+#' @export
 fit_hill <- function(log10_conc, resp, fixed_slope = TRUE) {
 
   # Compute initial values
