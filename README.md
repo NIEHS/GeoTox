@@ -43,24 +43,24 @@ library(dplyr, warn.conflicts = FALSE)
 ### Estimate chemical concentration-response curves
 
 ``` r
-log10_conc <- rep(-2:2, each = 3)
-tp <- 10  # top asymptote
-gw <- 1.2 # slope
-ga <- 1.6 # AC50
-resp <- tp / (1 + 10^(gw * (log10(ga) - log10_conc))) + rnorm(length(log10_conc))
+conc <- 10^rep(-2:2, each = 3)
+tp   <- 100 # top asymptote
+ga   <- 1.6 # AC50
+gw   <- 1.2 # slope
+resp <- tp / (1 + (ga / conc)^gw) + rnorm(length(conc), sd = 5)
 
-fit_2param <- fit_hill(log10_conc, resp)
-fit_3param <- fit_hill(log10_conc, resp, fixed_slope = FALSE)
+fit_2param <- fit_hill(log10(conc), resp) # slope fixed at 1
+fit_3param <- fit_hill(log10(conc), resp, fixed_slope = FALSE)
 
 rbind(
   "inputs"  = c(tp, log10(ga), gw, NA),
   "3-param" = c(fit_3param$par),
   "2-param" = c(fit_2param$par[1:2], 1, fit_2param$par[3])
 )
-#>                tp       logAC50    slope    t-error
-#> inputs  10.000000  0.2041199827 1.200000         NA
-#> 3-param  9.427044 -0.0255136610 7.481381 -0.5788686
-#> 2-param 10.078431 -0.0009174594 1.000000 -0.1283037
+#>                tp   logAC50    slope  t-error
+#> inputs  100.00000 0.2041200 1.200000       NA
+#> 3-param  97.63578 0.1516374 1.485236 1.177891
+#> 2-param 101.53494 0.2360917 1.000000 1.417567
 ```
 
 ### Estimate population dose-response
@@ -89,14 +89,15 @@ exposure <- data.frame(
 
 # Create chemical concentration-response data
 conc_resp <- lapply(1:n_chem, function(idx) {
-  log10_conc <- rep(-2:2, each = 3)
-  tp <- 10 + rnorm(1, sd = 2)
-  gw <- 1 + rnorm(1)/5
-  log10_ga <- 2 * runif(1) - 1
-  y <- tp / (1 + 10^(gw * (log10_ga - log10_conc)))
+  conc <- 10^rep(-2:2, each = 3)
+  tp   <- 100 + rnorm(1, sd = 15)
+  ga   <- 10^(2 * runif(1) - 1)
+  gw   <- 1 + rnorm(1)/5
+  resp <- tp / (1 + (ga / conc)^gw) + rnorm(length(conc))
+  resp[resp < 0] <- 0
   data.frame(
-    logc = log10_conc,
-    resp = y + rnorm(length(log10_conc))
+    logc = log10(conc),
+    resp = resp
   )
 })
 fits <- lapply(conc_resp, function(df) {
@@ -121,7 +122,7 @@ chem_params <- do.call(
 )
 
 # Steady-state concentration (will be generated from httk)
-C_ss <- matrix(runif(nrow(exposure) * MC_iter), nrow = MC_iter)
+C_ss <- matrix(runif(n_chem * MC_iter), nrow = MC_iter)
 ```
 
 Simulate data
@@ -166,14 +167,14 @@ concentration_response <- calc_concentration_response(
 
 concentration_response
 #>         GCA.Eff       IA.eff    GCA.HQ.10     IA.HQ.10
-#> 1  2.023560e-06 2.023554e-06 1.706002e-06 1.705980e-06
-#> 2  6.929693e-06 6.929700e-06 5.431601e-06 5.431528e-06
-#> 3  5.840383e-06 5.840341e-06 4.464539e-06 4.464465e-06
-#> 4  1.173735e-05 1.173759e-05 8.623322e-06 8.623484e-06
-#> 5  7.772241e-06 7.772348e-06 5.632912e-06 5.632988e-06
-#> 6  1.063841e-05 1.063850e-05 8.026201e-06 8.026049e-06
-#> 7  4.703982e-06 4.704007e-06 3.873856e-06 3.873805e-06
-#> 8  9.397205e-06 9.397296e-06 7.190710e-06 7.190593e-06
-#> 9  7.505428e-06 7.505503e-06 5.650852e-06 5.650743e-06
-#> 10 8.195456e-06 8.195506e-06 6.092902e-06 6.093040e-06
+#> 1  1.316500e-04 1.316519e-04 1.197871e-05 1.197851e-05
+#> 2  1.928066e-04 1.928077e-04 1.756148e-05 1.756120e-05
+#> 3  1.509427e-04 1.509448e-04 1.339909e-05 1.339880e-05
+#> 4  1.931396e-04 1.931407e-04 1.742350e-05 1.742319e-05
+#> 5  2.000661e-04 2.000678e-04 1.748640e-05 1.748673e-05
+#> 6  9.090331e-05 9.090415e-05 8.634445e-06 8.634337e-06
+#> 7  6.336773e-05 6.336758e-05 5.870044e-06 5.869961e-06
+#> 8  1.501012e-04 1.501024e-04 1.365014e-05 1.364991e-05
+#> 9  7.009742e-05 7.009701e-05 6.962928e-06 6.962838e-06
+#> 10 7.310190e-05 7.310279e-05 6.848001e-06 6.847910e-06
 ```

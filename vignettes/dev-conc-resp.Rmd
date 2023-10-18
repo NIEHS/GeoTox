@@ -50,6 +50,7 @@ fits <- lapply(ice_conc_resp, function(df) {
 ### Extract fit parameters
 
 ```{r fit_params}
+# TODO should this be made into a package function?
 fit_params <- do.call(
   rbind,
   lapply(fits, function(fit) {

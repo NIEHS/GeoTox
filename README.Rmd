@@ -45,14 +45,14 @@ library(dplyr, warn.conflicts = FALSE)
 ### Estimate chemical concentration-response curves
 
 ```{r chem}
-log10_conc <- rep(-2:2, each = 3)
-tp <- 10  # top asymptote
-gw <- 1.2 # slope
-ga <- 1.6 # AC50
-resp <- tp / (1 + 10^(gw * (log10(ga) - log10_conc))) + rnorm(length(log10_conc))
+conc <- 10^rep(-2:2, each = 3)
+tp   <- 100 # top asymptote
+ga   <- 1.6 # AC50
+gw   <- 1.2 # slope
+resp <- tp / (1 + (ga / conc)^gw) + rnorm(length(conc), sd = 5)
 
-fit_2param <- fit_hill(log10_conc, resp)
-fit_3param <- fit_hill(log10_conc, resp, fixed_slope = FALSE)
+fit_2param <- fit_hill(log10(conc), resp) # slope fixed at 1
+fit_3param <- fit_hill(log10(conc), resp, fixed_slope = FALSE)
 
 rbind(
   "inputs"  = c(tp, log10(ga), gw, NA),
@@ -87,14 +87,15 @@ exposure <- data.frame(
 
 # Create chemical concentration-response data
 conc_resp <- lapply(1:n_chem, function(idx) {
-  log10_conc <- rep(-2:2, each = 3)
-  tp <- 10 + rnorm(1, sd = 2)
-  gw <- 1 + rnorm(1)/5
-  log10_ga <- 2 * runif(1) - 1
-  y <- tp / (1 + 10^(gw * (log10_ga - log10_conc)))
+  conc <- 10^rep(-2:2, each = 3)
+  tp   <- 100 + rnorm(1, sd = 15)
+  ga   <- 10^(2 * runif(1) - 1)
+  gw   <- 1 + rnorm(1)/5
+  resp <- tp / (1 + (ga / conc)^gw) + rnorm(length(conc))
+  resp[resp < 0] <- 0
   data.frame(
-    logc = log10_conc,
-    resp = y + rnorm(length(log10_conc))
+    logc = log10(conc),
+    resp = resp
   )
 })
 fits <- lapply(conc_resp, function(df) {
@@ -119,7 +120,7 @@ chem_params <- do.call(
 )
 
 # Steady-state concentration (will be generated from httk)
-C_ss <- matrix(runif(nrow(exposure) * MC_iter), nrow = MC_iter)
+C_ss <- matrix(runif(n_chem * MC_iter), nrow = MC_iter)
 ```
 
 Simulate data
