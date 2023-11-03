@@ -16,9 +16,14 @@ data frame
 Extract results from 2-parameter fit_hill outputs
 }
 \examples{
+df <- data.frame(
+  logc = -3:3,
+  resp = 5 / (1 + 10^(1.2 * (0.4 - rep(-3:3, each = 3)))) + rnorm(21)
+ )
 fit <- fit_hill(df$logc, df$resp)
 extract_hill_params(list(fit))
 
+df_list <- list(df, df)
 fits <- lapply(df_list, function(df) {fit_hill(df$logc, df$resp)})
 extract_hill_params(fits)
 }
