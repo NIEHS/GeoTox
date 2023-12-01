@@ -5,3 +5,4 @@
 ^cran-comments\.md$
 ^vignettes/
 ^\.github/
+^script-replication/
