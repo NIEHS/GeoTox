@@ -22,22 +22,17 @@ library(ggplot2)
 library(scales)
 ```
 
-### Load data
-
-```{r load_data}
-# Load dose response data
-load("~/dev/GeoTox/data/LTEA_HepaRG_CYP1A1_up 41 chems for Kyle 220131.RData")
-ice_data <- cdat; rm(cdat)
-```
-
 ### Format data
 
+Split the dose response data into a list by chemical casn.
+
 ```{r format_data}
-# Split dose response data by chemical
-ice_conc_resp <- split(as.data.frame(ice_data), ~casn)
+ice_conc_resp <- split(as.data.frame(geo_tox_data$ice), ~casn)
 ```
 
 ### 2-parameter Hill fit
+
+Apply the `fit_hill` function to each of the chemicals.
 
 ```{r fits}
 fits <- lapply(ice_conc_resp, function(df) {fit_hill(df$logc, df$resp)})
