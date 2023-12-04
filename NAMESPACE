@@ -3,6 +3,7 @@
 export(calc_concentration_response)
 export(calc_internal_dose)
 export(calc_invitro_concentration)
+export(extract_hill_params)
 export(fit_hill)
 export(simulate_age)
 export(simulate_exposure)
