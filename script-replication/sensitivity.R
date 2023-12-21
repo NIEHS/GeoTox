@@ -7,7 +7,216 @@ library(tidyverse)
 ################################################################################
 ################################################################################
 
-# TODO
+library(httk)
+
+rm(list = ls())
+
+set.seed(2345)
+
+MC_iter <- 10
+n_chem <- 2
+n_county <- 5
+
+##########
+# Data
+load("~/dev/GeoTox/data/age_by_county_20220228.RData")
+load("~/dev/GeoTox/data/obesity_by_county_20220228.RData")
+
+age.by.county <- lapply(age.by.county[1:n_county], \(x) x[1:MC_iter])
+obesity.by.county <- lapply(obesity.by.county[1:n_county], \(x) x[1:MC_iter])
+
+in_chems <- c(
+  "98-86-2", "92-87-5", "92-52-4", "117-81-7", "133-06-2", "532-27-4",
+  "133-90-4", "57-74-9", "510-15-6", "94-75-7", "64-67-5", "132-64-9",
+  "106-46-7", "111-44-4", "79-44-7", "131-11-3", "77-78-1", "119-90-4",
+  "121-14-2", "534-52-1", "51-28-5", "121-69-7", "107-21-1", "51-79-6",
+  "76-44-8", "822-06-0", "77-47-4", "123-31-9", "72-43-5", "101-77-9",
+  "56-38-2", "82-68-8", "87-86-5", "1120-71-4", "114-26-1", "91-22-5",
+  "96-09-3", "95-80-7", "584-84-9", "95-95-4", "1582-09-8"
+)[1:n_chem]
+
+########################################
+# Define population demographics for httk simulation
+pop_demo <- cross_join(
+  tibble(
+    age_group = list(
+      c(0, 2), c(3, 5), c(6, 10), c(11, 15), c(16, 20), c(21, 30),
+      c(31, 40), c(41, 50), c(51, 60), c(61, 70), c(71, 100)
+    )
+  ),
+  tibble(
+    weight = c("Normal", "Obese")
+  )
+) %>%
+  rowwise() %>%
+  mutate(age_min = age_group[1]) %>%
+  ungroup()
+
+########################################
+# Create wrapper function around httk steps
+simulate_css <- function(chem.cas, agelim_years, weight_category, samples) {
+
+  cat(
+    chem.cas,
+    paste0("(", paste(agelim_years, collapse = ", "), ")"),
+    weight_category,
+    "\n"
+  )
+
+  httkpop <- list(
+    method = "vi",
+    gendernum = NULL,
+    agelim_years = agelim_years,
+    agelim_months = NULL,
+    weight_category = weight_category,
+    reths = c(
+      "Mexican American",
+      "Other Hispanic",
+      "Non-Hispanic White",
+      "Non-Hispanic Black",
+      "Other"
+    )
+  )
+
+  mcs <- create_mc_samples(
+    chem.cas = chem.cas,
+    samples = samples,
+    httkpop.generate.arg.list = httkpop,
+    suppress.messages = TRUE
+  )
+
+  css <- calc_analytic_css(
+    chem.cas = chem.cas,
+    parameters = mcs,
+    model = "3compartmentss",
+    suppress.messages = TRUE
+  )
+
+  list(css)
+}
+
+########################################
+# Simulate Css values
+simulated_css <- lapply(in_chems, function(casrn) {
+  pop_demo %>%
+    rowwise() %>%
+    mutate(
+      css = simulate_css(.env$casrn, age_group, weight, .env$MC_iter)
+    ) %>%
+    ungroup()
+})
+simulated_css <- setNames(simulated_css, in_chems)
+
+########################################
+# Compute median Css values for different strata
+
+# Get median Css values for each age_group
+simulated_css <- lapply(
+  simulated_css,
+  function(cas_df) {
+    cas_df %>%
+      nest(.by = age_group) %>%
+      mutate(
+        age_median_css = sapply(data, function(df) median(unlist(df$css)))
+      ) %>%
+      unnest(data)
+  }
+)
+
+# Get median Css values for each weight
+simulated_css <- lapply(
+  simulated_css,
+  function(cas_df) {
+    cas_df %>%
+      nest(.by = weight) %>%
+      mutate(
+        weight_median_css = sapply(data, function(df) median(unlist(df$css)))
+      ) %>%
+      unnest(data) %>%
+      arrange(age_min, weight)
+  }
+)
+
+########################################
+# Create sensitivity data objects
+
+css_sensitivity_age <- lapply(age.by.county, function(county_age) {
+  do.call(cbind, lapply(simulated_css, function(cas_df) {
+    # Get age_median_css for corresponding county_age
+    age_df <- cas_df %>% distinct(age_min, age_median_css)
+    idx <- sapply(
+      county_age,
+      function(age) tail(which(age >= age_df$age_min), 1)
+    )
+    age_df$age_median_css[idx]
+  }))
+})
+
+css_sensitivity_obesity <- lapply(obesity.by.county, function(county_weight) {
+  do.call(cbind, lapply(simulated_css, function(cas_df) {
+    # Get weight_median_css for corresponding county_weight
+    weight_df <- cas_df %>% distinct(weight, weight_median_css)
+    weight_df$weight_median_css[match(county_weight, weight_df$weight)]
+  }))
+})
+
+css_sensitivity_httk <- lapply(age.by.county, function(county_age) {
+  # TODO why round the median?
+  median_county_age <- round(median(county_age))
+  do.call(cbind, lapply(simulated_css, function(cas_df) {
+    # Sample from "Normal" weight css values
+    css <- cas_df %>%
+      filter(
+        weight == "Normal",
+        median_county_age >= age_min
+      ) %>%
+      slice_tail(n = 1) %>%
+      pull(css) %>% unlist()
+    sample(css, length(county_age), replace = TRUE)
+  }))
+})
+
+#===============================================================================
+# Compare to GeoToxMIE
+#===============================================================================
+
+# modify lines 134-136 from "ncol = 41" to "ncol = length(in.chems)"
+# modify line 159 from "j in 1:41" to "j in 1:length(in.chem)"
+
+set.seed(2345)
+
+MC.iter <- MC_iter
+in.chems <- in_chems
+
+# Run lines 37-60, 66-120
+
+all.equal(
+  css.list,
+  lapply(
+    lapply(simulated_css, "[[", "css"),
+    function(css) do.call(cbind, css)
+  )
+)
+
+# Run lines 128-200
+
+all.equal(
+  css.sensitivity.age,
+  css_sensitivity_age,
+  check.attributes = FALSE
+)
+
+all.equal(
+  css.sensitivity.obesity,
+  css_sensitivity_obesity,
+  check.attributes = FALSE
+)
+
+all.equal(
+  css.sensitivity.httk,
+  css_sensitivity_httk,
+  check.attributes = FALSE
+)
 
 ################################################################################
 ################################################################################
