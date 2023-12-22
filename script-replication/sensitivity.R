@@ -176,6 +176,8 @@ css_sensitivity_httk <- lapply(age.by.county, function(county_age) {
   }))
 })
 
+# TODO setNames to county FIPS for css_sensitivity_*
+
 #===============================================================================
 # Compare to GeoToxMIE
 #===============================================================================
@@ -512,4 +514,277 @@ all.equal(final.response.by.county, concentration_response)
 ################################################################################
 ################################################################################
 
-# TODO
+library(ggridges)
+library(ggpubr)
+
+rm(list = ls())
+
+##########
+# Data
+if (FALSE) {
+
+  MC_iter <- 50
+  n_county <- 20
+
+  load("~/dev/GeoTox/data/sensitivity_results_age_20220901.RData")
+  sensitivity.age <- final.response.by.county
+  load("~/dev/GeoTox/data/sensitivity_results_obesity_20220901.RData")
+  sensitivity.obesity <- final.response.by.county
+  load("~/dev/GeoTox/data/sensitivity_results_httk_20220901.RData")
+  sensitivity.httk <- final.response.by.county
+  load("~/dev/GeoTox/data/sensitivity_results_conc_resp_20220901.RData")
+  sensitivity.conc.resp <- final.response.by.county
+  load("~/dev/GeoTox/data/sensitivity_results_ext_conc_20220901.RData")
+  sensitivity.ext.conc <- final.response.by.county
+  load("~/dev/GeoTox/data/final_response_by_county_20220901.RData")
+  baseline <- final.response.by.county
+
+  rm(final.response.by.county)
+
+  get_subset <- function(x) {
+    lapply(x[1:n_county], \(df) df[1:MC_iter, ])
+  }
+
+  sensitivity.age       <- get_subset(sensitivity.age)
+  sensitivity.obesity   <- get_subset(sensitivity.obesity)
+  sensitivity.httk      <- get_subset(sensitivity.httk)
+  sensitivity.conc.resp <- get_subset(sensitivity.conc.resp)
+  sensitivity.ext.conc  <- get_subset(sensitivity.ext.conc)
+  baseline              <- get_subset(baseline)
+
+  save(
+    MC_iter,
+    n_county,
+    sensitivity.age,
+    sensitivity.obesity,
+    sensitivity.httk,
+    sensitivity.conc.resp,
+    sensitivity.ext.conc,
+    baseline,
+    file = "~/dev/GeoTox/outputs/sensitivity.RData"
+  )
+} else {
+  load("~/dev/GeoTox/outputs/sensitivity.RData")
+}
+
+########################################
+# Create useful functions
+
+gather_results <- function(param) {
+  baseline_param <- switch(
+    param,
+    "GCA.Eff"  = "GCA",
+    "IA.eff"   = "IA",
+    "IA.HQ.10" = "HQ.10"
+  )
+  colnames <- c(
+    "External Concentration",
+    "Toxicokinetic Parameters",
+    "Obesity",
+    "Age",
+    "Concentration-Response",
+    "Baseline"
+  )
+  out <- cbind(
+    unlist(lapply(sensitivity.ext.conc, "[[", param)),
+    unlist(lapply(sensitivity.httk, "[[", param)),
+    unlist(lapply(sensitivity.obesity, "[[", param)),
+    unlist(lapply(sensitivity.age, "[[", param)),
+    unlist(lapply(sensitivity.conc.resp, "[[", param)),
+    unlist(lapply(baseline, "[[", baseline_param))
+  )
+  colnames(out) <- colnames
+  as.data.frame(out) %>%
+    pivot_longer(cols = everything()) %>%
+    mutate(name = factor(name, levels = colnames))
+}
+
+plot_gathered_results <- function(df, xlab = "", ylab = "", scale_x = TRUE) {
+  p <- df %>%
+    ggplot(aes(x = value, y = name, fill = name)) +
+    stat_density_ridges(
+      geom = "density_ridges_gradient",
+      calc_ecdf = TRUE,
+      quantiles = 4,
+      quantile_lines = FALSE
+    ) +
+    scale_fill_viridis_d(option = "C") +
+    theme(legend.position = "none") +
+    xlab(xlab) +
+    ylab(ylab) +
+    theme_minimal() +
+    coord_cartesian(clip = "off") +
+    theme(
+      text = element_text(size = 14),
+      legend.position="none",
+      axis.text = element_text(size = 14),
+      axis.title = element_text(size = 14)
+    )
+  if (scale_x) {
+    p + scale_x_log10(labels = scales::label_math(10^.x, format = log10))
+  } else {
+    p
+  }
+}
+
+plot_gathered_results2 <- function(df, y = "y", xlab = "", ylab = "") {
+  df %>%
+    ggplot(aes(x = value, y = .env$y, fill = NA, color = name)) +
+    stat_density_ridges(
+      calc_ecdf = TRUE,
+      quantiles = 4,
+      quantile_lines = FALSE,
+      fill = NA,
+      linewidth = 1
+    ) +
+    scale_x_log10(labels = scales::label_math(10^.x, format = log10)) +
+    scale_color_brewer(palette="Set2") +
+    theme(legend.position = "none") +
+    xlab(xlab) +
+    ylab(ylab) +
+    labs(color = 'Varying Parameter') +
+    theme_minimal() +
+    coord_cartesian(clip = "off") +
+    theme(
+      text = element_text(size = 14),
+      axis.text = element_text(size = 14),
+      axis.title = element_text(size = 14)
+    )
+}
+
+########################################
+# First set of plots
+
+df1 <- gather_results("GCA.Eff")
+p1 <- plot_gathered_results(
+  df1,
+  xlab = paste(
+    "Z-score of Median Predicted Log2 Fold",
+    "Change mRNA Expression CYP1A1",
+    sep = "\n"
+  ),
+  ylab = "Varying Parameter"
+)
+
+df2 <- gather_results("IA.eff")
+p2 <- plot_gathered_results(
+  df2,
+  xlab = paste(
+    "Z-score of Median Predicted Log2 Fold",
+    "Change mRNA Expression CYP1A1",
+    sep = "\n"
+  )
+) + theme(axis.text.y = element_blank())
+
+df3 <- gather_results("IA.HQ.10")
+p3 <- plot_gathered_results(
+  df3,
+  xlab = paste(
+    "Meidan CYP1A1",
+    "Summed Risk Quotient",
+    sep = "\n"
+  ),
+  scale_x = FALSE
+) + theme(axis.text.y = element_blank())
+
+p1to3 <- ggarrange(
+  p1, p2, p3,
+  labels = c( "A", "B", "C"),
+  vjust = 1,
+  align = "h",
+  ncol = 3, nrow = 1,
+  widths = c(1, 0.5, 0.5),
+  font.label = list(size = 20, color = "black", face = "bold"),
+  common.legend = FALSE
+)
+
+########################################
+# Second set of plots
+
+p4 <- plot_gathered_results2(
+  df2,
+  y = "CA/IA",
+  xlab = paste(
+    "Median Predicted Log2 Fold Change",
+    "mRNA Expression CYP1A1",
+    sep = "\n"
+  )
+)
+
+p5 <- plot_gathered_results2(
+  df3,
+  y = "RQ",
+  xlab = paste(
+    "Median CYP1A1",
+    "Summed Risk Quotient",
+    sep = "\n"
+  )
+)
+
+p4to5 <- ggarrange(
+  p4, p5,
+  labels = c("A", "B"),
+  vjust = 1,
+  align = "h",
+  ncol = 2, nrow = 1,
+  widths = c(0.5, 0.5),
+  font.label = list(size = 20, color = "black", face = "bold"),
+  common.legend = TRUE,
+  legend = "right"
+)
+
+#===============================================================================
+# Compare to GeoToxMIE
+#===============================================================================
+
+library(reshape2)
+
+# Change scale_x_log10
+# comment out:
+# scale_x_log10(labels = trans_format("log10", math_format(10^.x)))+
+# add line:
+# scale_x_log10(labels = scales::label_math(10^.x, format = log10)) +
+#
+# Comment out any lines referencing "$X2"
+
+# Run lines 32-173
+
+compare_gathered_data <- function(df_orig, df_new) {
+  all.equal(
+    df_orig %>%
+      mutate(name = as.character(Var2), value) %>%
+      select(name, value) %>%
+      arrange(name, value),
+    df_new %>%
+      mutate(name = as.character(name), value) %>%
+      arrange(name, value),
+    check.attributes = FALSE
+  )
+}
+
+compare_gathered_data(CR.melt, df1)
+compare_gathered_data(CR.IA.melt, df2)
+compare_gathered_data(HQ.IA.melt, df3)
+
+pdf("~/dev/GeoTox/outputs/temp1.1.pdf"); conc.resp.plot.GCA; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp1.2.pdf"); p1; invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/temp2.1.pdf"); conc.resp.plot.IA; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp2.2.pdf"); p2; invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/temp3.1.pdf"); HQ.plot.IA; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp3.2.pdf"); p3; invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/temp4.1.pdf"); composite; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp4.2.pdf"); p1to3; invisible(dev.off())
+
+# Run lines 180-245
+
+pdf("~/dev/GeoTox/outputs/temp5.1.pdf"); combined_plot; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp5.2.pdf"); p4; invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/temp6.1.pdf"); HQ_plot; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp6.2.pdf"); p5; invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/temp7.1.pdf"); composite2; invisible(dev.off())
+pdf("~/dev/GeoTox/outputs/temp7.2.pdf"); p4to5; invisible(dev.off())
