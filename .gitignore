@@ -52,3 +52,4 @@ po/*~
 rsconnect/
 .Rproj.user
 inst/doc
+docs
