@@ -73,20 +73,20 @@
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">logc</span>, <span class="va">df</span><span class="op">$</span><span class="va">resp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">extract_hill_params</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         tp     tp.sd   logAC50 logAC50.sd logc_min logc_max   resp_min resp_max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.341724 0.7509861 -1.545275   1.264373       -3        3 -0.8998599 6.425652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         tp     tp.sd   logAC50 logAC50.sd logc_min logc_max  resp_min resp_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.519977 0.7048287 -1.687133     0.9313       -3        3 -1.769662 5.798992</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        AIC tp.sd.imputed logAC50.sd.imputed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 102.7106         FALSE              FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 101.1775         FALSE              FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">df_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">logc</span>, <span class="va">df</span><span class="op">$</span><span class="va">resp</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">extract_hill_params</span><span class="op">(</span><span class="va">fits</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         tp     tp.sd   logAC50 logAC50.sd logc_min logc_max   resp_min resp_max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.341724 0.7509861 -1.545275   1.264373       -3        3 -0.8998599 6.425652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.341724 0.7509861 -1.545275   1.264373       -3        3 -0.8998599 6.425652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         tp     tp.sd   logAC50 logAC50.sd logc_min logc_max  resp_min resp_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.519977 0.7048287 -1.687133     0.9313       -3        3 -1.769662 5.798992</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.519977 0.7048287 -1.687133     0.9313       -3        3 -1.769662 5.798992</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        AIC tp.sd.imputed logAC50.sd.imputed</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 102.7106         FALSE              FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 102.7106         FALSE              FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 101.1775         FALSE              FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 101.1775         FALSE              FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
