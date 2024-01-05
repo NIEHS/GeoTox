@@ -577,4 +577,230 @@ all.equal(
 ################################################################################
 ################################################################################
 
-# TODO
+library(sf)
+library(ggpubr)
+
+rm(list = ls())
+
+##########
+# Data
+load("~/dev/GeoTox/data/final_response_by_county_20220901.RData")
+load("~/dev/GeoTox/data/FIPS_by_county.RData") # FIPS shouldn't be needed
+county_2014 <- st_read(
+  "~/dev/GeoTox/data/cb_2014_us_county_5m/cb_2014_us_county_5m.shp",
+  quiet = TRUE
+)
+
+states <- st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
+
+county <- county_2014 %>%
+  filter(!(STATEFP %in% c("02", "15", "60", "66", "69", "72", "78"))) %>%
+  mutate(FIPS = str_c(STATEFP, COUNTYFP), .before = 1)
+
+########################################
+# response_by_county
+
+# TODO list should already have names() == FIPS
+# Make sure leading 0s are there for joining with county
+names(final.response.by.county) <- sprintf("%05d", FIPS)
+
+response_by_county <- tibble(
+  FIPS = names(final.response.by.county),
+  data = final.response.by.county
+) %>%
+  unnest(cols = data) %>%
+  pivot_longer(-FIPS, names_to = "health_measure") %>%
+  mutate(
+    health_measure = factor(
+      health_measure,
+      levels = c("GCA", "IA", "HQ.10")
+    )
+  )
+
+########################################
+# IVIVE summary
+
+# Summarize within counties
+ivive_summary_df <- response_by_county %>%
+  summarize(
+    median = median(value , na.rm = TRUE),
+    x95_quantile = quantile(value, 0.95, na.rm = TRUE, names = FALSE),
+    x5_quantile = quantile(value, 0.05, na.rm = TRUE, names = FALSE),
+    .by = c(FIPS, health_measure)
+  )
+
+ivive_summary_df_stack <- ivive_summary_df %>%
+  pivot_longer(
+    cols = c(median, x95_quantile, x5_quantile),
+    names_to = "variable"
+  ) %>%
+  mutate(
+    variable = factor(
+      variable,
+      levels = c("x5_quantile", "median", "x95_quantile")
+    )
+  )
+
+# Summarize across counties
+ivive_summary_stats <- ivive_summary_df_stack %>%
+  summarize(
+    min = min(value),
+    median = median(value),
+    max = max(value),
+    .by = c(variable, health_measure))
+
+########################################
+# Health measure histogram
+
+hist_HM <- ggplot(ivive_summary_df_stack, aes(x = log10(value))) +
+  geom_histogram(bins = 500) +
+  facet_grid(
+    health_measure ~ variable,
+    labeller = labeller(
+      health_measure = c(
+        "GCA"   = "CA Response",
+        "IA"    = "IA Response",
+        "HQ.10" = "RQ"
+      ),
+      variable = c(
+        "x5_quantile"  = "5th Percentile",
+        "median"       = "Median",
+        "x95_quantile" = "95th Percentile"
+      )
+    )
+  ) +
+  theme_minimal() +
+  ylab("Count") +
+  xlab("Log10 Risk Metric Value")
+
+########################################
+# County heatmaps
+
+ivive_county_sf <- ivive_summary_df_stack %>%
+  left_join(county, by = join_by(FIPS), keep = FALSE) %>%
+  st_as_sf() %>%
+  st_zm() # Was having errors until adding this
+
+make_county_heatmap <- function(df, legend_name) {
+  ggplot(df, aes(fill = value)) +
+    # Plot fill, hide county borders
+    # geom_sf(lwd = 0) + # This still showed up in .pdf images
+    geom_sf(color = NA) +
+    # Add state borders
+    geom_sf(data = states, fill = NA, size = 0.15) +
+    # Create separate plots for each variable
+    facet_wrap(
+      ~variable,
+      ncol = 3,
+      labeller = labeller(
+        variable = c(
+          "x5_quantile" = "5th Percentile",
+          "median" = "Median",
+          "x95_quantile" = "95th Percentile"
+        )
+      )
+    ) +
+    # Add fill scale
+    scale_fill_viridis_c(
+      name = legend_name,
+      direction = -1,
+      option = "A",
+      trans = "sqrt"
+    ) +
+    # Theme
+    theme_bw() +
+    theme(
+      text = element_text(size = 12),
+      legend.text = element_text(size = 8)
+    )
+}
+
+GCA_Eff_plot <- make_county_heatmap(
+  ivive_county_sf %>% filter(health_measure == "GCA"),
+  paste("Predicted Response", "Log2 Fold Change", "mRNA Expression",sep = "\n")
+)
+
+IA_Eff_plot <- make_county_heatmap(
+  ivive_county_sf %>% filter(health_measure == "IA"),
+  paste("Predicted Response", "Log2 Fold Change", "mRNA Expression",sep = "\n")
+)
+
+HQ_10_plot <- make_county_heatmap(
+  ivive_county_sf %>% filter(health_measure == "HQ.10"),
+  "Risk Quotient"
+)
+
+all_plots <- ggarrange(
+  GCA_Eff_plot , IA_Eff_plot, HQ_10_plot,
+  labels = c( "A", "B", "C"),
+  vjust = 1,
+  align = "v",
+  nrow = 3,
+  font.label = list(size = 20, color = "black", face = "bold"),
+  common.legend = FALSE
+)
+
+#===============================================================================
+# Compare to GeoToxMIE
+#===============================================================================
+
+library(reshape2)
+
+load("~/dev/GeoTox/data/final_response_by_county_20220901.RData")
+
+# Run 25-27, 35-80, 85-97
+
+all.equal(
+  response.by.county %>%
+    select(health_measure, value),
+  response_by_county %>%
+    arrange(as.numeric(FIPS), health_measure) %>%
+    select(health_measure, value),
+  check.attributes = FALSE
+)
+
+all.equal(
+  summary_stats,
+  ivive_summary_stats %>%
+    arrange(variable, health_measure) %>%
+    select(variable, health_measure, median, min, max),
+  check.attributes = FALSE
+)
+
+pdf("~/dev/GeoTox/outputs/cyp1a1_hist_orig.pdf")
+histogram_HM
+invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/cyp1a1_hist_new.pdf")
+hist_HM
+invisible(dev.off())
+
+# Run lines 107-108
+
+all.equal(
+  ivive_county_cyp1a1_up_sf %>%
+    arrange(STATEFP, COUNTYFP, health_measure, variable) %>%
+    pull(value),
+  ivive_county_sf %>%
+    arrange(STATEFP, COUNTYFP, health_measure, variable) %>%
+    pull(value)
+)
+
+# Needed to add st_zm(), otherwise plot would have error
+ivive_county_cyp1a1_up_sf <- ivive_county_cyp1a1_up_sf %>% st_zm()
+
+# Run lines 110-112, 130, 157, 170
+
+ggsave(
+  "~/dev/GeoTox/outputs/cyp1a1_heatmap_orig.tiff",
+  composite_plot, width = 40, height = 25, units = "cm", dpi = 300
+)
+
+ggsave(
+  "~/dev/GeoTox/outputs/cyp1a1_heatmap_new.tiff",
+  all_plots, width = 40, height = 25, units = "cm", dpi = 300
+)
+
+pdf("~/dev/GeoTox/outputs/cyp1a1_heatmap_new.pdf", width = 15.75, height = 10)
+all_plots
+invisible(dev.off())
