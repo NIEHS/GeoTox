@@ -45,10 +45,7 @@ county_2014 <- st_read(
 county <- county_2014 %>%
   filter(!(STATEFP %in% c("02", "15", "60", "66", "69", "72", "78"))) %>%
   mutate(FIPS = str_c(STATEFP, COUNTYFP), .before = 1) %>%
-  st_zm() %>%
-  # TODO why simplify here but not in cyp1a1-pipeline?
-  # "preserveTopology = FALSE" was dropped
-  st_simplify(dTolerance = 1000)
+  st_zm()
 
 nata_chemicals_2 <- nata_chemicals %>%
   mutate(
@@ -320,4 +317,96 @@ all.equal(
 ################################################################################
 ################################################################################
 
-# TODO
+rm(list = ls())
+
+##########
+# Data
+load("~/dev/GeoTox/data/LTEA_HepaRG_CYP1A1_up 41 chems for Kyle 220131.RData")
+ice_data <- cdat; rm(cdat)
+fit_params <- readRDS("~/dev/GeoTox/outputs/fit_params.rds")
+
+
+########################################
+# Create plot
+
+# TODO export tcplHillVal?
+tcplHillVal <- function(conc, tp, ga, gw, bt = 0) {
+  bt + (tp - bt) / (1 + (ga / conc)^gw)
+}
+
+x <- 10^seq(-3, 3, length.out = 100)
+
+df <- fit_params %>%
+  rowwise() %>%
+  mutate(
+    curves = list(
+      data.frame(
+        x = .env$x,
+        y_mean = tcplHillVal(.env$x, tp, 10^logAC50, 1),
+        # TODO both upper and lower had "-" for AC50
+        # Is there a standard approach for computing fitted value confidence
+        # intervals from optim outputs?
+        y_lower = tcplHillVal(
+          .env$x, tp - tp.sd * 1.96, 10^(logAC50 + logAC50.sd * 1.96), 1
+        ),
+        y_upper = tcplHillVal(
+          .env$x, tp + tp.sd * 1.96, 10^(logAC50 - logAC50.sd * 1.96), 1
+        )
+      )
+    )
+  ) %>%
+  ungroup() %>%
+  select(chnm, curves) %>%
+  unnest(cols = curves)
+
+p <- ggplot(df, aes(x = x)) +
+  geom_line(aes(y = y_lower), color = "red") +
+  geom_line(aes(y = y_upper), color = "red") +
+  geom_line(aes(y = y_mean), color = "black", lwd = 1) +
+  geom_point(
+    data = ice_data %>% mutate(x = 10^logc, y = resp),
+    aes(x = x, y = y)
+  ) +
+  facet_wrap(~chnm, scales = "free") +
+  scale_x_log10(labels = scales::label_math(10^.x, format = log10)) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    text = element_text(size = 16)
+  )+
+  ylab("Response") +
+  xlab("Concentration")
+
+#===============================================================================
+# Compare to GeoToxMIE
+#===============================================================================
+
+library(reshape2)
+
+hill2 <- fit_params
+
+# Run lines 36, 51-162, 172
+
+SI_figure <- ggplot()+
+  geom_line(data = m, aes(x = x, y = lower), color="red")+
+  geom_line(data = m, aes(x = x, y = upper), color="red")+
+  geom_line(data = m, aes(x = x, y = mean), color="black", lwd = 1)+
+  geom_point(
+    data = ice_data %>% mutate(x = 10^logc, y = resp),
+    aes(x = x, y = y)
+  ) +
+  facet_wrap(vars(chnm), scales= "free")+
+  scale_x_log10(labels = scales::label_math(10^.x, format = log10)) +
+  theme_bw()+
+  theme(legend.position = "none",
+        text = element_text(size = 16))+
+  ylab("Response")+
+  xlab("Concentration")
+
+pdf("~/dev/GeoTox/outputs/SI_dr.pdf", width = 20, heigh = 16)
+SI_figure
+invisible(dev.off())
+
+pdf("~/dev/GeoTox/outputs/SI_dr_new.pdf", width = 20, heigh = 16)
+p
+invisible(dev.off())
