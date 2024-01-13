@@ -23,13 +23,28 @@ test_that("2 and 3 parameter models give accurate likelihood", {
   val <- obj_hill(params2, log10_conc, resp)
   expect_equal(val, -100.201, tolerance = 0.001)
 
-## 2-parameter model
-
-  #simulate dose-response
-  params3 <- c(tp, log10_ga, gw, err)
+## 3-parameter model
 
   # 3 parameter hill model expectation
   params3 <- c(tp, log10_ga, gw, err)
   val <- obj_hill(params3, log10_conc, resp)
   expect_equal(val, -99.23463, tolerance = 0.001)
+
+
+#### Edge Tests
+
+# Really tiny parameter values
+
+  #simulate dose-response
+  params_tiny <- c(1e-10, 1e-10, 1e-10, 1e-10)
+
+  expect_no_warning(obj_hill(params_tiny, log10_conc, resp))
+
+
+  # Really large parameter values
+
+  #simulate dose-response
+  params_large <- c(1e10, 1e10, 1e10, 1e10)
+
+  expect_no_warning(obj_hill(params_tiny, log10_conc, resp))
 })
