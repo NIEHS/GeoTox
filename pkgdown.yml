@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   dev-conc-resp: dev-conc-resp.html
   dev-sensitivity: dev-sensitivity.html
-last_built: 2024-01-08T22:15Z
+last_built: 2024-01-14T22:57Z
 urls:
   reference: https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference
   article: https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/articles
