@@ -15,6 +15,8 @@ status](https://www.r-pkg.org/badges/version/GeoToxPackage)](https://CRAN.R-proj
 
 <!-- badges: end -->
 
+![](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graphs/icicle.svg?token=I1L9BZJ58Y)
+
 The GeoToxPackage can <x y z plus other stuff>, as introduced in [Eccles
 KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh JF,
 Messier KP. A geospatial modeling approach to quantifying the risk of
