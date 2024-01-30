@@ -5,7 +5,7 @@
 #' @param resp response
 #'
 #' @return value
-obj_hill <- function (par, log10_conc, resp) {
+obj_hill <- function(par, log10_conc, resp) {
 
   tp       <- par[1]  # top asymptote
   log10_ga <- par[2]  # log10(AC50)
