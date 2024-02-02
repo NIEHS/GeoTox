@@ -5,19 +5,19 @@
 
 <!-- badges: start -->
 
-[![test-coverage](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/test-coverage.yaml)
-[![codecov](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graph/badge.svg?token=I1L9BZJ58Y)](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage)
-[![R-CMD-check](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/check-release.yaml/badge.svg)](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/actions/workflows/check-release.yaml)
+[![test-coverage](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoTox/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoTox/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox/graph/badge.svg?token=I1L9BZJ58Y)](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox)
+[![R-CMD-check](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/Spatiotemporal-Exposures-and-Toxicology/GeoTox/actions/workflows/check-release.yaml)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/GeoToxPackage)](https://CRAN.R-project.org/package=GeoToxPackage)
+status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
 
 <!-- badges: end -->
 
-![](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage/graphs/icicle.svg?token=I1L9BZJ58Y)
+![](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox/graphs/icicle.svg?token=I1L9BZJ58Y)
 
-The GeoToxPackage can <x y z plus other stuff>, as introduced in [Eccles
+GeoTox can <x y z plus other stuff>, as introduced in [Eccles
 KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh JF,
 Messier KP. A geospatial modeling approach to quantifying the risk of
 exposure to environmental chemical mixtures via a common molecular
@@ -27,18 +27,18 @@ PMCID: PMC9979101.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
-You can install the development version of GeoToxPackage from
+You can install the development version of GeoTox from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Spatiotemporal-Exposures-and-Toxicology/GeoToxPackage")
+devtools::install_github("Spatiotemporal-Exposures-and-Toxicology/GeoTox")
 ```
 
 ## Example
 
 ``` r
-library(GeoToxPackage)
+library(GeoTox)
 library(dplyr, warn.conflicts = FALSE)
 ```
 
@@ -180,3 +180,4 @@ concentration_response
 #> 9  7.009742e-05 7.009701e-05 6.962928e-06 6.962838e-06
 #> 10 7.310190e-05 7.310279e-05 6.848001e-06 6.847910e-06
 ```
+
