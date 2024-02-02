@@ -26,4 +26,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
-URL: https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/
+URL: https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/
