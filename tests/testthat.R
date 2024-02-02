@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(GeoToxPackage)
+library(GeoTox)
 
-test_check("GeoToxPackage")
+test_check("GeoTox")
