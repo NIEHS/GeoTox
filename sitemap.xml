@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/404.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/404.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/LICENSE-text.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/LICENSE.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/articles/dev-conc-resp.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/dev-conc-resp.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/articles/dev-sensitivity.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/dev-sensitivity.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/articles/index.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/authors.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/authors.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/index.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/index.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/calc_concentration_response.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_concentration_response.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/calc_independent_action.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_independent_action.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/calc_internal_dose.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_internal_dose.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/calc_invitro_concentration.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_invitro_concentration.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/extract_hill_params.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/extract_hill_params.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/fit_hill.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/fit_hill.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/geo_tox_data.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/geo_tox_data.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/index.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/obj_ECx.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/obj_ECx.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/obj_GCA.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/obj_GCA.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/obj_hill.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/obj_hill.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/simulate_age.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_age.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/simulate_exposure.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_exposure.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/simulate_inhalation_rate.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_inhalation_rate.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/tcplHillConc.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/tcplHillConc.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/reference/tcplHillVal.html</loc>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/tcplHillVal.html</loc>
   </url>
 </urlset>
