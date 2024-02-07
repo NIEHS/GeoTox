@@ -5,27 +5,25 @@
 \alias{geo_tox_data}
 \title{Geo Tox data}
 \format{
-A list with 4 items:
+A list with items:
 \describe{
-\item{ice}{Description}
-\item{MC_iter}{Description}
-\item{cyp1a1}{Description}
-\item{age}{Description}
-\item{Css}{Description}
-}
-Css is a list with 5 items:
-\describe{
-\item{Css$age}{Description}
-\item{Css$obesity}{Description}
-\item{Css$httk}{Description}
-\item{Css$'dose-resp'}{Description}
-\item{Css$'ext-conc'}{Description}
+\item{exposure}{2019 AirToxScreen exposure concentrations for a subset of
+chemicals in North Carolina counties}
+\item{dose_response}{A subset of data from InvitroDB for the
+"LTEA_HepaRG_CYP1A1_up" assay}
+\item{age}{County population estimates for 7/1/2019 in North Carolina}
+\item{obesity}{CDC PLACES obesity data for North Carolina counties in
+2020}
+\item{simulated_css}{Simulated steady-state plasma concentrations for
+various age groups and obesity status combinations}
+\item{boundaries}{County and state boundaries for North Carolina in 2019}
 }
 }
 \usage{
 geo_tox_data
 }
 \description{
-A subset of data from the GeoToxMIE source scripts
+Sample data for use in vignettes and function examples. See the
+"package_data" vignette for details on how this data was gathered.
 }
 \keyword{datasets}
