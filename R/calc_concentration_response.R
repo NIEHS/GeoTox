@@ -61,7 +61,7 @@ calc_concentration_response <- function(
     )
   }))
 
-  GCA.eff <- IA.eff <- GCA.HQ.10 <-IA.HQ.10 <- rep(NA, nrow(C_invitro))
+  GCA.eff <- IA.eff <- GCA.HQ.10 <- IA.HQ.10 <- rep(NA, nrow(C_invitro))
   for (i in 1:nrow(C_invitro)) {
 
     C_i <- C_invitro[i, ]
@@ -92,7 +92,7 @@ calc_concentration_response <- function(
     AC10.ij <- tcplHillConc(E10.by.chem, tp_i, AC50_i, 1)
 
     sCi <- sum(C_i)
-    if (EC10.GCA > 0){
+    if ( EC10.GCA > 0 ) {
       GCA.HQ.10[i] <- sCi / EC10.GCA
     }
     IA.HQ.10[i]  <- sum(C_i / AC10.ij)

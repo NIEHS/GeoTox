@@ -1,5 +1,5 @@
-Package: GeoToxPackage
-Title: GeoTox Package: Open-source software for connecting spatiotemporal exposure to individual and population-level risk
+Package: GeoTox
+Title: GeoTox: Open-source software for connecting spatiotemporal exposure to individual and population-level risk
 Version: 0.0.0.9000
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "ctb")),
@@ -33,4 +33,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
-URL: https://spatiotemporal-exposures-and-toxicology.github.io/GeoToxPackage/
+URL: https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/
