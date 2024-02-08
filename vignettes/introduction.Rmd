@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 This vignette covers basic use of package functions. Package data, `geo_tox_data`, is used throughout the examples and details on how it was created can be found in the "GeoTox Package Data" vignette.
 
 ```{r setup}
-library(GeoToxPackage)
+library(GeoTox)
 library(dplyr, warn.conflicts = FALSE)
 library(tidyr)
 library(ggplot2)
