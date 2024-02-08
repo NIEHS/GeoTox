@@ -10,13 +10,13 @@
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/dev-conc-resp.html</loc>
-  </url>
-  <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/dev-sensitivity.html</loc>
-  </url>
-  <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/package_data.html</loc>
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/authors.html</loc>
@@ -37,9 +37,6 @@
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_invitro_concentration.html</loc>
   </url>
   <url>
-    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/extract_hill_params.html</loc>
-  </url>
-  <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/fit_hill.html</loc>
   </url>
   <url>
@@ -58,6 +55,9 @@
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/obj_hill.html</loc>
   </url>
   <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/sample_Css.html</loc>
+  </url>
+  <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_age.html</loc>
   </url>
   <url>
@@ -65,6 +65,9 @@
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_inhalation_rate.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_obesity.html</loc>
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/tcplHillConc.html</loc>

@@ -41,8 +41,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/dev-conc-resp.html">dev-conc-resp</a>
-    <a class="dropdown-item" href="articles/dev-sensitivity.html">Steps 01-05 of GeoToxMIE Sensitivity scripts</a>
+    <a class="dropdown-item" href="articles/introduction.html">GeoTox Introduction</a>
+    <a class="dropdown-item" href="articles/package_data.html">GeoTox Package Data</a>
   </div>
 </li>
       </ul>
@@ -58,12 +58,11 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="geotox">GeoTox<a class="anchor" aria-label="anchor" href="#geotox"></a>
+<div class="page-header"><h1 id="geotoxpackage">GeoToxPackage<a class="anchor" aria-label="anchor" href="#geotoxpackage"></a>
 </h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p><img src="https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox/graphs/icicle.svg?token=I1L9BZJ58Y"></p>
 <p>GeoTox can <x y z plus other stuff>, as introduced in <a href="https://pubmed.ncbi.nlm.nih.gov/36152849/" class="external-link">Eccles KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh JF, Messier KP. A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. Sci Total Environ. 2023 Jan 10;855:158905. doi: 10.1016/j.scitotenv.2022.158905. Epub 2022 Sep 21. PMID: 36152849; PMCID: PMC9979101.</a></x></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -72,145 +71,6 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Spatiotemporal-Exposures-and-Toxicology/GeoTox"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/">GeoTox</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="estimate-chemical-concentration-response-curves">Estimate chemical concentration-response curves<a class="anchor" aria-label="anchor" href="#estimate-chemical-concentration-response-curves"></a>
-</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">conc</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">tp</span>   <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># top asymptote</span></span>
-<span><span class="va">ga</span>   <span class="op">&lt;-</span> <span class="fl">1.6</span> <span class="co"># AC50</span></span>
-<span><span class="va">gw</span>   <span class="op">&lt;-</span> <span class="fl">1.2</span> <span class="co"># slope</span></span>
-<span><span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">tp</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="va">ga</span> <span class="op">/</span> <span class="va">conc</span><span class="op">)</span><span class="op">^</span><span class="va">gw</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">fit_2param</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>, <span class="va">resp</span><span class="op">)</span> <span class="co"># slope fixed at 1</span></span>
-<span><span class="va">fit_3param</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>, <span class="va">resp</span>, fixed_slope <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>  <span class="st">"inputs"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tp</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">ga</span><span class="op">)</span>, <span class="va">gw</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>  <span class="st">"3-param"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fit_3param</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>,</span>
-<span>  <span class="st">"2-param"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">fit_2param</span><span class="op">$</span><span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">1</span>, <span class="va">fit_2param</span><span class="op">$</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;                tp   logAC50    slope  t-error</span></span>
-<span><span class="co">#&gt; inputs  100.00000 0.2041200 1.200000       NA</span></span>
-<span><span class="co">#&gt; 3-param  97.63578 0.1516374 1.485236 1.177891</span></span>
-<span><span class="co">#&gt; 2-param 101.53494 0.2360917 1.000000 1.417567</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="estimate-population-dose-response">Estimate population dose-response<a class="anchor" aria-label="anchor" href="#estimate-population-dose-response"></a>
-</h3>
-<p>Input data</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Number of samples to simulate</span></span>
-<span><span class="va">MC_iter</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
-<span></span>
-<span><span class="co"># Number of chemicals to simulate</span></span>
-<span><span class="va">n_chem</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
-<span></span>
-<span><span class="co"># Create age groups and group sizes</span></span>
-<span><span class="va">age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  AGEGRP <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">18</span>,</span>
-<span>  TOT_POP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">18</span>, max <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">age</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">age</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create chemical exposure mean and sd</span></span>
-<span><span class="va">exposure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  mean <span class="op">=</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_chem</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">1e-6</span>,</span>
-<span>  sd   <span class="op">=</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_chem</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">1e-7</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Create chemical concentration-response data</span></span>
-<span><span class="va">conc_resp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_chem</span>, <span class="kw">function</span><span class="op">(</span><span class="va">idx</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">conc</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span>  <span class="va">tp</span>   <span class="op">&lt;-</span> <span class="fl">100</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span>, sd <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span>  <span class="va">ga</span>   <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>  <span class="va">gw</span>   <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">5</span></span>
-<span>  <span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">tp</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="va">ga</span> <span class="op">/</span> <span class="va">conc</span><span class="op">)</span><span class="op">^</span><span class="va">gw</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">resp</span><span class="op">[</span><span class="va">resp</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>    logc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">conc</span><span class="op">)</span>,</span>
-<span>    resp <span class="op">=</span> <span class="va">resp</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">conc_resp</span>, <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="reference/fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">logc</span>, <span class="va">df</span><span class="op">$</span><span class="va">resp</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="va">chem_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span></span>
-<span>  <span class="va">rbind</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>        tp         <span class="op">=</span> <span class="va">par.tp</span>,</span>
-<span>        tp.sd      <span class="op">=</span> <span class="va">sds.tp</span>,</span>
-<span>        logAC50    <span class="op">=</span> <span class="va">par.logAC50</span>,</span>
-<span>        logAC50.sd <span class="op">=</span> <span class="va">sds.logAC50</span></span>
-<span>      <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>        <span class="va">tp</span>, <span class="va">tp.sd</span>, <span class="va">logAC50</span>, <span class="va">logAC50.sd</span>,</span>
-<span>        <span class="va">logc_min</span>, <span class="va">logc_max</span>, <span class="va">resp_min</span>, <span class="va">resp_max</span>, <span class="va">AIC</span></span>
-<span>      <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="va">tp</span><span class="op">:</span><span class="va">AIC</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Steady-state concentration (will be generated from httk)</span></span>
-<span><span class="va">C_ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_chem</span> <span class="op">*</span> <span class="va">MC_iter</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">MC_iter</span><span class="op">)</span></span></code></pre></div>
-<p>Simulate data</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Simulate age based on relative population group sizes</span></span>
-<span><span class="va">simulated_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulate_age.html">simulate_age</a></span><span class="op">(</span></span>
-<span>  <span class="va">age</span>,</span>
-<span>  n <span class="op">=</span> <span class="va">MC_iter</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Simulate inhalation rate using default params</span></span>
-<span><span class="va">simulated_IR</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulate_inhalation_rate.html">simulate_inhalation_rate</a></span><span class="op">(</span></span>
-<span>  <span class="va">simulated_age</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Simulate external exposure</span></span>
-<span><span class="va">simulated_exposure</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/simulate_exposure.html">simulate_exposure</a></span><span class="op">(</span></span>
-<span>  <span class="va">exposure</span><span class="op">$</span><span class="va">mean</span>,</span>
-<span>  <span class="va">exposure</span><span class="op">$</span><span class="va">sd</span>,</span>
-<span>  n <span class="op">=</span> <span class="va">MC_iter</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>Computations</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">internal_dose</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_internal_dose.html">calc_internal_dose</a></span><span class="op">(</span></span>
-<span>  C_ext <span class="op">=</span> <span class="va">simulated_exposure</span>,</span>
-<span>  IR <span class="op">=</span> <span class="va">simulated_IR</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">invitro_concentration</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_invitro_concentration.html">calc_invitro_concentration</a></span><span class="op">(</span></span>
-<span>  D_int <span class="op">=</span> <span class="va">internal_dose</span>,</span>
-<span>  C_ss <span class="op">=</span> <span class="va">C_ss</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">concentration_response</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/calc_concentration_response.html">calc_concentration_response</a></span><span class="op">(</span></span>
-<span>  resp <span class="op">=</span> <span class="va">chem_params</span>,</span>
-<span>  concentration <span class="op">=</span> <span class="va">invitro_concentration</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">concentration_response</span></span>
-<span><span class="co">#&gt;         GCA.Eff       IA.eff    GCA.HQ.10     IA.HQ.10</span></span>
-<span><span class="co">#&gt; 1  1.316500e-04 1.316519e-04 1.197871e-05 1.197851e-05</span></span>
-<span><span class="co">#&gt; 2  1.928066e-04 1.928077e-04 1.756148e-05 1.756120e-05</span></span>
-<span><span class="co">#&gt; 3  1.509427e-04 1.509448e-04 1.339909e-05 1.339880e-05</span></span>
-<span><span class="co">#&gt; 4  1.931396e-04 1.931407e-04 1.742350e-05 1.742319e-05</span></span>
-<span><span class="co">#&gt; 5  2.000661e-04 2.000678e-04 1.748640e-05 1.748673e-05</span></span>
-<span><span class="co">#&gt; 6  9.090331e-05 9.090415e-05 8.634445e-06 8.634337e-06</span></span>
-<span><span class="co">#&gt; 7  6.336773e-05 6.336758e-05 5.870044e-06 5.869961e-06</span></span>
-<span><span class="co">#&gt; 8  1.501012e-04 1.501024e-04 1.365014e-05 1.364991e-05</span></span>
-<span><span class="co">#&gt; 9  7.009742e-05 7.009701e-05 6.962928e-06 6.962838e-06</span></span>
-<span><span class="co">#&gt; 10 7.310190e-05 7.310279e-05 6.848001e-06 6.847910e-06</span></span></code></pre></div>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

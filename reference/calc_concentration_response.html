@@ -30,8 +30,8 @@ response, and a hazard quotient"><!-- mathjax --><script src="https://cdnjs.clou
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/dev-conc-resp.html">dev-conc-resp</a>
-    <a class="dropdown-item" href="../articles/dev-sensitivity.html">Steps 01-05 of GeoToxMIE Sensitivity scripts</a>
+    <a class="dropdown-item" href="../articles/introduction.html">GeoTox Introduction</a>
+    <a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -59,8 +59,8 @@ response, and a hazard quotient</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calc_concentration_response</span><span class="op">(</span></span>
-<span>  <span class="va">resp</span>,</span>
-<span>  <span class="va">concentration</span>,</span>
+<span>  <span class="va">C_invitro</span>,</span>
+<span>  <span class="va">hill_params</span>,</span>
 <span>  tp_b_mult <span class="op">=</span> <span class="fl">1.5</span>,</span>
 <span>  fixed <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -68,13 +68,12 @@ response, and a hazard quotient</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>resp</dt>
-<dd><p>data frame with columns "tp", "tp.sd", "logAC50", "logAC50.sd",
-"resp_max", "logc_min", "logc_max".</p></dd>
+    <dl><dt>C_invitro</dt>
+<dd><p>in vitro concentrations</p></dd>
 
 
-<dt>concentration</dt>
-<dd><p>concentration</p></dd>
+<dt>hill_params</dt>
+<dd><p>output from <code><a href="fit_hill.html">fit_hill()</a></code></p></dd>
 
 
 <dt>tp_b_mult</dt>
