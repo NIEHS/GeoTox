@@ -6,17 +6,16 @@
 IA, GCA ,or Hazard Quotient}
 \usage{
 calc_concentration_response(
-  resp,
-  concentration,
+  C_invitro,
+  hill_params,
   tp_b_mult = 1.5,
   fixed = FALSE
 )
 }
 \arguments{
-\item{resp}{data frame with columns "tp", "tp.sd", "logAC50", "logAC50.sd",
-"resp_max", "logc_min", "logc_max".}
+\item{C_invitro}{in vitro concentrations}
 
-\item{concentration}{concentration}
+\item{hill_params}{output from \code{fit_hill()}}
 
 \item{tp_b_mult}{upper bound multiplier for tp rtruncnorm}
 

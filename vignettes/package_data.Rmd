@@ -1,29 +1,48 @@
-library(tidyverse)
+---
+title: "GeoTox Package Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GeoTox Package Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This package includes example data `geo_tox_data`. Below is a description of the data and example code for how it was gathered.
+
+> **NOTE:** FIPS codes can change. Since data is being pulled from various sources, ensure that the FIPS values can be used to connect data across these sources. For example, in 2022 Connecticut began the process of going from 8 legacy counties to 9 planning regions.
+
+```{r setup}
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr)
+library(readr)
+library(stringr)
 library(readxl)
 library(httk)
-library(sf)
+suppressPackageStartupMessages(library(sf))
 
-# This dataset is documented in R/data.R and vignettes/package_data.Rmd
-
-rm(list = ls())
 geo_tox_data <- list()
+```
 
-################################################################################
 ## Chemical data
-################################################################################
 
-########################################
 ### Exposure data
-########################################
 
-# filename <- "2019_Toxics_Exposure_Concentrations.xlsx"
-# tmp <- tempfile(filename)
-# download.file(
-#   paste0("https://www.epa.gov/system/files/documents/2022-12/", filename),
-#   tmp
-# )
-# exposure <- read_xlsx(tmp)
-exposure <- read_xlsx("~/dev/GeoTox/data-new/2019_Toxics_Exposure_Concentrations.xlsx")
+Download modeled exposure data from <a href="https://www.epa.gov/AirToxScreen" target="_blank">AirToxScreen</a>. Results from AirToxScreen 2019 for a subset of chemicals in North Carolina counties are included in the package data as `geo_tox_data$exposure`.
+
+```{r, eval=FALSE}
+
+# TODO Where can I get CASN for the exposure data?
+# Is it from a table in the zipped .accdb file?
+# If so, that's not widely accessible.
+
+exposure <- read_xlsx("2019_Toxics_Exposure_Concentrations.xlsx")
 
 # Normalization function
 min_max_norm = function(x) {
@@ -49,24 +68,36 @@ geo_tox_data$exposure <- exposure %>%
   pivot_wider(names_from = stat) %>%
   # Normalize concentrations
   mutate(norm = min_max_norm(mean), .by = chemical)
+```
 
-########################################
 ### Dose-response data
-########################################
 
-load("~/dev/GeoTox/data-new/ICE_Invitro_DB/aeid_851_1000_ICE_cHTS_chems_for_Kyle_231120.RData")
+> TODO description after finalized.
+
+A subset of data for the "LTEA_HepaRG_CYP1A1_up" assay is included in the package data as `geo_tox_data$dose_response`.
+
+```{r, eval=FALSE}
+
+# TODO From personal correspondence, how to get as typical user?
+
+load("ICE_Invitro_DB/aeid_851_1000_ICE_cHTS_chems_for_Kyle_231120.RData")
 
 geo_tox_data$dose_response <- cdat2_h %>%
   # Keep "LTEA_HepaRG_CYP1A1_up" assay
   filter(aenm == "LTEA_HepaRG_CYP1A1_up") %>%
   # Keep selected columns
   select(chnm, casn, logc, resp)
+```
 
-########################################
-### Subset dose-response and exposure data
-########################################
+### Subset exposure and dose-response data
 
-cHTS <- read_tsv("~/dev/GeoTox/data-new/cHTS2022_invitrodb34_20220302.txt")
+Use <a href="https://ice.ntp.niehs.nih.gov/" target="_blank">ICE</a> cHTS data to filter desired chemicals. Retain only those chemicals found in both the exposure and dose-response datasets.
+
+```{r, eval=FALSE}
+
+# Use cHTS data to find active chemicals
+
+cHTS <- read_tsv("cHTS2022_invitrodb34_20220302.txt")
 
 casn_hits <- cHTS %>%
   filter(
@@ -76,6 +107,9 @@ casn_hits <- cHTS %>%
   ) %>%
   distinct(CASRN) %>% pull()
 
+# Add CASN to exposure, only keep those found in dose-response as well
+# TODO Currently comparing names between exposure and dose-response data.
+# Replace with CASN if found for exposure data
 geo_tox_data$exposure <- geo_tox_data$exposure %>%
   left_join(
     geo_tox_data$dose_response %>%
@@ -91,16 +125,17 @@ geo_tox_data$exposure <- geo_tox_data$exposure %>%
 # Update dose-response to keep only those remaining in exposure
 geo_tox_data$dose_response <- geo_tox_data$dose_response %>%
   filter(casn %in% geo_tox_data$exposure$casn)
+```
 
-################################################################################
 ## Population data
-################################################################################
 
-########################################
 ### Age
-########################################
 
-age <- read_csv("~/dev/GeoTox/data-new/cc-est2019-alldata-37.csv")
+Download age data from the <a href="https://www.census.gov/" target="_blank">U.S. Census Bureau</a> by searching for "County Population by Characteristics". A subset of data for North Carolina from <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-detail.html" target="_blank">2019</a> is included in the package data as `geo_tox_data$age`.
+
+```{r, eval=FALSE}
+# Data for North Carolina
+age <- read_csv("cc-est2019-alldata-37.csv")
 
 geo_tox_data$age <- age %>%
   # 7/1/2019 population estimate
@@ -109,12 +144,14 @@ geo_tox_data$age <- age %>%
   mutate(FIPS = str_c(STATE, COUNTY)) %>%
   # Keep selected columns
   select(FIPS, AGEGRP, TOT_POP)
+```
 
-########################################
 ### Obesity
-########################################
 
-places <- read_csv("~/dev/GeoTox/data-new/PLACES__County_Data__GIS_Friendly_Format___2020_release.csv")
+Follow the "Data Portal" link from <a href="https://www.cdc.gov/places/index.html" target="_blank">CDC PLACES</a> and search for "places county data". Go to the desired dataset webpage, for example <a href="https://data.cdc.gov/500-Cities-Places/PLACES-County-Data-GIS-Friendly-Format-2020-releas/mssc-ksj7/about_data" target="_blank">2020 county data</a>, and download the data by selecting Actions &rarr; API &rarr; Download file. A subset of data for North Carolina is included in the package data as `geo_tox_data$obesity`.
+
+```{r, eval=FALSE}
+places <- read_csv("PLACES__County_Data__GIS_Friendly_Format___2020_release.csv")
 
 # Convert confidence interval to standard deviation
 extract_SD <- function(x) {
@@ -132,11 +169,13 @@ geo_tox_data$obesity <- places %>%
   mutate(OBESITY_SD = extract_SD(OBESITY_Crude95CI)) %>%
   ungroup() %>%
   select(-OBESITY_Crude95CI)
+```
 
-########################################
 ### Steady-state plasma concentration (Css)
-########################################
 
+Use `httk` to generate Css values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of Css values initially and then sample them later. The number of samples in this example dataset is very small and should be increased if using this method.
+
+```{r, eval=FALSE}
 load_sipes2017()
 
 set.seed(2345)
@@ -261,11 +300,13 @@ simulated_css <- lapply(
 )
 
 geo_tox_data$simulated_css <- simulated_css
+```
 
-########################################
 ### Subset exposure, dose-response and Css data
-########################################
 
+Retain only those chemicals found in exposure, dose-response and Css datasets.
+
+```{r, eval=FALSE}
 idx <- sapply(
   lapply(geo_tox_data$simulated_css, "[[", "age_median_css"),
   function(x) any(is.na(x))
@@ -285,13 +326,15 @@ if (any(idx)) {
   geo_tox_data$simulated_css <- geo_tox_data$simulated_css[idx]
 
 }
+```
 
-################################################################################
 ## County/State boundaries
-################################################################################
 
-county <- st_read("~/dev/GeoTox/data-new/cb_2019_us_county_5m/cb_2019_us_county_5m.shp")
-state <- st_read("~/dev/GeoTox/data-new/cb_2019_us_state_5m/cb_2019_us_state_5m.shp")
+Download cartographic boundary files for counties and states from the <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html" target="_blank">U.S. Census Bureau</a>. The geometry data for North Carolina counties and the state are included in the package data as `geo_tox_data$boundaries`.
+
+```{r, eval=FALSE}
+county <- st_read("cb_2019_us_county_5m.shp")
+state <- st_read("cb_2019_us_state_5m.shp")
 
 geo_tox_data$boundaries <- list(
   county = county %>%
@@ -301,9 +344,4 @@ geo_tox_data$boundaries <- list(
     filter(STATEFP == 37) %>%
     select(geometry)
 )
-
-################################################################################
-## Save
-################################################################################
-
-usethis::use_data(geo_tox_data, overwrite = TRUE)
+```

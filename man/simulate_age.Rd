@@ -2,22 +2,29 @@
 % Please edit documentation in R/simulate_age.R
 \name{simulate_age}
 \alias{simulate_age}
-\title{Simulate age data}
+\title{Simulate ages}
 \usage{
 simulate_age(x, n = 1000)
 }
 \arguments{
-\item{x}{data frame containing population data for age groups.}
+\item{x}{data frame or list of data frames containing population data for age
+groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".}
 
 \item{n}{simulated sample size.}
 }
 \value{
-array of simulated ages.
+Array or list of arrays containing simulated ages.
 }
 \description{
-Simulate age data
+Simulate ages
 }
 \examples{
-x <- data.frame(AGEGRP = 0:18, TOT_POP = c(sum(1:18), 1:18))
-simulate_age(x, 10)
+# Single data frame
+data <- geo_tox_data$age[geo_tox_data$age$FIPS == 37001, ]
+ages <- simulate_age(data, 10)
+
+# List of data frames
+data <- split(geo_tox_data$age, ~FIPS)
+ages <- simulate_age(data, 10)
+
 }

@@ -4,18 +4,39 @@
 \alias{fit_hill}
 \title{Fit 2- or 3-parameter Hill model}
 \usage{
-fit_hill(log10_conc, resp, fixed_slope = TRUE)
+fit_hill(x, conc = "logc", resp = "resp", fixed_slope = TRUE)
 }
 \arguments{
-\item{log10_conc}{base-10 log scale concentration}
+\item{x}{data frame or list of data frames.}
 
-\item{resp}{response}
+\item{conc}{column name of base-10 log scaled concentration.}
 
-\item{fixed_slope}{if TRUE, slope is fixed at 1}
+\item{resp}{column name of response.}
+
+\item{fixed_slope}{if TRUE, slope is fixed at 1.}
 }
 \value{
-fit and other stats
+Fit parameters and other stats. "tp" is the top asymptote and
+"logAC50" is the 50\% response concentration. If the computation of the
+standard deviations of these two parameters fails, then the standard
+deviation is set equal to the parameter estimate and is indicated by
+the respective imputed flag being TRUE.
 }
 \description{
 Fit 2- or 3-parameter Hill model
+}
+\examples{
+# Single chemical
+data <- geo_tox_data$dose_response[
+  geo_tox_data$dose_response$casn == "1582-09-8",
+]
+fit_hill(data)
+
+# Multiple chemicals
+data <- split(geo_tox_data$dose_response, ~casn)
+# 2-param
+fit_hill(data)
+# 3-param
+fit_hill(data, fixed_slope = FALSE)
+
 }

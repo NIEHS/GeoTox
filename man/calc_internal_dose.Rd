@@ -4,7 +4,7 @@
 \alias{calc_internal_dose}
 \title{Calculate internal chemical dose}
 \usage{
-calc_internal_dose(C_ext, IR, time = 1, BW = 1)
+calc_internal_dose(C_ext, IR, time = 1, BW = 1, scaling = 1)
 }
 \arguments{
 \item{C_ext}{ambient chemical concentration in \eqn{\frac{mg}{m^3}}}
@@ -14,14 +14,35 @@ calc_internal_dose(C_ext, IR, time = 1, BW = 1)
 \item{time}{total time in \eqn{days}}
 
 \item{BW}{body weight in \eqn{kg}}
+
+\item{scaling}{scaling factor encompassing any required unit adjustments}
 }
 \value{
 internal chemical dose in \eqn{\frac{mg}{kg}}
 }
 \description{
-Estimate the internal dose from inhalation of a chemical given inhalation rate, time, and body weight
+Estimate the internal dose from inhalation of a chemical given inhalation
+rate, time, and body weight
 }
 \details{
 TODO Additional details...
 \deqn{D_{int} = \frac{C_{ext} \,\times\, IR \,\times\, time}{BW}}
+}
+\examples{
+n_chem <- 3
+n_sample <- 5
+
+# Single population
+C_ext <- matrix(runif(n_sample * n_chem), ncol = n_chem)
+IR <- runif(n_sample)
+calc_internal_dose(C_ext, IR)
+
+# Multiple populations
+C_ext <- list(
+  "a" = matrix(runif(n_sample * n_chem), ncol = n_chem),
+  "b" = matrix(runif(n_sample * n_chem), ncol = n_chem)
+)
+IR <- list(runif(n_sample), runif(n_sample))
+calc_internal_dose(C_ext, IR)
+
 }
