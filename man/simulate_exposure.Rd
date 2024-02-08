@@ -4,23 +4,35 @@
 \alias{simulate_exposure}
 \title{Simulate external exposure}
 \usage{
-simulate_exposure(mean, sd = 0, n = 1000)
+simulate_exposure(x, mean = "mean", sd = "sd", label = "casn", n = 1000)
 }
 \arguments{
-\item{mean}{array of concentration mean values.}
+\item{x}{data frame or list of data frames.}
 
-\item{sd}{array of concentration standard deviations, leave as 0 for fixed
-external concentrations.}
+\item{mean}{column name of mean values.}
+
+\item{sd}{column name of standard deviations.}
+
+\item{label}{column name of labeling term, required if \code{x} has more than one
+row.}
 
 \item{n}{simulated sample size.}
 }
 \value{
-matrix \eqn{_{n \,\times\, length(mean)}} of inhalation rates.
+A matrix or list of matrices containing inhalation rates. Matrix
+columns are named using the values in the \code{label} column for more than one
+data frame row.
 }
 \description{
 Simulate external exposure
 }
 \examples{
-simulate_exposure(mean = 1:3, n = 10)
-simulate_exposure(mean = c(1, 10, 100), sd = c(0, 1, 5), n = 10)
+data <- split(geo_tox_data$exposure, ~FIPS)
+
+# Single data frame
+simulate_exposure(data[[1]], n = 5)
+
+# List of data frames
+simulate_exposure(data[1:3], n = 5)
+
 }

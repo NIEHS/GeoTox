@@ -4,21 +4,37 @@
 \alias{simulate_inhalation_rate}
 \title{Simulate inhalation rates}
 \usage{
-simulate_inhalation_rate(ages, params = NULL)
+simulate_inhalation_rate(x, params = NULL)
 }
 \arguments{
-\item{ages}{array of ages.}
+\item{x}{array or list of arrays containing ages.}
 
-\item{params}{data frame with columns "age", "mean" and "sd". The age column
-should be in ascending order and represent the lower value of age groups for
-the corresponding mean and sd values.}
+\item{params}{(optional) data frame with columns "age", "mean" and "sd". See
+details for more information.}
 }
 \value{
-array of inhalation rates.
+Array or list of arrays containing inhalation rates.
 }
 \description{
 Simulate inhalation rates
 }
+\details{
+The age column of the optional \code{params} data frame should be in ascending
+order and represent the lower value of age groups for the corresponding mean
+and sd values. When not provided, the default values will come from Table 6.7
+of EPA's 2011 Exposure Factors Handbook using the mean of male and female
+values.
+}
 \examples{
-simulate_inhalation_rate(c(1, 6, 20))
+# Single array
+ages <- sample(1:100, 6, replace = TRUE)
+simulate_inhalation_rate(ages)
+
+# List of arrays
+ages <- list(
+  sample(1:100, 5, replace = TRUE),
+  sample(1:100, 3, replace = TRUE)
+)
+simulate_inhalation_rate(ages)
+
 }

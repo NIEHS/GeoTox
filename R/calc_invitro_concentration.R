@@ -10,16 +10,25 @@
 #' TODO Additional details...
 #' \deqn{C_{plasma} = C_{ss} \,\times\, D_{int}}
 #'
-#' TODO If C_ss is not provided, uses \emph{httk} to create...
-#'
 #' @return \emph{in vitro} equivalent plasma concentration in \eqn{\mu M}
 #' @export
 calc_invitro_concentration <- function(D_int, C_ss = NULL) {
+
   if (is.null(C_ss)) {
     # TODO add real-time computation of Css values
     stop("real-time computation of Css values has not been implemented")
   }
+
   # TODO the current C_ss data passed into this for step 01-Sensitivity.R
   # doesn't match the ages that were simulated?
+
+  if (methods::is(D_int, "matrix")) {
+    .calc_invitro_concentration(D_int, C_ss)
+  } else {
+    mapply(.calc_invitro_concentration, D_int, C_ss, SIMPLIFY = FALSE)
+  }
+}
+
+.calc_invitro_concentration <- function(D_int, C_ss) {
   D_int * C_ss
 }
