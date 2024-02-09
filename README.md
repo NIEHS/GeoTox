@@ -17,7 +17,7 @@ status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org
 
 ![](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox/graphs/icicle.svg?token=I1L9BZJ58Y)
 
-The GeoTox package can <x y z plus other stuff>, as introduced in
+The GeoTox package  <x y z plus other stuff>, as introduced in
 [Eccles KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh
 JF, Messier KP. A geospatial modeling approach to quantifying the risk
 of exposure to environmental chemical mixtures via a common molecular
