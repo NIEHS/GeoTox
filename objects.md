@@ -6,10 +6,10 @@ classDiagram
         +chems: list
     }
   
-      class Region {
+      class Group {
+        +definition: string
         +geometry: sf
         +population: list
-        +region: list
         +chems: list
     }
 
@@ -32,10 +32,10 @@ classDiagram
         +aeid: data.frame
     }
 
-    GeoTox <-- Region
-    Region <-- Person
+    GeoTox <-- Group
+    Group <-- Person
     Chemical <--> Assay
-    Chemical --> Region
+    Chemical --> Group
     Chemical --> Person
 
 ```
