@@ -15,7 +15,7 @@ classDiagram
         +aeid: sf
         + ...  sf
         +sample_*()
-        +simulate_*
+        +simulate_*()
     }
 
     class Person {
