@@ -50,7 +50,6 @@ classDiagram
 ```
 
 ## NOTES
-- Person method using httk to generate C_ss
 - Person method fetch Chemical.params to compute risk
 -  Region method input chemical_info to set its Person's C_ext values
 -  sf objects are data.frames or data.tables, hence the additional information for `Group` can all be contained in the `sf` object
