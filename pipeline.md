@@ -7,5 +7,5 @@ graph TB;
     C[Internal Exposure] --> |PBTK| D[Target Organ Dose];
     D[Target Organ Dose] --> |IVIVE| E[In vitro Equivalent Concentration];
     E[In vitro Equivalent Concentration] --> |Mixtures Modeling| F[Concentration Response];
- 
+   
 ```
