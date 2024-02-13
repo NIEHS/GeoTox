@@ -2,21 +2,28 @@
 ```mermaid
 classDiagram
     class GeoTox {
-        +id: data.frame
+        +id: character, numeric
         +chems: list
+        +aeid: numeric
     }
   
       class Group {
         +definition: string
         +geometry: sf
-        +population: list
-        +chems: list
+        +population: sf
+        +chems: sf
+        +aeid: sf
+        + ...  sf
+        +sample_*()
+        +simulate_*
     }
 
     class Person {
         +age: numeric
         +obesity: character
         +ir: numeric
+        +calc_internal_dose()
+        +calc_invitro_concentration()
     }
 
     class Chemical {
@@ -24,6 +31,10 @@ classDiagram
         +smiles: list
         +c-r: data.frame
         +resp: data.frame
+        +fit_hill()
+        +calc_concentration_response()
+        ~obj_*()
+        ~tcpl*()
     }
 
     class Assay {
@@ -44,3 +55,4 @@ classDiagram
 - Person method using httk to generate C_ss
 - Person method fetch Chemical.params to compute risk
 -  Region method input chemical_info to set its Person's C_ext values
+-  sf objects are data.frames or data.tables, hence the additional information for `Group` can all be contained in the `sf` object
