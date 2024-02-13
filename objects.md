@@ -46,7 +46,6 @@ classDiagram
     GeoTox <-- Group
     Group <-- Person
     Chemical <--> Assay
-    Chemical --> Group
     Chemical --> Person
 
 ```
