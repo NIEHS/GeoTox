@@ -24,6 +24,7 @@ classDiagram
         +ir: numeric
         +calc_internal_dose()
         +calc_invitro_concentration()
+        +calc_Css()
     }
 
     class Chemical {
