@@ -36,7 +36,7 @@ classDiagram
         +fit_hill()
         +calc_concentration_response()
         ~obj_*()
-        ~tcpl*()
+        ~tcpl_*()
     }
 
     class Assay {
