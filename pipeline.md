@@ -27,6 +27,7 @@ graph TB;
     P4[Person, Target Organ Dose] --> |summarize| G4[Group, Target Organ Dose];
     P4[Person, Target Organ Dose] --> |calc_invitro_conc| P5[Person, Invitro Concentration];
     G4[Group, Target Organ Dose]--> |calc_invitro_conc| G5[Group, Invitro Concentration];
+    P5[Person, Invitro Concentration] --> |summarize| G5[Group, Invitro Concentration];
     P5[Person, Invitro Concentration] --> |calc_concentration_response| P6[Person, Mixture Response];
     G5[Group, Invitro Concentration]--> |calc_concentration_response| G6[Group, Mixture Response];
     P6[Person, Mixture Response]--> |summarize, sample, simulate| G6[Group, Mixture Response];
