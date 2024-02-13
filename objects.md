@@ -16,6 +16,7 @@ classDiagram
         + ...  sf
         +sample_*()
         +simulate_*()
+        +summarize_*()
     }
 
     class Person {
