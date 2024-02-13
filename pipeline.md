@@ -1,6 +1,6 @@
 ## High-Level Pipeline
 
-```{mermaid}
+```mermaid
 graph TB;
     A[External Sources] --> |Geospatial Modeling| B[External Exposure];
     B[External Exposure] --> |Behaviorial and Physiological Modeling| C[Internal Exposure];
