@@ -12,7 +12,7 @@ graph TB;
 
 ## Package Object Pipeline
 
-- Nodes are classes
+- Nodes are objects/classes
 - Edges are methods
 ```mermaid
 graph TB;
