@@ -8,8 +8,8 @@ classDiagram
     }
   
       class Group {
-        +definition: string
         +geometry: sf
+        +crs: sf
         +population: sf
         +chems: sf
         +aeid: sf
