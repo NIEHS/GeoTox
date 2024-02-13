@@ -29,7 +29,7 @@ classDiagram
     class Chemical {
         +casn: character
         +smiles: list
-        +c-r: data.frame
+        +c-r: data.frame: logc, resp
         +resp: data.frame
         +fit_hill()
         +calc_concentration_response()
@@ -38,9 +38,7 @@ classDiagram
     }
 
     class Assay {
-        +casn: list
-        +smiles: list
-        +aeid: data.frame
+        +properties: data.frame: casn, dsstox, aeid, resp_units
     }
 
     GeoTox <-- Group
