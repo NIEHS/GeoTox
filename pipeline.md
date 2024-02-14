@@ -15,7 +15,25 @@ graph TB;
 - Nodes are objects/classes
 - Edges are methods
 ```mermaid
+
 graph TB;
+
+    style P1 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+    style P2 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+    style P3 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+    style P4 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+    style P5 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+    style P6 fill:#91bcfd , stroke:#333, stroke-width:2px, rounded:true;
+
+    style G1 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G2 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G3 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G4 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G5 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G6 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+    style G7 fill:#588b3e, stroke:#333, stroke-width:2px, rounded:true;
+
+
     P1[Person] --> |Simulate, Sample| P2[Person, External Exposure];
     G1[Group] --> |Simulate, Sample| G2[Group, External Exposure];
     P2[Person, External Exposure] --> |Summarize, Simulate, Sample| G2[Group, External Exposure];
@@ -32,5 +50,6 @@ graph TB;
     G5[Group, Invitro Concentration]--> |calc_concentration_response| G6[Group, Mixture Response];
     P6[Person, Mixture Response]--> |summarize, sample, simulate| G6[Group, Mixture Response];
     G6[Group, Mixture Response]--> |plot, map| G7[Group, Mixture Response Risk Map];
+
    
 ```
