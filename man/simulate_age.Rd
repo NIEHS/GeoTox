@@ -13,7 +13,7 @@ groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".}
 \item{n}{simulated sample size.}
 }
 \value{
-Array or list of arrays containing simulated ages.
+List of arrays containing simulated ages.
 }
 \description{
 Simulate ages

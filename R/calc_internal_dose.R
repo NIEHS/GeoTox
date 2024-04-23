@@ -41,7 +41,7 @@ calc_internal_dose <- function(C_ext, IR, time = 1, BW = 1, scaling = 1) {
   # in 1 day and repeated exposure accumulates additively. Computation done
   # with t = 1, is that correct?
 
-  if (methods::is(C_ext, "matrix")) {
+  if ("matrix" %in% class(C_ext)) {
     .calc_internal_dose(C_ext, IR, time, BW, scaling)
   } else {
     mapply(.calc_internal_dose, C_ext, IR, time, BW, scaling, SIMPLIFY = FALSE)

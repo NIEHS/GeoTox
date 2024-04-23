@@ -14,11 +14,12 @@
 #' @return data frame
 #'
 #' @export
-calc_concentration_response <- function(
-    C_invitro, hill_params, tp_b_mult = 1.5, fixed = FALSE
-) {
+calc_concentration_response <- function(C_invitro,
+                                        hill_params,
+                                        tp_b_mult = 1.5,
+                                        fixed = FALSE) {
 
-  if (methods::is(C_invitro, "matrix")) {
+  if (inherits(C_invitro, "matrix")) {
     .calc_concentration_response(C_invitro, hill_params, tp_b_mult, fixed)
   } else {
     mapply(
@@ -101,7 +102,7 @@ calc_concentration_response <- function(
 
 
   data.frame(
-    "GCA.Eff" = GCA.eff, "IA.eff" = IA.eff,
+    "GCA.Eff" = GCA.eff, "IA.Eff" = IA.eff,
     "GCA.HQ.10" = GCA.HQ.10, "IA.HQ.10" = IA.HQ.10
   )
 }

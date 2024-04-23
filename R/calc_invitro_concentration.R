@@ -22,7 +22,7 @@ calc_invitro_concentration <- function(D_int, C_ss = NULL) {
   # TODO the current C_ss data passed into this for step 01-Sensitivity.R
   # doesn't match the ages that were simulated?
 
-  if (methods::is(D_int, "matrix")) {
+  if ("matrix" %in% class(D_int)) {
     .calc_invitro_concentration(D_int, C_ss)
   } else {
     mapply(.calc_invitro_concentration, D_int, C_ss, SIMPLIFY = FALSE)

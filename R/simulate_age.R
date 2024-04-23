@@ -4,7 +4,7 @@
 #' groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".
 #' @param n simulated sample size.
 #'
-#' @return Array or list of arrays containing simulated ages.
+#' @return List of arrays containing simulated ages.
 #'
 #' @examples
 #' # Single data frame
@@ -18,29 +18,18 @@
 #' @export
 simulate_age <- function(x, n = 1e3) {
 
-  if (!any(methods::is(x, "data.frame"), methods::is(x, "list"))) {
+  if (!any(c("data.frame", "list") %in% class(x))) {
     stop("x must be a data.frame or list")
   }
 
-  if (methods::is(x, "data.frame")) {
+  if (is.data.frame(x)) x <- list(x)
 
-    if (!all(c("AGEGRP", "TOT_POP") %in% names(x))) {
-      stop("x must contain columns 'AGEGRP' and 'TOT_POP'")
-    }
-
-    .simulate_age(x, n)
-
-  } else {
-
-    if (
-      !all(sapply(x, function(df) all(c("AGEGRP", "TOT_POP") %in% names(df))))
-    ) {
-      stop("x data frames must contain columns 'AGEGRP' and 'TOT_POP'")
-    }
-
-    lapply(x, function(df) .simulate_age(df, n))
-
+  if (.check_names(x, c("AGEGRP", "TOT_POP"))) {
+    stop("x data frames must contain columns 'AGEGRP' and 'TOT_POP'")
   }
+  
+  lapply(x, function(df) .simulate_age(df, n))
+  
 }
 
 .simulate_age <- function(x, n) {

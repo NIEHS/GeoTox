@@ -13,7 +13,7 @@ simulate_inhalation_rate(x, params = NULL)
 details for more information.}
 }
 \value{
-Array or list of arrays containing inhalation rates.
+List of arrays containing inhalation rates.
 }
 \description{
 Simulate inhalation rates

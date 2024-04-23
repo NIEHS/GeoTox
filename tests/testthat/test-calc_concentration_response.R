@@ -35,7 +35,7 @@ test_that("calc_independent_action scales to Emax", {
 
 
   x <- data.frame(AGEGRP = 0:18, TOT_POP = c(sum(1:18), 1:18))
-  ages_test <- simulate_age(x, 10)
+  ages_test <- simulate_age(x, 10)[[1]]
 
 
   # age sample is of size "n"

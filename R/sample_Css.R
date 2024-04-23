@@ -8,8 +8,8 @@
 #' @export
 sample_Css <- function(simulated_css, age, obesity) {
 
-  if (is.array(age)) age <- list(age)
-  if (is.array(obesity)) obesity <- list(obesity)
+  if (!is.list(age)) age <- list(age)
+  if (!is.list(obesity)) obesity <- list(obesity)
 
   mapply(
     function(age, obesity) {

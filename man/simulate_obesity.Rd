@@ -6,26 +6,26 @@
 \usage{
 simulate_obesity(
   x,
-  prev = "OBESITY_CrudePrev",
-  sd = "OBESITY_SD",
-  label = "FIPS",
+  obes_prev = "OBESITY_CrudePrev",
+  obes_sd = "OBESITY_SD",
+  obes_label = "FIPS",
   n = 1000
 )
 }
 \arguments{
 \item{x}{data frame containing obesity data as a percentage from 0 to 100.}
 
-\item{prev}{column name of prevalence.}
+\item{obes_prev}{column name of prevalence.}
 
-\item{sd}{column name of standard deviation.}
+\item{obes_sd}{column name of standard deviation.}
 
-\item{label}{column name of labeling term, required if \code{x} has more than one
-row.}
+\item{obes_label}{column name of labeling term, required if \code{x} has more than
+one row.}
 
 \item{n}{simulated sample size.}
 }
 \value{
-Array or named list of arrays containing simulated obesity status.
+List of arrays containing simulated obesity status.
 }
 \description{
 Simulate obesity
@@ -36,6 +36,7 @@ simulate_obesity(geo_tox_data$obesity[1, ], n = 4)
 simulate_obesity(geo_tox_data$obesity[1:5, ], n = 10)
 
 df <- data.frame(label = letters[1:3], prev = c(20, 50, 80), sd = c(5, 5, 5))
-simulate_obesity(df, label = "label", prev = "prev", sd = "sd", n = 10)
+simulate_obesity(df, obes_label = "label", obes_prev = "prev",
+                 obes_sd = "sd", n = 10)
 
 }

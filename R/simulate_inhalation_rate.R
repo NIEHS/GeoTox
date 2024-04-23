@@ -11,7 +11,7 @@
 #' of EPA's 2011 Exposure Factors Handbook using the mean of male and female
 #' values.
 #'
-#' @return Array or list of arrays containing inhalation rates.
+#' @return List of arrays containing inhalation rates.
 #'
 #' @examples
 #' # Single array
@@ -54,12 +54,10 @@ simulate_inhalation_rate <- function(x, params = NULL) {
       stop("params must contain columns \"age\", \"mean\" and \"sd\"")
     }
   }
+  
+  if (is.data.frame(x)) x <- list(x)
 
-  if (methods::is(x, "list")) {
-    lapply(x, function(y) .simulate_inhalation_rate(y, params))
-  } else {
-    .simulate_inhalation_rate(x, params)
-  }
+  lapply(x, function(y) .simulate_inhalation_rate(y, params))
 }
 
 .simulate_inhalation_rate <- function(x, params) {
