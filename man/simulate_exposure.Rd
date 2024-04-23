@@ -4,24 +4,30 @@
 \alias{simulate_exposure}
 \title{Simulate external exposure}
 \usage{
-simulate_exposure(x, mean = "mean", sd = "sd", label = "casn", n = 1000)
+simulate_exposure(
+  x,
+  expos_mean = "mean",
+  expos_sd = "sd",
+  expos_label = "casn",
+  n = 1000
+)
 }
 \arguments{
 \item{x}{data frame or list of data frames.}
 
-\item{mean}{column name of mean values.}
+\item{expos_mean}{column name of mean values.}
 
-\item{sd}{column name of standard deviations.}
+\item{expos_sd}{column name of standard deviations.}
 
-\item{label}{column name of labeling term, required if \code{x} has more than one
-row.}
+\item{expos_label}{column name of labeling term, required if \code{x} has more
+than one row.}
 
 \item{n}{simulated sample size.}
 }
 \value{
-A matrix or list of matrices containing inhalation rates. Matrix
-columns are named using the values in the \code{label} column for more than one
-data frame row.
+A list of matrices containing inhalation rates. Matrix columns are
+named using the values in the \code{expos_label} column for more than one data
+frame row.
 }
 \description{
 Simulate external exposure

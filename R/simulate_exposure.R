@@ -1,15 +1,15 @@
 #' Simulate external exposure
 #'
 #' @param x data frame or list of data frames.
-#' @param mean column name of mean values.
-#' @param sd column name of standard deviations.
-#' @param label column name of labeling term, required if `x` has more than one
-#' row.
+#' @param expos_mean column name of mean values.
+#' @param expos_sd column name of standard deviations.
+#' @param expos_label column name of labeling term, required if `x` has more
+#' than one row.
 #' @param n simulated sample size.
 #'
-#' @return A matrix or list of matrices containing inhalation rates. Matrix
-#' columns are named using the values in the `label` column for more than one
-#' data frame row.
+#' @return A list of matrices containing inhalation rates. Matrix columns are
+#' named using the values in the `expos_label` column for more than one data
+#' frame row.
 #'
 #' @examples
 #' data <- split(geo_tox_data$exposure, ~FIPS)
@@ -21,56 +21,34 @@
 #' simulate_exposure(data[1:3], n = 5)
 #'
 #' @export
-simulate_exposure <- function(
-    x, mean = "mean", sd = "sd", label = "casn", n = 1e3
-) {
+simulate_exposure <- function(x,
+                              expos_mean = "mean",
+                              expos_sd = "sd",
+                              expos_label = "casn",
+                              n = 1e3) {
 
-  if (!any(methods::is(x, "data.frame"), methods::is(x, "list"))) {
+  if (!any(c("data.frame", "list") %in% class(x))) {
     stop("x must be a data.frame or list")
   }
+  
+  if (is.data.frame(x)) x <- list(x)
 
-  if (methods::is(x, "data.frame")) {
-
-    if (!all(c(mean, sd) %in% names(x))) {
-      stop("x must contain columns named by 'mean' and 'sd' inputs")
-    }
-
-    if (nrow(x) > 1 & !(label %in% names(x))) {
-      stop("x must contain a column named by the 'label' input")
-    }
-
-    out <- .simulate_exposure(x, mean, sd, n)
-    if (nrow(x) > 1) {
-      colnames(out) <- x[[label]]
+  if (.check_names(x, c(expos_mean, expos_sd))) {
+    stop("x data frames must contain columns named by 'expos_mean' and ",
+         "'expos_sd'")
+  }
+  
+  lapply(x, function(df) {
+    out <- .simulate_exposure(df, expos_mean, expos_sd, n)
+    if (expos_label %in% names(df)) {
+      colnames(out) <- df[[expos_label]]
       # Have consistent output order
-      out <- out[order(colnames(out))]
+      out <- out[, order(colnames(out)), drop = FALSE]
+    } else if (nrow(df) > 1) {
+      stop("x data frames must contain a column named by 'expos_label'")
     }
     out
-
-  } else {
-
-    if (!all(sapply(x, function(df) all(c(mean, sd) %in% names(df))))) {
-      stop("x data frames must contain columns named by 'mean' and 'sd' inputs")
-    }
-
-    nrow <- sapply(x, nrow)
-    label_exists <- sapply(x, function(df) label %in% names(df))
-
-    if (!all(nrow > 1 & label_exists)) {
-      stop("x data frames must contain a column named by the 'label' input")
-    }
-
-    lapply(x, function(df) {
-      out <- .simulate_exposure(df, mean, sd, n)
-      if (nrow(df) > 1) {
-        colnames(out) <- df[[label]]
-        # Have consistent output order
-        out <- out[, order(colnames(out)), drop = FALSE]
-      }
-      out
-    })
-
-  }
+  })
 }
 
 .simulate_exposure <- function(x, mean, sd, n) {

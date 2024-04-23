@@ -1,13 +1,13 @@
 #' Simulate obesity
 #'
 #' @param x data frame containing obesity data as a percentage from 0 to 100.
-#' @param prev column name of prevalence.
-#' @param sd column name of standard deviation.
-#' @param label column name of labeling term, required if `x` has more than one
-#' row.
+#' @param obes_prev column name of prevalence.
+#' @param obes_sd column name of standard deviation.
+#' @param obes_label column name of labeling term, required if `x` has more than
+#' one row.
 #' @param n simulated sample size.
 #'
-#' @return Array or named list of arrays containing simulated obesity status.
+#' @return List of arrays containing simulated obesity status.
 #'
 #' @examples
 #' simulate_obesity(geo_tox_data$obesity[1, ], n = 4)
@@ -15,19 +15,22 @@
 #' simulate_obesity(geo_tox_data$obesity[1:5, ], n = 10)
 #'
 #' df <- data.frame(label = letters[1:3], prev = c(20, 50, 80), sd = c(5, 5, 5))
-#' simulate_obesity(df, label = "label", prev = "prev", sd = "sd", n = 10)
+#' simulate_obesity(df, obes_label = "label", obes_prev = "prev",
+#'                  obes_sd = "sd", n = 10)
 #'
 #' @export
-simulate_obesity <- function(
-    x, prev = "OBESITY_CrudePrev", sd = "OBESITY_SD", label = "FIPS", n = 1e3
-) {
+simulate_obesity <- function(x,
+                             obes_prev = "OBESITY_CrudePrev",
+                             obes_sd = "OBESITY_SD",
+                             obes_label = "FIPS",
+                             n = 1e3) {
 
-  if (!all(c(prev, sd) %in% names(x))) {
-    stop("x must contain columns named by 'prev' and 'sd' inputs")
+  if (!all(c(obes_prev, obes_sd) %in% names(x))) {
+    stop("x must contain columns named by 'obes_prev' and 'obes_sd'")
   }
 
-  if (nrow(x) > 1 & !(label %in% names(x))) {
-    stop("x must contain a column named by the 'label' input")
+  if (nrow(x) > 1 & !(obes_label %in% names(x))) {
+    stop("x must contain a column named by 'obes_label'")
   }
 
   out <- mapply(
@@ -38,10 +41,14 @@ simulate_obesity <- function(
       status <- stats::rbinom(n, 1, p)
       ifelse(status, "Obese", "Normal")
     },
-    mean = x[[prev]],
-    sd = x[[sd]],
+    mean = x[[obes_prev]],
+    sd = x[[obes_sd]],
     SIMPLIFY = FALSE
   )
 
-  if (nrow(x) > 1) stats::setNames(out, x[[label]]) else out[[1]]
+  if (obes_label %in% names(x)) {
+    stats::setNames(out, x[[obes_label]])
+  } else {
+    out
+  }
 }

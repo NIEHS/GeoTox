@@ -1,0 +1,84 @@
+---
+title: "GeoTox S3 object"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GeoTox S3 object}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(GeoTox)
+library(sf)
+hill_params <- fit_hill(split(geo_tox_data$dose_response, ~casn))
+n <- 5 # Sample size
+```
+
+### Single region
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+idx <- 1 # Region index, 1-100
+x <- simulate(GeoTox(),
+              age = split(geo_tox_data$age, ~FIPS)[[idx]],
+              obesity = geo_tox_data$obesity[idx, ],
+              exposure = split(geo_tox_data$exposure, ~FIPS)[[idx]],
+              simulated_css = geo_tox_data$simulated_css,
+              n = n)
+x <- calc(x, hill_params)
+x$region_boundary <- geo_tox_data$boundaries$county
+x$group_boundary <- geo_tox_data$boundaries$state
+# Set name of region so FIPS can be used to get the geometry
+names(x$resp) <- sort(geo_tox_data$boundaries$county$FIPS)[idx]
+plot(x)
+```
+
+### Multiple regions
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+x <- simulate(GeoTox(),
+              age = split(geo_tox_data$age, ~FIPS),
+              obesity = geo_tox_data$obesity,
+              exposure = split(geo_tox_data$exposure, ~FIPS),
+              simulated_css = geo_tox_data$simulated_css,
+              n = n)
+x <- calc(x, hill_params)
+x$region_boundary <- geo_tox_data$boundaries$county
+x$group_boundary <- geo_tox_data$boundaries$state
+plot(x)
+```
+
+### Print
+
+```{r}
+x
+```
+
+### Plot options
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+fig <- plot(x, metric = "IA.HQ.10")
+fig
+```
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+fig + ggplot2::guides(fill = ggplot2::guide_colorbar(title = "New legend"))
+```
+
+```{r, fig.width = 7, fig.height = 2, fig.align = 'center'}
+quantiles <- c(0.05, 0.5, 0.95)
+quantile_labels <- c("5th Percentile", "Median", "95th Percentile")
+plot(x, quantiles = quantiles, quantile_labels = quantile_labels)
+```
+
+```{r, fig.width = 7, fig.height = 4, fig.align = 'center'}
+fig1 <- plot(x, metric = "GCA.Eff", quantiles = quantiles, quantile_labels = quantile_labels)
+fig2 <- plot(x, metric = "IA.HQ.10", quantiles = quantiles, quantile_labels = quantile_labels)
+ggpubr::ggarrange(fig1 , fig2, align = "v", nrow = 2)
+```

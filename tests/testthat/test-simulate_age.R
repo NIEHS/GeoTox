@@ -10,7 +10,7 @@ test_that("simulate_age returns errors from bad inputs", {
 test_that("age samples are good", {
 
   x <- data.frame(AGEGRP = 0:18, TOT_POP = c(sum(1:18), 1:18))
-  ages_test <- simulate_age(x, 10)
+  ages_test <- simulate_age(x, 10)[[1]]
 
 
   # age sample is of size "n"

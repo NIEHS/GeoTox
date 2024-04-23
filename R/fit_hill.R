@@ -28,11 +28,11 @@
 #' @export
 fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
 
-  if (!any(methods::is(x, "data.frame"), methods::is(x, "list"))) {
+  if (!any(c("data.frame", "list") %in% class(x))) {
     stop("x must be a data.frame or list")
   }
 
-  if (methods::is(x, "data.frame")) {
+  if ("data.frame" %in% class(x)) {
 
     if (!all(c(conc, resp) %in% names(x))) {
       stop("x must contain columns named by 'conc' and 'resp' inputs")
