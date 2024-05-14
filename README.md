@@ -4,12 +4,9 @@
 # GeoTox
 
 <!-- badges: start -->
-
-[![test-coverage](https://github.com/NIEHS/GeoTox/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/test-coverage.yaml)
-[![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
 [![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
 
