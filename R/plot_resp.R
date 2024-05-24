@@ -1,6 +1,8 @@
 #' Plot GeoTox reponse data
 #'
-#' @param x a GeoTox object
+#' @param resp .
+#' @param region_boundary .
+#' @param group_boundary .
 #' @param metric response metric, one of "GCA.Eff", "IA.Eff", "GCA.HQ.10"
 #' or "IA.HQ.10"
 #' @param quantiles quantiles to plot
@@ -10,36 +12,38 @@
 #' @importFrom rlang .data .env
 #' @export
 plot_resp <- function(
-    x,
+    resp,
+    region_boundary,
+    group_boundary = NULL,
     metric = c("GCA.Eff", "IA.Eff", "GCA.HQ.10", "IA.HQ.10"),
     quantiles = c(0.5),
     quantile_labels = c("Median")) {
   
   metric <- match.arg(metric)
   
-  if (!all(c("resp", "region_boundary") %in% names(x))) {
-    stop("GeoTox object must contain 'resp' and 'region_boundary' fields",
-         call. = FALSE)
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("Package 'sf' is required to use this function", call. = FALSE)
   }
+  
   if (length(quantiles) != length(quantile_labels)) {
     stop("Length of 'quantiles' and 'quantile_labels' must be the same",
          call. = FALSE)
   }
   
-  df <- tibble::tibble(id = names(x$resp), data = x$resp) |> 
+  df <- tibble::tibble(id = names(resp), data = resp) |> 
     tidyr::unnest(cols = "data") |> 
     tidyr::pivot_longer(-"id", names_to = "metric") |> 
     dplyr::filter(.data$metric == .env$metric) |> 
     dplyr::reframe(quantile = quantiles,
                    value = stats::quantile(.data$value, quantiles),
                    .by = c("id", "metric")) |> 
-    dplyr::inner_join(x$region_boundary |> dplyr::rename("id" = 1),
+    dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
                       by = dplyr::join_by("id"))
 
   if (nrow(df) == 0) {
     stop("No spatial data for corresponding response data", call. = FALSE)
   }
-  if (nrow(df) != length(x$resp) * length(quantiles)) {
+  if (nrow(df) != length(resp) * length(quantiles)) {
     warning("Some response data was removed due to missing spatial data",
             call. = FALSE)
   }
@@ -74,8 +78,8 @@ plot_resp <- function(
       panel.grid.minor = ggplot2::element_blank()
     )
   
-  if (!is.null(x$group_boundary)) {
-    fig <- fig + ggplot2::geom_sf(data = x$group_boundary, fill = NA,
+  if (!is.null(group_boundary)) {
+    fig <- fig + ggplot2::geom_sf(data = group_boundary, fill = NA,
                                   size = 0.15)
   }
   

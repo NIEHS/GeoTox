@@ -7,21 +7,19 @@
 \usage{
 GeoTox()
 
-\method{plot}{GeoTox}(x, type = "resp", ...)
+\method{plot}{GeoTox}(x, type = c("resp", "hill", "exposure", "sensitivity"), ...)
 }
 \arguments{
-\item{x}{a GeoTox object}
+\item{x}{GeoTox object}
 
 \item{type}{type of plot}
 
 \item{...}{additional arguments passed to plotting functions}
 }
 \description{
-An S3 object that can be used to help organize the data and results
-of a GeoTox analysis. There are several methods that can be used
-on a GeoTox object: \link{simulate}, \link{calc} and the plot generic S3 method
-detailed below.
+An S3 object that can be used to help organize the data and results of a
+GeoTox analysis.
 }
 \seealso{
-\link{simulate}, \link{calc}
+\link{plot_resp}, \link{plot_hill}, \link{plot_exposure}, \link{plot_sensitivity}
 }

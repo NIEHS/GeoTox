@@ -5,14 +5,20 @@
 \title{Plot GeoTox reponse data}
 \usage{
 plot_resp(
-  x,
+  resp,
+  region_boundary,
+  group_boundary = NULL,
   metric = c("GCA.Eff", "IA.Eff", "GCA.HQ.10", "IA.HQ.10"),
   quantiles = c(0.5),
   quantile_labels = c("Median")
 )
 }
 \arguments{
-\item{x}{a GeoTox object}
+\item{resp}{.}
+
+\item{region_boundary}{.}
+
+\item{group_boundary}{.}
 
 \item{metric}{response metric, one of "GCA.Eff", "IA.Eff", "GCA.HQ.10"
 or "IA.HQ.10"}
