@@ -1,0 +1,95 @@
+---
+title: "GeoTox S3 object"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GeoTox S3 object}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Individual-Level Simulation
+
+Our goal is to simply add point-level geospatial data to the simulated data and plot.
+
+
+```{r setup}
+library(GeoTox)
+library(sf)
+library(ggplot2)
+hill_params <- fit_hill(split(geo_tox_data$dose_response, ~casn))
+n <- 5 # Sample size
+```
+
+
+### Multiple regions
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+x <- simulate(GeoTox(),
+              age = split(geo_tox_data$age, ~FIPS),
+              obesity = geo_tox_data$obesity,
+              exposure = split(geo_tox_data$exposure, ~FIPS),
+              simulated_css = geo_tox_data$simulated_css,
+              n = n)
+x <- calc(x, hill_params)
+x$region_boundary <- geo_tox_data$boundaries$county
+x$group_boundary <- geo_tox_data$boundaries$state
+```
+
+### Simulate individual-level data in each region
+
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+x$person_locs <- lapply(1:nrow(x$region_boundary), function(input){sf::st_sample(x$region_boundary[input,],size = n, type = "random")})
+names(x$person_locs) <- names(x$age)
+
+```
+
+### Print
+
+```{r}
+x
+```
+
+### Plot options
+
+Plot the individual level data locations
+
+Currently, the plot_resp is not able to plot the individual level data, so 
+this is a bit of hacked work around
+
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+
+x_ind <- do.call(c,x$person_locs) |> sf::st_as_sf()
+resp <-  lapply(1:length(x$resp), function(i) {x$resp[[i]]$`IA.HQ.10`}) |> unlist()
+x_ind$resp <- resp
+
+ggplot(x_ind) +
+  geom_sf(aes(color = resp)) +
+ scale_color_viridis_c(
+      direction = -1,
+      option = "A",
+      trans = "sqrt",
+      limits = c(0, max(x_ind$resp, na.rm = TRUE))
+    ) +
+  ggplot2::theme_bw() +
+    ggplot2::theme(
+      text = ggplot2::element_text(size = 12),
+      legend.text = ggplot2::element_text(size = 8),
+      axis.ticks = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    ) + 
+  geom_sf(data = x$region_boundary, fill = NA,
+                                  size = 0.15)
+
+
+```
