@@ -74,92 +74,91 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/">GeoTox</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'GeoTox'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     simulate</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># Sample size</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># Number of regions</span></span>
+<span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">m</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">m</span><span class="op">)</span> <span class="kw">else</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="create-object-run-simulations-and-computations">Create object, run simulations and computations<a class="anchor" aria-label="anchor" href="#create-object-run-simulations-and-computations"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span>, <span class="op">~</span><span class="va">casn</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Sample size</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="single-region">Single region<a class="anchor" aria-label="anchor" href="#single-region"></a>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Region index, 1-100</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>              age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[[</span><span class="va">idx</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>              obesity <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span><span class="op">[</span><span class="va">idx</span>, <span class="op">]</span>,</span>
-<span>              exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[[</span><span class="va">idx</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>              simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span>
-<span>              n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.html">calc</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">hill_params</span><span class="op">)</span></span>
-<span><span class="va">x</span><span class="op">$</span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span></span>
-<span><span class="va">x</span><span class="op">$</span><span class="va">group_boundary</span> <span class="op">&lt;-</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">state</span></span>
-<span><span class="co"># Set name of region so FIPS can be used to get the geometry</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">resp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span><span class="op">$</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="multiple-regions">Multiple regions<a class="anchor" aria-label="anchor" href="#multiple-regions"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate.html">simulate</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>              age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>              obesity <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span>,</span>
-<span>              exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>              simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span>
-<span>              n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc.html">calc</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">hill_params</span><span class="op">)</span></span>
-<span><span class="va">x</span><span class="op">$</span><span class="va">region_boundary</span> <span class="op">&lt;-</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span></span>
-<span><span class="va">x</span><span class="op">$</span><span class="va">group_boundary</span> <span class="op">&lt;-</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">state</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="print">Print<a class="anchor" aria-label="anchor" href="#print"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Set region and group boundaries (for plotting)</span></span>
+<span>  <span class="fu"><a href="../reference/set_boundaries.html">set_boundaries</a></span><span class="op">(</span></span>
+<span>    region <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span>,</span>
+<span>    group  <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">state</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Simulate populations for each region</span></span>
+<span>  <span class="fu"><a href="../reference/simulate_population.html">simulate_population</a></span><span class="op">(</span></span>
+<span>    age           <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span>
+<span>    obesity       <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span><span class="op">[</span><span class="va">idx</span>, <span class="op">]</span>,</span>
+<span>    exposure      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span>
+<span>    simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span>
+<span>    n             <span class="op">=</span> <span class="va">n</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Calculate response using estimated Hill parameters</span></span>
+<span>  <span class="fu"><a href="../reference/calculate_response.html">calculate_response</a></span><span class="op">(</span></span>
+<span>    hill_params <span class="op">=</span> <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span>, <span class="op">~</span><span class="va">casn</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Perform sensitivity analysis</span></span>
+<span>  <span class="fu"><a href="../reference/sensitivity_analysis.html">sensitivity_analysis</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span></span>
 <span><span class="co">#&gt; GeoTox object</span></span>
 <span><span class="co">#&gt; Regions: 100</span></span>
+<span><span class="co">#&gt; Population: 50</span></span>
 <span><span class="co">#&gt; Fields:</span></span>
-<span><span class="co">#&gt;              Name             Class            Dim</span></span>
-<span><span class="co">#&gt;               age     list(integer)      100 x (5)</span></span>
-<span><span class="co">#&gt;                IR     list(numeric)      100 x (5)</span></span>
-<span><span class="co">#&gt;           obesity   list(character)      100 x (5)</span></span>
-<span><span class="co">#&gt;             C_ext      list(matrix)  100 x (5 x 8)</span></span>
-<span><span class="co">#&gt;              C_ss      list(matrix)  100 x (5 x 8)</span></span>
-<span><span class="co">#&gt;             D_int      list(matrix)  100 x (5 x 8)</span></span>
-<span><span class="co">#&gt;         C_invitro      list(matrix)  100 x (5 x 8)</span></span>
-<span><span class="co">#&gt;              resp  list(data.frame)  100 x (5 x 4)</span></span>
-<span><span class="co">#&gt;   region_boundary    sf, data.frame        100 x 2</span></span>
-<span><span class="co">#&gt;    group_boundary    sf, data.frame          1 x 1</span></span></code></pre></div>
+<span><span class="co">#&gt;        Name             Class             Dim</span></span>
+<span><span class="co">#&gt;         age     list(integer)      100 x (50)</span></span>
+<span><span class="co">#&gt;          IR     list(numeric)      100 x (50)</span></span>
+<span><span class="co">#&gt;     obesity   list(character)      100 x (50)</span></span>
+<span><span class="co">#&gt;       C_ext      list(matrix)  100 x (50 x 8)</span></span>
+<span><span class="co">#&gt;        C_ss      list(matrix)  100 x (50 x 8)</span></span>
+<span><span class="co">#&gt;       D_int      list(matrix)  100 x (50 x 8)</span></span>
+<span><span class="co">#&gt;   C_invitro      list(matrix)  100 x (50 x 8)</span></span>
+<span><span class="co">#&gt;        resp  list(data.frame)  100 x (50 x 4)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="plot-options">Plot options<a class="anchor" aria-label="anchor" href="#plot-options"></a>
+<h3 id="plot-outputs">Plot outputs<a class="anchor" aria-label="anchor" href="#plot-outputs"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"hill"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"exposure"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Picking joint bandwidth of 0.105</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-3-4.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level3">
+<h3 id="some-plot-options">Some plot options<a class="anchor" aria-label="anchor" href="#some-plot-options"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, metric <span class="op">=</span> <span class="st">"IA.HQ.10"</span><span class="op">)</span></span>
-<span><span class="va">fig</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fig</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_colourbar.html" class="external-link">guide_colorbar</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"New legend"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quantiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span><span class="op">)</span></span>
 <span><span class="va">quantile_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5th Percentile"</span>, <span class="st">"Median"</span>, <span class="st">"95th Percentile"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, quantiles <span class="op">=</span> <span class="va">quantiles</span>, quantile_labels <span class="op">=</span> <span class="va">quantile_labels</span><span class="op">)</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fig1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, metric <span class="op">=</span> <span class="st">"GCA.Eff"</span>, quantiles <span class="op">=</span> <span class="va">quantiles</span>, quantile_labels <span class="op">=</span> <span class="va">quantile_labels</span><span class="op">)</span></span>
-<span><span class="va">fig2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, metric <span class="op">=</span> <span class="st">"IA.HQ.10"</span>, quantiles <span class="op">=</span> <span class="va">quantiles</span>, quantile_labels <span class="op">=</span> <span class="va">quantile_labels</span><span class="op">)</span></span>
-<span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">fig1</span> , <span class="va">fig2</span>, align <span class="op">=</span> <span class="st">"v"</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="oo-s3_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;"></p>
+<span><span class="va">fig1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>,</span>
+<span>             metric <span class="op">=</span> <span class="st">"GCA.Eff"</span>,</span>
+<span>             quantiles <span class="op">=</span> <span class="va">quantiles</span>,</span>
+<span>             quantile_labels <span class="op">=</span> <span class="va">quantile_labels</span><span class="op">)</span></span>
+<span><span class="va">fig2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>,</span>
+<span>             metric <span class="op">=</span> <span class="st">"IA.HQ.10"</span>,</span>
+<span>             quantiles <span class="op">=</span> <span class="va">quantiles</span>,</span>
+<span>             quantile_labels <span class="op">=</span> <span class="va">quantile_labels</span><span class="op">)</span></span>
+<span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">fig1</span> , <span class="va">fig2</span>, align <span class="op">=</span> <span class="st">"v"</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"exposure"</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span>, param <span class="op">=</span> <span class="st">"IA.HQ.10"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Picking joint bandwidth of 0.105</span></span></code></pre></div>
+<p><img src="oo-s3_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

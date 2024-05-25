@@ -101,12 +101,12 @@ $$D_{int} = \frac{C_{ext} \,\times\, IR \,\times\, time}{BW}$$</p>
 <span class="r-in"><span><span class="va">C_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_sample</span> <span class="op">*</span> <span class="va">n_chem</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="va">n_chem</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">IR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_sample</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">calc_internal_dose</span><span class="op">(</span><span class="va">C_ext</span>, <span class="va">IR</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1044298 0.18484421 0.28002000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4720663 0.48799341 0.12690967</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1004581 0.28737989 0.01288671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.2470113 0.01398876 0.13002126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4651844 0.21288369 0.29956830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]       [,2]        [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.015800366 0.09125914 0.171132967</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.336685183 0.20087215 0.070595211</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.038245313 0.01844701 0.002179853</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.061107128 0.28487219 0.124534354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.007218509 0.75363169 0.392490442</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multiple populations</span></span></span>
 <span class="r-in"><span><span class="va">C_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
@@ -116,20 +116,20 @@ $$D_{int} = \frac{C_{ext} \,\times\, IR \,\times\, time}{BW}$$</p>
 <span class="r-in"><span><span class="va">IR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_sample</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n_sample</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">calc_internal_dose</span><span class="op">(</span><span class="va">C_ext</span>, <span class="va">IR</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]        [,2]       [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.442904901 0.183323507 0.08540396</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.024801553 0.006206835 0.01420851</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.639157492 0.054652308 0.26700545</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.008280991 0.017293470 0.03102002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.391575070 0.350709132 0.90176419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1336944 0.34197969 0.01440300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.2138538 0.01621801 0.07110673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1284426 0.09261534 0.05254789</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.1041654 0.36988156 0.33832828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4840307 0.33989673 0.23646425</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]       [,2]       [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 2.111125e-04 0.06392989 0.09765822</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 4.602998e-01 0.45385353 0.41377617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 4.801530e-01 0.56854180 0.26596293</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 2.674016e-05 0.04122756 0.06525305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 1.203348e-01 0.10720396 0.11304005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]      [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.33679479 0.53005683 0.5966388</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.14423849 0.10185347 0.1571509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.67671195 0.45777230 0.7067715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.01176099 0.04306118 0.0632936</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.07682741 0.03401241 0.1378512</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
