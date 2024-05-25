@@ -1,16 +1,14 @@
 #' GeoTox S3 object
 #' 
 #' @description
-#' An S3 object that can be used to help organize the data and results
-#' of a GeoTox analysis. There are several methods that can be used
-#' on a GeoTox object: [simulate], [calc] and the plot generic S3 method
-#' detailed below.
+#' An S3 object that can be used to help organize the data and results of a
+#' GeoTox analysis.
 #'
-#' @param x a GeoTox object
+#' @param x GeoTox object
 #' @param type type of plot
 #' @param ... additional arguments passed to plotting functions
 #' 
-#' @seealso [simulate], [calc]
+#' @seealso [plot_resp], [plot_hill], [plot_exposure], [plot_sensitivity]
 #' @export
 GeoTox <- function() {
   structure(list(), names = character(0), class = "GeoTox")
@@ -54,22 +52,38 @@ print.GeoTox <- function(x, ...) {
     do.call(rbind, info)
   }
   
-  info <- get_info(c(default_names, other_names))
+  info <- get_info(default_names)
   info <- info[info$Class != "", , drop = FALSE]
   
   cat("GeoTox object\n")
   if (nrow(info) > 0) {
     cat("Regions: ", length(x[[info$Name[1]]]), "\n", sep = "")
+    cat("Population: ", x$inputs$n, "\n", sep = "")
     cat("Fields:\n")
     print(info, row.names = FALSE, print.gap = 2)
   }
+  # if (length(other_names) > 0) {
+  #   cat("Other:\n  ")
+  #   cat(paste(other_names, collapse = ", "))
+  #   cat("\n")
+  # }
 }
 
 #' @rdname GeoTox
 #' @export
-plot.GeoTox <- function(x, type = "resp", ...) {
+plot.GeoTox <- function(x,
+                        type = c("resp", "hill", "exposure", "sensitivity"),
+                        ...) {
   type <- match.arg(type)
   switch(type,
-         resp = plot_resp(x, ...),
-         stop("Invalid plot type"))
+         resp = plot_resp(x$resp,
+                          region_boundary = x$boundaries$region,
+                          group_boundary  = x$boundaries$group,
+                          ...),
+         hill = plot_hill(x$inputs$hill_params),
+         exposure = plot_exposure(x$inputs$exposure$x,
+                                  region_boundary = x$boundaries$region,
+                                  group_boundary  = x$boundaries$group,
+                                  ...),
+         sensitivity = plot_sensitivity(x, ...))
 }
