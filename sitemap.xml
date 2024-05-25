@@ -16,6 +16,9 @@
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/introduction.html</loc>
   </url>
   <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/oo-s3.html</loc>
+  </url>
+  <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles/package_data.html</loc>
   </url>
   <url>
@@ -23,6 +26,12 @@
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/index.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/GeoTox.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc.html</loc>
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_concentration_response.html</loc>
@@ -35,6 +44,9 @@
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/calc_invitro_concentration.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/dot-check_names.html</loc>
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/fit_hill.html</loc>
@@ -55,7 +67,13 @@
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/obj_hill.html</loc>
   </url>
   <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/plot_resp.html</loc>
+  </url>
+  <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/sample_Css.html</loc>
+  </url>
+  <url>
+    <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate.html</loc>
   </url>
   <url>
     <loc>https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference/simulate_age.html</loc>

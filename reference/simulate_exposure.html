@@ -25,6 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/introduction.html">GeoTox Introduction</a>
+    <a class="dropdown-item" href="../articles/oo-s3.html">GeoTox S3 object</a>
     <a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a>
   </div>
 </li>
@@ -49,7 +50,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_exposure</span><span class="op">(</span><span class="va">x</span>, mean <span class="op">=</span> <span class="st">"mean"</span>, sd <span class="op">=</span> <span class="st">"sd"</span>, label <span class="op">=</span> <span class="st">"casn"</span>, n <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_exposure</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  expos_mean <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  expos_sd <span class="op">=</span> <span class="st">"sd"</span>,</span>
+<span>  expos_label <span class="op">=</span> <span class="st">"casn"</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -58,17 +65,17 @@
 <dd><p>data frame or list of data frames.</p></dd>
 
 
-<dt>mean</dt>
+<dt>expos_mean</dt>
 <dd><p>column name of mean values.</p></dd>
 
 
-<dt>sd</dt>
+<dt>expos_sd</dt>
 <dd><p>column name of standard deviations.</p></dd>
 
 
-<dt>label</dt>
-<dd><p>column name of labeling term, required if <code>x</code> has more than one
-row.</p></dd>
+<dt>expos_label</dt>
+<dd><p>column name of labeling term, required if <code>x</code> has more
+than one row.</p></dd>
 
 
 <dt>n</dt>
@@ -79,9 +86,9 @@ row.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A matrix or list of matrices containing inhalation rates. Matrix
-columns are named using the values in the <code>label</code> column for more than one
-data frame row.</p>
+<p>A list of matrices containing inhalation rates. Matrix columns are
+named using the values in the <code>expos_label</code> column for more than one data
+frame row.</p>
     </div>
 
     <div class="section level2">
@@ -90,52 +97,64 @@ data frame row.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Single data frame</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_exposure</span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.000000e+00 6.594557e-08 2.562170e-08 0.000000e+00 5.082199e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] 7.808398e-08 0.000000e+00 6.263525e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1582-09-8      51-28-5 510-15-6 72-43-5 76-44-8      77-47-4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.180604e-04 5.538698e-08        0       0       0 4.103378e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 8.971397e-05 3.820900e-08        0       0       0 4.714242e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.130611e-04 3.098782e-08        0       0       0 4.027750e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.108997e-04 4.012606e-08        0       0       0 3.763269e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 1.226748e-04 1.023762e-07        0       0       0 3.860015e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           87-86-5 95-95-4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 5.981111e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 9.548491e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 8.604806e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.037407e-08       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 8.903893e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># List of data frames</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_exposure</span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`37001`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1582-09-8      51-28-5 510-15-6 72-43-5 76-44-8      77-47-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 9.004350e-05 1.996969e-08        0       0       0 3.864607e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 8.064525e-05 4.736435e-08        0       0       0 3.188015e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 9.044574e-05 3.416418e-08        0       0       0 1.756318e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 9.378640e-05 9.352764e-08        0       0       0 4.638995e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 1.202382e-04 2.483928e-08        0       0       0 8.990072e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.0001203186 6.176558e-08        0       0       0 3.678326e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.0001044843 7.641546e-08        0       0       0 3.627607e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.0001314736 5.685798e-08        0       0       0 2.540535e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0001190961 8.026647e-08        0       0       0 4.116469e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.0001209992 3.758619e-08        0       0       0 3.749875e-10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           87-86-5 95-95-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 7.558460e-09       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 8.534327e-09       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 8.555065e-09       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.227381e-08       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 9.708806e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 9.077175e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.025724e-08       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 8.574966e-09       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.363523e-08       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 8.533637e-09       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`37003`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1582-09-8      51-28-5 510-15-6 72-43-5 76-44-8      77-47-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.617462e-04 1.274182e-08        0       0       0 1.119285e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.800113e-04 1.566815e-08        0       0       0 8.903442e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 9.320815e-05 1.041361e-08        0       0       0 8.240105e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.633125e-04 1.206246e-08        0       0       0 1.181102e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 1.761066e-04 1.123618e-08        0       0       0 8.567265e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.0001419067 1.325921e-08        0       0       0 1.148508e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.0001444544 1.078159e-08        0       0       0 7.131658e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.0001837088 1.022291e-08        0       0       0 8.157838e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0001356651 1.566732e-08        0       0       0 7.288754e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.0001177362 1.007484e-08        0       0       0 9.757739e-10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           87-86-5      95-95-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.081675e-07 1.817795e-13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 8.589971e-08 3.404111e-13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 7.802145e-08 4.515660e-13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.057492e-07 1.107349e-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 8.601744e-08 7.030613e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 7.020664e-08 2.077199e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 8.668516e-08 3.959454e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.535138e-07 5.118112e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 8.697061e-08 4.510365e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 1.366231e-07 1.618854e-13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`37005`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1582-09-8      51-28-5 510-15-6 72-43-5 76-44-8      77-47-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 7.587793e-05 2.241753e-09        0       0       0 1.499447e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 7.223240e-05 2.973578e-09        0       0       0 2.056294e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 5.812482e-05 1.807864e-09        0       0       0 1.787431e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 5.607397e-05 1.524453e-09        0       0       0 2.219957e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 6.559516e-05 1.600162e-09        0       0       0 2.987922e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 6.101276e-05 2.908020e-09        0       0       0 2.343665e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 6.420172e-05 1.695955e-09        0       0       0 2.959756e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 6.341652e-05 2.339383e-09        0       0       0 2.887006e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 6.003162e-05 2.167277e-09        0       0       0 2.856307e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 6.488829e-05 2.604359e-09        0       0       0 1.492806e-10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           87-86-5      95-95-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 3.423179e-09 6.496239e-11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 4.176794e-09 4.405243e-11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 3.146204e-09 6.097588e-11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 4.425310e-09 3.702928e-11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 3.154506e-09 1.679080e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 3.367341e-09 4.878564e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 2.990651e-09 1.000947e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 3.729173e-09 5.314210e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 4.364998e-09 8.136295e-11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 3.336848e-09 5.877449e-11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

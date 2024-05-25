@@ -3,8 +3,9 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
+  oo-s3: oo-s3.html
   package_data: package_data.html
-last_built: 2024-05-14T17:41Z
+last_built: 2024-05-25T18:05Z
 urls:
   reference: https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/reference
   article: https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/articles
