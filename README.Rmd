@@ -33,6 +33,6 @@ The GeoTox package can <x y z plus other stuff>, as introduced in [Eccles KM, Ka
 You can install the development version of GeoTox from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("Spatiotemporal-Exposures-and-Toxicology/GeoTox")
+# install.packages("pak")
+pak::pkg_install("NIEHS/GeoTox")
 ```
