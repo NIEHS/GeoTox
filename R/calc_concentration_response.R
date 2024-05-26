@@ -17,7 +17,8 @@
 calc_concentration_response <- function(C_invitro,
                                         hill_params,
                                         tp_b_mult = 1.5,
-                                        fixed = FALSE) {
+                                        fixed = FALSE,
+                                        Emax = NULL) {
 
   if (inherits(C_invitro, "matrix")) {
     .calc_concentration_response(C_invitro, hill_params, tp_b_mult, fixed)
@@ -35,7 +36,7 @@ calc_concentration_response <- function(C_invitro,
 }
 
 .calc_concentration_response <- function(
-    C_invitro, hill_params, tp_b_mult, fixed
+    C_invitro, hill_params, tp_b_mult, fixed, Emax = NULL
 ) {
 
   interval <- c(-50,50)
@@ -74,11 +75,13 @@ calc_concentration_response <- function(C_invitro,
     )
     GCA.eff[i] <- exp(mixture.result$minimum)
 
-    # TODO replace with positive control value if given
-    Emax_resp <- stats::optimize(
-      obj_GCA, interval = interval, Ci = C_i * 10^14, tp = tp_i, AC50 = AC50_i
-    )
-    Emax <- exp(Emax_resp$minimum)
+    # Emax is the maximum concentration of the mixture
+    if (is.null(Emax)) {
+      Emax_resp <- stats::optimize(
+        obj_GCA, interval = interval, Ci = C_i * 10^14, tp = tp_i, AC50 = AC50_i
+      )
+      Emax <- exp(Emax_resp$minimum)
+    }
 
     IA.eff[i] <- calc_independent_action(C_i, tp_i, AC50_i, Emax)
 

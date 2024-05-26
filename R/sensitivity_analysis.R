@@ -1,7 +1,13 @@
-#' Perform sensitivity analysis
-#'
+#' @title Perform sensitivity analysis
+#' @description
+#' A wrapper function to perform GeoTox sensitivity analysis. This function
+#' computes the sensitivity of the model to each of the parameters in the
+#' model: age, obesity, Css parameters, hill model parameters, and external
+#' concentration.
+#' 
+#' 
 #' @param x GeoTox object
-#'
+#' 
 #' @return The same object with additional fields added or updated
 #' @export
 sensitivity_analysis <- function(x) {
