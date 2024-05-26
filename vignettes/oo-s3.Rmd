@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(GeoTox)
+library(rlang)
 set.seed(2357)
 
 n <- 50 # Sample size
