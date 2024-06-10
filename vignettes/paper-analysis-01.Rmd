@@ -1,0 +1,389 @@
+---
+title: "Replicate Eccles et al. 2023 Analysis for North Carolina"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GeoTox Package Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This package includes example data `geo_tox_data`. Below is a description of the data and example code for how it was gathered.
+
+> **NOTE:** FIPS codes can change. Since data is being pulled from various sources, ensure that the FIPS values can be used to connect data across these sources. For example, in 2022 Connecticut began the process of going from 8 legacy counties to 9 planning regions.
+
+```{r setup}
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr)
+library(readr)
+library(stringr)
+library(readxl)
+library(httk)
+library(arrow)
+suppressPackageStartupMessages(library(sf))
+
+geo_tox_data <- list()
+```
+
+## Chemical data
+
+### Exposure data
+
+Download CMAQ modeled exposure data from <a href="https://www.epa.gov/AirToxScreen" target="_blank">AirToxScreen</a>. Results from AirToxScreen 2020 for chemicals in North Carolina counties are used for this analysis.
+
+```{r Exposure Data Download and Process, eval=FALSE}
+tf <- "../inst/manuscript_data/Region4_2020ATS_Ambient_Concentrations.parquet"
+
+# Check if tfa and tfb exist
+if (file.exists(tf)) {
+  nata <- read_parquet(tf)
+} else {
+  nata_4a <- read_xlsx("../inst/manuscript_data/Region4a_2020ATS_Ambient_Concentrations.xlsx")
+  nata_4b <- read_xlsx("../inst/manuscript_data/Region4b_2020ATS_Ambient_Concentrations.xlsx")
+  nata <- bind_rows(nata_4a, nata_4b)
+  write_parquet(nata, tf)
+}
+
+# Get the chemical list of NATA data that also has CASRN - downloaded
+# from the CompTox Dashboard
+chem_list <- read.csv("../inst/manuscript_data/Chemical List NATADB-2024-06-05.csv")
+chem_list$PREFERRED.NAME <- toupper(chem_list$PREFERRED.NAME)
+chem_list <- chem_list[,c("PREFERRED.NAME", "IUPAC.NAME", "CASRN")]
+
+# Select the metadata columns and the chemical columns
+drop_cols <- colnames(nata[,c(2,3,6)])
+meta_cols <- colnames(nata[,c(1,4,5)])
+chemical_cols <- colnames(nata[,7:183])
+
+# Find the common chemicals between the chemical list and the NATA data
+common_chem <- intersect(chem_list$PREFERRED.NAME, colnames(nata[,7:183]))
+
+# Using the arrow dplyr syntax, let's combine the two datasets
+# then make it long format with the chemical names as the column names
+# then we will join the chemical names with the CASRN from the chemical list
+
+nata_long <- nata %>%
+  select(-all_of(drop_cols)) %>% # Remove the columns that are not needed
+  select(all_of(meta_cols), all_of(common_chem)) %>% # Select the metadata and chemical columns
+  collect() %>% # Collect the data - pivot_longer requires it be a dataframe and not a parquet promise
+  pivot_longer(cols = all_of(common_chem), names_to = "chemical", values_to = "value") %>% # Pivot
+  left_join(chem_list, by = c("chemical" = "PREFERRED.NAME"))  # Join with the chemical
+ # collect() # Collect the data
+
+
+
+
+```
+
+
+```{r, eval=FALSE}
+
+exposure <- read_xlsx("2019_Toxics_Exposure_Concentrations.xlsx")
+
+# Normalization function
+min_max_norm = function(x) {
+  min_x <- min(x, na.rm = TRUE)
+  max_x <- max(x, na.rm = TRUE)
+  if (min_x == max_x) {
+    rep(0, length(x))
+  } else {
+    (x - min_x) / (max_x - min_x)
+  }
+}
+
+geo_tox_data$exposure <- exposure %>%
+  # North Carolina counties
+  filter(State == "NC", !grepl("0$", FIPS)) %>%
+  # Aggregate chemicals by county
+  summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) %>%
+  pivot_longer(-FIPS, names_to = "chemical") %>%
+  mutate(
+    stat = if_else(grepl("_1$", chemical), "mean", "sd"),
+    chemical = gsub('.{2}$', '', chemical)
+  ) %>%
+  pivot_wider(names_from = stat) %>%
+  # Normalize concentrations
+  mutate(norm = min_max_norm(mean), .by = chemical)
+```
+
+### Dose-response data
+
+> TODO description after finalized.
+
+A subset of data for the "LTEA_HepaRG_CYP1A1_up" assay is included in the package data as `geo_tox_data$dose_response`.
+
+```{r, eval=FALSE}
+
+# TODO From personal correspondence, how to get as typical user?
+
+load("ICE_Invitro_DB/aeid_851_1000_ICE_cHTS_chems_for_Kyle_231120.RData")
+
+geo_tox_data$dose_response <- cdat2_h %>%
+  # Keep "LTEA_HepaRG_CYP1A1_up" assay
+  filter(aenm == "LTEA_HepaRG_CYP1A1_up") %>%
+  # Keep selected columns
+  select(chnm, casn, logc, resp)
+```
+
+### Subset exposure and dose-response data
+
+Use <a href="https://ice.ntp.niehs.nih.gov/" target="_blank">ICE</a> cHTS data to filter desired chemicals. Retain only those chemicals found in both the exposure and dose-response datasets.
+
+```{r, eval=FALSE}
+
+# Use cHTS data to find active chemicals
+
+cHTS <- read_tsv("cHTS2022_invitrodb34_20220302.txt")
+
+casn_hits <- cHTS %>%
+  filter(
+    Assay == "LTEA_HepaRG_CYP1A1_up",
+    Endpoint == "Call",
+    Response == "Active"
+  ) %>%
+  distinct(CASRN) %>% pull()
+
+# Add CASN to exposure, only keep those found in dose-response as well
+# TODO Currently comparing names between exposure and dose-response data.
+# Replace with CASN if found for exposure data
+geo_tox_data$exposure <- geo_tox_data$exposure %>%
+  left_join(
+    geo_tox_data$dose_response %>%
+      distinct(chnm, casn) %>%
+      mutate(chnm = toupper(chnm)),
+    by = join_by(chemical == chnm)
+  ) %>%
+  # Remove chemicals not found in dose-response
+  na.omit() %>%
+  # Keep cHTS active chemicals
+  filter(casn %in% casn_hits)
+
+# Update dose-response to keep only those remaining in exposure
+geo_tox_data$dose_response <- geo_tox_data$dose_response %>%
+  filter(casn %in% geo_tox_data$exposure$casn)
+```
+
+## Population data
+
+### Age
+
+Download age data from the <a href="https://www.census.gov/" target="_blank">U.S. Census Bureau</a> by searching for "County Population by Characteristics". A subset of data for North Carolina from <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-detail.html" target="_blank">2019</a> is included in the package data as `geo_tox_data$age`.
+
+```{r, eval=FALSE}
+# Data for North Carolina
+age <- read_csv("cc-est2019-alldata-37.csv")
+
+geo_tox_data$age <- age %>%
+  # 7/1/2019 population estimate
+  filter(YEAR == 12) %>%
+  # Create FIPS
+  mutate(FIPS = str_c(STATE, COUNTY)) %>%
+  # Keep selected columns
+  select(FIPS, AGEGRP, TOT_POP)
+```
+
+### Obesity
+
+Follow the "Data Portal" link from <a href="https://www.cdc.gov/places/index.html" target="_blank">CDC PLACES</a> and search for "places county data". Go to the desired dataset webpage, for example <a href="https://data.cdc.gov/500-Cities-Places/PLACES-County-Data-GIS-Friendly-Format-2020-releas/mssc-ksj7/about_data" target="_blank">2020 county data</a>, and download the data by selecting Actions &rarr; API &rarr; Download file. A subset of data for North Carolina is included in the package data as `geo_tox_data$obesity`.
+
+```{r, eval=FALSE}
+places <- read_csv("PLACES__County_Data__GIS_Friendly_Format___2020_release.csv")
+
+# Convert confidence interval to standard deviation
+extract_SD <- function(x) {
+  range <- as.numeric(str_split_1(str_sub(x, 2, -2), ","))
+  diff(range) / 3.92
+}
+
+geo_tox_data$obesity <- places %>%
+  # North Carolina Counties
+  filter(StateAbbr == "NC") %>%
+  # Select obesity data
+  select(FIPS = CountyFIPS, OBESITY_CrudePrev, OBESITY_Crude95CI) %>%
+  # Change confidence interval to standard deviation
+  rowwise() %>%
+  mutate(OBESITY_SD = extract_SD(OBESITY_Crude95CI)) %>%
+  ungroup() %>%
+  select(-OBESITY_Crude95CI)
+```
+
+### Steady-state plasma concentration (Css)
+
+Use `httk` to generate Css values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of Css values initially and then sample them later. The number of samples in this example dataset is very small and should be increased if using this method.
+
+```{r, eval=FALSE}
+load_sipes2017()
+
+set.seed(2345)
+n_samples <- 50
+
+# Define population demographics for httk simulation
+# TODO where do these age groups come from?
+# They don't match those from the age data source or the table in simulate_inhalation_rate().
+# Are they age groups specific to httk?
+pop_demo <- cross_join(
+  tibble(
+    age_group = list(
+      c(0, 2), c(3, 5), c(6, 10), c(11, 15), c(16, 20), c(21, 30),
+      c(31, 40), c(41, 50), c(51, 60), c(61, 70), c(71, 100)
+    )
+  ),
+  tibble(
+    weight = c("Normal", "Obese")
+  )
+) %>%
+  # Create column of lower age_group values
+  rowwise() %>%
+  mutate(age_min = age_group[1]) %>%
+  ungroup()
+
+# Create wrapper function around httk steps
+simulate_css <- function(
+    chem.cas, agelim_years, weight_category, samples, verbose = TRUE
+) {
+
+  if (verbose) {
+    cat(
+      chem.cas,
+      paste0("(", paste(agelim_years, collapse = ", "), ")"),
+      weight_category,
+      "\n"
+    )
+  }
+
+  httkpop <- list(
+    method = "vi",
+    gendernum = NULL,
+    agelim_years = agelim_years,
+    agelim_months = NULL,
+    weight_category = weight_category,
+    reths = c(
+      "Mexican American",
+      "Other Hispanic",
+      "Non-Hispanic White",
+      "Non-Hispanic Black",
+      "Other"
+    )
+  )
+
+  css <- try(
+    suppressWarnings({
+      mcs <- create_mc_samples(
+        chem.cas = chem.cas,
+        samples = samples,
+        httkpop.generate.arg.list = httkpop,
+        suppress.messages = TRUE
+      )
+
+      calc_analytic_css(
+        chem.cas = chem.cas,
+        parameters = mcs,
+        model = "3compartmentss",
+        suppress.messages = TRUE
+      )
+    }),
+    silent = TRUE
+  )
+
+  # Return
+  if (is(css, "try-error")) {
+    warning(paste0("simulate_css failed to generate data for CASN ", chem.cas))
+    list(NA)
+  } else {
+    list(css)
+  }
+}
+
+# Get CASN
+casn <- unique(geo_tox_data$dose_response$casn)
+
+# Simulate Css values
+simulated_css <- lapply(casn, function(chem.cas) {
+  pop_demo %>%
+    rowwise() %>%
+    mutate(
+      css = simulate_css(.env$chem.cas, age_group, weight, .env$n_samples)
+    ) %>%
+    ungroup()
+})
+simulated_css <- setNames(simulated_css, casn)
+
+# Get median Css values for each age_group
+simulated_css <- lapply(
+  simulated_css,
+  function(cas_df) {
+    cas_df %>%
+      nest(.by = age_group) %>%
+      mutate(
+        age_median_css = sapply(data, function(df) median(unlist(df$css)))
+      ) %>%
+      unnest(data)
+  }
+)
+
+# Get median Css values for each weight
+simulated_css <- lapply(
+  simulated_css,
+  function(cas_df) {
+    cas_df %>%
+      nest(.by = weight) %>%
+      mutate(
+        weight_median_css = sapply(data, function(df) median(unlist(df$css)))
+      ) %>%
+      unnest(data) %>%
+      arrange(age_min, weight)
+  }
+)
+
+geo_tox_data$simulated_css <- simulated_css
+```
+
+### Subset exposure, dose-response and Css data
+
+Retain only those chemicals found in exposure, dose-response and Css datasets.
+
+```{r, eval=FALSE}
+idx <- sapply(
+  lapply(geo_tox_data$simulated_css, "[[", "age_median_css"),
+  function(x) any(is.na(x))
+)
+
+if (any(idx)) {
+
+  idx <- which(!idx)
+  casn <- names(geo_tox_data$simulated_css)[idx]
+
+  geo_tox_data$exposure <- geo_tox_data$exposure %>%
+    filter(casn %in% .env$casn)
+
+  geo_tox_data$dose_response <- geo_tox_data$dose_response %>%
+    filter(casn %in% .env$casn)
+
+  geo_tox_data$simulated_css <- geo_tox_data$simulated_css[idx]
+
+}
+```
+
+## County/State boundaries
+
+Download cartographic boundary files for counties and states from the <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html" target="_blank">U.S. Census Bureau</a>. The geometry data for North Carolina counties and the state are included in the package data as `geo_tox_data$boundaries`.
+
+```{r, eval=FALSE}
+county <- st_read("cb_2019_us_county_5m.shp")
+state <- st_read("cb_2019_us_state_5m.shp")
+
+geo_tox_data$boundaries <- list(
+  county = county %>%
+    filter(STATEFP == 37) %>%
+    select(FIPS = GEOID, geometry),
+  state = state %>%
+    filter(STATEFP == 37) %>%
+    select(geometry)
+)
+```
