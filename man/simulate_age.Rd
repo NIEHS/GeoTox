@@ -18,13 +18,24 @@ List of arrays containing simulated ages.
 \description{
 Simulate ages
 }
+\details{
+Each data frame must contain 19 rows. The first row represents the total
+population of all age groups while the next 18 rows represent age groups
+from 0 to 89 in increments of 5 years.
+}
 \examples{
 # Single data frame
-data <- geo_tox_data$age[geo_tox_data$age$FIPS == 37001, ]
-ages <- simulate_age(data, 10)
+x <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
+# populate only age range 40-44, set population total of all ages
+x$TOT_POP[c(1, 10)] <- 100
+simulate_age(x, 5)
 
-# List of data frames
-data <- split(geo_tox_data$age, ~FIPS)
-ages <- simulate_age(data, 10)
+# List of 2 data frames
+y <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
+# populate age ranges 5-9 and 50-54
+y$TOT_POP[c(3, 12)] <- 10
+# set population total for all age groups
+y$TOT_POP[1] <- sum(y$TOT_POP)
+simulate_age(list(x = x, y = y), 15)
 
 }
