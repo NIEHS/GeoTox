@@ -36,7 +36,7 @@ geo_tox_data <- list()
 
 Use <a href="https://ice.ntp.niehs.nih.gov/" target="_blank">ICE</a> cHTS data to identify active chemicals for a given set of assays.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 assays <- c("APR_HepG2_p53Act_1h_dn",
             "APR_HepG2_p53Act_1h_up",
             "APR_HepG2_p53Act_24h_dn",
@@ -104,38 +104,14 @@ get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
 cHTS_hits_API <- get_cHTS_hits(assays = assays)
 ```
 
-### Via downloaded file
-
-```{r, eval=FALSE}
-cHTS <- read_tsv("cHTS2023_invitrodb35_20231006.txt",
-                 show_col_types = FALSE)
-
-cHTS_hits_TSV <- cHTS |> 
-  filter(Assay %in% assays,
-         Endpoint == "Call",
-         Response == "Active") |> 
-  distinct(Assay, CASRN, DTXSID, ChemicalName)
-```
-
-> **NOTE:** There are some discrepancies between the API and downloaded file.
-
-```{r, echo=FALSE}
-load("~/dev/GeoTox/data-new/cHTS_hits.RData")
-```
-```{r}
-all.equal(cHTS_hits_API |> arrange(assay, casrn),
-          cHTS_hits_TSV |> arrange(Assay, CASRN),
-          check.attributes = FALSE)
-```
-
 ## Exposure data
 
 Download modeled exposure data from <a href="https://www.epa.gov/AirToxScreen" target="_blank">AirToxScreen</a>. Results from AirToxScreen 2019 for a subset of chemicals in North Carolina counties are included in the package data as `geo_tox_data$exposure`.
 
 > **NOTE:** The 2020 release does not currently provide a single file for the exposure national concentration summaries. The 2019 data can be found following the "Previous air toxics assessments" link.
 
-```{r, eval=FALSE}
-exposure <- read_xlsx("2019_Toxics_Exposure_Concentrations.xlsx")
+```{r, eval=TRUE}
+exposure <- read_xlsx("data-raw/2019_Toxics_Exposure_Concentrations (2).xlsx")
 
 # Normalization function
 min_max_norm = function(x) {
@@ -163,7 +139,7 @@ geo_tox_data$exposure <- exposure |>
 
 ### Get CASRN from CompTox Dashboard for exposure data
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 # Copy/paste the chemical names into the batch search field
 # https://comptox.epa.gov/dashboard/batch-search
 cat(geo_tox_data$exposure |> distinct(chemical) |> pull(), sep = "\n")
@@ -191,7 +167,7 @@ geo_tox_data$exposure <- geo_tox_data$exposure |>
 
 Use the ICE API to retrieve dose-response data for selected assays and chemicals.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 get_ICE_dose_resp <- function(assays = NULL, chemids = NULL) {
   
   if (is.null(assays) & is.null(chemids)) {
