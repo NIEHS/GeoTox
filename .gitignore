@@ -54,3 +54,7 @@ rsconnect/
 .Rproj.user
 inst/doc
 docs
+
+# Raw Data for producing package data
+data-raw/
+data/geo_tox_data_manuscript.RData
