@@ -1,10 +1,23 @@
-#' Title
+#' Sample from pre-generated Css data
 #'
-#' @param simulated_css x
-#' @param age x
-#' @param obesity x
+#' @param simulated_css list of pre-generated Css data, for details see:
+#' \code{vignette("package_data", package = "GeoTox")}.
+#' @param age list or atomic vector of ages.
+#' @param obesity list or atomic vector of obesity status.
 #'
-#' @return x
+#' @return list of matrices containing Css values. Columns are sorted to have
+#' consistent order across functions.
+#' 
+#' @examples
+#' # Vector inputs
+#' sample_Css(geo_tox_data$simulated_css,
+#'            c(15, 25, 35),
+#'            c("Normal", "Obese", "Normal"))
+#' 
+#' # List inputs
+#' sample_Css(geo_tox_data$simulated_css,
+#'            list(c(34, 29), 55),
+#'            list(c("Obese", "Normal"), "Normal"))
 #' @export
 sample_Css <- function(simulated_css, age, obesity) {
 

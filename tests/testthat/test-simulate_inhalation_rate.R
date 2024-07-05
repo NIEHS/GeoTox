@@ -15,6 +15,5 @@ test_that("expected output", {
                           "sd" = 0)
   IR_test <- simulate_inhalation_rate(c(5, 25, 55), IR_params)[[1]]
   
-  expect_vector(IR_test, size = 3)
-  expect_true(all(IR_test == c(0.5, 0.3, 0.2)))
+  expect_equal(IR_test, c(0.5, 0.3, 0.2))
 })

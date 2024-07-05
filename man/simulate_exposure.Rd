@@ -13,7 +13,7 @@ simulate_exposure(
 )
 }
 \arguments{
-\item{x}{data frame or list of data frames.}
+\item{x}{data frame or list of data frames containing exposure data.}
 
 \item{expos_mean}{column name of mean values.}
 
@@ -25,20 +25,28 @@ than one row.}
 \item{n}{simulated sample size.}
 }
 \value{
-A list of matrices containing inhalation rates. Matrix columns are
+list of matrices containing inhalation rates. Matrix columns are
 named using the values in the \code{expos_label} column for more than one data
-frame row.
+frame row. Columns are sorted to have consistent order across functions.
 }
 \description{
 Simulate external exposure
 }
 \examples{
-data <- split(geo_tox_data$exposure, ~FIPS)
-
 # Single data frame
-simulate_exposure(data[[1]], n = 5)
+x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
+simulate_exposure(x, n = 5)
 
-# List of data frames
-simulate_exposure(data[1:3], n = 5)
+# List of 2 data frames
+y <- data.frame(mean = 4:6, sd = (1:3) / 10, casn = letters[1:3])
+simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
+
+# Input has custom column names
+z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chem = letters[1:3])
+simulate_exposure(z,
+                  expos_mean = "ave",
+                  expos_sd = "stdev",
+                  expos_label = "chem",
+                  n = 5)
 
 }
