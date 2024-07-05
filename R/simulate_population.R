@@ -2,16 +2,16 @@
 #' 
 #' @description Simulate population data for given input fields
 #'
-#' @param x GeoTox object
+#' @param x GeoTox object.
 #' @param age input `x` to function [simulate_age]. After simulating ages, the
 #' inhalation rate is subsequently calculated using [simulate_inhalation_rate].
-#' @param obesity input `x` to function [simulate_obesity]
-#' @param exposure input `x` to function [simulate_exposure]
-#' @param simulated_css input `simulated_css` to function [sample_Css]
-#' @param n simulated sample size
-#' @param ... additional arguments passed to other functions
+#' @param obesity input `x` to function [simulate_obesity].
+#' @param exposure input `x` to function [simulate_exposure].
+#' @param simulated_css input `simulated_css` to function [sample_Css].
+#' @param n simulated sample size.
+#' @param ... additional arguments passed to other functions.
 #'
-#' @return The same object with simulated fields added
+#' @return The same object with simulated fields added.
 #' @export
 #'
 #' @seealso [simulate_age], [simulate_inhalation_rate], [simulate_obesity],

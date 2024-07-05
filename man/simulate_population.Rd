@@ -15,23 +15,23 @@ simulate_population(
 )
 }
 \arguments{
-\item{x}{GeoTox object}
+\item{x}{GeoTox object.}
 
 \item{age}{input \code{x} to function \link{simulate_age}. After simulating ages, the
 inhalation rate is subsequently calculated using \link{simulate_inhalation_rate}.}
 
-\item{obesity}{input \code{x} to function \link{simulate_obesity}}
+\item{obesity}{input \code{x} to function \link{simulate_obesity}.}
 
-\item{exposure}{input \code{x} to function \link{simulate_exposure}}
+\item{exposure}{input \code{x} to function \link{simulate_exposure}.}
 
-\item{simulated_css}{input \code{simulated_css} to function \link{sample_Css}}
+\item{simulated_css}{input \code{simulated_css} to function \link{sample_Css}.}
 
-\item{n}{simulated sample size}
+\item{n}{simulated sample size.}
 
-\item{...}{additional arguments passed to other functions}
+\item{...}{additional arguments passed to other functions.}
 }
 \value{
-The same object with simulated fields added
+The same object with simulated fields added.
 }
 \description{
 Simulate population data for given input fields

@@ -2,20 +2,27 @@
 % Please edit documentation in R/set_boundaries.R
 \name{set_boundaries}
 \alias{set_boundaries}
-\title{Title}
+\title{Set GeoTox boundaries}
 \usage{
 set_boundaries(x, region = NULL, group = NULL)
 }
 \arguments{
-\item{x}{.}
+\item{x}{GeoTox object.}
 
-\item{region}{.}
+\item{region}{"sf" data.frame mapping features to a "geometry" column. Used
+when coloring map regions.}
 
-\item{group}{.}
+\item{group}{"sf" data.frame containing a "geometry" column. Used to draw
+outlines around groups of regions.}
 }
 \value{
-.
+GeoTox object with boundaries set.
 }
 \description{
-Title
+Set GeoTox boundaries
+}
+\examples{
+x <- GeoTox() |> 
+  set_boundaries(region = geo_tox_data$boundaries$county,
+                 group  = geo_tox_data$boundaries$state)
 }

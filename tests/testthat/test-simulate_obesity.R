@@ -19,9 +19,8 @@ test_that("expected output", {
                               obes_label = "label",
                               n = 5)
   
-  expect_length(obesity, nrow(x))
+  expect_equal(names(obesity), c("1", "2"))
   expect_true(all(obesity[[1]] == "Normal"))
   expect_true(all(obesity[[2]] == "Obese"))
-  expect_true(all(names(obesity) == c("1", "2")))
   
 })
