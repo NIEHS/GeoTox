@@ -54,3 +54,12 @@ rsconnect/
 .Rproj.user
 inst/doc
 docs
+
+# Various data not to be included in the package
+data-raw/
+data/geo_tox_data_manuscript.RData
+
+# bash script files
+*.error
+*.log
+*.sh
