@@ -1,5 +1,6 @@
 # macOS
 .DS_Store
+._.DS_Store
 
 # History files
 .Rhistory
@@ -56,5 +57,13 @@ inst/doc
 docs
 
 # Raw Data for producing package data
-data-raw/
+data-raw/*
+
 data/geo_tox_data_manuscript.RData
+
+# bash scripts
+*.sh
+*.log
+*.error
+*.out
+

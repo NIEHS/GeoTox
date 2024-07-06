@@ -27,7 +27,7 @@ base_path <- "/ddn/gs1/home/messierkp/group_prj_local/GeoTox"
 
 set.seed(2357)
 
-n <- 500 # Sample size
+n <- 50 # Sample size
 m <- 100 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
 
@@ -73,7 +73,7 @@ geoTox
 Plot outputs
 
 ```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
-plot(geoTox, quantiles = 0.975, quantile_labels = "upper 95th percentile")
+plot(geoTox, quantiles = 0.5, quantile_labels = "median")
 plot(geoTox, type = "hill")
 plot(geoTox, type = "exposure")
 plot(geoTox, type = "sensitivity")
