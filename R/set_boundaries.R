@@ -6,10 +6,11 @@
 #'
 #' @return .
 #' @export
-set_boundaries <- function(x, region = NULL, group = NULL) {
+set_boundaries <- function(x, region = NULL, group = NULL, individuals = NULL) {
   x$boundaries <- list(
     region = region,
-    group = group
+    group = group,
+    individuals = individuals
   )
   x
 }
