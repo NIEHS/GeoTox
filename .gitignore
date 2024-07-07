@@ -1,6 +1,8 @@
 # macOS
 .DS_Store
 ._.DS_Store
+._*
+._.*
 
 # History files
 .Rhistory
