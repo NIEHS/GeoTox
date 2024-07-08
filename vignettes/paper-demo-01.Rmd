@@ -43,7 +43,8 @@ dose_response <- geo_tox_data$dose_response |>
   filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
          call == "Active")
 hill_params <- fit_hill(split(dose_response, ~casn))
-hill_filter <- hill_params$logAC50.sd < 0.95 * hill_params$logAC50
+# hill_filter <- hill_params$logAC50.sd < 0.95 * hill_params$logAC50
+hill_filter <- rep(TRUE,8)
 casn <- sort(unique(dose_response$casn))[hill_filter]
 exposure <- geo_tox_data$exposure |> filter(CASRN %in% .env$casn)
 simulated_css <- geo_tox_data$simulated_css[casn]

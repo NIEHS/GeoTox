@@ -110,7 +110,7 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
     control = list(
       fnscale = -1,
       maxit = 10000,
-      reltol = 1e-10
+      factr = 1e-10
     )
   )
 
