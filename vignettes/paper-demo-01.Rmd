@@ -38,7 +38,7 @@ load(paste0(base_path,"/data/geo_tox_data_manuscript.RData"))
 
 # Analysis of single assay
 
-```{r}
+```{r, Calculating necessary inputs}
 dose_response <- geo_tox_data$dose_response |> 
   filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
          call == "Active")
@@ -51,7 +51,7 @@ simulated_css <- geo_tox_data$simulated_css[casn]
 
 Create object, run simulations and computations
 
-```{r}
+```{r, Running the full GeoTox analysis}
 suppressWarnings(
   geoTox <- GeoTox() |> 
     # Set region and group boundaries (for plotting)
@@ -75,7 +75,7 @@ geoTox
 
 Plot outputs
 
-```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center', plotting}
 plot(geoTox, quantiles = 0.5, quantile_labels = "median")
 plot(geoTox, type = "hill")
 plot(geoTox, type = "exposure")
