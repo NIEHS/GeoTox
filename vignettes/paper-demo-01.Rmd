@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 This vignette covers basic use of package functions. Package data, `geo_tox_data`, is used throughout the examples and details on how it was created can be found in the "GeoTox Package Data" vignette.
 
 ```{r setup}
+
+pak::pkg_install("NIEHS/GeoTox@sm-kpm-dev")
 library(GeoTox)
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -27,10 +29,9 @@ base_path <- "/ddn/gs1/home/messierkp/group_prj_local/GeoTox"
 
 set.seed(2357)
 
-n <- 50 # Sample size
+n <- 500 # Sample size
 m <- 100 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
-
 # Load new geo_tox_data, not in package yet
 load(paste0(base_path,"/data/geo_tox_data_manuscript.RData"))
 ```
@@ -41,7 +42,9 @@ load(paste0(base_path,"/data/geo_tox_data_manuscript.RData"))
 dose_response <- geo_tox_data$dose_response |> 
   filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
          call == "Active")
-casn <- sort(unique(dose_response$casn))
+hill_params <- fit_hill(split(dose_response, ~casn))
+hill_filter <- hill_params$logAC50.sd < 0.95 * hill_params$logAC50
+casn <- sort(unique(dose_response$casn))[hill_filter]
 exposure <- geo_tox_data$exposure |> filter(CASRN %in% .env$casn)
 simulated_css <- geo_tox_data$simulated_css[casn]
 ```
@@ -62,7 +65,7 @@ suppressWarnings(
                         simulated_css = simulated_css,
                         n             = n) |> 
     # Calculate response using estimated Hill parameters
-    calculate_response(hill_params = fit_hill(split(dose_response, ~casn))) |> 
+    calculate_response(hill_params) |> 
     # Perform sensitivity analysis
     sensitivity_analysis()
 )

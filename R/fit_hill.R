@@ -96,6 +96,7 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
     bounds <- bounds[-3, ]
   }
 
+  print("Using my adjustments to fit_hill.R")
   # Fit data
   fit <- stats::optim(
     par_init,
@@ -108,7 +109,8 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
     hessian = TRUE,
     control = list(
       fnscale = -1,
-      maxit = 10000
+      maxit = 10000,
+      reltol = 1e-10
     )
   )
 
