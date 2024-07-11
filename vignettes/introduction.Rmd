@@ -22,7 +22,7 @@ library(dplyr)
 
 set.seed(2357)
 
-n <- 5 # Sample size
+n <- 50 # Sample size
 m <- 100 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
 
