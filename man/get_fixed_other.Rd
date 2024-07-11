@@ -2,16 +2,29 @@
 % Please edit documentation in R/get_fixed_other.R
 \name{get_fixed_other}
 \alias{get_fixed_other}
-\title{Title}
+\title{Get median C_ss Values}
 \usage{
 get_fixed_other(C_ss)
 }
 \arguments{
-\item{C_ss}{.}
+\item{C_ss}{list of matrices containing C_ss data}
 }
 \value{
-.
+list of atomic vectors containing median C_ss values.
 }
 \description{
-Title
+Get median C_ss Values
+}
+\examples{
+# Generate input C_ss data
+age <- list(c(25, 35, 55),
+            c(15, 60))
+obesity <- list(c("Obese", "Normal", "Obese"),
+                c("Normal", "Normal"))
+C_ss <- sample_Css(simulated_css = geo_tox_data$simulated_css,
+                   age = age,
+                   obesity = obesity)
+
+# Get median C_ss values
+get_fixed_other(C_ss)
 }

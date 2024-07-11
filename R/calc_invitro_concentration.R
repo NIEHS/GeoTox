@@ -16,7 +16,7 @@ calc_invitro_concentration <- function(D_int, C_ss = NULL) {
 
   if (is.null(C_ss)) {
     # TODO add real-time computation of Css values
-    stop("real-time computation of Css values has not been implemented")
+    stop("real-time computation of C_ss values has not been implemented")
   }
 
   # TODO the current C_ss data passed into this for step 01-Sensitivity.R

@@ -22,7 +22,7 @@ library(dplyr)
 
 set.seed(2357)
 
-n <- 50 # Sample size
+n <- 5 # Sample size
 m <- 100 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
 
@@ -36,7 +36,9 @@ load("~/dev/GeoTox/data-new/geo_tox_data.RData")
 dose_response <- geo_tox_data$dose_response |> 
   filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
          call == "Active")
-casn <- sort(unique(dose_response$casn))
+hill_params <- fit_hill(split(dose_response, ~casn)) |> 
+  filter(!tp.sd.imputed, !logAC50.sd.imputed)
+casn <- sort(hill_params$name)
 exposure <- geo_tox_data$exposure |> filter(CASRN %in% .env$casn)
 simulated_css <- geo_tox_data$simulated_css[casn]
 ```
@@ -48,6 +50,8 @@ geoTox <- GeoTox() |>
   # Set region and group boundaries (for plotting)
   set_boundaries(region = geo_tox_data$boundaries$county,
                  group  = geo_tox_data$boundaries$state) |> 
+  # Estimated Hill parameters
+  set_hill_params(hill_params) |>
   # Simulate populations for each region
   simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
                       obesity       = geo_tox_data$obesity[idx, ],
@@ -55,8 +59,8 @@ geoTox <- GeoTox() |>
                       expos_label   = "CASRN",
                       simulated_css = simulated_css,
                       n             = n) |> 
-  # Calculate response using estimated Hill parameters
-  calculate_response(hill_params = fit_hill(split(dose_response, ~casn))) |> 
+  # Calculate response
+  calculate_response() |> 
   # Perform sensitivity analysis
   sensitivity_analysis()
 
