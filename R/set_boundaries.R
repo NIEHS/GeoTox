@@ -6,13 +6,13 @@
 #' @param group "sf" data.frame containing a "geometry" column. Used to draw
 #' outlines around groups of regions.
 #'
-#' @return GeoTox object with boundaries set.
+#' @return same GeoTox object with boundaries set.
+#' @export
 #' 
 #' @examples
-#' x <- GeoTox() |> 
+#' geoTox <- GeoTox() |> 
 #'   set_boundaries(region = geo_tox_data$boundaries$county,
 #'                  group  = geo_tox_data$boundaries$state)
-#' @export
 set_boundaries <- function(x, region = NULL, group = NULL) {
   
   if (!is.null(region) && (!inherits(region, "sf") |

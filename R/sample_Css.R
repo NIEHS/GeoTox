@@ -1,11 +1,11 @@
-#' Sample from pre-generated Css data
+#' Sample from pre-generated C_ss data
 #'
-#' @param simulated_css list of pre-generated Css data, for details see:
+#' @param simulated_css list of pre-generated C_ss data, for details see:
 #' \code{vignette("package_data", package = "GeoTox")}.
 #' @param age list or atomic vector of ages.
 #' @param obesity list or atomic vector of obesity status.
 #'
-#' @return list of matrices containing Css values. Columns are sorted to have
+#' @return list of matrices containing C_ss values. Columns are sorted to have
 #' consistent order across functions.
 #' 
 #' @examples
@@ -23,6 +23,14 @@ sample_Css <- function(simulated_css, age, obesity) {
 
   if (!is.list(age)) age <- list(age)
   if (!is.list(obesity)) obesity <- list(obesity)
+  
+  if (.check_lengths(age, obesity)) {
+    stop("Names and lengths of 'age' and 'obesity' fields must be equal",
+         call. = FALSE)
+  }
+  if (length(age) == 0) {
+    stop("'age' and 'obesity' data has not been simulated", call. = FALSE)
+  }
 
   mapply(
     function(age, obesity) {

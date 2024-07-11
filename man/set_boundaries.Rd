@@ -16,13 +16,13 @@ when coloring map regions.}
 outlines around groups of regions.}
 }
 \value{
-GeoTox object with boundaries set.
+same GeoTox object with boundaries set.
 }
 \description{
 Set GeoTox boundaries
 }
 \examples{
-x <- GeoTox() |> 
+geoTox <- GeoTox() |> 
   set_boundaries(region = geo_tox_data$boundaries$county,
                  group  = geo_tox_data$boundaries$state)
 }

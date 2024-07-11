@@ -1,3 +1,13 @@
+test_that("bad inputs", {
+  # Missing age/obesity data
+  expect_error(sample_Css(age = c(), obesity = c()))
+  # Age/obesity data do not match lengths
+  expect_error(sample_Css(age = 1:3, obesity = c("Normal", "Obese")))
+  # Age/obesity data do not match names
+  expect_error(sample_Css(age = list("a" = 1:2),
+                          obesity = list("b" = c("Normal", "Obese"))))
+})
+
 test_that("expected results", {
   
   x <- y <- expand.grid(age_min = seq(0, 50, 10), weight = c("Normal", "Obese"))

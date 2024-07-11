@@ -17,7 +17,7 @@
 #' simulate_exposure(x, n = 5)
 #' 
 #' # List of 2 data frames
-#' y <- data.frame(mean = 4:6, sd = (1:3) / 10, casn = letters[1:3])
+#' y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
 #' simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
 #' 
 #' # Input has custom column names

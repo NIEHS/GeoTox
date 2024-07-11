@@ -10,7 +10,6 @@ simulate_population(
   obesity = NULL,
   exposure = NULL,
   simulated_css = NULL,
-  n = 1000,
   ...
 )
 }
@@ -24,11 +23,10 @@ inhalation rate is subsequently calculated using \link{simulate_inhalation_rate}
 
 \item{exposure}{input \code{x} to function \link{simulate_exposure}.}
 
-\item{simulated_css}{input \code{simulated_css} to function \link{sample_Css}.}
+\item{simulated_css}{input \code{simulated_css} to functions \link{sample_Css} and
+\link{get_fixed_css}.}
 
-\item{n}{simulated sample size.}
-
-\item{...}{additional arguments passed to other functions.}
+\item{...}{additional arguments passed to other functions. See details.}
 }
 \value{
 The same object with simulated fields added.
@@ -36,17 +34,20 @@ The same object with simulated fields added.
 \description{
 Simulate population data for given input fields
 }
-\examples{
-x <- simulate_population(
-  GeoTox(),
-  age = split(geo_tox_data$age, ~FIPS)[1:5],
-  obesity = geo_tox_data$obesity[1:5, ],
-  exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
-  simulated_css = geo_tox_data$simulated_css,
-  n = 10
-)
+\details{
+Additional parameters include \code{n} for sample size,
+\code{IR_params} for \link{simulate_inhalation_rate},
+\code{obes_prev}, \code{obes_sd}, and \code{obes_label} for \link{simulate_obesity},
+and \code{expos_mean}, \code{expos_sd}, and \code{expos_label} for \link{simulate_exposure}.
 }
-\seealso{
-\link{simulate_age}, \link{simulate_inhalation_rate}, \link{simulate_obesity},
-\link{simulate_exposure}, \link{sample_Css}
+\examples{
+# For information about geo_tox_data, see:
+# vignette("package_data", package = "GeoTox")
+
+geoTox <- GeoTox() |> 
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[1:5],
+                      obesity = geo_tox_data$obesity[1:5, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
+                      simulated_css = geo_tox_data$simulated_css,
+                      n = 10)
 }
