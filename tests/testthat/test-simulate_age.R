@@ -1,24 +1,19 @@
-test_that("simulate_age returns errors from bad inputs", {
-  # errors from bad input
-  expect_error(simulate_age(data.frame()))
-  # errors from bad order
+test_that("bad inputs", {
+  # Input should be a data frame or list of data frames
+  expect_error(simulate_age(c()))
+  # Expected column names
+  expect_error(simulate_age(data.frame(x = 0, y = 0)))
+  # Too few rows
   expect_error(simulate_age(data.frame(AGEGRP = 0, TOT_POP = 0)))
-  #
 })
 
+test_that("expected output", {
 
-test_that("age samples are good", {
-
-  x <- data.frame(AGEGRP = 0:18, TOT_POP = c(sum(1:18), 1:18))
+  x <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
+  x$TOT_POP[c(1, 10)] <- 100 # populate only age range 40-44
   ages_test <- simulate_age(x, 10)[[1]]
 
+  expect_vector(ages_test, size = 10)
+  expect_true(all(ages_test >= 40 & ages_test < 45))
 
-  # age sample is of size "n"
-  expect_vector(ages_test,size = 10)
-
-  # age samples are within allowed age range [0,90] t
-  expect_true(all(ages_test < 90 & ages_test >= 0))
-
-
-  #
 })

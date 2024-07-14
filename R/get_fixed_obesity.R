@@ -1,12 +1,18 @@
-#' Title
+#' Get C_ss Data for Fixed Obesity Status
 #'
-#' @param obesity x
-#' @param simulated_css x
+#' @param simulated_css list of pre-generated C_ss data, for details see:
+#' \code{vignette("package_data", package = "GeoTox")}.
+#' @param obesity list of atomic vectors containing obesity status.
 #'
-#' @return x
+#' @return list of matrices containing median C_ss values.
 #' @importFrom rlang .data
 #' @export
-get_fixed_obesity <- function(obesity, simulated_css) {
+#' 
+#' @examples
+#' get_fixed_obesity(simulated_css = geo_tox_data$simulated_css,
+#'                   obesity = list(c("Obese", "Normal", "Obese"),
+#'                                  c("Normal", "Normal")))
+get_fixed_obesity <- function(simulated_css, obesity) {
   
   if (!is.list(obesity)) obesity <- list(obesity)
   

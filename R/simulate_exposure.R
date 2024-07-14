@@ -1,24 +1,32 @@
 #' Simulate external exposure
 #'
-#' @param x data frame or list of data frames.
+#' @param x data frame or list of data frames containing exposure data.
 #' @param expos_mean column name of mean values.
 #' @param expos_sd column name of standard deviations.
 #' @param expos_label column name of labeling term, required if `x` has more
 #' than one row.
 #' @param n simulated sample size.
 #'
-#' @return A list of matrices containing inhalation rates. Matrix columns are
+#' @return list of matrices containing inhalation rates. Matrix columns are
 #' named using the values in the `expos_label` column for more than one data
-#' frame row.
+#' frame row. Columns are sorted to have consistent order across functions.
 #'
 #' @examples
-#' data <- split(geo_tox_data$exposure, ~FIPS)
-#'
 #' # Single data frame
-#' simulate_exposure(data[[1]], n = 5)
-#'
-#' # List of data frames
-#' simulate_exposure(data[1:3], n = 5)
+#' x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
+#' simulate_exposure(x, n = 5)
+#' 
+#' # List of 2 data frames
+#' y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
+#' simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
+#' 
+#' # Input has custom column names
+#' z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chem = letters[1:3])
+#' simulate_exposure(z,
+#'                   expos_mean = "ave",
+#'                   expos_sd = "stdev",
+#'                   expos_label = "chem",
+#'                   n = 5)
 #'
 #' @export
 simulate_exposure <- function(x,
@@ -45,7 +53,8 @@ simulate_exposure <- function(x,
       # Have consistent output order
       out <- out[, order(colnames(out)), drop = FALSE]
     } else if (nrow(df) > 1) {
-      stop("x data frames must contain a column named by 'expos_label'")
+      stop("x data frames must contain a column named by 'expos_label'",
+           call. = FALSE)
     }
     out
   })
