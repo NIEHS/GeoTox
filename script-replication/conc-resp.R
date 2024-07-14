@@ -20,33 +20,11 @@ ice_data <- cdat; rm(cdat)
 ice_conc_resp <- split(as.data.frame(ice_data), ~casn)
 
 # Fit first chemical
-fit_3param <- fit_hill(
-  ice_conc_resp[[1]]$logc,
-  ice_conc_resp[[1]]$resp,
-  fixed_slope = FALSE
-)
-fit_2param <- fit_hill(
-  ice_conc_resp[[1]]$logc,
-  ice_conc_resp[[1]]$resp
-)
+fit_2param <- fit_hill(ice_conc_resp[[1]])
+fit_3param <- fit_hill(ice_conc_resp[[1]], fixed_slope = FALSE)
 
 # Make plot
-log10_x <- seq(-3, 3, length.out = 100)
-
-par <- fit_3param$par
-y_3param <- par["tp"] / (1 + 10^((par["logAC50"] - log10_x) * par["slope"]))
-
-par <- fit_2param$par
-y_2param <- par["tp"] / (1 + 10^(par["logAC50"] - log10_x))
-
-df <- rbind(
-  tibble(x = 10^log10_x, y = y_3param, fixed_slope = FALSE),
-  tibble(x = 10^log10_x, y = y_2param, fixed_slope = TRUE)
-)
-
-ggplot(df, aes(x, y, color = fixed_slope)) +
-  geom_line(show.legend = FALSE) +
-  scale_x_log10(labels = scales::label_math(10^.x, format = log10))
+plot_hill(rbind(fit_2param, fit_3param)) + theme(legend.position = "none")
 
 #===============================================================================
 # Compare to GeoToxMIE
@@ -83,12 +61,13 @@ rbind(
 
 # Run line 48
 
-all.equal(my.2hill.mdl, fit_2param)
+all.equal(as.numeric(my.2hill.mdl$par[c("tp", "logAC50")]),
+          as.numeric(fit_2param[1, c("tp", "logAC50")]))
 
 rbind(
   "3-param" = my.3hill.mdl$par,
   "2-param" = c(my.2hill.mdl$par[1:2], 1, my.2hill.mdl$par[3]),
-  "new"     = c(fit_2param$par[1:2], 1, fit_2param$par[3])
+  "new"     = c(fit_2param[1, c("tp", "logAC50", "slope")], NA)
 )
 
 # Run lines 52-58
@@ -116,13 +95,7 @@ ice_data <- cdat; rm(cdat)
 ice_conc_resp <- split(as.data.frame(ice_data), ~casn)
 
 # Fit 2-parameter Hill model
-fits <- lapply(ice_conc_resp, function(df) {fit_hill(df$logc, df$resp)})
-
-fit_params <- extract_hill_params(fits) %>%
-  mutate(
-    casn = unname(sapply(ice_conc_resp, function(x) x$casn[1])),
-    chnm = unname(sapply(ice_conc_resp, function(x) x$chnm[1]))
-  )
+fit_params <- fit_hill(ice_conc_resp)
 
 # saveRDS(fit_params, "~/dev/GeoTox/outputs/fit_params.rds")
 
@@ -140,20 +113,7 @@ ggplot(fit_params, aes(logAC50, logAC50.sd)) +
   coord_cartesian(xlim = xylim, ylim = xylim)
 
 # Make plot
-log10_x <- seq(-3, 3, length.out = 100)
-
-y <- apply(fit_params, 1, function(par) {
-  tp      <- as.numeric(par["tp"])
-  logAC50 <- as.numeric(par["logAC50"])
-  tp / (1 + 10^(logAC50 - log10_x))
-})
-colnames(y) <- names(ice_conc_resp)
-
-df <- as_tibble(y) %>% mutate(x = 10^log10_x, .before = 1)
-
-ggplot(df %>% pivot_longer(!x), aes(x, value, color = name)) +
-  geom_line(show.legend = FALSE) +
-  scale_x_log10(labels = scales::label_math(10^.x, format = log10))
+plot_hill(fit_params) + theme(legend.position = "none")
 
 #===============================================================================
 # Compare to GeoToxMIE
@@ -166,12 +126,14 @@ source("~/github/GeoToxMIE/helper_functions/tcpl_2hill_obj.R")
 
 all.equal(
   df.params,
-  fit_params %>% select(-ends_with("imputed"), -chnm),
+  fit_params |> rename(casn = name) |> select(names(df.params)),
   check.attributes = FALSE,
   tolerance = 1e-7
 )
 
-# Run lines 54-67
+X <- 10^seq(log10(10^-1),log10(10^4),length.out = 10^3)
+
+# Run lines 55-67
 
 ggplot(df.plot,aes(X,value,color = variable)) +
   geom_line(show.legend = FALSE) +
@@ -181,14 +143,14 @@ ggplot(df.plot,aes(X,value,color = variable)) +
 
 i <- 1
 
-as_tibble(y) %>%
-  mutate(x = 10^log10_x, .before = 1) %>%
-  select(x, y = !!fit_params$casn[i]) %>%
-  ggplot(aes(x, y)) +
-  geom_line(show.legend = FALSE) +
-  geom_point(data = ice_conc_resp[[i]], aes(10^logc, resp)) +
-  scale_x_log10(labels = scales::label_math(10^.x, format = log10)) +
-  ggtitle(fit_params$chnm[i])
+plot_hill(fit_params[i, ]) +
+  theme(legend.position = "none") +
+  geom_point(data = ice_conc_resp[[i]],
+             aes(x = 10^logc, y = resp, color = NA)) +
+  ggtitle(ice_data |> 
+            distinct(casn, chnm) |> 
+            filter(casn == fit_params$name[i]) |> 
+            pull(chnm))
 
 df <- data.frame("X" = X,"Y" = val.2hill[,i])
 ggplot()+ geom_line(data = df,aes(X,Y))+

@@ -4,14 +4,12 @@
 \alias{calculate_response}
 \title{Calculate response}
 \usage{
-calculate_response(x, hill_params, ...)
+calculate_response(x, ...)
 }
 \arguments{
 \item{x}{GeoTox object}
 
-\item{hill_params}{output from \link{fit_hill}}
-
-\item{...}{additional arguments passed to other functions}
+\item{...}{additional arguments passed to other functions. See details.}
 }
 \value{
 The same object with additional fields added or updated
@@ -19,19 +17,24 @@ The same object with additional fields added or updated
 \description{
 Calculate mixture response for GeoTox population data
 }
+\details{
+Additional parameters include \code{time}, \code{BW}, and \code{scaling} for
+\link{calc_internal_dose}, and \code{tp_b_mult} for \link{calc_concentration_response}.
+}
 \examples{
-x <- simulate_population(
-  GeoTox(),
-  age = split(geo_tox_data$age, ~FIPS)[1:5],
-  obesity = geo_tox_data$obesity[1:5, ],
-  exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
-  simulated_css = geo_tox_data$simulated_css,
-  n = 10
-)
-hill_params <- fit_hill(split(geo_tox_data$dose_response, ~casn))
-x <- calculate_response(x, hill_params)
+# For information about geo_tox_data, see:
+# vignette("package_data", package = "GeoTox")
+
+geoTox <- GeoTox() |> 
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[1:5],
+                      obesity = geo_tox_data$obesity[1:5, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
+                      simulated_css = geo_tox_data$simulated_css,
+                      n = 10) |> 
+  set_hill_params(fit_hill(split(geo_tox_data$dose_response, ~casn))) |>
+  calculate_response()
 }
 \seealso{
-\link{fit_hill}, \link{calc_internal_dose}, \link{calc_invitro_concentration},
+\link{calc_internal_dose}, \link{calc_invitro_concentration},
 \link{calc_concentration_response}
 }

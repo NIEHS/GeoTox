@@ -25,6 +25,12 @@
 #' )
 #' simulate_inhalation_rate(ages)
 #'
+#' # Custom IR_params
+#' IR_params <- data.frame("age" = c(0, 20, 50),
+#'                         "mean" = c(0.5, 0.3, 0.2),
+#'                         "sd" = c(0.1, 0.06, 0.03))
+#' simulate_inhalation_rate(c(15, 30, 65), IR_params)
+#'
 #' @export
 simulate_inhalation_rate <- function(x, IR_params = NULL) {
 

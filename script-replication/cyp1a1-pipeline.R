@@ -494,11 +494,8 @@ MC_iter <- 10
 load("~/dev/GeoTox/data/css_by_county_20220228.RData")
 load("~/dev/GeoTox/data/CYP1A1_by_county_20220901.RData")
 load("~/dev/GeoTox/data/inhalation_dose_by_county_20220901.RData")
-load("~/dev/GeoTox/data/Hill_2param_model_fit.RData")
-hill2.fit <- df.params; rm(df.params)
 
 css.by.county <- lapply(css.by.county, \(x) x[1:MC_iter, ])
-cyp1a1_up.by.county <- lapply(cyp1a1_up.by.county, \(x) x[1:MC_iter, ])
 inhalation.dose.by.county <- lapply(inhalation.dose.by.county, \(x) x[1:MC_iter, ])
 
 # Replace missing values with mean
@@ -533,12 +530,11 @@ invitro_summary <- enframe(
 
 ########################################
 # concentration response
-concentration_response <- mapply(
-  calc_concentration_response,
-  resp = cyp1a1_up.by.county,
-  concentration = invitro_concentration,
+concentration_response <- calc_concentration_response(
+  C_invitro = invitro_concentration,
+  hill_params = cyp1a1_up.by.county[[1]],
   tp_b_mult = 1.2,
-  SIMPLIFY = FALSE
+  fixed = FALSE
 )
 
 #===============================================================================

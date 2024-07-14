@@ -55,8 +55,8 @@ calc_concentration_response <- function(C_invitro,
   logAC50 <- t(sapply(1:nrow(C_invitro), function(x) {
     truncnorm::rtruncnorm(
       1,
-      a    = hill_params$logc_min - 2,
-      b    = hill_params$logc_max + 0.5,
+      a    = hill_params$logc_min - 2.0001,
+      b    = hill_params$logc_max + 0.5001,
       mean = hill_params$logAC50,
       sd   = if (fixed) 0 else hill_params$logAC50.sd
     )
