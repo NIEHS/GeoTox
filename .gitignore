@@ -54,3 +54,12 @@ rsconnect/
 .Rproj.user
 inst/doc
 docs
+
+data-raw/
+
+._*
+
+*.error
+*.log
+
+data/geo_tox_data_manuscript.RData
