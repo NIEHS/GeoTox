@@ -2,18 +2,23 @@
 % Please edit documentation in R/get_fixed_params.R
 \name{get_fixed_params}
 \alias{get_fixed_params}
-\title{Title}
+\title{Get C_ss Data for Fixed C_ss Generation Parameters}
 \usage{
-get_fixed_params(age, simulated_css)
+get_fixed_params(simulated_css, age)
 }
 \arguments{
-\item{age}{x}
+\item{simulated_css}{list of pre-generated C_ss data, for details see:
+\code{vignette("package_data", package = "GeoTox")}.}
 
-\item{simulated_css}{x}
+\item{age}{list of atomic vectors containing ages.}
 }
 \value{
-x
+list of matrices containing C_ss values.
 }
 \description{
-Title
+Get C_ss Data for Fixed C_ss Generation Parameters
+}
+\examples{
+get_fixed_params(simulated_css = geo_tox_data$simulated_css,
+                 age = list(c(25, 35, 55), c(15, 60)))
 }

@@ -10,6 +10,7 @@
 #'
 #' @return ggplot2 figure object
 #' @importFrom rlang .data .env
+#' @importFrom sf st_as_sf
 #' @export
 plot_resp <- function(
     resp,

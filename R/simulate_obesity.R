@@ -10,13 +10,21 @@
 #' @return List of arrays containing simulated obesity status.
 #'
 #' @examples
-#' simulate_obesity(geo_tox_data$obesity[1, ], n = 4)
-#'
-#' simulate_obesity(geo_tox_data$obesity[1:5, ], n = 10)
-#'
-#' df <- data.frame(label = letters[1:3], prev = c(20, 50, 80), sd = c(5, 5, 5))
-#' simulate_obesity(df, obes_label = "label", obes_prev = "prev",
-#'                  obes_sd = "sd", n = 10)
+#' # Input has default column names
+#' df <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
+#'                  OBESITY_SD = c(5, 5, 5),
+#'                  FIPS = letters[1:3])
+#' simulate_obesity(df, n = 5)
+#' 
+#' # Input has custom column names
+#' df <- data.frame(prev = c(20, 50, 80),
+#'                  sd = c(5, 5, 5),
+#'                  label = letters[1:3])
+#' simulate_obesity(df,
+#'                  obes_prev = "prev",
+#'                  obes_sd = "sd",
+#'                  obes_label = "label",
+#'                  n = 5)
 #'
 #' @export
 simulate_obesity <- function(x,
