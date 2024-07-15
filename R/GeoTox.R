@@ -11,15 +11,41 @@
 #' @seealso [plot_resp], [plot_hill], [plot_exposure], [plot_sensitivity]
 #' @export
 GeoTox <- function() {
-  structure(list(), names = character(0), class = "GeoTox")
+  structure(
+    list(
+      par = list(
+        n = 1e3,
+        IR_params = NULL,
+        obesity = list(
+          obes_prev  = "OBESITY_CrudePrev",
+          obes_sd    = "OBESITY_SD",
+          obes_label = "FIPS"
+        ),
+        exposure = list(
+          expos_mean  = "mean",
+          expos_sd    = "sd",
+          expos_label = "casn"
+        ),
+        internal_dose = list(
+          time    = 1,
+          BW      = 1,
+          scaling = 1
+        ),
+        resp = list(
+          tp_b_mult = 1.5
+        )
+      )
+    ),
+    class = "GeoTox")
 }
 
 #' @export
 print.GeoTox <- function(x, ...) {
   
-  default_names <- c("age", "IR", "obesity", "C_ext", "C_ss",
-                     "D_int", "C_invitro", "resp")
-  other_names <- setdiff(names(x), default_names)
+  names_simulated <- c("age", "IR", "obesity", "C_ext", "C_ss")
+  names_computed <- c("D_int", "C_invitro", "resp")
+  names_other <- setdiff(names(x),
+                         c(names_simulated, names_computed))
   
   get_info <- function(names) {
     info <- lapply(names, \(name) {
@@ -52,21 +78,41 @@ print.GeoTox <- function(x, ...) {
     do.call(rbind, info)
   }
   
-  info <- get_info(default_names)
-  info <- info[info$Class != "", , drop = FALSE]
+  info_simulated <- get_info(names_simulated)
+  info_simulated <- info_simulated[info_simulated$Class != "", , drop = FALSE]
+  info_computed <- get_info(names_computed)
+  info_computed <- info_computed[info_computed$Class != "", , drop = FALSE]
   
   cat("GeoTox object\n")
-  if (nrow(info) > 0) {
-    cat("Regions: ", length(x[[info$Name[1]]]), "\n", sep = "")
-    cat("Population: ", x$inputs$n, "\n", sep = "")
-    cat("Fields:\n")
-    print(info, row.names = FALSE, print.gap = 2)
+  if (nrow(info_simulated) > 0) {
+    n_regions <- length(x[[info_simulated$Name[1]]])
+  } else if (nrow(info_computed) > 0) {
+    n_regions <- length(x[[info_computed$Name[1]]])
+  } else {
+    n_regions <- 0
   }
-  # if (length(other_names) > 0) {
-  #   cat("Other:\n  ")
-  #   cat(paste(other_names, collapse = ", "))
-  #   cat("\n")
-  # }
+  cat("Regions: ", n_regions, "\n", sep = "")
+  cat("Population: ", x$par$n, "\n", sep = "")
+  cat("Simulated Fields:")
+  if (nrow(info_simulated) > 0) {
+    cat("\n")
+    print(info_simulated, row.names = FALSE, print.gap = 2)
+  } else {
+    cat(" None\n")
+  }
+  cat("Computed Fields:")
+  if (nrow(info_computed) > 0) {
+    cat("\n")
+    print(info_computed, row.names = FALSE, print.gap = 2)
+  } else {
+    cat(" None\n")
+  }
+  cat("Other Fields:")
+  if (length(names_other) > 0) {
+    cat(" ", paste(names_other, collapse = ", "), "\n", sep = "")
+  } else {
+    cat(" None\n")
+  }
 }
 
 #' @rdname GeoTox
@@ -80,8 +126,8 @@ plot.GeoTox <- function(x,
                           region_boundary = x$boundaries$region,
                           group_boundary  = x$boundaries$group,
                           ...),
-         hill = plot_hill(x$inputs$hill_params),
-         exposure = plot_exposure(x$inputs$exposure$x,
+         hill = plot_hill(x$hill_params),
+         exposure = plot_exposure(x$exposure,
                                   region_boundary = x$boundaries$region,
                                   group_boundary  = x$boundaries$group,
                                   ...),

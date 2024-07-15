@@ -16,216 +16,62 @@ knitr::opts_chunk$set(
 
 This vignette covers basic use of package functions. Package data, `geo_tox_data`, is used throughout the examples and details on how it was created can be found in the "GeoTox Package Data" vignette.
 
-```{r setup}
+```{r setup, message=FALSE}
 library(GeoTox)
-library(dplyr, warn.conflicts = FALSE)
-library(tidyr)
-library(ggplot2)
-library(scales)
-library(sf)
-library(ggpubr)
+library(dplyr)
 
-set.seed(1234)
+set.seed(2357)
 
-MC_iter <- 50
+n <- 50 # Sample size
+m <- 100 # Number of regions
+idx <- if (m < 100) sample(1:100, m) else 1:100
+
+# Load new geo_tox_data, not in package yet
+load("~/dev/GeoTox/data-new/geo_tox_data.RData")
 ```
 
-## Fit Hill model
+# Analysis of single assay
 
-Split dose response data into a list by chemical casn and then apply the `fit_hill` function to each of the chemicals. Note that estimates of `tp.sd` and `logAC50.sd` that are `NA` will be replaced with the corresponding `tp` and `logAC50` values. This imputation will be indicated by setting `tp.sd.imputed` and `logAC50.sd.imputed` to `TRUE`.
-
-```{r fit_params}
-data <- split(geo_tox_data$dose_response, ~casn)
-hill_2_params <- fit_hill(data)
-hill_3_params <- fit_hill(data, fixed_slope = FALSE)
+```{r}
+dose_response <- geo_tox_data$dose_response |> 
+  filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+         call == "Active")
+hill_params <- fit_hill(split(dose_response, ~casn)) |> 
+  filter(!tp.sd.imputed, !logAC50.sd.imputed)
+casn <- sort(hill_params$name)
+exposure <- geo_tox_data$exposure |> filter(CASRN %in% .env$casn)
+simulated_css <- geo_tox_data$simulated_css[casn]
 ```
 
-### Plot fits
+Create object, run simulations and computations
 
-```{r plot_function}
-plot_hill <- function(fit_params) {
+```{r, warning=FALSE}
+geoTox <- GeoTox() |> 
+  # Set region and group boundaries (for plotting)
+  set_boundaries(region = geo_tox_data$boundaries$county,
+                 group  = geo_tox_data$boundaries$state) |> 
+  # Estimated Hill parameters
+  set_hill_params(hill_params) |>
+  # Simulate populations for each region
+  simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
+                      obesity       = geo_tox_data$obesity[idx, ],
+                      exposure      = split(exposure, ~FIPS)[idx],
+                      expos_label   = "CASRN",
+                      simulated_css = simulated_css,
+                      n             = n) |> 
+  # Calculate response
+  calculate_response() |> 
+  # Perform sensitivity analysis
+  sensitivity_analysis()
 
-  log10_x <- seq(-1, 4, length.out = 100)
-
-  y <- apply(fit_params, 1, function(par) {
-    tp      <- as.numeric(par["tp"])
-    logAC50 <- as.numeric(par["logAC50"])
-    slope   <- as.numeric(par["slope"])
-    tp / (1 + 10^(slope * (logAC50 - log10_x)))
-  })
-  colnames(y) <- fit_params$name
-
-  as_tibble(y) %>%
-    mutate(conc = 10^log10_x, .before = 1) %>%
-    pivot_longer(!conc, values_to = "resp") %>%
-    ggplot(aes(conc, resp, color = name)) +
-    geom_line() +
-    scale_x_log10(labels = scales::label_math(10^.x, format = log10))
-}
+geoTox
 ```
 
-```{r plot_2_params, fig.height = 3, fig.width = 6, fig.align = "center"}
-plot_hill(hill_2_params)
-```
+Plot outputs
 
-```{r plot_3_params, fig.height = 3, fig.width = 6, fig.align = "center"}
-plot_hill(hill_3_params)
-```
-
-## Simulate Data
-
-```{r simulate_data}
-# Age
-age <- simulate_age(split(geo_tox_data$age, ~FIPS), n = MC_iter)
-
-# Obesity status
-obesity <- simulate_obesity(geo_tox_data$obesity, n = MC_iter)
-
-# Inhalation rate
-IR <- simulate_inhalation_rate(age)
-
-# External exposure concentration
-C_ext <- simulate_exposure(split(geo_tox_data$exposure, ~FIPS), n = MC_iter)
-
-# Sample from pre-simulated steady-state plasma concentration data
-C_ss <- sample_Css(geo_tox_data$simulated_css, age, obesity)
-```
-
-## Calculations
-
-```{r calculations}
-# Internal dose
-D_int <- calc_internal_dose(C_ext, IR, scaling = 1 / 1000)
-
-# in vitro concentration
-C_invitro <- calc_invitro_concentration(D_int, C_ss)
-
-# Concentration response
-resp <- calc_concentration_response(C_invitro, hill_2_params)
-```
-
-## Plots
-
-```{r plot_response, fig.height = 3.5, fig.width = 6, fig.align = "center"}
-resp_df <- tibble(
-  FIPS = names(resp),
-  data = resp
-) %>%
-  unnest(cols = data) %>%
-  pivot_longer(-FIPS, names_to = "health_measure") %>%
-  mutate(
-    health_measure = factor(
-      health_measure,
-      levels = c("GCA.Eff", "IA.eff", "GCA.HQ.10", "IA.HQ.10")
-    )
-  ) %>%
-  # Compute summary stats
-  summarize(
-    median = median(value , na.rm = TRUE),
-    quantile_05 = quantile(value, 0.05, na.rm = TRUE, names = FALSE),
-    quantile_95 = quantile(value, 0.95, na.rm = TRUE, names = FALSE),
-    .by = c(FIPS, health_measure)
-  ) %>%
-  pivot_longer(
-    cols = c(median, quantile_05, quantile_95),
-    names_to = "stat"
-  ) %>%
-  # Order stats
-  mutate(
-    stat = factor(stat, levels = c("quantile_05", "median", "quantile_95"))
-  ) %>%
-  # Add county boundaries
-  left_join(geo_tox_data$boundaries$county, by = join_by(FIPS)) %>%
-  st_as_sf()
-
-make_county_heatmap <- function(df, legend_name) {
-  ggplot(df, aes(fill = value)) +
-    # Plot county data using fill, hide county borders by setting color = NA
-    geom_sf(color = NA) +
-    # Add state borders
-    geom_sf(data = geo_tox_data$boundaries$state, fill = NA, size = 0.15) +
-    # Create separate plots for each stat
-    facet_wrap(
-      ~stat,
-      ncol = 3,
-      labeller = labeller(
-        stat = c(
-          "quantile_05" = "5th Percentile",
-          "median" = "Median",
-          "quantile_95" = "95th Percentile"
-        )
-      )
-    ) +
-    # Add fill scale
-    scale_fill_viridis_c(
-      name = legend_name,
-      direction = -1,
-      option = "A",
-      trans = "sqrt"
-    ) +
-    # Theme
-    theme_bw() +
-    theme(
-      text = element_text(size = 12),
-      legend.text = element_text(size = 8),
-      axis.ticks = element_blank(),
-      axis.text = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
-    )
-}
-
-GCA_Eff_plot <- make_county_heatmap(
-  resp_df %>% filter(health_measure == "GCA.Eff"),
-  paste("Predicted Response", "Log2 Fold Change", "mRNA Expression",sep = "\n")
-)
-
-HQ_10_plot <- make_county_heatmap(
-  resp_df %>% filter(health_measure == "IA.HQ.10"),
-  "Risk Quotient"
-)
-
-ggarrange(
-  GCA_Eff_plot , HQ_10_plot,
-  labels = c( "A", "B"),
-  vjust = 1,
-  align = "v",
-  nrow = 2,
-  font.label = list(size = 20, color = "black", face = "bold"),
-  common.legend = FALSE
-)
-```
-
-```{r plot_exposure, fig.height = 5, fig.width = 6, fig.align = "center"}
-exposure_df <- geo_tox_data$exposure %>%
-  left_join(hill_2_params, by = join_by(casn == name)) %>%
-  left_join(geo_tox_data$boundaries$county, by = join_by(FIPS)) %>%
-  st_as_sf()
-
-ggplot(exposure_df, aes(fill = norm)) +
-  geom_sf(color = NA) +
-  facet_wrap(~chemical, ncol = 2) +
-  # Recolor subset as light grey
-  geom_sf(
-    data = exposure_df %>% filter(mean == 0),
-    fill = "light grey",
-    color = "light grey",
-    lwd = 0.01
-  ) +
-  # State borders
-  geom_sf(data = geo_tox_data$boundaries$state, fill = NA, size = 0.15) +
-  scale_fill_viridis_c(
-    name = "Normalized\nConcentration",
-    direction = -1,
-    option = "A"
-  ) +
-  theme_bw() +
-  theme(
-    axis.ticks = element_blank(),
-    axis.text = element_blank(),
-    strip.text = element_text(size = 6),
-    text = element_text(size = 12),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+plot(geoTox)
+plot(geoTox, type = "hill")
+plot(geoTox, type = "exposure")
+plot(geoTox, type = "sensitivity")
 ```
