@@ -21,6 +21,7 @@ Imports:
     stats,
     tibble,
     tidyr,
+    tidyselect,
     truncnorm,
     utils
 Suggests: 

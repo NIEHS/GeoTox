@@ -3,7 +3,7 @@
 \docType{data}
 \name{geo_tox_data}
 \alias{geo_tox_data}
-\title{Geo Tox data}
+\title{GeoTox data}
 \format{
 A list with items:
 \describe{

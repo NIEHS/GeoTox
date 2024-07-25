@@ -4,12 +4,21 @@
 \alias{plot_sensitivity}
 \title{Title}
 \usage{
-plot_sensitivity(x, param = "GCA.Eff", y = "", xlab = param, ylab = "")
+plot_sensitivity(
+  x,
+  metric = "GCA.Eff",
+  assay = NULL,
+  y = "",
+  xlab = metric,
+  ylab = ""
+)
 }
 \arguments{
 \item{x}{.}
 
-\item{param}{.}
+\item{metric}{.}
+
+\item{assay}{.}
 
 \item{y}{.}
 

@@ -19,48 +19,34 @@ This vignette covers basic use of package functions. Package data, `geo_tox_data
 ```{r setup, message=FALSE}
 library(GeoTox)
 library(dplyr)
-
-set.seed(2357)
-
-n <- 50 # Sample size
-m <- 100 # Number of regions
-idx <- if (m < 100) sample(1:100, m) else 1:100
-
-# Load new geo_tox_data, not in package yet
-load("~/dev/GeoTox/data-new/geo_tox_data.RData")
+n <- 100 # Sample size
 ```
 
-# Analysis of single assay
+> **NOTE:** The sample size here is the size of the simulated population in each region. This is different than the sample size in the "package_data" vignette, which is used to generate C_ss values for each chemical at specified age and weight combinations.
+
+## Analysis of single assay
+
+Create GeoTox object, run simulations and computations
 
 ```{r}
-dose_response <- geo_tox_data$dose_response |> 
-  filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-         call == "Active")
-hill_params <- fit_hill(split(dose_response, ~casn)) |> 
-  filter(!tp.sd.imputed, !logAC50.sd.imputed)
-casn <- sort(hill_params$name)
-exposure <- geo_tox_data$exposure |> filter(CASRN %in% .env$casn)
-simulated_css <- geo_tox_data$simulated_css[casn]
-```
-
-Create object, run simulations and computations
-
-```{r, warning=FALSE}
+set.seed(2357)
 geoTox <- GeoTox() |> 
   # Set region and group boundaries (for plotting)
   set_boundaries(region = geo_tox_data$boundaries$county,
                  group  = geo_tox_data$boundaries$state) |> 
-  # Estimated Hill parameters
-  set_hill_params(hill_params) |>
   # Simulate populations for each region
-  simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
-                      obesity       = geo_tox_data$obesity[idx, ],
-                      exposure      = split(exposure, ~FIPS)[idx],
-                      expos_label   = "CASRN",
-                      simulated_css = simulated_css,
+  simulate_population(age           = split(geo_tox_data$age, ~FIPS),
+                      obesity       = geo_tox_data$obesity,
+                      exposure      = split(geo_tox_data$exposure, ~FIPS),
+                      simulated_css = geo_tox_data$simulated_css,
                       n             = n) |> 
+  # Estimated Hill parameters
+  set_hill_params(geo_tox_data$dose_response |>
+                    filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
+                    fit_hill(chem = "casn") |> 
+                    filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
   # Calculate response
-  calculate_response() |> 
+  calculate_response() |>
   # Perform sensitivity analysis
   sensitivity_analysis()
 
@@ -72,6 +58,57 @@ Plot outputs
 ```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox)
 plot(geoTox, type = "hill")
-plot(geoTox, type = "exposure")
 plot(geoTox, type = "sensitivity")
+```
+
+## Analysis of multiple assay
+
+Create GeoTox object, run simulations and computations
+
+```{r}
+set.seed(2357)
+geoTox <- GeoTox() |> 
+  # Set region and group boundaries (for plotting)
+  set_boundaries(region = geo_tox_data$boundaries$county,
+                 group  = geo_tox_data$boundaries$state) |> 
+  # Simulate populations for each region
+  simulate_population(age           = split(geo_tox_data$age, ~FIPS),
+                      obesity       = geo_tox_data$obesity,
+                      exposure      = split(geo_tox_data$exposure, ~FIPS),
+                      simulated_css = geo_tox_data$simulated_css,
+                      n             = n) |> 
+  # Estimated Hill parameters
+  set_hill_params(geo_tox_data$dose_response |>
+                    fit_hill(assay = "endp", chem = "casn") |> 
+                    filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
+  # Calculate response
+  calculate_response() |>
+  # Perform sensitivity analysis
+  sensitivity_analysis()
+
+geoTox
+```
+
+Plot outputs
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+plot(geoTox)
+plot(geoTox, assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+plot(geoTox, type = "hill")
+plot(geoTox, type = "sensitivity")
+plot(geoTox, type = "sensitivity", assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+```
+
+## Exposure Map
+
+The exposure map is the same for both single and multiple assay analyses. The map shows the distribution of chemical exposure across regions for all chemicals, not just those used in a particular analysis.
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+plot(geoTox, type = "exposure", ncol = 5)
+```
+
+If other facet labels are present they can be specified using the `chem_label` argument.
+
+```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+plot(geoTox, type = "exposure", chem_label = "chnm", ncol = 5)
 ```

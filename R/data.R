@@ -1,4 +1,4 @@
-#' Geo Tox data
+#' GeoTox data
 #'
 #' Sample data for use in vignettes and function examples. See the
 #' "package_data" vignette for details on how this data was gathered.
