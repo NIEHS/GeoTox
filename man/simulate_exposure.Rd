@@ -8,7 +8,7 @@ simulate_exposure(
   x,
   expos_mean = "mean",
   expos_sd = "sd",
-  expos_label = "casn",
+  expos_label = "CASRN",
   n = 1000
 )
 }
@@ -34,11 +34,11 @@ Simulate external exposure
 }
 \examples{
 # Single data frame
-x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
+x <- data.frame(mean = 1:3, sd = (1:3) / 10, CASRN = letters[1:3])
 simulate_exposure(x, n = 5)
 
 # List of 2 data frames
-y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
+y <- data.frame(mean = 4:6, sd = 0.1, CASRN = letters[1:3])
 simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
 
 # Input has custom column names

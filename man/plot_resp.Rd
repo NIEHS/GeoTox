@@ -9,26 +9,32 @@ plot_resp(
   region_boundary,
   group_boundary = NULL,
   metric = c("GCA.Eff", "IA.Eff", "GCA.HQ.10", "IA.HQ.10"),
+  assay = NULL,
   quantiles = c(0.5),
   quantile_labels = c("Median")
 )
 }
 \arguments{
-\item{resp}{.}
+\item{resp}{calculated mixture response from \link{calculate_response}.}
 
-\item{region_boundary}{.}
+\item{region_boundary}{"sf" data.frame mapping features to a "geometry"
+column. Used to color map regions.}
 
-\item{group_boundary}{.}
+\item{group_boundary}{"sf" data.frame containing a "geometry" column. Used
+to draw outlines around groups of regions.}
 
 \item{metric}{response metric, one of "GCA.Eff", "IA.Eff", "GCA.HQ.10"
-or "IA.HQ.10"}
+or "IA.HQ.10".}
 
-\item{quantiles}{quantiles to plot}
+\item{assay}{assay to plot. If NULL and multiple assays exist, then the
+first assay is used.}
 
-\item{quantile_labels}{labels for quantiles}
+\item{quantiles}{quantiles to plot.}
+
+\item{quantile_labels}{labels for quantiles.}
 }
 \value{
-ggplot2 figure object
+ggplot2 figure object.
 }
 \description{
 Plot GeoTox reponse data

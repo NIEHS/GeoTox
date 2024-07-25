@@ -18,6 +18,10 @@ same GeoTox object with Hill parameters set.
 Set Hill parameters for a GeoTox object.
 }
 \examples{
+hill_params <- geo_tox_data$dose_response |>
+  fit_hill(chem = "casn", assay = "endp") |>
+  dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed)
+
 geoTox <- GeoTox() |> 
-  set_hill_params(fit_hill(split(geo_tox_data$dose_response, ~casn)))
+  set_hill_params(hill_params)
 }

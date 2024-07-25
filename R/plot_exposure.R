@@ -3,6 +3,7 @@
 #' @param exposure .
 #' @param region_boundary .
 #' @param group_boundary .
+#' @param chem_label .
 #' @param ncol .
 #'
 #' @return .
@@ -11,7 +12,12 @@
 plot_exposure <- function(exposure,
                           region_boundary,
                           group_boundary = NULL,
+                          chem_label = "chnm",
                           ncol = 2) {
+  
+  if (is.null(exposure)) {
+    stop("No exposure data found.", call. = FALSE)
+  }
   
   df <- tibble::tibble(id = names(exposure), data = exposure) |> 
     tidyr::unnest(cols = "data") |> 
@@ -20,7 +26,7 @@ plot_exposure <- function(exposure,
   
   ggplot2::ggplot(df, ggplot2::aes(fill = .data$norm)) +
     ggplot2::geom_sf(ggplot2::aes(geometry = .data$geometry), color = NA) +
-    ggplot2::facet_wrap(~chemical, ncol = ncol) +
+    ggplot2::facet_wrap(chem_label, ncol = ncol) +
     # Recolor subset as light grey
     ggplot2::geom_sf(
       data = df |> dplyr::filter(mean == 0),
