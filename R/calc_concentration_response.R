@@ -19,19 +19,46 @@ calc_concentration_response <- function(C_invitro,
                                         tp_b_mult = 1.5,
                                         fixed = FALSE) {
 
-  if (inherits(C_invitro, "matrix")) {
-    .calc_concentration_response(C_invitro, hill_params, tp_b_mult, fixed)
-  } else {
-    mapply(
-      .calc_concentration_response,
-      C_invitro = C_invitro,
-      hill_params = list(hill_params),
-      tp_b_mult = tp_b_mult,
-      fixed = fixed,
-      SIMPLIFY = FALSE
-    )
+  if (!any(c("matrix", "list") %in% class(C_invitro))) {
+    stop("C_invitro must be a matrix or list")
   }
-
+  if (!is.list(C_invitro)) C_invitro <- list(C_invitro)
+  
+  # Split hill_params by assay
+  if ("assay" %in% names(hill_params)) {
+    hill_params <- split(hill_params, ~assay)
+  } else {
+    hill_params <- list(hill_params)
+  }
+  
+  # Calculate response for each assay
+  lapply(C_invitro, \(C_invitro_i) {
+    lapply(hill_params, \(hill_params_j) {
+      if (ncol(C_invitro_i) == 1 & nrow(hill_params_j) == 1) {
+        .calc_concentration_response(C_invitro_i, hill_params_j, tp_b_mult, fixed)
+      } else {
+        if (!"chem" %in% names(hill_params_j)) {
+          stop("'hill_params' must contain a 'chem' column", call. = FALSE)
+        }
+        chems <- hill_params_j$chem
+        if (!all(chems %in% colnames(C_invitro_i))) {
+          stop("'hill_params' chemicals missing in 'C_invitro'", call. = FALSE)
+        }
+        C_invitro_i <- C_invitro_i[, chems, drop = FALSE]
+        res <- .calc_concentration_response(C_invitro_i,
+                                            hill_params_j,
+                                            tp_b_mult,
+                                            fixed) |> 
+          dplyr::mutate(sample = dplyr::row_number(), .before = 1)
+        if ("assay" %in% names(hill_params_j)) {
+          res <- res |> 
+            dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)
+        }
+        res
+      }
+    }) |> 
+      dplyr::bind_rows()
+  })
 }
 
 .calc_concentration_response <- function(
@@ -42,7 +69,7 @@ calc_concentration_response <- function(C_invitro,
 
   # TODO value of b not consistent
   # grep "tp.sim <-" ~/github/GeoToxMIE/*.R
-  tp <- t(sapply(1:nrow(C_invitro), function(x) {
+  tp <- lapply(1:nrow(C_invitro), function(x) {
     truncnorm::rtruncnorm(
       1,
       a    = 0,
@@ -50,9 +77,12 @@ calc_concentration_response <- function(C_invitro,
       mean = hill_params$tp,
       sd   = if (fixed) 0 else hill_params$tp.sd
     )
-  }))
+  }) |> unlist()
+  tp <- matrix(tp, nrow = nrow(C_invitro), byrow = TRUE)
+  # Replace NAs with 0 (can occur when tp and tp.sd are 0)
+  tp[is.na(tp)] <- 0
 
-  logAC50 <- t(sapply(1:nrow(C_invitro), function(x) {
+  logAC50 <- lapply(1:nrow(C_invitro), function(x) {
     truncnorm::rtruncnorm(
       1,
       a    = hill_params$logc_min - 2.0001,
@@ -60,7 +90,8 @@ calc_concentration_response <- function(C_invitro,
       mean = hill_params$logAC50,
       sd   = if (fixed) 0 else hill_params$logAC50.sd
     )
-  }))
+  }) |> unlist()
+  logAC50 <- matrix(logAC50, nrow = nrow(C_invitro), byrow = TRUE)
 
   GCA.eff <- IA.eff <- GCA.HQ.10 <- IA.HQ.10 <- rep(NA, nrow(C_invitro))
   for (i in 1:nrow(C_invitro)) {
@@ -68,6 +99,16 @@ calc_concentration_response <- function(C_invitro,
     C_i <- C_invitro[i, ]
     tp_i <- tp[i, ]
     AC50_i <- 10^logAC50[i, ]
+    
+    if (all(C_i == 0)) {
+      GCA.eff[i] <- IA.eff[i] <- GCA.HQ.10[i] <- IA.HQ.10[i] <- NA
+      next
+    } else {
+      idx <- which(C_i > 0)
+      C_i <- C_i[idx]
+      tp_i <- tp_i[idx]
+      AC50_i <- AC50_i[idx]
+    }
 
     mixture.result <- stats::optimize(
       obj_GCA, interval = interval, Ci = C_i, tp = tp_i, AC50 = AC50_i

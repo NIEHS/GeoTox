@@ -4,7 +4,13 @@
 \alias{plot_exposure}
 \title{Title}
 \usage{
-plot_exposure(exposure, region_boundary, group_boundary = NULL, ncol = 2)
+plot_exposure(
+  exposure,
+  region_boundary,
+  group_boundary = NULL,
+  chem_label = "chnm",
+  ncol = 2
+)
 }
 \arguments{
 \item{exposure}{.}
@@ -12,6 +18,8 @@ plot_exposure(exposure, region_boundary, group_boundary = NULL, ncol = 2)
 \item{region_boundary}{.}
 
 \item{group_boundary}{.}
+
+\item{chem_label}{.}
 
 \item{ncol}{.}
 }

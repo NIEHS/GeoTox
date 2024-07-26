@@ -4,39 +4,57 @@
 \alias{fit_hill}
 \title{Fit 2- or 3-parameter Hill model}
 \usage{
-fit_hill(x, conc = "logc", resp = "resp", fixed_slope = TRUE)
+fit_hill(
+  x,
+  conc = "logc",
+  resp = "resp",
+  fixed_slope = TRUE,
+  chem = NULL,
+  assay = NULL
+)
 }
 \arguments{
-\item{x}{data frame or list of data frames.}
+\item{x}{data frame of dose response data.}
 
 \item{conc}{column name of base-10 log scaled concentration.}
 
 \item{resp}{column name of response.}
 
 \item{fixed_slope}{if TRUE, slope is fixed at 1.}
+
+\item{chem}{(optional) column name of chemical identifiers.}
+
+\item{assay}{(optional) column name of assay identifiers.}
 }
 \value{
-Fit parameters and other stats. "tp" is the top asymptote and
-"logAC50" is the 50\% response concentration. If the computation of the
-standard deviations of these two parameters fails, then the standard
-deviation is set equal to the parameter estimate and is indicated by
-the respective imputed flag being TRUE.
+data frame of fit parameters.
 }
 \description{
 Fit 2- or 3-parameter Hill model
 }
+\details{
+Optional \code{chem} and \code{assay} identifiers can be used to fit multiple
+chemicals and/or assays. Returned columns \code{tp} is the top asymptote and
+\code{logAC50} is the 50\% response concentration. If the computation of the
+standard deviations of these two parameters fails, then the standard
+deviation is set equal to the parameter estimate and is indicated by the
+respective imputed flag being TRUE.
+}
 \examples{
-# Single chemical
-data <- geo_tox_data$dose_response[
-  geo_tox_data$dose_response$casn == "1582-09-8",
-]
-fit_hill(data)
+# Multiple assays, multiple chemicals
+df <- geo_tox_data$dose_response
+fit_hill(df, assay = "endp", chem = "casn")
 
-# Multiple chemicals
-data <- split(geo_tox_data$dose_response, ~casn)
-# 2-param
-fit_hill(data)
-# 3-param
-fit_hill(data, fixed_slope = FALSE)
+# Single assay, multiple chemicals
+df <- geo_tox_data$dose_response |>
+  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+fit_hill(df, chem = "casn")
 
+# Single assay, single chemical
+df <- geo_tox_data$dose_response |>
+  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+                casn == "510-15-6")
+fit_hill(df)
+# 3-parameter Hill model
+fit_hill(df, fixed_slope = FALSE)
 }

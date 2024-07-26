@@ -2,16 +2,39 @@
 % Please edit documentation in R/plot_hill.R
 \name{plot_hill}
 \alias{plot_hill}
-\title{Title}
+\title{Plot Hill equation fits.}
 \usage{
-plot_hill(fit_params)
+plot_hill(hill_params, xlim = c(-1, 4))
 }
 \arguments{
-\item{fit_params}{x}
+\item{hill_params}{output from \code{\link{fit_hill}}.}
+
+\item{xlim}{log-10 scaled concentration limits.}
 }
 \value{
-x
+ggplot2 object.
 }
 \description{
-Title
+Plot Hill equation fits.
+}
+\examples{
+# Multiple assays, multiple chemicals
+df <- geo_tox_data$dose_response
+plot_hill(fit_hill(df, assay = "endp", chem = "casn"))
+
+# Single assay, multiple chemicals
+df <- geo_tox_data$dose_response |>
+  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+fig <- plot_hill(fit_hill(df, chem = "casn"))
+fig
+# Modify plot
+fig + ggplot2::guides(color = ggplot2::guide_legend(title = "Chemical\nCASN"))
+
+# Single assay, single chemical
+df <- geo_tox_data$dose_response |>
+  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+                casn == "510-15-6")
+plot_hill(fit_hill(df))
+# 3-parameter Hill model
+plot_hill(fit_hill(df, fixed_slope = FALSE))
 }

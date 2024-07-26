@@ -24,7 +24,7 @@ GeoTox <- function() {
         exposure = list(
           expos_mean  = "mean",
           expos_sd    = "sd",
-          expos_label = "casn"
+          expos_label = "CASRN"
         ),
         internal_dose = list(
           time    = 1,
@@ -43,7 +43,7 @@ GeoTox <- function() {
 print.GeoTox <- function(x, ...) {
   
   names_simulated <- c("age", "IR", "obesity", "C_ext", "C_ss")
-  names_computed <- c("D_int", "C_invitro", "resp")
+  names_computed <- c("D_int", "C_invitro", "resp", "sensitivity")
   names_other <- setdiff(names(x),
                          c(names_simulated, names_computed))
   
@@ -84,6 +84,23 @@ print.GeoTox <- function(x, ...) {
   info_computed <- info_computed[info_computed$Class != "", , drop = FALSE]
   
   cat("GeoTox object\n")
+  if (is.null(x$hill_params)) {
+    n_assays <- 0
+    n_chems <- 0
+  } else {
+    if ("assay" %in% names(x$hill_params)) {
+      n_assays <- length(unique(x$hill_params$assay))
+    } else {
+      n_assays <- 1
+    }
+    if ("chem" %in% names(x$hill_params)) {
+      n_chems <- length(unique(x$hill_params$chem))
+    } else {
+      n_chems <- 1
+    }
+  }
+  cat("Assays: ", n_assays, "\n", sep = "")
+  cat("Chemicals: ", n_chems, "\n", sep = "")
   if (nrow(info_simulated) > 0) {
     n_regions <- length(x[[info_simulated$Name[1]]])
   } else if (nrow(info_computed) > 0) {
@@ -121,15 +138,26 @@ plot.GeoTox <- function(x,
                         type = c("resp", "hill", "exposure", "sensitivity"),
                         ...) {
   type <- match.arg(type)
-  switch(type,
-         resp = plot_resp(x$resp,
-                          region_boundary = x$boundaries$region,
-                          group_boundary  = x$boundaries$group,
-                          ...),
-         hill = plot_hill(x$hill_params),
-         exposure = plot_exposure(x$exposure,
-                                  region_boundary = x$boundaries$region,
-                                  group_boundary  = x$boundaries$group,
-                                  ...),
-         sensitivity = plot_sensitivity(x, ...))
+  if (type == "resp") {
+    plot_resp(x$resp,
+              region_boundary = x$boundaries$region,
+              group_boundary  = x$boundaries$group,
+              ...)
+  } else if (type == "hill") {
+    plot_hill(x$hill_params,
+              ...)
+  } else if (type == "exposure") {
+    dots = list(...)
+    chem_label = dots$chem_label %||% x$par$exposure$expos_label
+    ncol = dots$ncol %||% 2
+    plot_exposure(x$exposure,
+                  region_boundary = x$boundaries$region,
+                  group_boundary  = x$boundaries$group,
+                  chem_label      = chem_label,
+                  ncol            = ncol)
+  } else if (type == "sensitivity") {
+    plot_sensitivity(x, ...)
+  } else {
+    stop("Invalid type.")
+  }
 }
