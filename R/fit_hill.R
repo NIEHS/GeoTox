@@ -1,64 +1,69 @@
 #' Fit 2- or 3-parameter Hill model
 #'
-#' @param x data frame or list of data frames.
+#' @param x data frame of dose response data.
 #' @param conc column name of base-10 log scaled concentration.
 #' @param resp column name of response.
 #' @param fixed_slope if TRUE, slope is fixed at 1.
+#' @param chem (optional) column name of chemical identifiers.
+#' @param assay (optional) column name of assay identifiers.
 #'
-#' @return Fit parameters and other stats. "tp" is the top asymptote and
-#' "logAC50" is the 50% response concentration. If the computation of the
+#' @details
+#' Optional `chem` and `assay` identifiers can be used to fit multiple
+#' chemicals and/or assays. Returned columns `tp` is the top asymptote and
+#' `logAC50` is the 50% response concentration. If the computation of the
 #' standard deviations of these two parameters fails, then the standard
-#' deviation is set equal to the parameter estimate and is indicated by
-#' the respective imputed flag being TRUE.
+#' deviation is set equal to the parameter estimate and is indicated by the
+#' respective imputed flag being TRUE.
+#' 
+#' @return data frame of fit parameters.
+#' @importFrom rlang .data
+#' @export
 #'
 #' @examples
-#' # Single chemical
-#' data <- geo_tox_data$dose_response[
-#'   geo_tox_data$dose_response$casn == "1582-09-8",
-#' ]
-#' fit_hill(data)
-#'
-#' # Multiple chemicals
-#' data <- split(geo_tox_data$dose_response, ~casn)
-#' # 2-param
-#' fit_hill(data)
-#' # 3-param
-#' fit_hill(data, fixed_slope = FALSE)
-#'
-#' @export
-fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
+#' # Multiple assays, multiple chemicals
+#' df <- geo_tox_data$dose_response
+#' fit_hill(df, assay = "endp", chem = "casn")
+#' 
+#' # Single assay, multiple chemicals
+#' df <- geo_tox_data$dose_response |>
+#'   dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+#' fit_hill(df, chem = "casn")
+#' 
+#' # Single assay, single chemical
+#' df <- geo_tox_data$dose_response |>
+#'   dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+#'                 casn == "510-15-6")
+#' fit_hill(df)
+#' # 3-parameter Hill model
+#' fit_hill(df, fixed_slope = FALSE)
+fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE,
+                     chem = NULL, assay = NULL) {
 
-  if (!any(c("data.frame", "list") %in% class(x))) {
-    stop("x must be a data.frame or list")
+  if (!inherits(x, "data.frame")) {
+    stop("x must be a data.frame")
   }
-
-  if ("data.frame" %in% class(x)) {
-
-    if (!all(c(conc, resp) %in% names(x))) {
-      stop("x must contain columns named by 'conc' and 'resp' inputs")
-    }
-
-    fit <- .fit_hill(x, conc, resp, fixed_slope)
-    .extract_hill_params(list(fit))
-
-  } else {
-
-    if (!all(sapply(x, function(df) all(c(conc, resp) %in% names(df))))) {
-      stop("x data frames must contain columns named by 'conc' and 'resp' inputs")
-    }
-
-    fit <- lapply(x, function(df) .fit_hill(df, conc, resp, fixed_slope))
-    out <- .extract_hill_params(fit)
-    out <- cbind("name" = rownames(out), out)
-    rownames(out) <- NULL
-    # Have consistent output order
-    out <- out[order(out$name), , drop = FALSE]
-    out
-
+  if (!all(c(conc, resp) %in% names(x))) {
+    stop("x must contain columns named by 'conc' and 'resp' inputs")
   }
+  if (!is.null(chem) && !chem %in% names(x)) {
+    stop("x must contain a column named by 'chem' when not NULL")
+  }
+  if (!is.null(assay) && !assay %in% names(x)) {
+    stop("x must contain a column named by 'assay' when not NULL")
+  }
+  
+  cols <- c("assay" = assay, "chem" = chem, "x" = conc, "y" = resp)
+  x |> 
+    dplyr::select(tidyselect::any_of(cols)) |> 
+    tidyr::nest(.by = tidyselect::any_of(c("assay", "chem")), .key = "df") |> 
+    dplyr::mutate(
+      df = purrr::map(.data$df, \(x) .fit_hill(x, "x", "y", fixed_slope)),
+      df = purrr::map(.data$df, \(x) .extract_hill_params(x))) |> 
+    tidyr::unnest("df") |> 
+    dplyr::arrange(dplyr::across(tidyselect::any_of(c("assay", "chem"))))
 }
 
-.fit_hill <- function(x, conc, resp, fixed_slope) {
+.fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
 
   log10_conc <- x[[conc]]
   resp <- x[[resp]]
@@ -115,7 +120,7 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
   sds <- suppressWarnings(sqrt(diag(solve(-fit$hessian))))
   if (fixed_slope) {
     par <- c(fit$par[1:2], 1, fit$par[3])
-    sds <- c(sds[1:2], 0, sds)
+    sds <- c(sds[1:2], 0, sds[3])
   } else {
     par <- fit$par
   }
@@ -137,38 +142,25 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
   out
 }
 
-.extract_hill_params <- function(fits) {
+.extract_hill_params <- function(fit) {
 
-  # Convert list into data frame
-  df_params <- do.call(rbind, lapply(fits, function(fit) {
-    fit_params <- as.data.frame(t(unlist(fit)))
-    fit_params <- fit_params[c(
-      "par.tp", "sds.tp", "par.logAC50", "sds.logAC50", "par.slope",
-      "sds.slope", "logc_min", "logc_max", "resp_min", "resp_max", "AIC"
-    )]
-    names(fit_params)[c(1:6)] <- c(
-      "tp", "tp.sd", "logAC50", "logAC50.sd", "slope", "slope.sd"
-    )
-    fit_params
-  }))
+  # Extract parameters
+  cols <- c("tp" = "par.tp", "tp.sd" = "sds.tp",
+            "logAC50" = "par.logAC50", "logAC50.sd" = "sds.logAC50",
+            "slope" = "par.slope", "slope.sd" = "sds.slope",
+            "logc_min", "logc_max", "resp_min", "resp_max", "AIC")
+  params <- tibble::as_tibble(t(unlist(fit))) |> 
+    dplyr::select(tidyselect::all_of(cols))
 
   # Impute sd NAs with mean for tp and logAC50
-  if (all(is.na(df_params$tp.sd))) {
-    df_params$tp.sd.imputed <- FALSE
-  } else {
-    df_params$tp.sd.imputed <- is.na(df_params$tp.sd)
-    idx <- df_params$tp.sd.imputed
-    df_params$tp.sd[idx] <- df_params$tp[idx]
-  }
-
-  if (all(is.na(df_params$logAC50.sd))) {
-    df_params$logAC50.sd.imputed <- FALSE
-  } else {
-    df_params$logAC50.sd.imputed <- is.na(df_params$logAC50.sd)
-    idx <- df_params$logAC50.sd.imputed
-    df_params$logAC50.sd[idx] <- df_params$logAC50[idx]
-  }
-
-  # Return
-  df_params
+  params |> 
+    dplyr::mutate(
+      tp.sd.imputed = is.na(.data$tp.sd),
+      tp.sd = dplyr::if_else(.data$tp.sd.imputed,
+                             .data$tp,
+                             .data$tp.sd),
+      logAC50.sd.imputed = is.na(.data$logAC50.sd),
+      logAC50.sd = dplyr::if_else(.data$logAC50.sd.imputed,
+                                  .data$logAC50,
+                                  .data$logAC50.sd))
 }

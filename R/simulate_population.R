@@ -53,6 +53,7 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
       warning("Clearing 'C_ss' and 'css_sensitivity' fields")
       x$C_ss <- NULL
+      x$css_sensitivity <- NULL
     }
   }
   
@@ -72,6 +73,7 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
       warning("Clearing 'C_ss' and 'css_sensitivity' fields")
       x$C_ss <- NULL
+      x$css_sensitivity <- NULL
     }
   }
   

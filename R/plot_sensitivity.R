@@ -1,7 +1,8 @@
 #' Title
 #'
 #' @param x .
-#' @param param .
+#' @param metric .
+#' @param assay .
 #' @param y .
 #' @param xlab .
 #' @param ylab .
@@ -10,18 +11,29 @@
 #' @importFrom rlang .data .env
 #' @export
 plot_sensitivity <- function(x,
-                             param = "GCA.Eff",
+                             metric = "GCA.Eff",
+                             assay = NULL,
                              y = "",
-                             xlab = param,
+                             xlab = metric,
                              ylab = "") {
-  df <- get_sensitivity_df(x, param = param)
-  plot_sensitivity_df(df, y = y, xlab = xlab, ylab = ylab)
+  
+  if (is.null(x$sensitivity)) {
+    stop("No sensitivity data found.", call. = FALSE)
+  }
+  
+  df <- get_sensitivity_df(x, metric = metric, assay = assay)
+  fig <- plot_sensitivity_df(df, y = y, xlab = xlab, ylab = ylab)
+  if (!is.null(assay)) {
+    fig <- fig + ggplot2::ggtitle(assay)
+  }
+  fig
 }
 
 get_sensitivity_df <- function(x,
-                               param = c("GCA.Eff", "IA.Eff",
-                                         "GCA.HQ.10", "IA.HQ.10")) {
-  param <- match.arg(param)
+                               metric = c("GCA.Eff", "IA.Eff",
+                                          "GCA.HQ.10", "IA.HQ.10"),
+                               assay = NULL) {
+  metric <- match.arg(metric)
   colnames <- c(
     "External Concentration",
     "Toxicokinetic Parameters",
@@ -30,14 +42,30 @@ get_sensitivity_df <- function(x,
     "Concentration-Response",
     "Baseline"
   )
+  if (is.null(assay) && "assay" %in% names(x$sensitivity[[1]][[1]])) {
+    assay <- x$sensitivity[[1]][[1]]$assay[[1]]
+    warning(paste0("Multiple assays found, using first assay '", assay, "'"),
+            call. = FALSE)
+  }
+  get_metric <- function(df, metric, assay) {
+    if (!is.null(assay)) {
+      df <- dplyr::filter(df, .data$assay == .env$assay)
+    }
+    df[[metric]]
+  }
   out <- cbind(
-    unlist(lapply(x$sensitivity$C_ext,      "[[", param)),
-    unlist(lapply(x$sensitivity$css_params, "[[", param)),
-    unlist(lapply(x$sensitivity$obesity,    "[[", param)),
-    unlist(lapply(x$sensitivity$age,        "[[", param)),
-    unlist(lapply(x$sensitivity$fit_params, "[[", param)),
-    unlist(lapply(x$resp,                   "[[", param))
-  )
+    unlist(lapply(x$sensitivity$C_ext,
+                  get_metric, metric = metric, assay = assay)),
+    unlist(lapply(x$sensitivity$css_params,
+                  get_metric, metric = metric, assay = assay)),
+    unlist(lapply(x$sensitivity$obesity,
+                  get_metric, metric = metric, assay = assay)),
+    unlist(lapply(x$sensitivity$age,
+                  get_metric, metric = metric, assay = assay)),
+    unlist(lapply(x$sensitivity$fit_params,
+                  get_metric, metric = metric, assay = assay)),
+    unlist(lapply(x$resp,
+                  get_metric, metric = metric, assay = assay)))
   colnames(out) <- colnames
   tibble::as_tibble(out) |> 
     tidyr::pivot_longer(cols = tidyr::everything()) |> 
@@ -45,6 +73,14 @@ get_sensitivity_df <- function(x,
 }
 
 plot_sensitivity_df <- function(df, y = "", xlab = "", ylab = "") {
+  idx <- is.na(df$value)
+  if (any(idx)) {
+    warning(paste("Removed", sum(idx), "NA values"), call. = FALSE)
+    df <- df |> dplyr::filter(!idx)
+  }
+  if (nrow(df) == 0) {
+    stop("No data to plot", call. = FALSE)
+  }
   df |> 
     ggplot2::ggplot(ggplot2::aes(x = .data$value,
                                  y = .env$y,
