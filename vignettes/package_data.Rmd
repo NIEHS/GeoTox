@@ -141,14 +141,14 @@ geo_tox_data$exposure <- exposure |>
   mutate(norm = min_max_norm(mean), .by = chemical)
 ```
 
-### Get CASRN from CompTox Dashboard for exposure data
+### Get CASRN and PREFERRED_NAME from CompTox Dashboard
 
 ```{r, eval=FALSE}
 # Copy/paste the chemical names into the batch search field
 # https://comptox.epa.gov/dashboard/batch-search
 cat(geo_tox_data$exposure |> distinct(chemical) |> pull(), sep = "\n")
-
 # Export results with "CAS-RN" identifiers as a csv file, then process in R
+
 exposure_casrn <- read_csv("CCD-Batch-Search.csv",
                            show_col_types = FALSE) |> 
   filter(DTXSID != "N/A") |> 
@@ -161,13 +161,10 @@ exposure_casrn <- read_csv("CCD-Batch-Search.csv",
   slice(1) |> 
   ungroup()
 
-# Add CASRN to geo_tox_data object
+# Update exposure data with CompTox Dashboard data
 geo_tox_data$exposure <- geo_tox_data$exposure |> 
   inner_join(exposure_casrn, by = join_by(chemical == INPUT)) |> 
-  # Add name from dose_response data
-  left_join(geo_tox_data$dose_response |> distinct(chnm, casn),
-            by = join_by(CASRN == casn)) |> 
-  select(FIPS, CASRN, chnm, mean, sd, norm)
+  select(FIPS, casn = CASRN, chnm = PREFERRED_NAME, mean, sd, norm)
 ```
 
 ## Dose-response data
@@ -221,7 +218,7 @@ get_ICE_dose_resp <- function(assays = NULL, chemids = NULL) {
 }
 
 assays <- unique(cHTS_hits_API$assay)
-chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$CASRN)
+chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$casn)
 
 dose_response <- get_ICE_dose_resp(assays = assays, chemids = chemids)
 
@@ -229,6 +226,11 @@ dose_response <- get_ICE_dose_resp(assays = assays, chemids = chemids)
 geo_tox_data$dose_response <- dose_response |> 
   filter(call == "Active") |> 
   select(-call)
+
+# Update dose-response data with CompTox Dashboard data
+geo_tox_data$dose_response <- geo_tox_data$dose_response |>
+  inner_join(exposure_casrn, by = join_by(casn == CASRN)) |>
+  select(endp, casn, chnm = PREFERRED_NAME, logc, resp)
 ```
 
 # Population data
@@ -282,13 +284,11 @@ geo_tox_data$obesity <- places |>
 
 Use `httk` to generate Css values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of Css values initially and then sample them later.
 
-> **NOTE:** The number of samples in this example dataset is small and should be increased if using this method for your analysis.
-
 ```{r, eval=FALSE}
 load_sipes2017()
 
 set.seed(2345)
-n_samples <- 200
+n_samples <- 500
 
 # Define population demographics for httk simulation
 pop_demo <- cross_join(
@@ -304,14 +304,14 @@ pop_demo <- cross_join(
 # Create wrapper function around httk steps
 simulate_css <- function(chem.cas, agelim_years, weight_category,
                          samples, verbose = TRUE) {
-
+  
   if (verbose) {
     cat(chem.cas,
         paste0("(", paste(agelim_years, collapse = ", "), ")"),
         weight_category,
         "\n")
   }
-
+  
   httkpop <- list(method = "vi",
                   gendernum = NULL,
                   agelim_years = agelim_years,
@@ -324,14 +324,14 @@ simulate_css <- function(chem.cas, agelim_years, weight_category,
                     "Non-Hispanic Black",
                     "Other"
                   ))
-
+  
   css <- try(
     suppressWarnings({
       mcs <- create_mc_samples(chem.cas = chem.cas,
                                samples = samples,
                                httkpop.generate.arg.list = httkpop,
                                suppress.messages = TRUE)
-
+      
       calc_analytic_css(chem.cas = chem.cas,
                         parameters = mcs,
                         model = "3compartmentss",
@@ -339,7 +339,7 @@ simulate_css <- function(chem.cas, agelim_years, weight_category,
     }),
     silent = TRUE
   )
-
+  
   # Return
   if (is(css, "try-error")) {
     warning(paste0("simulate_css failed to generate data for CASN ", chem.cas))
@@ -403,7 +403,7 @@ Retain only those chemicals found in exposure, dose-response and Css datasets.
 casn_keep <- names(geo_tox_data$simulated_css)
 
 geo_tox_data$exposure <- geo_tox_data$exposure |> 
-  filter(CASRN %in% casn_keep)
+  filter(casn %in% casn_keep)
 
 geo_tox_data$dose_response <- geo_tox_data$dose_response |> 
   filter(casn %in% casn_keep)
@@ -414,8 +414,8 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
 Download cartographic boundary files for counties and states from the <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html" target="_blank">U.S. Census Bureau</a>. The geometry data for North Carolina counties and the state are included in the package data as `geo_tox_data$boundaries`.
 
 ```{r, eval=FALSE}
-county <- st_read("cb_2019_us_county_5m.shp")
-state <- st_read("cb_2019_us_state_5m.shp")
+county <- st_read("cb_2019_us_county_5m/cb_2019_us_county_5m.shp")
+state <- st_read("cb_2019_us_state_5m/cb_2019_us_state_5m.shp")
 
 geo_tox_data$boundaries <- list(
   county = county |>

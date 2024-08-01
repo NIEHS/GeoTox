@@ -19,7 +19,8 @@ This vignette covers basic use of package functions. Package data, `geo_tox_data
 ```{r setup, message=FALSE}
 library(GeoTox)
 library(dplyr)
-n <- 100 # Sample size
+
+n <- 250 # Sample size
 ```
 
 > **NOTE:** The sample size here is the size of the simulated population in each region. This is different than the sample size in the "package_data" vignette, which is used to generate C_ss values for each chemical at specified age and weight combinations.

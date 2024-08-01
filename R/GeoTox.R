@@ -24,7 +24,7 @@ GeoTox <- function() {
         exposure = list(
           expos_mean  = "mean",
           expos_sd    = "sd",
-          expos_label = "CASRN"
+          expos_label = "casn"
         ),
         internal_dose = list(
           time    = 1,
