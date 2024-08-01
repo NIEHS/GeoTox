@@ -7,6 +7,8 @@ library(purrr)
 library(readxl)
 library(httk)
 library(httr2)
+library(usethis)
+library(arrow)
 
 # This dataset is documented in R/data.R and vignettes/package_data.Rmd
 
@@ -20,23 +22,9 @@ geo_tox_data <- list()
 ### ICE cHTS data
 ########################################
 
-assays <- c("APR_HepG2_p53Act_1h_dn",
-            "APR_HepG2_p53Act_1h_up",
-            "APR_HepG2_p53Act_24h_dn",
-            "APR_HepG2_p53Act_24h_up",
-            "APR_HepG2_p53Act_72h_dn",
-            "APR_HepG2_p53Act_72h_up",
-            "ATG_p53_CIS_up",
-            "TOX21_DT40",
-            "TOX21_DT40_100",
-            "TOX21_DT40_657",
-            "TOX21_ELG1_LUC_Agonist",
-            "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-            "TOX21_p53_BLA_p1_ratio",
-            "TOX21_p53_BLA_p2_ratio",
-            "TOX21_p53_BLA_p3_ratio",
-            "TOX21_p53_BLA_p4_ratio",
-            "TOX21_p53_BLA_p5_ratio")
+CancerMOA <- read_xlsx("data-raw/CancerMOA.xlsx")
+
+assays <- CancerMOA$AssayEndpointName |> unique()
 
 get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
   
@@ -257,7 +245,7 @@ geo_tox_data$obesity <- places %>%
 load_sipes2017()
 
 set.seed(2345)
-n_samples <- 200
+n_samples <- 1000
 
 # Define population demographics for httk simulation
 pop_demo <- cross_join(
