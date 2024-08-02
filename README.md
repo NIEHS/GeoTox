@@ -4,16 +4,16 @@
 # GeoTox
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml)
 [![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
 
 <!-- badges: end -->
-
-![](https://codecov.io/github/Spatiotemporal-Exposures-and-Toxicology/GeoTox/graphs/icicle.svg?token=I1L9BZJ58Y)
-
 
 [Eccles KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh
 JF, Messier KP. A geospatial modeling approach to quantifying the risk
@@ -28,9 +28,17 @@ You can install the development version of GeoTox from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-
-# alternatively
-# install.packages("pak")
+# Without vignettes
+if (!require("pak", quietly = TRUE)) {
+  install.packages("pak")
+}
 pak::pkg_install("NIEHS/GeoTox")
+
+# With vignettes
+if (!require("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("NIEHS/GeoTox",
+                        dependencies = TRUE,
+                        build_vignettes = TRUE)
 ```
