@@ -98,39 +98,49 @@ if (update_data_raw) {
 ### Exposure data
 ########################################
 
+# Data file too large for github, process before saving
+
 if (update_data_raw) {
+  
+  filename <- "2019_Toxics_Exposure_Concentrations.xlsx"
+  tmp <- tempfile(filename)
   download.file(
-    paste0("https://www.epa.gov/system/files/documents/2022-12/",
-           "2019_Toxics_Exposure_Concentrations.xlsx"),
-    "data-raw/2019_Toxics_Exposure_Concentrations.xlsx"
+    paste0("https://www.epa.gov/system/files/documents/2022-12/", filename),
+    tmp
   )
-}
-exposure <- read_xlsx("data-raw/2019_Toxics_Exposure_Concentrations.xlsx")
-
-# Normalization function
-min_max_norm = function(x) {
-  min_x <- min(x, na.rm = TRUE)
-  max_x <- max(x, na.rm = TRUE)
-  if (min_x == max_x) {
-    rep(0, length(x))
-  } else {
-    (x - min_x) / (max_x - min_x)
+  exposure <- read_xlsx(tmp)
+  
+  # Normalization function
+  min_max_norm = function(x) {
+    min_x <- min(x, na.rm = TRUE)
+    max_x <- max(x, na.rm = TRUE)
+    if (min_x == max_x) {
+      rep(0, length(x))
+    } else {
+      (x - min_x) / (max_x - min_x)
+    }
   }
+  
+  exposure <- exposure %>%
+    # North Carolina counties
+    filter(State == "NC", !grepl("0$", FIPS)) %>%
+    # Aggregate chemicals by county
+    summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) %>%
+    pivot_longer(-FIPS, names_to = "chemical") %>%
+    mutate(
+      stat = if_else(grepl("_1$", chemical), "mean", "sd"),
+      chemical = gsub('.{2}$', '', chemical)
+    ) %>%
+    pivot_wider(names_from = stat) %>%
+    # Normalize concentrations
+    mutate(norm = min_max_norm(mean), .by = chemical)
+  
+  saveRDS(exposure, "data-raw/exposure.rds")
+} else {
+  exposure <- readRDS("data-raw/exposure.rds")
 }
 
-geo_tox_data$exposure <- exposure %>%
-  # North Carolina counties
-  filter(State == "NC", !grepl("0$", FIPS)) %>%
-  # Aggregate chemicals by county
-  summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) %>%
-  pivot_longer(-FIPS, names_to = "chemical") %>%
-  mutate(
-    stat = if_else(grepl("_1$", chemical), "mean", "sd"),
-    chemical = gsub('.{2}$', '', chemical)
-  ) %>%
-  pivot_wider(names_from = stat) %>%
-  # Normalize concentrations
-  mutate(norm = min_max_norm(mean), .by = chemical)
+geo_tox_data$exposure <- exposure
 
 ########################################
 # Get CASRN and PREFERRED_NAME from CompTox Dashboard
