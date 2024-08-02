@@ -100,7 +100,7 @@ calc_concentration_response <- function(C_invitro,
     tp_i <- tp[i, ]
     AC50_i <- 10^logAC50[i, ]
     
-    if (all(C_i == 0)) {
+    if (all(is.na(C_i) | C_i == 0)) {
       GCA.eff[i] <- IA.eff[i] <- GCA.HQ.10[i] <- IA.HQ.10[i] <- NA
       next
     } else {
