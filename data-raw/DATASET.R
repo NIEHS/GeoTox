@@ -184,6 +184,7 @@ get_ICE_dose_resp <- function(assays = NULL, chemids = NULL) {
     bind_rows()
 }
 
+
 assays <- unique(cHTS_hits_API$assay)
 chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$CASRN)
 
@@ -193,6 +194,15 @@ dose_response <- get_ICE_dose_resp(assays = assays, chemids = chemids)
 geo_tox_data$dose_response <- dose_response |> 
   filter(call == "Active") |> 
   select(-call)
+
+# exposure and dose-response join
+geo_tox_data$exposure <- geo_tox_data$exposure |> 
+  inner_join(exposure_casrn, by = join_by(chemical == INPUT)) |> 
+  # Add name from dose_response data
+  left_join(geo_tox_data$dose_response |> distinct(chnm, casn),
+            by = join_by(CASRN == casn)) |> 
+  select(FIPS, CASRN, chnm, mean, sd, norm)
+
 
 ################################################################################
 ## Population data
