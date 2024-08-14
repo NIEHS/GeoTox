@@ -17,6 +17,9 @@ plot_multi <- function(
     limits <- c(0, max(df$value, na.rm = TRUE))
   }
 
+  metric <- df$metric[1]
+
+
   fig <- ggplot2::ggplot(df, ggplot2::aes(fill = .data$value)) +
     # Plot county data using fill, hide county borders by setting color = NA
     ggplot2::geom_sf(ggplot2::aes(geometry = .data$geometry), color = NA) +
@@ -40,11 +43,7 @@ plot_multi <- function(
       panel.grid.minor = ggplot2::element_blank()
     )
   
-  if (!is.null(group_boundary)) {
-    fig <- fig + ggplot2::geom_sf(data = group_boundary, fill = NA,
-                                  size = 0.15)
-  }
-  
+
 
   fig
 }

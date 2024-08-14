@@ -10,7 +10,7 @@
 #' @importFrom rlang .data .env
 #' @importFrom sf st_as_sf
 #' @export
-calc_multi_response <- function(x, quant_total = 0.1, quant_assay = 0.5) {
+calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5) {
   
 
   if (is.null(x$resp)) {

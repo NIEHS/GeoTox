@@ -14,7 +14,7 @@ rm(list = ls())
 # Updating the raw data is an interactive process. There are several steps
 # that require manual intervention. These steps will create errors if run
 # in a non-interactive environment.
-update_data_raw <- FALSE # Last updated 7/29/2024
+update_data_raw <- TRUE # Last updated 8/13/2024 by KPM 
 
 geo_tox_data <- list()
 
@@ -28,23 +28,9 @@ geo_tox_data <- list()
 
 if (update_data_raw) {
   
-  assays <- c("APR_HepG2_p53Act_1h_dn",
-              "APR_HepG2_p53Act_1h_up",
-              "APR_HepG2_p53Act_24h_dn",
-              "APR_HepG2_p53Act_24h_up",
-              "APR_HepG2_p53Act_72h_dn",
-              "APR_HepG2_p53Act_72h_up",
-              "ATG_p53_CIS_up",
-              "TOX21_DT40",
-              "TOX21_DT40_100",
-              "TOX21_DT40_657",
-              "TOX21_ELG1_LUC_Agonist",
-              "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-              "TOX21_p53_BLA_p1_ratio",
-              "TOX21_p53_BLA_p2_ratio",
-              "TOX21_p53_BLA_p3_ratio",
-              "TOX21_p53_BLA_p4_ratio",
-              "TOX21_p53_BLA_p5_ratio")
+CancerMOA <- read_xlsx("data-raw/CancerMOA.xlsx")
+
+assays <- CancerMOA$AssayEndpointName |> unique()
   
   get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
     
@@ -306,7 +292,7 @@ if (update_data_raw) {
   load_sipes2017()
   
   set.seed(2345)
-  n_samples <- 500
+  n_samples <- 1000
   
   # Define population demographics for httk simulation
   pop_demo <- cross_join(
@@ -433,11 +419,11 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
 ## County/State boundaries
 ################################################################################
 
-if (update_data_raw) {
-  stop("Manually download county and state boundaries from:\n",
-       "https://www.census.gov/geographies/mapping-files/",
-       "time-series/geo/cartographic-boundary.html")
-}
+#if (update_data_raw) {
+#  stop("Manually download county and state boundaries from:\n",
+#       "https://www.census.gov/geographies/mapping-files/",
+#       "time-series/geo/cartographic-boundary.html")
+#}
 county <- st_read("data-raw/cb_2019_us_county_5m/cb_2019_us_county_5m.shp")
 state <- st_read("data-raw/cb_2019_us_state_5m/cb_2019_us_state_5m.shp")
 
@@ -455,3 +441,5 @@ geo_tox_data$boundaries <- list(
 ################################################################################
 
 usethis::use_data(geo_tox_data, overwrite = TRUE)
+# saving another copy 
+saveRDS(geo_tox_data, "data-raw/geo_tox_data_kpm_process.rds")

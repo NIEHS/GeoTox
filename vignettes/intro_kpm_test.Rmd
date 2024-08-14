@@ -20,8 +20,9 @@ This vignette covers basic use of package functions. Package data, `geo_tox_data
 library(GeoTox)
 library(dplyr)
 library(tidyverse)
-load("/ddn/gs1/home/messierkp/projects/v_test/GeoTox/data/geo_tox_data.rda")
-n <- 50 # Sample size
+# This loads a version of geo_tox_data run with the full KCC assays and 
+load("/ddn/gs1/project/GeoToxPackage/manuscript_data/geo_tox_data.rda")
+n <- 500 # Sample size
 ```
 
 > **NOTE:** The sample size here is the size of the simulated population in each region. This is different than the sample size in the "package_data" vignette, which is used to generate C_ss values for each chemical at specified age and weight combinations.
@@ -88,7 +89,7 @@ geoTox <- GeoTox() |>
   # Perform sensitivity analysis
   sensitivity_analysis()
 
-saveRDS(geoTox,"multi-run-0812.rds")
+saveRDS(geoTox,"multi-run-0814.rds")
 
 geoTox
 ```
