@@ -50,6 +50,7 @@ calc_concentration_response <- function(C_invitro,
                                             tp_b_mult,
                                             fixed) |> 
           dplyr::mutate(sample = dplyr::row_number(), .before = 1)
+          # Consider re-naming "sample" to "id" or "person" since these are individual simulations via httk
         if ("assay" %in% names(hill_params_j)) {
           res <- res |> 
             dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)

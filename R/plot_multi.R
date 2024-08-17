@@ -1,14 +1,14 @@
 #' Plot GeoTox reponse data for multiple assays
 #'
 #' @param df multi-assay response tibble returned by [calculate_multi_response].
-#' @quantile_labels list of quantile labels. Should be in the format of the total quantile followed by the assay quantile.
+#' @title_plot title. Should be in the format of the total quantile followed by the assay quantile.
 #' @return ggplot2 figure object.
 #' @importFrom rlang .data .env
 #' @importFrom sf st_as_sf
 #' @export
 plot_multi <- function(
     df, 
-    quantile_labels = c("10th percentile of assay median response")) {
+    title_label = c("10th percentile of assay median responses")) {
   
 
   if (all(is.na(df$value))) {
@@ -37,13 +37,13 @@ plot_multi <- function(
     ggplot2::theme(
       text = ggplot2::element_text(size = 12),
       legend.text = ggplot2::element_text(size = 8),
-      axis.ticks = ggplot2::element_blank(),
-      axis.text = ggplot2::element_blank(),
-      panel.grid.major = ggplot2::element_blank(),
-      panel.grid.minor = ggplot2::element_blank()
+      axis.ticks = ggplot2::element_line(color = "black"),
+      axis.text = ggplot2::element_text(size = 10, color = "black"),
+      panel.grid.major = ggplot2::element_line(color = "grey80"),
+      panel.grid.minor = ggplot2::element_line(color = "grey90")
     )
   
 
-
+  fig <- fig + ggplot2::labs(title = title_label)
   fig
 }
