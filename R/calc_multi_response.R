@@ -41,6 +41,7 @@ calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_
     sprintf("There are only %s assays. Consider using a larger number of assays for a more robust analysis.",  n_assays)
   }
 
+if (quant_total != "individual") {  
     df <- df |> 
     dplyr::reframe(quantile = quant_assay,
                    value = stats::quantile(.data$value, quant_assay, na.rm = TRUE),
@@ -49,6 +50,15 @@ calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_
                     .by = c("id", "metric")) |>
     dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
                       by = dplyr::join_by("id"))
+  } else {
+print("individual")
+    df <- df |> 
+    dplyr::reframe(quantile = quant_assay,
+                   value = stats::quantile(.data$value, quant_assay, na.rm = TRUE),
+                   .by = c("id", "assay", "metric")) |> 
+    dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
+                      by = dplyr::join_by("id"))
+  }
   
   return(df)
   

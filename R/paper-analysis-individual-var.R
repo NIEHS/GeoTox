@@ -46,7 +46,6 @@ geoTox.resp <- geoTox$resp[names(geoTox$resp) %in% FIPS.comb] |>
   rename(age = value.x, obesity = value.y) |>
   as_tibble()
 
-geoTox.resp$GCA.Eff[is.na(geoTox.resp$GCA.Eff)] <- 0
 
 geoTox.resp |>
   filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
@@ -66,3 +65,6 @@ geoTox.resp |>
   coord_flip()
 
 
+# Multi-individual responses
+geoTox.ind <- geoTox[names(geoTox$resp) %in% FIPS.comb] |> 
+  calc_multi_response(metric = "GCA.HQ.10", quant_assay = 0.5, quant_total = "individual")
