@@ -23,6 +23,7 @@ library(tidyverse)
 # This loads a version of geo_tox_data run with the full KCC assays and 
 load("/ddn/gs1/project/GeoToxPackage/manuscript_data/geo_tox_data.rda")
 n <- 500 # Sample size
+
 ```
 
 > **NOTE:** The sample size here is the size of the simulated population in each region. This is different than the sample size in the "package_data" vignette, which is used to generate C_ss values for each chemical at specified age and weight combinations.
@@ -46,8 +47,7 @@ geoTox <- GeoTox() |>
   # Estimated Hill parameters
   set_hill_params(geo_tox_data$dose_response |>
                     filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
-                    fit_hill(chem = "casn") |> 
-                    filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
+                    fit_hill(chem = "casn")) |>
   # Calculate response
   calculate_response() |>
   # Perform sensitivity analysis
@@ -82,14 +82,13 @@ geoTox <- GeoTox() |>
                       n             = n) |> 
   # Estimated Hill parameters
   set_hill_params(geo_tox_data$dose_response |>
-                    fit_hill(assay = "endp", chem = "casn") |> 
-                    filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
+                    fit_hill(assay = "endp", chem = "casn")) |> 
   # Calculate response
   calculate_response() |>
   # Perform sensitivity analysis
   sensitivity_analysis()
 
-saveRDS(geoTox,"multi-run-0814.rds")
+saveRDS(geoTox,"multi-run-0817.rds")
 
 geoTox
 ```

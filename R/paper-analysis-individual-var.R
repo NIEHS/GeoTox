@@ -2,7 +2,7 @@ library(GeoTox)
 library(tidyverse)
 library(ggridges)
 # Load the geoTox object
-geoTox1 <- readRDS("vignettes/multi-run-0814.rds")
+geoTox <- readRDS("vignettes/multi-run-0817.rds")
 
 
 # Ashe County, NC (Lowest 10th percentile of assay median responses)
@@ -48,8 +48,18 @@ geoTox.resp <- geoTox$resp[names(geoTox$resp) %in% FIPS.comb] |>
 
 geoTox.resp$GCA.Eff[is.na(geoTox.resp$GCA.Eff)] <- 0
 
-ggplot(geoTox.resp, aes(GCA.Eff, color = assay)) +
-  geom_density() +
-  facet_wrap(~FIPS) +
-  theme_minimal() + 
-  theme(legend.position = "none")
+geoTox.resp |>
+  filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
+  ggplot(aes(x = obesity, y = GCA.HQ.10, color = obesity)) +
+ geom_half_violin() +
+  geom_jitter(width = 0.2, alpha = 0.5) +
+  facet_wrap(~FIPS, labeller = function(variable, value) {
+    return(value)
+  }) +
+  theme_minimal() +
+  scale_y_log10() +
+  theme(legend.position = "none") +
+  labs(x = "Obesity", y = "GCA.HQ.10") + 
+  coord_flip()
+
+
