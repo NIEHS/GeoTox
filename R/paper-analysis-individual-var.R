@@ -50,10 +50,13 @@ geoTox.resp$GCA.Eff[is.na(geoTox.resp$GCA.Eff)] <- 0
 
 geoTox.resp |>
   filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
-  ggplot(aes(x = obesity, y = GCA.HQ.10, color = obesity)) +
- geom_half_violin() +
+  ggplot(aes(x = FIPS, y = GCA.HQ.10, color = FIPS)) +
+  scale_color_viridis_d(option = "D", direction = -1) +
+ geom_half_violin(
+    side = "r",
+  ) +
   geom_jitter(width = 0.2, alpha = 0.5) +
-  facet_wrap(~FIPS, labeller = function(variable, value) {
+  facet_wrap(~obesity, labeller = function(variable, value) {
     return(value)
   }) +
   theme_minimal() +
