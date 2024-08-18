@@ -68,3 +68,4 @@ geoTox.resp |>
 # Multi-individual responses
 geoTox.ind <- geoTox[names(geoTox$resp) %in% FIPS.comb] |> 
   calc_multi_response(metric = "GCA.HQ.10", quant_assay = 0.5, quant_total = "individual")
+
