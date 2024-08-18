@@ -5,12 +5,13 @@
 #' or "IA.HQ.10".
 #' @param quant_total The quantile to use for the total or overall response. This corresponds to the quantile of the vector of assay responses. Default is 0.1.
 #' @param quant_assay The quantile to use for the level 2 response. This corresponds to the quantile for each assay mixture response. Default is 0.5.
+#' @param ... additional arguments passed to individual multi responses
 #'
 #' @return A tibble with the response data
 #' @importFrom rlang .data .env
 #' @importFrom sf st_as_sf
 #' @export
-calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5) {
+calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5, ...) {
   
 
   if (is.null(x$resp)) {
@@ -52,7 +53,13 @@ if (quant_total != "individual") {
                       by = dplyr::join_by("id"))
   } else {
 print("individual")
+
+print(head(df))
+    dots <- list(...)
+    idx <- dots$idx
+
     df <- df |> 
+    filter(id %in% idx) |>
     dplyr::reframe(quantile = quant_assay,
                    value = stats::quantile(.data$value, quant_assay, na.rm = TRUE),
                    .by = c("id", "assay", "metric")) |> 

@@ -1,8 +1,9 @@
 library(GeoTox)
 library(tidyverse)
 library(ggridges)
+library(gghalves)
 # Load the geoTox object
-geoTox <- readRDS("vignettes/multi-run-0817.rds")
+geoTox <- readRDS("multi-run-0817.rds")
 
 
 # Ashe County, NC (Lowest 10th percentile of assay median responses)
@@ -47,7 +48,7 @@ geoTox.resp <- geoTox$resp[names(geoTox$resp) %in% FIPS.comb] |>
   as_tibble()
 
 
-geoTox.resp |>
+g1 <- geoTox.resp |>
   filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
   ggplot(aes(x = FIPS, y = GCA.HQ.10, color = FIPS)) +
   scale_color_viridis_d(option = "D", direction = -1) +
@@ -66,6 +67,26 @@ geoTox.resp |>
 
 
 # Multi-individual responses
-geoTox.ind <- geoTox[names(geoTox$resp) %in% FIPS.comb] |> 
-  calc_multi_response(metric = "GCA.HQ.10", quant_assay = 0.5, quant_total = "individual")
+idx <- names(geoTox$resp)[names(geoTox$resp) %in% FIPS.comb]
+geoTox.ind <- geoTox.resp |> 
+filter(FIPS %in% idx) |>
+    dplyr::summarise(value = stats::quantile(.data$GCA.HQ.10, 0.5, na.rm = TRUE),
+                    .by = c("FIPS","sample","obesity","age")) |>
+  ggplot(aes(x = FIPS, y = value, color = FIPS)) +
+  scale_color_viridis_d(option = "D", direction = -1) +
+ geom_half_violin(
+    side = "r",
+  ) +
+  geom_jitter(width = 0.2, alpha = 0.5) +
+  facet_wrap(~obesity, labeller = function(variable, value) {
+    return(value)
+  }) +
+  theme_minimal() +
+  scale_y_log10() +
+  theme(legend.position = "none") +
+  labs(x = "Obesity", y = "GCA.HQ.10") + 
+  coord_flip()
 
+
+
+          
