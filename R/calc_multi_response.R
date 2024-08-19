@@ -11,7 +11,7 @@
 #' @importFrom rlang .data .env
 #' @importFrom sf st_as_sf
 #' @export
-calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5, ...) {
+calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5) {
   
 
   if (is.null(x$resp)) {
@@ -42,7 +42,6 @@ calc_multi_response <- function(x, metric = "GCA.Eff", quant_total = 0.1, quant_
     sprintf("There are only %s assays. Consider using a larger number of assays for a more robust analysis.",  n_assays)
   }
 
-if (quant_total != "individual") {  
     df <- df |> 
     dplyr::reframe(quantile = quant_assay,
                    value = stats::quantile(.data$value, quant_assay, na.rm = TRUE),
@@ -51,22 +50,7 @@ if (quant_total != "individual") {
                     .by = c("id", "metric")) |>
     dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
                       by = dplyr::join_by("id"))
-  } else {
-print("individual")
 
-print(head(df))
-    dots <- list(...)
-    idx <- dots$idx
-
-    df <- df |> 
-    filter(id %in% idx) |>
-    dplyr::reframe(quantile = quant_assay,
-                   value = stats::quantile(.data$value, quant_assay, na.rm = TRUE),
-                   .by = c("id", "assay", "metric")) |> 
-    dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
-                      by = dplyr::join_by("id"))
-  }
-  
   return(df)
   
 } 
