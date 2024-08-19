@@ -21,15 +21,10 @@ FIPS.comb <- c(FIPS.Ashe, FIPS.Brunswick, FIPS.Wake)
 # Filtering the entire GeoTox object by a specific region or other parameters defined within the object 
 
 
-# Analysis Outline
-
-# 3.a [calc] stratify by assay, age, obesity
-# 3.b [calc] combined multi-assay response by age, obesity
-# 4. [plot] response by county and facet by stratification
 
 # Add the age, obesity data to the geoTox$resp 
 
-# Lists of length 3
+# Filter the age and obesity data
 ages <- geoTox$age[names(geoTox$age) %in% FIPS.comb]
 obesity <- geoTox$obesity[names(geoTox$obesity) %in% FIPS.comb]
 
@@ -50,8 +45,22 @@ geoTox.resp <- geoTox$resp[names(geoTox$resp) %in% FIPS.comb] |>
 
 g1 <- geoTox.resp |>
   filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
+  ggplot(aes(x = GCA.HQ.10, y = FIPS, fill = FIPS, color = FIPS)) +
+ # scale_color_viridis_d(option = "D", direction = -1) +
+ geom_density_ridges(
+  jittered_points = TRUE, 
+  alpha = .2, point_alpha = 1, scale = 1.3
+  ) +
+  facet_wrap(~obesity) +
+  scale_x_log10() +
+    theme_minimal() 
+
+
+
+g1 <- geoTox.resp |>
+  filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
   ggplot(aes(x = FIPS, y = GCA.HQ.10, color = FIPS)) +
-  scale_color_viridis_d(option = "D", direction = -1) +
+ # scale_color_viridis_d(option = "D", direction = -1) +
  geom_half_violin(
     side = "r",
   ) +
@@ -68,12 +77,12 @@ g1 <- geoTox.resp |>
 
 # Multi-individual responses
 idx <- names(geoTox$resp)[names(geoTox$resp) %in% FIPS.comb]
-geoTox.ind <- geoTox.resp |> 
+geoTox.resp |> 
 filter(FIPS %in% idx) |>
     dplyr::summarise(value = stats::quantile(.data$GCA.HQ.10, 0.5, na.rm = TRUE),
                     .by = c("FIPS","sample","obesity","age")) |>
-  ggplot(aes(x = FIPS, y = value, color = FIPS)) +
-  scale_color_viridis_d(option = "D", direction = -1) +
+  ggplot(aes(x = FIPS, y = value, color = obesity)) +
+ # scale_color_viridis_d(option = "D", direction = -1) +
  geom_half_violin(
     side = "r",
   ) +
@@ -88,5 +97,28 @@ filter(FIPS %in% idx) |>
   coord_flip()
 
 
+  # Individual plots by age groups
+age_group <- tibble(
+  lower = c(0, 3, 6, 11, 16, 21, 31, 41, 51, 61, 71),
+  upper = c(2, 5, 10, 15, 20, 30, 40, 50, 60, 70, 100)
+)
 
-          
+
+geoTox.resp |> 
+filter(FIPS %in% idx) |>
+    dplyr::summarise(value = stats::quantile(.data$GCA.HQ.10, 0.5, na.rm = TRUE),
+                    .by = c("FIPS","sample","obesity","age")) |>
+  ggplot(aes(x = FIPS, y = value)) +
+ # scale_color_viridis_d(option = "D", direction = -1) +
+ geom_density_ridges(
+    side = "r",
+  ) +
+  geom_jitter(width = 0.2, alpha = 0.5) +
+  facet_wrap(~obesity, labeller = function(variable, value) {
+    return(value)
+  }) +
+  theme_minimal() +
+  scale_y_log10() +
+  theme(legend.position = "none") +
+  labs(x = "Obesity", y = "GCA.HQ.10") + 
+  coord_flip()
