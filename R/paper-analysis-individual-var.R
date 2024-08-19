@@ -48,34 +48,38 @@ g1 <- geoTox.resp |>
   ggplot(aes(x = GCA.HQ.10, y = FIPS, fill = FIPS, color = FIPS)) +
  # scale_color_viridis_d(option = "D", direction = -1) +
  geom_density_ridges(
+  aes(point_shape = FIPS, point_fill = FIPS, point_color = FIPS),
   jittered_points = TRUE, 
-  alpha = .2, point_alpha = 1, scale = 1.3
+  alpha = .2, point_alpha = 1, scale = 1.4
   ) +
   facet_wrap(~obesity) +
   scale_x_log10() +
-    theme_minimal() 
+  scale_point_color_hue(l = 40) +
+  scale_discrete_manual(aesthetics = "point_shape", values = c(21, 22, 23))
 
-
-
-g1 <- geoTox.resp |>
-  filter(assay == "TOX21_H2AX_HTRF_CHO_Agonist_ratio") |>
-  ggplot(aes(x = FIPS, y = GCA.HQ.10, color = FIPS)) +
- # scale_color_viridis_d(option = "D", direction = -1) +
- geom_half_violin(
-    side = "r",
-  ) +
-  geom_jitter(width = 0.2, alpha = 0.5) +
-  facet_wrap(~obesity, labeller = function(variable, value) {
-    return(value)
-  }) +
-  theme_minimal() +
-  scale_y_log10() +
-  theme(legend.position = "none") +
-  labs(x = "Obesity", y = "GCA.HQ.10") + 
-  coord_flip()
-
+ggsave("plots/g1.png", g1, width = 10, height = 10, units = "in", dpi = 300)
 
 # Multi-individual responses
+idx <- names(geoTox$resp)[names(geoTox$resp) %in% FIPS.comb]
+g2 <- geoTox.resp |> 
+filter(FIPS %in% idx) |>
+    dplyr::summarise(value = stats::quantile(.data$GCA.HQ.10, 0.5, na.rm = TRUE),
+                    .by = c("FIPS","sample","obesity","age")) |>
+ ggplot(aes(x = value, y = FIPS,  fill = FIPS, color = FIPS)) +
+ # scale_color_viridis_d(option = "D", direction = -1) +
+  geom_density_ridges(
+  aes(point_shape = FIPS, point_fill = FIPS, point_color = FIPS),
+  jittered_points = TRUE, 
+  alpha = .2, point_alpha = 1, scale = 1.4
+  ) +
+  facet_wrap(~obesity) +
+  scale_x_log10() +
+  scale_point_color_hue(l = 40) +
+  scale_discrete_manual(aesthetics = "point_shape", values = c(21, 22, 23))
+
+ggsave("plots/g2.png", g2, width = 10, height = 10, units = "in", dpi = 300)
+
+# Multi-individual responses half-violin version
 idx <- names(geoTox$resp)[names(geoTox$resp) %in% FIPS.comb]
 geoTox.resp |> 
 filter(FIPS %in% idx) |>
