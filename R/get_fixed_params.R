@@ -5,7 +5,6 @@
 #' @param age list of atomic vectors containing ages.
 #'
 #' @return list of matrices containing C_ss values.
-#' @importFrom rlang .data
 #' @export
 #' 
 #' @examples

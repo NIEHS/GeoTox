@@ -2,20 +2,18 @@
 % Please edit documentation in R/plot_resp.R
 \name{plot_resp}
 \alias{plot_resp}
-\title{Plot GeoTox reponse data}
+\title{Plot response data}
 \usage{
 plot_resp(
-  resp,
+  df,
   region_boundary,
   group_boundary = NULL,
-  metric = c("GCA.Eff", "IA.Eff", "GCA.HQ.10", "IA.HQ.10"),
-  assay = NULL,
-  quantiles = c(0.5),
-  quantile_labels = c("Median")
+  assay_quantiles = c(Median = 0.5),
+  summary_quantiles = c(`10th percentile` = 0.1)
 )
 }
 \arguments{
-\item{resp}{calculated mixture response from \link{calculate_response}.}
+\item{df}{output from \link{resp_quantiles}.}
 
 \item{region_boundary}{"sf" data.frame mapping features to a "geometry"
 column. Used to color map regions.}
@@ -23,19 +21,13 @@ column. Used to color map regions.}
 \item{group_boundary}{"sf" data.frame containing a "geometry" column. Used
 to draw outlines around groups of regions.}
 
-\item{metric}{response metric, one of "GCA.Eff", "IA.Eff", "GCA.HQ.10"
-or "IA.HQ.10".}
+\item{assay_quantiles}{named numeric vector of assay quantile labels.}
 
-\item{assay}{assay to plot. If NULL and multiple assays exist, then the
-first assay is used.}
-
-\item{quantiles}{quantiles to plot.}
-
-\item{quantile_labels}{labels for quantiles.}
+\item{summary_quantiles}{named numeric vector of summary quantile labels.}
 }
 \value{
-ggplot2 figure object.
+ggplot2 object.
 }
 \description{
-Plot GeoTox reponse data
+Plot response data
 }

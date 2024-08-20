@@ -31,7 +31,6 @@
 #'                       exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
 #'                       simulated_css = geo_tox_data$simulated_css,
 #'                       n = 10)
-#' @importFrom rlang .env
 simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
                                 simulated_css = NULL, ...) {
   

@@ -4,11 +4,6 @@
 #' An S3 object that can be used to help organize the data and results of a
 #' GeoTox analysis.
 #'
-#' @param x GeoTox object
-#' @param type type of plot
-#' @param ... additional arguments passed to plotting functions
-#' 
-#' @seealso [plot_resp], [plot_hill], [plot_exposure], [plot_sensitivity]
 #' @export
 GeoTox <- function() {
   structure(
@@ -133,16 +128,41 @@ print.GeoTox <- function(x, ...) {
 }
 
 #' @rdname GeoTox
+#'
+#' @param x GeoTox object.
+#' @param type type of plot.
+#' @param ... arguments passed to subsequent methods.
+#'
+#' @seealso [plot_resp], [plot_hill], [plot_exposure], [plot_sensitivity]
 #' @export
 plot.GeoTox <- function(x,
                         type = c("resp", "hill", "exposure", "sensitivity"),
                         ...) {
   type <- match.arg(type)
   if (type == "resp") {
-    plot_resp(x$resp,
+    if (is.null(x$resp)) {
+      stop("No response data found.", call. = FALSE)
+    }
+    if (is.null(x$boundaries$region)) {
+      stop("No region boundary data found.", call. = FALSE)
+    }
+    dots = list(...)
+    metric = dots$metric %||% "GCA.Eff"
+    assays = dots$assays
+    assay_quantiles = dots$assay_quantiles %||% c("Median" = 0.5)
+    assay_summary = dots$assay_summary %||% FALSE
+    summary_quantiles = dots$summary_quantiles %||% c("10th percentile" = 0.1)
+    df <- resp_quantiles(x$resp,
+                         metric = metric,
+                         assays = assays,
+                         assay_summary = assay_summary,
+                         assay_quantiles = assay_quantiles,
+                         summary_quantiles = summary_quantiles)
+    plot_resp(df,
               region_boundary = x$boundaries$region,
-              group_boundary  = x$boundaries$group,
-              ...)
+              group_boundary = x$boundaries$group,
+              assay_quantiles = assay_quantiles,
+              summary_quantiles = summary_quantiles)
   } else if (type == "hill") {
     plot_hill(x$hill_params,
               ...)

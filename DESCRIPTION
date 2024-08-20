@@ -1,15 +1,15 @@
 Package: GeoTox
-Title: GeoTox: Open-source software for connecting spatiotemporal exposure
-    to individual and population-level risk
+Title: Spatiotemporal mixture risk assessment
 Version: 0.0.0.9000
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "ctb")),
     person("David", "Reif", , "david.reif@nih.gov", role = c("aut", "ctb")),
     person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut", "ctb"))
   )
-Description: What the package does (one paragraph).
+Description: Open-source software for connecting spatiotemporal exposure to
+    individual and population-level risk.
 License: MIT + file LICENSE
-URL: https://spatiotemporal-exposures-and-toxicology.github.io/GeoTox/
+URL: https://niehs.github.io/GeoTox/
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -42,4 +42,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2

@@ -10,11 +10,11 @@ GeoTox()
 \method{plot}{GeoTox}(x, type = c("resp", "hill", "exposure", "sensitivity"), ...)
 }
 \arguments{
-\item{x}{GeoTox object}
+\item{x}{GeoTox object.}
 
-\item{type}{type of plot}
+\item{type}{type of plot.}
 
-\item{...}{additional arguments passed to plotting functions}
+\item{...}{arguments passed to subsequent methods.}
 }
 \description{
 An S3 object that can be used to help organize the data and results of a

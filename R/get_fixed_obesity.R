@@ -5,7 +5,6 @@
 #' @param obesity list of atomic vectors containing obesity status.
 #'
 #' @return list of matrices containing median C_ss values.
-#' @importFrom rlang .data
 #' @export
 #' 
 #' @examples

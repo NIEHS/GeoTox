@@ -4,7 +4,6 @@
 #' @param xlim log-10 scaled concentration limits.
 #'
 #' @return ggplot2 object.
-#' @importFrom rlang .data
 #' @export
 #' 
 #' @examples
