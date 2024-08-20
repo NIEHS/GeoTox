@@ -68,3 +68,5 @@ data/geo_tox_data_manuscript.RData
 vignettes/multi-run-0812.rds
 
 plots/
+
+*.rds
