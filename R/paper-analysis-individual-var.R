@@ -11,12 +11,17 @@ geoTox <- readRDS("multi-run-0817.rds")
 
 # Multi-Assay plots for manuscript
 df10 <- calc_multi_response(geoTox, metric = "GCA.HQ.10", quant_total = 0.1, quant_assay = 0.5)
-#df90 <- calc_multi_response(geoTox, metric = "GCA.HQ.10", quant_total = 0.9, quant_assay = 0.5)
-g10 <- plot_multi(df10, title_label = "10th percentile of assay median responses")
+df90 <- calc_multi_response(geoTox, metric = "GCA.HQ.10", quant_total = 0.9, quant_assay = 0.5)
+g10 <- plot_multi(df10, title_label = "10th percentile of assay median Hazard Quotients")
+g90 <- plot_multi(df90, title_label = "90th percentile of assay median Hazard Quotients")
 
+ggsave("plots/multi-counties-10.pdf", g10, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-counties-90.pdf", g90, width = 6, height = 8, units = "in", device = cairo_pdf)
 
-ggsave("plots/multi-counties.pdf", g10, width = 6, height = 8, units = "in", device = cairo_pdf)
-
+df.eff10 <- calc_multi_response(geoTox, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5)
+df.eff90 <- calc_multi_response(geoTox, metric = "GCA.Eff", quant_total = 0.9, quant_assay = 0.5)
+g.eff10 <- plot_multi(df.eff10, title_label = "10th percentile of assay median response")
+g.eff90 <- plot_multi(df.eff90, title_label = "90th percentile of assay median response")
 
 
 # Ashe County, NC (Lowest 10th percentile of assay median responses)
