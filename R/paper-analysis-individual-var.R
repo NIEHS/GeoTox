@@ -3,25 +3,82 @@ library(tidyverse)
 library(ggridges)
 library(tigris)
 library(sf)
+library(readxl)
 # Load the geoTox object
 geoTox <- readRDS("multi-run-0817.rds")
 
 
-# Source calc_multi_response() and plot_multi() functions from the GeoTox package 
 
-# Multi-Assay plots for manuscript
-df10 <- calc_multi_response(geoTox, metric = "GCA.HQ.10", quant_total = 0.1, quant_assay = 0.5)
-df90 <- calc_multi_response(geoTox, metric = "GCA.HQ.10", quant_total = 0.9, quant_assay = 0.5)
-g10 <- plot_multi(df10, title_label = "10th percentile of assay median Hazard Quotients")
-g90 <- plot_multi(df90, title_label = "90th percentile of assay median Hazard Quotients")
+## Multi-Assay plots for manuscript from new GeoTox updates
+assay_quantiles <- c("A10" = 0.1, "A50" = 0.5, "A90" = 0.9)
+summary_quantiles <- c("S05" = 0.05, "S10" = 0.1)
 
-ggsave("plots/multi-counties-10.pdf", g10, width = 6, height = 8, units = "in", device = cairo_pdf)
-ggsave("plots/multi-counties-90.pdf", g90, width = 6, height = 8, units = "in", device = cairo_pdf)
+df <- resp_quantiles(geoTox$resp,
+                     assay_summary = TRUE,
+                     assay_quantiles = assay_quantiles,
+                     summary_quantiles = summary_quantiles,
+                     metric = "GCA.HQ.10")
 
-df.eff10 <- calc_multi_response(geoTox, metric = "GCA.Eff", quant_total = 0.1, quant_assay = 0.5)
-df.eff90 <- calc_multi_response(geoTox, metric = "GCA.Eff", quant_total = 0.9, quant_assay = 0.5)
-g.eff10 <- plot_multi(df.eff10, title_label = "10th percentile of assay median response")
-g.eff90 <- plot_multi(df.eff90, title_label = "90th percentile of assay median response")
+  q1 <- plot_resp(df,
+          region_boundary = geoTox$boundaries$region,
+          group_boundary = geoTox$boundaries$group,
+          assay_quantiles = assay_quantiles,
+          summary_quantiles = summary_quantiles) +
+          ggtitle("Multi-Assay Summaries: All KCC Assays")
+
+# KCC
+CancerMOA <- read_xlsx("data-raw/CancerMOA.xlsx")
+
+
+CancerMOA_unique <- CancerMOA %>%
+  select(AssayEndpointName, ModeofAction) %>%
+  mutate(ModeofAction = str_extract(ModeofAction, "KCC\\d+")) %>%
+  distinct(AssayEndpointName, .keep_all = TRUE) %>%
+  arrange(AssayEndpointName)
+
+# 
+KCC2_assay <- CancerMOA_unique %>%
+  filter(ModeofAction == "KCC2") %>%
+  pull(AssayEndpointName)
+
+
+df.KCC2 <- resp_quantiles(geoTox$resp,
+                     assay_summary = TRUE,
+                     assays = KCC2_assay,
+                     assay_quantiles = assay_quantiles,
+                     summary_quantiles = summary_quantiles,
+                     metric = "GCA.HQ.10")
+
+  q2 <- plot_resp(df.KCC2,
+          region_boundary = geoTox$boundaries$region,
+          group_boundary = geoTox$boundaries$group,
+          assay_quantiles = assay_quantiles,
+          summary_quantiles = summary_quantiles) + 
+          ggtitle("KCC2:  Genotoxic Effects")
+
+KCC5_assay <- CancerMOA_unique %>%
+  filter(ModeofAction == "KCC5") %>%
+  pull(AssayEndpointName)
+
+
+df.KCC5 <- resp_quantiles(geoTox$resp,
+                     assay_summary = TRUE,
+                     assays = KCC5_assay,
+                     assay_quantiles = assay_quantiles,
+                     summary_quantiles = summary_quantiles,
+                     metric = "GCA.HQ.10")
+
+  q3 <- plot_resp(df.KCC5,
+          region_boundary = geoTox$boundaries$region,
+          group_boundary = geoTox$boundaries$group,
+          assay_quantiles = assay_quantiles,
+          summary_quantiles = summary_quantiles)+
+          ggtitle("KCC5:  Oxidative Stress")
+
+
+ggsave("plots/multi-assay-counties-all.pdf", q1, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-assay-counties-KCC2.pdf", q2, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-counties-KCC5.pdf", q3, width = 6, height = 8, units = "in", device = cairo_pdf)
 
 
 # Ashe County, NC (Lowest 10th percentile of assay median responses)
@@ -143,14 +200,6 @@ ggsave("plots/nc_counties_map.pdf", map_plot, width = 10, height = 8, units = "i
 
 # Let's make a plot that shows the ridge density plots by assay and by KCC
 
-CancerMOA <- read_xlsx("data-raw/CancerMOA.xlsx")
-
-
-CancerMOA_unique <- CancerMOA %>%
-  select(AssayEndpointName, ModeofAction) %>%
-  mutate(ModeofAction = str_extract(ModeofAction, "KCC\\d+")) %>%
-  distinct(AssayEndpointName, .keep_all = TRUE) %>%
-  arrange(AssayEndpointName)
 
 # join the CancerMOA data with the geoTox data
 
