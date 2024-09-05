@@ -94,7 +94,7 @@ Plot outputs
 
 ```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox)
-plot(geoTox, assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 plot(geoTox, type = "hill")
 plot(geoTox, type = "sensitivity")
 plot(geoTox, type = "sensitivity", assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")

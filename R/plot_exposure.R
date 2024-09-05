@@ -7,7 +7,6 @@
 #' @param ncol .
 #'
 #' @return .
-#' @importFrom rlang .data
 #' @export
 plot_exposure <- function(exposure,
                           region_boundary,

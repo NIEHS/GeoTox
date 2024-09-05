@@ -8,7 +8,6 @@
 #' @param ylab .
 #'
 #' @return .
-#' @importFrom rlang .data .env
 #' @export
 plot_sensitivity <- function(x,
                              metric = "GCA.Eff",

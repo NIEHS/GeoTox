@@ -16,7 +16,6 @@
 #' respective imputed flag being TRUE.
 #' 
 #' @return data frame of fit parameters.
-#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
