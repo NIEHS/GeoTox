@@ -14,7 +14,7 @@ obj_hill(par, log10_conc, resp)
 \item{resp}{response}
 }
 \value{
-value
+value of the objective function
 }
 \description{
 Objective function for 2- or 3-parameter Hill model

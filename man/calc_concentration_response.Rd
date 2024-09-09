@@ -3,7 +3,7 @@
 \name{calc_concentration_response}
 \alias{calc_concentration_response}
 \title{Calculate the mixture response from one of three different approaches:
-IA, GCA ,or Hazard Quotient}
+IA, GCA, or Hazard Quotient}
 \usage{
 calc_concentration_response(
   C_invitro,
