@@ -1,5 +1,5 @@
 #' Calculate the mixture response from one of three different approaches:
-#' IA, GCA ,or Hazard Quotient
+#' IA, GCA, or Hazard Quotient
 #'
 #' @param C_invitro in vitro concentrations
 #' @param hill_params output from `fit_hill()`
@@ -131,7 +131,7 @@ calc_concentration_response <- function(C_invitro,
 
     EC10.GCA <- EC10.result$minimum
     E10.by.chem <- tp_i * 0.1
-    AC10.ij <- tcplHillConc(E10.by.chem, tp_i, AC50_i, 1)
+    AC10.ij <- hill_conc(E10.by.chem, tp_i, AC50_i, 1)
 
     sCi <- sum(C_i)
     if ( EC10.GCA > 0 ) {

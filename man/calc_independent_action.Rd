@@ -2,24 +2,39 @@
 % Please edit documentation in R/calc_independent_action.R
 \name{calc_independent_action}
 \alias{calc_independent_action}
-\title{Independent action prediction from the tcpl Hill function}
+\title{Independent Action}
 \usage{
-calc_independent_action(Ci, tp, AC50, Emax, slope = 1)
+calc_independent_action(conc, max, AC50, Emax, n = 1)
 }
 \arguments{
-\item{Ci}{individual chemical concentrations in regular space}
+\item{conc}{concentrations in regular space}
 
-\item{tp}{top asymptotes}
+\item{max}{maximal (asymtotic) responses}
 
-\item{AC50}{AC50}
+\item{AC50}{concentrations of half-maximal response}
 
 \item{Emax}{maximum mixture response}
 
-\item{slope}{hill coefficient}
+\item{n}{Hill coefficients (slopes)}
 }
 \value{
 response value
 }
 \description{
-Independent action prediction from the tcpl Hill function
+Calculate independent action response for a set of chemicals with Hill
+concentration-response curves.
+}
+\details{
+The concentration is computed as:
+\deqn{
+  IA = E_{max}
+  \left(
+    1 - \prod\limits_{i} \left(1 - \frac{x_i}{E_{max}}\right)
+  \right),
+}
+where \eqn{x_i = hill\_val(conc_i, max_i, AC50_i, n_i)} is the Hill model
+response function for each chemical.
+}
+\seealso{
+\code{\link{hill_val}}
 }

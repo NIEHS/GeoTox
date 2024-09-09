@@ -14,7 +14,7 @@ obj_GCA <- function(effic, Ci, tp, AC50) {
   # Solving for the efficacy on the natural log-scale. This allows for
   # better precision in the low values, e.g. 1 x 10-5
   E <- exp(effic)
-  ECi <- tcplHillConc(E, tp, AC50, rep(1,length(tp)))
+  ECi <- hill_conc(E, tp, AC50, rep(1,length(tp)))
   gca.val <- sum(Ci / ECi, na.rm = FALSE)
   (gca.val - 1)^2
 }

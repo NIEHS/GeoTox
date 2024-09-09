@@ -13,7 +13,7 @@
 #'
 #' @return objective value
 obj_ECx <- function(ECmix, E, Ci, tp, AC50) {
-  ECi <- tcplHillConc(E, tp, AC50, rep(1, length(tp)))
+  ECi <- hill_conc(E, tp, AC50, rep(1, length(tp)))
   Pi <- Ci / sum(Ci)
   ECx.val <- sum(Pi * ECmix / ECi, na.rm = FALSE)
   (ECx.val - 1)^2
