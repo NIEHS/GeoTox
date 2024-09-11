@@ -14,85 +14,13 @@ rm(list = ls())
 # Updating the raw data is an interactive process. There are several steps
 # that require manual intervention. These steps will create errors if run
 # in a non-interactive environment.
-update_data_raw <- FALSE # Last updated 7/29/2024
+update_data_raw <- TRUE # Last updated 9/11/2024
 
 geo_tox_data <- list()
 
 ################################################################################
 ## Chemical data
 ################################################################################
-
-########################################
-### ICE cHTS data
-########################################
-
-if (update_data_raw) {
-  
-  assays <- c("APR_HepG2_p53Act_1h_dn",
-              "APR_HepG2_p53Act_1h_up",
-              "APR_HepG2_p53Act_24h_dn",
-              "APR_HepG2_p53Act_24h_up",
-              "APR_HepG2_p53Act_72h_dn",
-              "APR_HepG2_p53Act_72h_up",
-              "ATG_p53_CIS_up",
-              "TOX21_DT40",
-              "TOX21_DT40_100",
-              "TOX21_DT40_657",
-              "TOX21_ELG1_LUC_Agonist",
-              "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-              "TOX21_p53_BLA_p1_ratio",
-              "TOX21_p53_BLA_p2_ratio",
-              "TOX21_p53_BLA_p3_ratio",
-              "TOX21_p53_BLA_p4_ratio",
-              "TOX21_p53_BLA_p5_ratio")
-  
-  get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
-    
-    if (is.null(assays) & is.null(chemids)) {
-      stop("Must provide at least one of 'assays' or 'chemids'")
-    }
-    
-    # Format query parameters
-    req_params <- list()
-    
-    if (!is.null(assays)) {
-      if (!is.list(assays)) assays <- as.list(assays)
-      req_params$assays <- assays
-    }
-    
-    if (!is.null(chemids)) {
-      if (!is.list(chemids)) chemids <- as.list(chemids)
-      req_params$chemids <- chemids
-    }
-    
-    # Query ICE API
-    resp <- request("https://ice.ntp.niehs.nih.gov/api/v1/search") |> 
-      req_body_json(req_params) |> 
-      req_perform()
-    
-    if (resp$status_code != 200) {
-      stop("Failed to retrieve data from ICE API")
-    }
-    
-    # Return active chemicals
-    result <- resp |> resp_body_json() |> pluck("endPoints")
-    
-    fields <- c("assay", "casrn", "dtxsid", "substanceName",
-                "endpoint", "value")
-    
-    map(fields, \(x) map_chr(result, x)) |> 
-      set_names(fields) |>
-      bind_cols() |> 
-      filter(endpoint == "Call", value == "Active") |> 
-      select(-c(endpoint, value)) |> 
-      distinct()
-  }
-  
-  cHTS_hits_API <- get_cHTS_hits(assays = assays)
-  saveRDS(cHTS_hits_API, "data-raw/cHTS_hits_API.rds")
-} else {
-  cHTS_hits_API <- readRDS("data-raw/cHTS_hits_API.rds")
-}
 
 ########################################
 ### Exposure data
@@ -121,17 +49,17 @@ if (update_data_raw) {
     }
   }
   
-  exposure <- exposure %>%
+  exposure <- exposure |>
     # North Carolina counties
-    filter(State == "NC", !grepl("0$", FIPS)) %>%
+    filter(State == "NC", !grepl("0$", FIPS)) |>
     # Aggregate chemicals by county
-    summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) %>%
-    pivot_longer(-FIPS, names_to = "chemical") %>%
+    summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) |>
+    pivot_longer(-FIPS, names_to = "chemical") |>
     mutate(
       stat = if_else(grepl("_1$", chemical), "mean", "sd"),
       chemical = gsub('.{2}$', '', chemical)
-    ) %>%
-    pivot_wider(names_from = stat) %>%
+    ) |>
+    pivot_wider(names_from = stat) |>
     # Normalize concentrations
     mutate(norm = min_max_norm(mean), .by = chemical)
   
@@ -172,12 +100,84 @@ geo_tox_data$exposure <- geo_tox_data$exposure |>
   select(FIPS, casn = CASRN, chnm = PREFERRED_NAME, mean, sd, norm)
 
 ########################################
+### ICE cHTS data
+########################################
+
+if (update_data_raw) {
+  
+  get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
+    
+    if (is.null(assays) & is.null(chemids)) {
+      stop("Must provide at least one of 'assays' or 'chemids'")
+    }
+    
+    # Format query parameters
+    req_params <- list()
+    
+    if (!is.null(assays)) {
+      if (!is.list(assays)) assays <- as.list(assays)
+      req_params$assays <- assays
+    }
+    
+    if (!is.null(chemids)) {
+      if (!is.list(chemids)) chemids <- as.list(chemids)
+      req_params$chemids <- chemids
+    }
+    
+    # Query ICE API
+    resp <- request("https://ice.ntp.niehs.nih.gov/api/v1/search") |> 
+      req_body_json(req_params) |> 
+      req_perform()
+    
+    if (resp$status_code != 200) {
+      stop("Failed to retrieve data from ICE API")
+    }
+    
+    # Return active chemicals
+    result <- resp |> resp_body_json() |> pluck("endPoints")
+    
+    fields <- c("assay", "casrn", "dtxsid", "substanceName",
+                "endpoint", "value")
+    
+    map(fields, function(field) map_chr(result, field)) |> 
+      set_names(fields) |>
+      bind_cols() |> 
+      filter(endpoint == "Call", value == "Active") |> 
+      select(-c(endpoint, value)) |> 
+      distinct()
+  }
+  
+  assays <- c("APR_HepG2_p53Act_1h_dn",
+              "APR_HepG2_p53Act_1h_up",
+              "APR_HepG2_p53Act_24h_dn",
+              "APR_HepG2_p53Act_24h_up",
+              "APR_HepG2_p53Act_72h_dn",
+              "APR_HepG2_p53Act_72h_up",
+              "ATG_p53_CIS_up",
+              "TOX21_DT40",
+              "TOX21_DT40_100",
+              "TOX21_DT40_657",
+              "TOX21_ELG1_LUC_Agonist",
+              "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+              "TOX21_p53_BLA_p1_ratio",
+              "TOX21_p53_BLA_p2_ratio",
+              "TOX21_p53_BLA_p3_ratio",
+              "TOX21_p53_BLA_p4_ratio",
+              "TOX21_p53_BLA_p5_ratio")
+  
+  chemids <- unique(geo_tox_data$exposure$casn)
+  
+  cHTS_hits_API <- get_cHTS_hits(assays = assays, chemids = chemids)
+  saveRDS(cHTS_hits_API, "data-raw/cHTS_hits_API.rds")
+} else {
+  cHTS_hits_API <- readRDS("data-raw/cHTS_hits_API.rds")
+}
+
+########################################
 ### Dose-response data
 ########################################
 
 if (update_data_raw) {
-  assays <- unique(cHTS_hits_API$assay)
-  chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$casn)
   
   get_ICE_dose_resp <- function(assays = NULL, chemids = NULL) {
     
@@ -210,7 +210,7 @@ if (update_data_raw) {
     # Return dose-response data
     result <- resp |> resp_body_json() |> pluck("curves")
     
-    lapply(result, function(x) {
+    map(result, function(x) {
       tibble(
         endp = x[["assay"]],
         casn = x[["casrn"]],
@@ -223,6 +223,10 @@ if (update_data_raw) {
     }) |> 
       bind_rows()
   }
+  
+  assays <- unique(cHTS_hits_API$assay)
+  
+  chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$casn)
   
   dose_response <- get_ICE_dose_resp(assays = assays, chemids = chemids)
   saveRDS(dose_response, "data-raw/dose_response.rds")
@@ -257,11 +261,11 @@ if (update_data_raw) {
 }
 age <- read_csv("data-raw/cc-est2019-alldata-37.csv", show_col_types = FALSE)
 
-geo_tox_data$age <- age %>%
+geo_tox_data$age <- age |>
   # 7/1/2019 population estimate
-  filter(YEAR == 12) %>%
+  filter(YEAR == 12) |>
   # Create FIPS
-  mutate(FIPS = str_c(STATE, COUNTY)) %>%
+  mutate(FIPS = str_c(STATE, COUNTY)) |>
   # Keep selected columns
   select(FIPS, AGEGRP, TOT_POP)
 
@@ -286,15 +290,15 @@ extract_SD <- function(x) {
   diff(range) / 3.92
 }
 
-geo_tox_data$obesity <- places %>%
+geo_tox_data$obesity <- places |>
   # North Carolina Counties
-  filter(StateAbbr == "NC") %>%
+  filter(StateAbbr == "NC") |>
   # Select obesity data
-  select(FIPS = CountyFIPS, OBESITY_CrudePrev, OBESITY_Crude95CI) %>%
+  select(FIPS = CountyFIPS, OBESITY_CrudePrev, OBESITY_Crude95CI) |>
   # Change confidence interval to standard deviation
-  rowwise() %>%
-  mutate(OBESITY_SD = extract_SD(OBESITY_Crude95CI)) %>%
-  ungroup() %>%
+  rowwise() |>
+  mutate(OBESITY_SD = extract_SD(OBESITY_Crude95CI)) |>
+  ungroup() |>
   select(-OBESITY_Crude95CI)
 
 ########################################
@@ -303,10 +307,14 @@ geo_tox_data$obesity <- places %>%
 
 if (update_data_raw) {
   
-  load_sipes2017()
-  
   set.seed(2345)
   n_samples <- 500
+  
+  # Get CASN for which httk simulation is possible. Try using load_dawson2021,
+  # load_sipes2017, or load_pradeep2020 to increase number availability.
+  load_sipes2017()
+  casn <- intersect(unique(geo_tox_data$dose_response$casn),
+                    get_cheminfo(suppress.messages = TRUE))
   
   # Define population demographics for httk simulation
   pop_demo <- cross_join(
@@ -367,11 +375,8 @@ if (update_data_raw) {
     }
   }
   
-  # Get CASN
-  casn <- unique(geo_tox_data$dose_response$casn)
-  
   # Simulate Css values
-  simulated_css <- lapply(casn, function(chem.cas) {
+  simulated_css <- map(casn, function(chem.cas) {
     pop_demo |>
       rowwise() |>
       mutate(
@@ -381,29 +386,35 @@ if (update_data_raw) {
   })
   simulated_css <- setNames(simulated_css, casn)
   
+  # Remove CASN that failed simulate_css
+  casn_keep <- map_lgl(simulated_css, function(df) {
+    !(length(df$css[[1]]) == 1 && is.na(df$css[[1]]))
+  })
+  simulated_css <- simulated_css[casn_keep]
+  
   # Get median Css values for each age_group
-  simulated_css <- lapply(
+  simulated_css <- map(
     simulated_css,
     function(cas_df) {
       cas_df |>
         nest(.by = age_group) |>
         mutate(
-          age_median_css = sapply(data, function(df) median(unlist(df$css),
-                                                            na.rm = TRUE))
+          age_median_css = map_dbl(data, function(df) median(unlist(df$css),
+                                                             na.rm = TRUE))
         ) |>
         unnest(data)
     }
   )
   
   # Get median Css values for each weight
-  simulated_css <- lapply(
+  simulated_css <- map(
     simulated_css,
     function(cas_df) {
       cas_df |>
         nest(.by = weight) |>
         mutate(
-          weight_median_css = sapply(data, function(df) median(unlist(df$css),
-                                                               na.rm = TRUE))
+          weight_median_css = map_dbl(data, function(df) median(unlist(df$css),
+                                                                na.rm = TRUE))
         ) |>
         unnest(data) |>
         arrange(age_min, weight)
@@ -442,11 +453,11 @@ county <- st_read("data-raw/cb_2019_us_county_5m/cb_2019_us_county_5m.shp")
 state <- st_read("data-raw/cb_2019_us_state_5m/cb_2019_us_state_5m.shp")
 
 geo_tox_data$boundaries <- list(
-  county = county %>%
-    filter(STATEFP == 37) %>%
+  county = county |> 
+    filter(STATEFP == 37) |> 
     select(FIPS = GEOID, geometry),
-  state = state %>%
-    filter(STATEFP == 37) %>%
+  state = state |> 
+    filter(STATEFP == 37) |> 
     select(geometry)
 )
 

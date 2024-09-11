@@ -55,7 +55,7 @@ rsconnect/
 inst/doc
 docs
 
-data-raw/
+#data-raw/
 
 ._*
 
