@@ -10,8 +10,8 @@ geoTox <- readRDS("multi-run-0817.rds")
 
 
 ## Multi-Assay plots for manuscript from new GeoTox updates
-assay_quantiles <- c("A10" = 0.1, "A50" = 0.5, "A90" = 0.9)
-summary_quantiles <- c("S05" = 0.05, "S10" = 0.1)
+assay_quantiles <- c("Assay-10th Quantile" = 0.1, "Assay- Median" = 0.5, "Assay- 90th Quantile" = 0.9)
+summary_quantiles <- c("Total-5th Quantile" = 0.05, "Total-10th Quantile" = 0.1)
 
 df <- resp_quantiles(geoTox$resp,
                      assay_summary = TRUE,
@@ -76,9 +76,9 @@ df.KCC5 <- resp_quantiles(geoTox$resp,
           ggtitle("KCC5:  Oxidative Stress")
 
 
-ggsave("plots/multi-assay-counties-all.pdf", q1, width = 6, height = 8, units = "in", device = cairo_pdf)
-ggsave("plots/multi-assay-counties-KCC2.pdf", q2, width = 6, height = 8, units = "in", device = cairo_pdf)
-ggsave("plots/multi-counties-KCC5.pdf", q3, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-assay-counties-all-20240904.pdf", q1, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-assay-counties-KCC2-20240904.pdf", q2, width = 6, height = 8, units = "in", device = cairo_pdf)
+ggsave("plots/multi-counties-KCC5-20240904.pdf", q3, width = 6, height = 8, units = "in", device = cairo_pdf)
 
 
 # Ashe County, NC (Lowest 10th percentile of assay median responses)
