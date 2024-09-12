@@ -1,3 +1,5 @@
+# GeoTox (development version)
+
 # 0.0.1
 - Adding supporting documents to the `GeoTox` repository such as this news.md, issue templates, and contributor's guide
 - NC areal level analysis vignette is complete
