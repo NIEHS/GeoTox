@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +109,7 @@ values for each chemical at specified age and weight combinations.</p>
 <span><span class="va">geoTox</span></span>
 <span><span class="co">#&gt; GeoTox object</span></span>
 <span><span class="co">#&gt; Assays: 1</span></span>
-<span><span class="co">#&gt; Chemicals: 6</span></span>
+<span><span class="co">#&gt; Chemicals: 5</span></span>
 <span><span class="co">#&gt; Regions: 100</span></span>
 <span><span class="co">#&gt; Population: 250</span></span>
 <span><span class="co">#&gt; Simulated Fields:</span></span>
@@ -117,12 +117,12 @@ values for each chemical at specified age and weight combinations.</p>
 <span><span class="co">#&gt;       age    list(integer)       100 x (250)</span></span>
 <span><span class="co">#&gt;        IR    list(numeric)       100 x (250)</span></span>
 <span><span class="co">#&gt;   obesity  list(character)       100 x (250)</span></span>
-<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 25)</span></span>
-<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 25)</span></span>
+<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 21)</span></span>
 <span><span class="co">#&gt; Computed Fields:</span></span>
 <span><span class="co">#&gt;          Name             Class               Dim</span></span>
-<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 25)</span></span>
-<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 25)</span></span>
+<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 21)</span></span>
 <span><span class="co">#&gt;          resp  list(data.frame)   100 x (250 x 5)</span></span>
 <span><span class="co">#&gt;   sensitivity        list(list)         5 x (100)</span></span>
 <span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
@@ -135,7 +135,7 @@ values for each chemical at specified age and weight combinations.</p>
 <p><img src="introduction_files/figure-html/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Picking joint bandwidth of 0.0941</span></span></code></pre></div>
+<span><span class="co">#&gt; Picking joint bandwidth of 0.139</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -166,7 +166,7 @@ values for each chemical at specified age and weight combinations.</p>
 <span><span class="va">geoTox</span></span>
 <span><span class="co">#&gt; GeoTox object</span></span>
 <span><span class="co">#&gt; Assays: 13</span></span>
-<span><span class="co">#&gt; Chemicals: 24</span></span>
+<span><span class="co">#&gt; Chemicals: 20</span></span>
 <span><span class="co">#&gt; Regions: 100</span></span>
 <span><span class="co">#&gt; Population: 250</span></span>
 <span><span class="co">#&gt; Simulated Fields:</span></span>
@@ -174,12 +174,12 @@ values for each chemical at specified age and weight combinations.</p>
 <span><span class="co">#&gt;       age    list(integer)       100 x (250)</span></span>
 <span><span class="co">#&gt;        IR    list(numeric)       100 x (250)</span></span>
 <span><span class="co">#&gt;   obesity  list(character)       100 x (250)</span></span>
-<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 25)</span></span>
-<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 25)</span></span>
+<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 21)</span></span>
 <span><span class="co">#&gt; Computed Fields:</span></span>
 <span><span class="co">#&gt;          Name             Class               Dim</span></span>
-<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 25)</span></span>
-<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 25)</span></span>
+<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 21)</span></span>
 <span><span class="co">#&gt;          resp  list(data.frame)  100 x (3250 x 6)</span></span>
 <span><span class="co">#&gt;   sensitivity        list(list)         5 x (100)</span></span>
 <span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
@@ -197,12 +197,12 @@ values for each chemical at specified age and weight combinations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Multiple assays found, using first assay 'APR_HepG2_p53Act_24h_up'</span></span>
-<span><span class="co">#&gt; Warning: Removed 93001 NA values</span></span>
+<span><span class="co">#&gt; Warning: Removed 93000 NA values</span></span>
 <span><span class="co">#&gt; Picking joint bandwidth of 0.133</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-5-4.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span>, assay <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Picking joint bandwidth of 0.0939</span></span></code></pre></div>
+<span><span class="co">#&gt; Picking joint bandwidth of 0.139</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-5-5.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
