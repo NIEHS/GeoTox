@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_obesity.R
 \name{simulate_obesity}
 \alias{simulate_obesity}
-\title{Simulate obesity}
+\title{Simulate obesity status}
 \usage{
 simulate_obesity(
   x,
@@ -28,7 +28,7 @@ one row.}
 List of arrays containing simulated obesity status.
 }
 \description{
-Simulate obesity
+Simulate obesity status
 }
 \examples{
 # Input has default column names
