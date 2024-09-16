@@ -1,4 +1,4 @@
-#' Simulate obesity
+#' Simulate obesity status
 #'
 #' @param x data frame containing obesity data as a percentage from 0 to 100.
 #' @param obes_prev column name of prevalence.

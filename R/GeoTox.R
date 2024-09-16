@@ -11,24 +11,16 @@ GeoTox <- function() {
       par = list(
         n = 1e3,
         IR_params = NULL,
-        obesity = list(
-          obes_prev  = "OBESITY_CrudePrev",
-          obes_sd    = "OBESITY_SD",
-          obes_label = "FIPS"
-        ),
-        exposure = list(
-          expos_mean  = "mean",
-          expos_sd    = "sd",
-          expos_label = "casn"
-        ),
-        internal_dose = list(
-          time    = 1,
-          BW      = 1,
-          scaling = 1
-        ),
-        resp = list(
-          tp_b_mult = 1.5
-        )
+        obesity = list(obes_prev  = "OBESITY_CrudePrev",
+                       obes_sd    = "OBESITY_SD",
+                       obes_label = "FIPS"),
+        exposure = list(expos_mean  = "mean",
+                        expos_sd    = "sd",
+                        expos_label = "casn"),
+        internal_dose = list(time    = 1,
+                             BW      = 1,
+                             scaling = 1),
+        resp = list(tp_b_mult = 1.5)
       )
     ),
     class = "GeoTox")
@@ -105,7 +97,7 @@ print.GeoTox <- function(x, ...) {
   }
   cat("Regions: ", n_regions, "\n", sep = "")
   cat("Population: ", x$par$n, "\n", sep = "")
-  cat("Simulated Fields:")
+  cat("Data Fields:")
   if (nrow(info_simulated) > 0) {
     cat("\n")
     print(info_simulated, row.names = FALSE, print.gap = 2)

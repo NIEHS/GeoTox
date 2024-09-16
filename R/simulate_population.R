@@ -50,7 +50,7 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
     x$age <- simulate_age(age, n = x$par$n)
     # Clear downstream fields
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
-      warning("Clearing 'C_ss' and 'css_sensitivity' fields")
+      warning("Clearing 'C_ss' and 'css_sensitivity' fields", call. = FALSE)
       x$C_ss <- NULL
       x$css_sensitivity <- NULL
     }
@@ -58,6 +58,9 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
   
   # Inhalation rate
   if (!is.null(age) | !is.null(dots$IR_params)) {
+    if (is.null(x$age)) {
+      stop("Age data is required to simulate inhalation rate", call. = FALSE)
+    }
     x$IR <- simulate_inhalation_rate(x$age, IR_params = x$par$IR_params)
   }
   
@@ -70,7 +73,7 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
                                   n          = x$par$n)
     # Clear downstream fields
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
-      warning("Clearing 'C_ss' and 'css_sensitivity' fields")
+      warning("Clearing 'C_ss' and 'css_sensitivity' fields", call. = FALSE)
       x$C_ss <- NULL
       x$css_sensitivity <- NULL
     }
