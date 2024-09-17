@@ -5,16 +5,16 @@
 #' given the concentrations and inverse, based on a regular space AC50 and
 #' concentrations.
 #'
-#' @param ECmix effective concentration of the mixture
-#' @param E individual chemical responses
-#' @param Ci individual chemical concentrations in regular space
-#' @param tp top asymptotes
-#' @param AC50 AC50s
+#' @param conc_mix effective concentration of the mixture in regular space
+#' @param resp individual chemical responses
+#' @param conc individual chemical concentrations in regular space
+#' @param max maximal (asymtotic) response
+#' @param AC50 concentrations of half-maximal response
 #'
 #' @return objective value
-obj_ECx <- function(ECmix, E, Ci, tp, AC50) {
-  ECi <- hill_conc(E, tp, AC50, rep(1, length(tp)))
-  Pi <- Ci / sum(Ci)
-  ECx.val <- sum(Pi * ECmix / ECi, na.rm = FALSE)
+obj_ECx <- function(conc_mix, resp, conc, max, AC50) {
+  x <- hill_conc(resp, max, AC50, 1)
+  p <- conc / sum(conc)
+  ECx.val <- sum(p * conc_mix / x, na.rm = FALSE)
   (ECx.val - 1)^2
 }

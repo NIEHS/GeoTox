@@ -1,20 +1,19 @@
 #' Generalized concentration addition objective function
 #'
 #' @description
-#' Use to find the optimal efficacy value, E, based on a regular space AC50 and
+#' Use to find the optimal efficacy value based on a regular space AC50 and
 #' concentrations.
 #'
-#' @param effic natural log of individual chemical responses
-#' @param Ci individual chemical concentrations in regular space
-#' @param tp top asymptote
-#' @param AC50 AC50
+#' @param ln_resp natural log of individual chemical responses
+#' @param conc individual chemical concentrations in regular space
+#' @param max maximal (asymtotic) responses
+#' @param AC50 concentrations of half-maximal response
 #'
 #' @return objective value
-obj_GCA <- function(effic, Ci, tp, AC50) {
+obj_GCA <- function(ln_resp, conc, max, AC50) {
   # Solving for the efficacy on the natural log-scale. This allows for
   # better precision in the low values, e.g. 1 x 10-5
-  E <- exp(effic)
-  ECi <- hill_conc(E, tp, AC50, rep(1,length(tp)))
-  gca.val <- sum(Ci / ECi, na.rm = FALSE)
+  x <- hill_conc(exp(ln_resp), max, AC50, 1)
+  gca.val <- sum(conc / x, na.rm = FALSE)
   (gca.val - 1)^2
 }
