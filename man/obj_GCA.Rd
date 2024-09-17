@@ -4,21 +4,21 @@
 \alias{obj_GCA}
 \title{Generalized concentration addition objective function}
 \usage{
-obj_GCA(effic, Ci, tp, AC50)
+obj_GCA(ln_resp, conc, max, AC50)
 }
 \arguments{
-\item{effic}{natural log of individual chemical responses}
+\item{ln_resp}{natural log of individual chemical responses}
 
-\item{Ci}{individual chemical concentrations in regular space}
+\item{conc}{individual chemical concentrations in regular space}
 
-\item{tp}{top asymptote}
+\item{max}{maximal (asymtotic) responses}
 
-\item{AC50}{AC50}
+\item{AC50}{concentrations of half-maximal response}
 }
 \value{
 objective value
 }
 \description{
-Use to find the optimal efficacy value, E, based on a regular space AC50 and
+Use to find the optimal efficacy value based on a regular space AC50 and
 concentrations.
 }

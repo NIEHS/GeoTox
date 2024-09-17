@@ -4,18 +4,18 @@
 \alias{obj_ECx}
 \title{A Generalized concentration addition style solution}
 \usage{
-obj_ECx(ECmix, E, Ci, tp, AC50)
+obj_ECx(conc_mix, resp, conc, max, AC50)
 }
 \arguments{
-\item{ECmix}{effective concentration of the mixture}
+\item{conc_mix}{effective concentration of the mixture in regular space}
 
-\item{E}{individual chemical responses}
+\item{resp}{individual chemical responses}
 
-\item{Ci}{individual chemical concentrations in regular space}
+\item{conc}{individual chemical concentrations in regular space}
 
-\item{tp}{top asymptotes}
+\item{max}{maximal (asymtotic) response}
 
-\item{AC50}{AC50s}
+\item{AC50}{concentrations of half-maximal response}
 }
 \value{
 objective value
