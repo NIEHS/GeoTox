@@ -28,6 +28,6 @@ hill_conc <- function(resp, max, AC50, n) {
     stop("'resp' and 'max' must have the same sign.", call. = FALSE)
   }
   
-  conc <- AC50 * (max / resp - 1)^(-1 / n)
+  AC50 * (max / resp - 1)^(-1 / n)
   
 }

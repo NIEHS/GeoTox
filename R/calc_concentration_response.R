@@ -110,24 +110,31 @@ calc_concentration_response <- function(C_invitro,
       AC50_i <- AC50_i[idx]
     }
 
-    mixture.result <- stats::optimize(
-      obj_GCA, interval = interval, Ci = C_i, tp = tp_i, AC50 = AC50_i
-    )
+    mixture.result <- stats::optimize(obj_GCA,
+                                      interval = interval,
+                                      conc = C_i,
+                                      max = tp_i,
+                                      AC50 = AC50_i)
     GCA.eff[i] <- exp(mixture.result$minimum)
 
     # TODO replace with positive control value if given
-    Emax_resp <- stats::optimize(
-      obj_GCA, interval = interval, Ci = C_i * 10^14, tp = tp_i, AC50 = AC50_i
-    )
+    Emax_resp <- stats::optimize(obj_GCA,
+                                 interval = interval,
+                                 conc = C_i * 10^14,
+                                 max= tp_i,
+                                 AC50 = AC50_i)
     Emax <- exp(Emax_resp$minimum)
 
     IA.eff[i] <- calc_independent_action(C_i, tp_i, AC50_i, Emax)
 
     E10 <- Emax * 0.1
 
-    EC10.result <- stats::optimize(
-      obj_ECx, interval = c(-1000,1000), E = E10, Ci = C_i, tp = tp_i, AC50 = AC50_i
-    )
+    EC10.result <- stats::optimize(obj_ECx,
+                                   interval = c(-1000,1000),
+                                   resp = E10,
+                                   conc = C_i,
+                                   max = tp_i,
+                                   AC50 = AC50_i)
 
     EC10.GCA <- EC10.result$minimum
     E10.by.chem <- tp_i * 0.1

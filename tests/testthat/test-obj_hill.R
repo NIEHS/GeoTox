@@ -1,3 +1,19 @@
+test_that("spot check", {
+  
+  par <- c(2, 3, dt(0, df = 3, log = TRUE))
+  log10_conc <- par[2]
+  resp <- rep(par[1] / 2, 5)
+  
+  expect_equal(obj_hill(par, log10_conc, resp), 0)
+  
+  par <- c(2, 3, 4, dt(0, df = 4, log = TRUE))
+  log10_conc <- par[2]
+  resp <- rep(par[1] / 2, 7)
+  
+  expect_equal(obj_hill(par, log10_conc, resp), 0)
+  
+})
+
 # Testing the obj-hill functions
 test_that("2 and 3 parameter models give accurate likelihood", {
 
