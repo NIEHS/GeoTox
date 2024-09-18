@@ -11,7 +11,7 @@ concentrations."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,31 +49,31 @@ concentrations.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">obj_ECx</span><span class="op">(</span><span class="va">ECmix</span>, <span class="va">E</span>, <span class="va">Ci</span>, <span class="va">tp</span>, <span class="va">AC50</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">obj_ECx</span><span class="op">(</span><span class="va">conc_mix</span>, <span class="va">resp</span>, <span class="va">conc</span>, <span class="va">max</span>, <span class="va">AC50</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-ecmix">ECmix<a class="anchor" aria-label="anchor" href="#arg-ecmix"></a></dt>
-<dd><p>effective concentration of the mixture</p></dd>
+<dl><dt id="arg-conc-mix">conc_mix<a class="anchor" aria-label="anchor" href="#arg-conc-mix"></a></dt>
+<dd><p>effective concentration of the mixture in regular space</p></dd>
 
 
-<dt id="arg-e">E<a class="anchor" aria-label="anchor" href="#arg-e"></a></dt>
+<dt id="arg-resp">resp<a class="anchor" aria-label="anchor" href="#arg-resp"></a></dt>
 <dd><p>individual chemical responses</p></dd>
 
 
-<dt id="arg-ci">Ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
+<dt id="arg-conc">conc<a class="anchor" aria-label="anchor" href="#arg-conc"></a></dt>
 <dd><p>individual chemical concentrations in regular space</p></dd>
 
 
-<dt id="arg-tp">tp<a class="anchor" aria-label="anchor" href="#arg-tp"></a></dt>
-<dd><p>top asymptotes</p></dd>
+<dt id="arg-max">max<a class="anchor" aria-label="anchor" href="#arg-max"></a></dt>
+<dd><p>maximal (asymtotic) response</p></dd>
 
 
 <dt id="arg-ac-">AC50<a class="anchor" aria-label="anchor" href="#arg-ac-"></a></dt>
-<dd><p>AC50s</p></dd>
+<dd><p>concentrations of half-maximal response</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -90,7 +90,7 @@ concentrations.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
