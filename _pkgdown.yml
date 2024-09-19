@@ -40,15 +40,13 @@ reference:
   - starts_with("fit_")
   - starts_with("hill_")
   - starts_with("check_")
-reference:
-  - title: "Internal"
+-subtitle: "Internal"
     desc: "Internal functions"
-    contents:
-      - starts_with(".")
-reference:
-  - title: "Datasets"
+-contents:
+  - starts_with(".")
+-subtitle: "Datasets"
     desc: "Package datasets"
-    contents:
-      - geo_tox_data
+-contents:
+  - geo_tox_data
 
 
