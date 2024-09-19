@@ -22,8 +22,7 @@ reference:
 - subtitle: Plot
   desc: GeoTox plotting functions
 - contents:
-  - plot
-  - starts_with("plot_")
+  - starts_with("plot")
 - subtitle: Simulate
   desc: Functions that perform Monte Carlo simulation
 - contents:
