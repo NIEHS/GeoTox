@@ -37,4 +37,4 @@ reference:
   - starts_with("ojb_")
   - starts_with("fit_")
   - starts_with("hill_")
-  - stars_with("check_")
+  - starts_with("check_")
