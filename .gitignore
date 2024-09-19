@@ -63,3 +63,5 @@ docs
 *.log
 
 data/geo_tox_data_manuscript.RData
+
+README.html

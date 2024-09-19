@@ -1,3 +1,41 @@
 url: https://niehs.github.io/GeoTox/
 template:
   bootstrap: 5
+
+navbar:
+  structure:
+    left:  [reference, articles, search]
+    right: [github]
+
+reference:
+- subtitle: GeoTox
+  desc: Creating the GeoTox S3 object
+- contents:
+  - GeoTox
+- subtitle: Calculate Functions
+  desc: Functions that calculate metric in the GeoTox object
+- contents:
+  - starts_with("calc_")
+  - starts_with("calculate_")
+  - starts_with("compute_")
+  - resp_quantiles
+- subtitle: Plot
+  desc: GeoTox plotting functions
+- contents:
+  - plot
+  - starts_with("plot_")
+- subtitle: Simulate
+  desc: Functions that perform Monte Carlo simulation
+- contents:
+  - starts_with("simulate_")
+  - sample_Css
+  - sensitivity_analysis
+- subtitle: Auxiliary
+  desc: Auxillary and helper functions
+- contents:
+  - starts_with("get_")
+  - starts_with("set_")
+  - starts_with("ojb_")
+  - starts_with("fit_")
+  - starts_with("hill_")
+  - stars_with("check_")
