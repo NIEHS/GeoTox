@@ -1,6 +1,8 @@
 url: https://niehs.github.io/GeoTox/
 template:
   bootstrap: 5
+  bootswatch: minty
+
 
 navbar:
   structure:
