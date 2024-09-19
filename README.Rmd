@@ -33,6 +33,17 @@ knitr::opts_chunk$set(
 `GeoTox` package represents a significant advancement in environmental risk characterization, providing modular software to facilitate the application and further development of the GeoTox framework for quantifying the relationship between environmental exposures and health outcomes. By integrating geospatial methods with cutting-edge exposure and toxicological frameworks, `GeoTox` offers a robust tool for assessing individual and population-level risks from environmental stressors. 
 
 ![Source-to-Outcome Continuum concept supports the GeoTox framework](man/figures/Exposome-Cascade.png)
+Toxic effects are mediated through chemicals that alter critical molecules, cells, and physiological processes inside the body. In the same spirit, it is clear that phenotypic outcomes (e.g. disease) at the individual or population level can only occur after a series of source, exposure, and biological dynamics. We refer to this as the **source-to-outcome-continuum**. It follows that if methods and data exist to quantify each step in the sequence, and each step can be integrated into each neighboring step, then individual and population outcomes can be quantified  from spatiotemporally resolved environmental sources and exposures.
+
+
+<p align="center">
+  <img src="man/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow">
+  <br>
+  <em>Figure: GeoTox Workflow</em>
+</p>
+
+
+Flowchart of the GeoTox Framework. <span style="color: blue;">blue text</span> nodes represent an object and <span style="color: green;">green text</span>, rounded nodes represent a methodology or function required to go from one to the next.
 
 ## Installation
 

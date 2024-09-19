@@ -17,5 +17,4 @@
 #'   various age groups and obesity status combinations.}
 #'   \item{boundaries}{County and state boundaries for North Carolina in 2019.}
 #' }
-#' @keywords internal
 "geo_tox_data"
