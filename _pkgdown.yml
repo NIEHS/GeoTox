@@ -9,42 +9,43 @@ navbar:
     right: [github]
 
 reference:
-- subtitle: GeoTox
-  desc: Creating the GeoTox S3 object
+- subtitle: GeoTox S3 Object
+  desc: Functions using a GeoTox object
 - contents:
   - GeoTox
-- subtitle: Calculate Functions
-  desc: Functions that calculate metric in the GeoTox object
-- contents:
-  - starts_with("calc_")
-  - starts_with("calculate_")
-  - starts_with("compute_")
-  - resp_quantiles
-- subtitle: Plot
-  desc: GeoTox plotting functions
-- contents:
-  - starts_with("plot")
+  - calculate_response
+  - compute_sensitivity
+  - plot_sensitivity
+  - sensitivity_analysis
+  - simulate_population
 - subtitle: Simulate
   desc: Functions that perform Monte Carlo simulation
 - contents:
-  - starts_with("simulate_")
   - sample_Css
-  - sensitivity_analysis
+  - simulate_age
+  - simulate_exposure
+  - simulate_inhalation_rate
+  - simulate_obesity
+- subtitle: Calculate Functions
+  desc: Functions that calculate various metrics
+- contents:
+  - starts_with("calc_")
+  - resp_quantiles
+- subtitle: Plot
+  desc: Plotting functions
+- contents:
+  - plot_exposure
+  - plot_hill
+  - plot_resp
 - subtitle: Auxiliary
   desc: Auxillary and helper functions
 - contents:
-  - starts_with("get_")
-  - starts_with("set_")
-  - starts_with("obj_")
   - starts_with("fit_")
+  - starts_with("get_")
   - starts_with("hill_")
-  - starts_with("check_")
-- subtitle: Internal
-  desc: Internal functions
-- contents:
-  - starts_with(".")
+  - starts_with("obj_")
+  - starts_with("set_")
 - subtitle: Datasets
   desc: Package datasets
 - contents:
   - geo_tox_data
-

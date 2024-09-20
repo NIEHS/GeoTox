@@ -3,6 +3,8 @@
 #' @param x object to check
 #' @param names names to look for
 #'
+#' @keywords internal
+#'
 #' @return boolean, TRUE for error
 .check_names <- function(x, names) {
   if (inherits(x, "list")) {

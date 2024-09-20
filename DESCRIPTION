@@ -9,7 +9,7 @@ Authors@R: c(
 Description: Open-source software for connecting spatiotemporal exposure to
     individual and population-level risk.
 License: MIT + file LICENSE
-URL: https://niehs.github.io/GeoTox/
+URL: https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox
 Depends: 
     R (>= 4.1.0)
 Imports: 
