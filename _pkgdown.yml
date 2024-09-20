@@ -1,16 +1,12 @@
-url: https://niehs.github.io/GeoTox/
+url: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   bootswatch: minty
-
 
 navbar:
   structure:
     left:  [reference, articles, search]
     right: [github]
-  github:
-    href: https://github.com/NIEHS/GeoTox
-    icon: fab fa-github
 
 reference:
 - subtitle: GeoTox
