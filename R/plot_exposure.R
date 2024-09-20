@@ -1,12 +1,14 @@
-#' Title
+#' Plot exposure data.
 #'
-#' @param exposure .
-#' @param region_boundary .
-#' @param group_boundary .
-#' @param chem_label .
-#' @param ncol .
+#' @param exposure exposure data.
+#' @param region_boundary "sf" data.frame mapping features to a "geometry"
+#' column. Used to color regions.
+#' @param group_boundary (optional) "sf" data.frame containing a "geometry"
+#' column. Used to draw outlines.
+#' @param chem_label label for facet_wrap.
+#' @param ncol number of columns to wrap.
 #'
-#' @return .
+#' @return ggplot2 object.
 #' @export
 plot_exposure <- function(exposure,
                           region_boundary,

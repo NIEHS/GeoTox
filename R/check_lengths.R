@@ -2,6 +2,8 @@
 #'
 #' @param x list of arrays
 #' @param y list of arrays
+#' 
+#' @keywords internal
 #'
 #' @return boolean, TRUE for error
 .check_lengths <- function(x, y) {

@@ -17,3 +17,4 @@ boolean, TRUE for error
 \description{
 Check for names
 }
+\keyword{internal}

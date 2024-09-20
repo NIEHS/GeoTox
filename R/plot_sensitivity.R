@@ -1,13 +1,14 @@
-#' Title
+#' Plot results of sensitivity analysis.
 #'
-#' @param x .
-#' @param metric .
-#' @param assay .
-#' @param y .
-#' @param xlab .
-#' @param ylab .
+#' @param x GeoTox object.
+#' @param metric metric to plot. Valid choices are "GCA.Eff", "IA.Eff",
+#' "GCA.HQ.10", and "IA.HQ.10".
+#' @param assay which assay to plot, if multiple exist.
+#' @param y y value or text for bottom of ridge plot.
+#' @param xlab x-axis label.
+#' @param ylab y-axis label.
 #'
-#' @return .
+#' @return ggplot2 object.
 #' @export
 plot_sensitivity <- function(x,
                              metric = "GCA.Eff",

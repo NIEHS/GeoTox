@@ -1,3 +1,5 @@
+# GeoTox 0.1.2
+
 # GeoTox 0.1.1
 
 # GeoTox 0.1.0

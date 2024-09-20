@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_exposure.R
 \name{plot_exposure}
 \alias{plot_exposure}
-\title{Title}
+\title{Plot exposure data.}
 \usage{
 plot_exposure(
   exposure,
@@ -13,19 +13,21 @@ plot_exposure(
 )
 }
 \arguments{
-\item{exposure}{.}
+\item{exposure}{exposure data.}
 
-\item{region_boundary}{.}
+\item{region_boundary}{"sf" data.frame mapping features to a "geometry"
+column. Used to color regions.}
 
-\item{group_boundary}{.}
+\item{group_boundary}{(optional) "sf" data.frame containing a "geometry"
+column. Used to draw outlines.}
 
-\item{chem_label}{.}
+\item{chem_label}{label for facet_wrap.}
 
-\item{ncol}{.}
+\item{ncol}{number of columns to wrap.}
 }
 \value{
-.
+ggplot2 object.
 }
 \description{
-Title
+Plot exposure data.
 }
