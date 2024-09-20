@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,8 @@
   </ul></li>
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-      </ul><ul class="navbar-nav"></ul></div>
+      </ul><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="https://github.com/NIEHS/GeoTox/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul></div>
 
 
   </div>
@@ -35,8 +36,8 @@
 
     <div class="section level2">
 
-      <h3 id="geotox">GeoTox<a class="anchor" aria-label="anchor" href="#geotox"></a></h3>
-      <div class="section-desc"><p>Creating the GeoTox S3 object</p></div>
+      <h3 id="geotox-s-object">GeoTox S3 Object<a class="anchor" aria-label="anchor" href="#geotox-s-object"></a></h3>
+      <div class="section-desc"><p>Functions using a GeoTox object</p></div>
 
 
     </div><div class="section level2">
@@ -50,41 +51,6 @@
 
         </dt>
         <dd>GeoTox S3 object</dd>
-      </dl></div><div class="section level2">
-
-      <h3 id="calculate-functions">Calculate Functions<a class="anchor" aria-label="anchor" href="#calculate-functions"></a></h3>
-      <div class="section-desc"><p>Functions that calculate metric in the GeoTox object</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="calc_concentration_response.html">calc_concentration_response()</a></code>
-
-        </dt>
-        <dd>Calculate the mixture response from one of three different approaches: IA, GCA, or Hazard Quotient</dd>
-      </dl><dl><dt>
-
-          <code><a href="calc_independent_action.html">calc_independent_action()</a></code>
-
-        </dt>
-        <dd>Independent Action</dd>
-      </dl><dl><dt>
-
-          <code><a href="calc_internal_dose.html">calc_internal_dose()</a></code>
-
-        </dt>
-        <dd>Calculate internal chemical dose</dd>
-      </dl><dl><dt>
-
-          <code><a href="calc_invitro_concentration.html">calc_invitro_concentration()</a></code>
-
-        </dt>
-        <dd>Calculate <em>in vitro</em> concentration</dd>
       </dl><dl><dt>
 
           <code><a href="calculate_response.html">calculate_response()</a></code>
@@ -96,54 +62,25 @@
           <code><a href="compute_sensitivity.html">compute_sensitivity()</a></code>
 
         </dt>
-        <dd>Title</dd>
-      </dl><dl><dt>
-
-          <code><a href="resp_quantiles.html">resp_quantiles()</a></code>
-
-        </dt>
-        <dd>Get response quantiles</dd>
-      </dl></div><div class="section level2">
-
-      <h3 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a></h3>
-      <div class="section-desc"><p>GeoTox plotting functions</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="GeoTox.html">GeoTox()</a></code> <code><a href="GeoTox.html">plot(<i>&lt;GeoTox&gt;</i>)</a></code>
-
-        </dt>
-        <dd>GeoTox S3 object</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_exposure.html">plot_exposure()</a></code>
-
-        </dt>
-        <dd>Title</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_hill.html">plot_hill()</a></code>
-
-        </dt>
-        <dd>Plot Hill equation fits.</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_resp.html">plot_resp()</a></code>
-
-        </dt>
-        <dd>Plot response data</dd>
+        <dd>Compute response sensitivity to parameter variation.</dd>
       </dl><dl><dt>
 
           <code><a href="plot_sensitivity.html">plot_sensitivity()</a></code>
 
         </dt>
-        <dd>Title</dd>
+        <dd>Plot results of sensitivity analysis.</dd>
+      </dl><dl><dt>
+
+          <code><a href="sensitivity_analysis.html">sensitivity_analysis()</a></code>
+
+        </dt>
+        <dd>Perform sensitivity analysis</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_population.html">simulate_population()</a></code>
+
+        </dt>
+        <dd>Simulate population data</dd>
       </dl></div><div class="section level2">
 
       <h3 id="simulate">Simulate<a class="anchor" aria-label="anchor" href="#simulate"></a></h3>
@@ -157,6 +94,12 @@
 
       <dl><dt>
 
+          <code><a href="sample_Css.html">sample_Css()</a></code>
+
+        </dt>
+        <dd>Sample from pre-generated C_ss data</dd>
+      </dl><dl><dt>
+
           <code><a href="simulate_age.html">simulate_age()</a></code>
 
         </dt>
@@ -179,28 +122,10 @@
 
         </dt>
         <dd>Simulate obesity status</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_population.html">simulate_population()</a></code>
-
-        </dt>
-        <dd>Simulate population data</dd>
-      </dl><dl><dt>
-
-          <code><a href="sample_Css.html">sample_Css()</a></code>
-
-        </dt>
-        <dd>Sample from pre-generated C_ss data</dd>
-      </dl><dl><dt>
-
-          <code><a href="sensitivity_analysis.html">sensitivity_analysis()</a></code>
-
-        </dt>
-        <dd>Perform sensitivity analysis</dd>
       </dl></div><div class="section level2">
 
-      <h3 id="auxiliary">Auxiliary<a class="anchor" aria-label="anchor" href="#auxiliary"></a></h3>
-      <div class="section-desc"><p>Auxillary and helper functions</p></div>
+      <h3 id="calculate-functions">Calculate Functions<a class="anchor" aria-label="anchor" href="#calculate-functions"></a></h3>
+      <div class="section-desc"><p>Functions that calculate various metrics</p></div>
 
 
     </div><div class="section level2">
@@ -209,101 +134,6 @@
 
 
       <dl><dt>
-
-          <code><a href="get_fixed_age.html">get_fixed_age()</a></code>
-
-        </dt>
-        <dd>Get C_ss Data for Fixed Age</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_fixed_css.html">get_fixed_css()</a></code>
-
-        </dt>
-        <dd>Get Fixed C_ss Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_fixed_obesity.html">get_fixed_obesity()</a></code>
-
-        </dt>
-        <dd>Get C_ss Data for Fixed Obesity Status</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_fixed_other.html">get_fixed_other()</a></code>
-
-        </dt>
-        <dd>Get median C_ss Values</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_fixed_params.html">get_fixed_params()</a></code>
-
-        </dt>
-        <dd>Get C_ss Data for Fixed C_ss Generation Parameters</dd>
-      </dl><dl><dt>
-
-          <code><a href="set_boundaries.html">set_boundaries()</a></code>
-
-        </dt>
-        <dd>Set GeoTox boundaries</dd>
-      </dl><dl><dt>
-
-          <code><a href="set_hill_params.html">set_hill_params()</a></code>
-
-        </dt>
-        <dd>Set Hill parameters for a GeoTox object.</dd>
-      </dl><dl><dt>
-
-          <code><a href="obj_ECx.html">obj_ECx()</a></code>
-
-        </dt>
-        <dd>A Generalized concentration addition style solution</dd>
-      </dl><dl><dt>
-
-          <code><a href="obj_GCA.html">obj_GCA()</a></code>
-
-        </dt>
-        <dd>Generalized concentration addition objective function</dd>
-      </dl><dl><dt>
-
-          <code><a href="obj_hill.html">obj_hill()</a></code>
-
-        </dt>
-        <dd>Objective function for 2- or 3-parameter Hill model</dd>
-      </dl><dl><dt>
-
-          <code><a href="fit_hill.html">fit_hill()</a></code>
-
-        </dt>
-        <dd>Fit 2- or 3-parameter Hill model</dd>
-      </dl><dl><dt>
-
-          <code><a href="hill_conc.html">hill_conc()</a></code>
-
-        </dt>
-        <dd>Hill model concentration</dd>
-      </dl><dl><dt>
-
-          <code><a href="hill_val.html">hill_val()</a></code>
-
-        </dt>
-        <dd>Hill model response</dd>
-      </dl></div><div class="section level2">
-
-      <h3 id="internal">Internal<a class="anchor" aria-label="anchor" href="#internal"></a></h3>
-      <div class="section-desc"><p>Internal functions</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="GeoTox.html">GeoTox()</a></code> <code><a href="GeoTox.html">plot(<i>&lt;GeoTox&gt;</i>)</a></code>
-
-        </dt>
-        <dd>GeoTox S3 object</dd>
-      </dl><dl><dt>
 
           <code><a href="calc_concentration_response.html">calc_concentration_response()</a></code>
 
@@ -329,40 +159,56 @@
         <dd>Calculate <em>in vitro</em> concentration</dd>
       </dl><dl><dt>
 
-          <code><a href="calculate_response.html">calculate_response()</a></code>
+          <code><a href="resp_quantiles.html">resp_quantiles()</a></code>
 
         </dt>
-        <dd>Calculate response</dd>
-      </dl><dl><dt>
+        <dd>Get response quantiles</dd>
+      </dl></div><div class="section level2">
 
-          <code><a href="compute_sensitivity.html">compute_sensitivity()</a></code>
+      <h3 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a></h3>
+      <div class="section-desc"><p>Plotting functions</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="plot_exposure.html">plot_exposure()</a></code>
 
         </dt>
-        <dd>Title</dd>
+        <dd>Plot exposure data.</dd>
       </dl><dl><dt>
 
-          <code><a href="dot-check_lengths.html">.check_lengths()</a></code>
+          <code><a href="plot_hill.html">plot_hill()</a></code>
 
         </dt>
-        <dd>Check for matching lengths</dd>
+        <dd>Plot Hill equation fits.</dd>
       </dl><dl><dt>
 
-          <code><a href="dot-check_names.html">.check_names()</a></code>
+          <code><a href="plot_resp.html">plot_resp()</a></code>
 
         </dt>
-        <dd>Check for names</dd>
-      </dl><dl><dt>
+        <dd>Plot response data</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="auxiliary">Auxiliary<a class="anchor" aria-label="anchor" href="#auxiliary"></a></h3>
+      <div class="section-desc"><p>Auxillary and helper functions</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="fit_hill.html">fit_hill()</a></code>
 
         </dt>
         <dd>Fit 2- or 3-parameter Hill model</dd>
-      </dl><dl><dt>
-
-          <code><a href="geo_tox_data.html">geo_tox_data</a></code>
-
-        </dt>
-        <dd>GeoTox Data</dd>
       </dl><dl><dt>
 
           <code><a href="get_fixed_age.html">get_fixed_age()</a></code>
@@ -425,48 +271,6 @@
         <dd>Objective function for 2- or 3-parameter Hill model</dd>
       </dl><dl><dt>
 
-          <code><a href="plot_exposure.html">plot_exposure()</a></code>
-
-        </dt>
-        <dd>Title</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_hill.html">plot_hill()</a></code>
-
-        </dt>
-        <dd>Plot Hill equation fits.</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_resp.html">plot_resp()</a></code>
-
-        </dt>
-        <dd>Plot response data</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_sensitivity.html">plot_sensitivity()</a></code>
-
-        </dt>
-        <dd>Title</dd>
-      </dl><dl><dt>
-
-          <code><a href="resp_quantiles.html">resp_quantiles()</a></code>
-
-        </dt>
-        <dd>Get response quantiles</dd>
-      </dl><dl><dt>
-
-          <code><a href="sample_Css.html">sample_Css()</a></code>
-
-        </dt>
-        <dd>Sample from pre-generated C_ss data</dd>
-      </dl><dl><dt>
-
-          <code><a href="sensitivity_analysis.html">sensitivity_analysis()</a></code>
-
-        </dt>
-        <dd>Perform sensitivity analysis</dd>
-      </dl><dl><dt>
-
           <code><a href="set_boundaries.html">set_boundaries()</a></code>
 
         </dt>
@@ -477,36 +281,6 @@
 
         </dt>
         <dd>Set Hill parameters for a GeoTox object.</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_age.html">simulate_age()</a></code>
-
-        </dt>
-        <dd>Simulate ages</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_exposure.html">simulate_exposure()</a></code>
-
-        </dt>
-        <dd>Simulate external exposure</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_inhalation_rate.html">simulate_inhalation_rate()</a></code>
-
-        </dt>
-        <dd>Simulate inhalation rates</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_obesity.html">simulate_obesity()</a></code>
-
-        </dt>
-        <dd>Simulate obesity status</dd>
-      </dl><dl><dt>
-
-          <code><a href="simulate_population.html">simulate_population()</a></code>
-
-        </dt>
-        <dd>Simulate population data</dd>
       </dl></div><div class="section level2">
 
       <h3 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h3>
