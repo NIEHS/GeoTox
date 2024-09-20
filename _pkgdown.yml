@@ -1,7 +1,7 @@
 url: https://niehs.github.io/GeoTox/
 repo:
   url: https://github.com/NIEHS/GeoTox
-  branch: gh-pages  # Ensure this is the correct branch for your GitHub Pages
+  branch: main  # Ensure this is the correct branch for your GitHub Pages
 template:
   bootstrap: 5
   bootswatch: minty
