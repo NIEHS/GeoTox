@@ -3,13 +3,15 @@ Title: Spatiotemporal mixture risk assessment
 Version: 0.1.1
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "ctb")),
-    person("David", "Reif", , "david.reif@nih.gov", role = c("aut", "ctb")),
-    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut", "ctb"))
+    person("David", "Reif", , "david.reif@nih.gov", role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-7815-6767")),
+    person(given = "Kyle", family = "Messier", role = c("aut", "cre","ctb"), email = "kyle.messier@nih.gov", comment = c(ORCID = "0000-0001-9508-9623"))
   )
 Description: Open-source software for connecting spatiotemporal exposure to
     individual and population-level risk.
 License: MIT + file LICENSE
 URL: https://niehs.github.io/GeoTox/
+BugReports: https://github.com/NIEHS/GeoTox/issues
+Encoding: UTF-8
 Depends: 
     R (>= 4.1.0)
 Imports: 
