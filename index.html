@@ -13,16 +13,17 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Spatiotemporal mixture risk assessment">
 <meta name="description" content="Open-source software for connecting spatiotemporal exposure to individual and population-level risk.">
 <meta property="og:description" content="Open-source software for connecting spatiotemporal exposure to individual and population-level risk.">
+<meta property="og:image" content="https://niehs.github.io/GeoTox/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,13 +40,11 @@
     <li><a class="dropdown-item" href="articles/package_data.html">GeoTox Package Data</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
-      </ul>
-<ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
       </ul>
+<ul class="navbar-nav"></ul>
 </div>
 
 
@@ -53,30 +52,31 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="geotox">GeoTox<a class="anchor" aria-label="anchor" href="#geotox"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.svg" class="logo" alt=""><h1 id="geotox-">GeoTox 
+<a class="anchor" aria-label="anchor" href="#geotox-"></a>
+</h1>
+</div>
 <!-- badges: start -->
 
 <!-- badges: end -->
+<p><code>GeoTox</code> open-source R software package for characterizing the risk of perturbing molecular targets involved in adverse human health outcomes based on exposure to spatially-referenced stressor mixtures. The original framework is described in</p>
 <p><a href="https://pubmed.ncbi.nlm.nih.gov/36152849/" class="external-link">Eccles KM, Karmaus AL, Kleinstreuer NC, Parham F, Rider CV, Wambaugh JF, Messier KP. A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. Sci Total Environ. 2023 Jan 10;855:158905. doi: 10.1016/j.scitotenv.2022.158905. Epub 2022 Sep 21. PMID: 36152849; PMCID: PMC9979101.</a></p>
+<p><code>GeoTox</code> package represents a significant advancement in environmental risk characterization, providing modular software to facilitate the application and further development of the GeoTox framework for quantifying the relationship between environmental exposures and health outcomes. By integrating geospatial methods with cutting-edge exposure and toxicological frameworks, <code>GeoTox</code> offers a robust tool for assessing individual and population-level risks from environmental stressors.</p>
+<p><img src="reference/figures/Exposome-Cascade.png" alt="Source-to-Outcome Continuum concept supports the GeoTox framework"> Toxic effects are mediated through chemicals that alter critical molecules, cells, and physiological processes inside the body. In the same spirit, it is clear that phenotypic outcomes (e.g. disease) at the individual or population level can only occur after a series of source, exposure, and biological dynamics. We refer to this as the <strong>source-to-outcome-continuum</strong>. It follows that if methods and data exist to quantify each step in the sequence, and each step can be integrated into each neighboring step, then individual and population outcomes can be quantified from spatiotemporally resolved environmental sources and exposures.</p>
+<p align="center">
+<img src="reference/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow"><br><em>Figure: GeoTox Workflow</em>
+</p>
+<p>Flowchart of the GeoTox Framework. <span style="color: blue;">blue text</span> nodes represent an object and <span style="color: green;">green text</span>, rounded nodes represent a methodology or function required to go from one to the next.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of GeoTox from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>The package will be on CRAN in the near future - please stay tuned. You can install the development version of GeoTox from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Without vignettes</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"NIEHS/GeoTox"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># With vignettes</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"NIEHS/GeoTox"</span>,</span>
-<span>                        dependencies <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>                        build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"NIEHS/GeoTox"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
