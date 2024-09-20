@@ -1,4 +1,4 @@
-# GeoTox (development version)
+# GeoTox 0.1.0
 
 # 0.0.1
 - Adding supporting documents to the `GeoTox` repository such as this news.md, issue templates, and contributor's guide
