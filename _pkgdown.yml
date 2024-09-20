@@ -7,9 +7,6 @@ navbar:
   structure:
     left:  [reference, articles, search]
     right: [github]
-  github:
-    href: https://github.com/NIEHS/GeoTox
-    icon: fab fa-github
 
 reference:
 - subtitle: GeoTox
