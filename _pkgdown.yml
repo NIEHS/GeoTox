@@ -1,4 +1,5 @@
 url: https://niehs.github.io/GeoTox/
+repo: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   bootswatch: minty
