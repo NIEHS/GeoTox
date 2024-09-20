@@ -94,8 +94,10 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
     x$C_ss <- sample_Css(simulated_css, age = x$age, obesity = x$obesity)
     
     # Get values for sensitivity analysis
-    x$css_sensitivity <- get_fixed_css(simulated_css, age = x$age,
-                                       obesity = x$obesity, C_ss = x$C_ss)
+    x$css_sensitivity <- get_fixed_css(simulated_css,
+                                       age = x$age,
+                                       obesity = x$obesity,
+                                       C_ss = x$C_ss)
   }
   
   x

@@ -10,7 +10,7 @@ Open-source software for connecting spatiotemporal exposure to individual and po
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://niehs.github.io/GeoTox/}
+  \item \url{https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox}
 }
 
 }

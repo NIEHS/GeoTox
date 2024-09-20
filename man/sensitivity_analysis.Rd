@@ -4,14 +4,31 @@
 \alias{sensitivity_analysis}
 \title{Perform sensitivity analysis}
 \usage{
-sensitivity_analysis(x)
+sensitivity_analysis(x, tp_b_mult = list(NULL, NULL, NULL, 1.2, NULL))
 }
 \arguments{
-\item{x}{GeoTox object}
+\item{x}{GeoTox object.}
+
+\item{tp_b_mult}{numeric list of length 5 for each step of the sensitivity
+analysis.}
 }
 \value{
-The same object with additional fields added or updated
+The same GeoTox object with added \code{sensitivity} field.
 }
 \description{
 Perform sensitivity analysis
+}
+\details{
+This wrapper function will sequentially call the \link{compute_sensitivity}
+function with inputs \code{age}, \code{obesity}, \code{css_params}, \code{fit_params}, and
+\code{C_ext}. The results will be returned as a named list and stored in the
+\code{sensitivity} field of the input GeoTox object.
+
+Values of \code{NULL} in the \code{tp_b_mult} input will use the default value stored
+in the \code{GeoTox} object (\code{x$par$resp$tp_b_mult}). When a \code{GeoTox} object is
+created this is initialized at \code{1.5}, but can be changed via the
+\link{calculate_response} function or directly in the object.
+}
+\seealso{
+\code{\link{compute_sensitivity}}
 }

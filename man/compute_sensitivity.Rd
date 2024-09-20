@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_sensitivity.R
 \name{compute_sensitivity}
 \alias{compute_sensitivity}
-\title{Title}
+\title{Compute response sensitivity to parameter variation.}
 \usage{
 compute_sensitivity(
   x,
@@ -11,15 +11,15 @@ compute_sensitivity(
 )
 }
 \arguments{
-\item{x}{.}
+\item{x}{GeoTox object.}
 
-\item{vary}{.}
+\item{vary}{which parameter to vary.}
 
-\item{tp_b_mult}{.}
+\item{tp_b_mult}{input for \link{calc_concentration_response} step.}
 }
 \value{
-.
+output from \link{calc_concentration_response}
 }
 \description{
-Title
+Compute response sensitivity to parameter variation.
 }

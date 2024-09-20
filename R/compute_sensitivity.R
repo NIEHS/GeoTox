@@ -1,19 +1,15 @@
-#' Title
+#' Compute response sensitivity to parameter variation.
 #'
-#' @param x .
-#' @param vary .
-#' @param tp_b_mult .
+#' @param x GeoTox object.
+#' @param vary which parameter to vary.
+#' @param tp_b_mult input for [calc_concentration_response] step.
 #'
-#' @return .
+#' @return output from [calc_concentration_response]
 #' @export
-compute_sensitivity <- function(
-    x,
-    vary = c("age", "obesity", "css_params", "fit_params", "C_ext"),
-    tp_b_mult = NULL) {
-  
-  # TODO Should re-simulations be run every time or once and saved?
-  # TODO should tp_b_mult be allowed to change?
-  #      e.g. tp_b_mult <- ifelse(vary == "step 4", 1.2, 1.5)
+compute_sensitivity <- function(x,
+                                vary = c("age", "obesity", "css_params",
+                                         "fit_params", "C_ext"),
+                                tp_b_mult = NULL) {
   
   vary <- match.arg(vary)
   

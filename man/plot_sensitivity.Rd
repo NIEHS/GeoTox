@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sensitivity.R
 \name{plot_sensitivity}
 \alias{plot_sensitivity}
-\title{Title}
+\title{Plot results of sensitivity analysis.}
 \usage{
 plot_sensitivity(
   x,
@@ -14,21 +14,22 @@ plot_sensitivity(
 )
 }
 \arguments{
-\item{x}{.}
+\item{x}{GeoTox object.}
 
-\item{metric}{.}
+\item{metric}{metric to plot. Valid choices are "GCA.Eff", "IA.Eff",
+"GCA.HQ.10", and "IA.HQ.10".}
 
-\item{assay}{.}
+\item{assay}{which assay to plot, if multiple exist.}
 
-\item{y}{.}
+\item{y}{y value or text for bottom of ridge plot.}
 
-\item{xlab}{.}
+\item{xlab}{x-axis label.}
 
-\item{ylab}{.}
+\item{ylab}{y-axis label.}
 }
 \value{
-.
+ggplot2 object.
 }
 \description{
-Title
+Plot results of sensitivity analysis.
 }
