@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   introduction: introduction.html
   package_data: package_data.html
-last_built: 2024-09-20T19:54Z
+last_built: 2024-09-24T22:30Z
 urls:
   reference: https://github.com/NIEHS/GeoTox/reference
   article: https://github.com/NIEHS/GeoTox/articles
