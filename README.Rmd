@@ -26,7 +26,9 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-`GeoTox` open-source R software package for characterizing the risk of perturbing molecular targets involved in adverse human health outcomes based on exposure to spatially-referenced stressor mixtures via the GeoTox framework - otherwise known as source-to-outcome-continuum modeling. The package, methods, and case-studies are described in [Messier, Reif, and Marvel, 2024, medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1).The GeoTox framework was first described in
+`GeoTox` open-source R software package for characterizing the risk of perturbing molecular targets involved in adverse human health outcomes based on exposure to spatially-referenced stressor mixtures via the GeoTox framework - otherwise known as source-to-outcome-continuum modeling. The package, methods, and case-studies are described in [Messier, Reif, and Marvel, 2024, medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1).
+
+The GeoTox framework was first described in
 [Eccles et al. A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. Sci Total Environ. 2023 Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
@@ -51,6 +53,9 @@ Figure 1 below shows the steps in the source-to-outcome-continuum or GeoTox mode
   <em>Figure 1: Overview of the steps in the GeoTox framework</em>
 </p>
 
+## Getting Started
+
+Please refer to the [introduction vignette](https://niehs.github.io/GeoTox/articles/introduction.html) for a detailed description of how to use `GeoTox`.
 
 ## Citation 
 
