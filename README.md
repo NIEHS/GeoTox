@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# GeoTox <a href="https://niehs.github.io/GeoTox/"><img src="man/figures/logo.svg" align="right" height="139" alt="GeoTox website" /></a>
+# GeoTox <a href="https://github.com/NIEHS/GeoTox"><img src="man/figures/logo.svg" align="right" height="139" alt="GeoTox website" /></a>
 
 <!-- badges: start -->
 
@@ -22,8 +22,9 @@ based on exposure to spatially-referenced stressor mixtures via the
 GeoTox framework - otherwise known as source-to-outcome-continuum
 modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2024,
-medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1).The
-GeoTox framework was first described in [Eccles et al. A geospatial
+medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1).
+
+The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
 chemical mixtures via a common molecular target. Sci Total Environ. 2023
 Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
@@ -58,6 +59,12 @@ exposure, assays, dose-response, and geospatial referencing.
 <em>Figure 1: Overview of the steps in the GeoTox framework</em>
 </p>
 
+## Getting Started
+
+Please refer to the [introduction
+vignette](https://niehs.github.io/GeoTox/articles/introduction.html) for
+a detailed description of how to use `GeoTox`.
+
 ## Citation
 
 For citation information, please refer to our [CITATION
@@ -65,7 +72,7 @@ file](inst/CITATION).
 
 ## Issues and Contributions
 
-To add or edit functionality, open a Pull request into the main branch
+To add or edit functionality, open a pull request into the main branch
 with a detailed description of the proposed changes. Pull requests must
 pass all status checks, and then will be approved or rejected by the
 GeoTox maintainers.
