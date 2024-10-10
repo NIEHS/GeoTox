@@ -13,8 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# GeoTox <a href="https://niehs.github.io/GeoTox/"><img src="man/figures/logo.svg" align="right" height="139" alt="GeoTox website" /></a>
-
+# GeoTox <a href="https://github.com/NIEHS/GeoTox"><img src="man/figures/logo.svg" align="right" height="139" alt="GeoTox website" /></a>
 
 <!-- badges: start -->
 
