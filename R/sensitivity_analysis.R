@@ -27,8 +27,7 @@ sensitivity_analysis <- function(x,
     stop("Input 'x' must be a GeoTox object.", call. = FALSE)
   }
   if (length(tp_b_mult) != 5) {
-    stop("Input 'tp_b_mult' must be a numeric vector of length 5.",
-         call. = FALSE)
+    stop("Input 'tp_b_mult' must have a length of 5.", call. = FALSE)
   }
   
   x$sensitivity <- list(

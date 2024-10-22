@@ -8,6 +8,21 @@ test_that("bad inputs", {
                                            OBESITY_SD = c(0, 0))))
 })
 
+test_that("single row", {
+  
+  x <- data.frame(OBESITY_CrudePrev = 50,
+                  OBESITY_SD = 5)
+  
+  out <- simulate_obesity(x, n = 5)
+  
+  expect_type(out, "list")
+  expect_length(out, 1)
+  expect_equal(names(out), NULL)
+  expect_equal(length(out[[1]]), 5)
+  expect_true(all(out[[1]] %in% c("Normal", "Obese")))
+
+})
+
 test_that("default column names", {
   
   x <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),

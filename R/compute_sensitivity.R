@@ -23,9 +23,16 @@ compute_sensitivity <- function(x,
     tp_b_mult <- x$par$resp$tp_b_mult
   }
   
+  if (is.null(x$age)) {
+    stop("GeoTox 'age' field is not set.", call. = FALSE)
+  }
+  
   if (vary == "age") {
     age <- x$age
     IR <- x$IR
+    if (is.null(IR)) {
+      stop("GeoTox 'IR' field is not set.", call. = FALSE)
+    }
   } else {
     age <- lapply(x$age, function(x) rep(stats::median(x),
                                          length.out = length(x)))
@@ -34,6 +41,9 @@ compute_sensitivity <- function(x,
   
   if (vary == "C_ext") {
     C_ext <- x$C_ext
+    if (is.null(C_ext)) {
+      stop("GeoTox 'C_ext' field is not set.", call. = FALSE)
+    }
   } else {
     # Set exposure sd = NA (or 0)
     exposure <- lapply(x$exposure, \(x) x |> dplyr::mutate(sd = NA))
