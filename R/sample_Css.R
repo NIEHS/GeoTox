@@ -28,8 +28,8 @@ sample_Css <- function(simulated_css, age, obesity) {
     stop("Names and lengths of 'age' and 'obesity' fields must be equal",
          call. = FALSE)
   }
-  if (length(age) == 0) {
-    stop("'age' and 'obesity' data has not been simulated", call. = FALSE)
+  if (length(age[[1]]) == 0) {
+    stop("'age' and 'obesity' data have not been simulated", call. = FALSE)
   }
 
   mapply(
