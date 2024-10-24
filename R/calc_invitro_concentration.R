@@ -30,5 +30,5 @@ calc_invitro_concentration <- function(D_int, C_ss = NULL) {
 }
 
 .calc_invitro_concentration <- function(D_int, C_ss) {
-  as.matrix(D_int * C_ss)
+  D_int * C_ss
 }
