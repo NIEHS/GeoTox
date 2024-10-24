@@ -5,7 +5,9 @@
 \alias{GeoTox-package}
 \title{GeoTox: Spatiotemporal mixture risk assessment}
 \description{
-Open-source software for connecting spatiotemporal exposure to individual and population-level risk.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.
 }
 \seealso{
 Useful links:
@@ -15,12 +17,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} [contributor]
+\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID}) [contributor]
 
 Authors:
 \itemize{
-  \item Skylar Marvel \email{skylar.marvel@nih.gov} [contributor]
-  \item David Reif \email{david.reif@nih.gov} [contributor]
+  \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID}) [contributor]
+  \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID}) [contributor]
 }
 
 }
