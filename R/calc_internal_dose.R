@@ -38,36 +38,15 @@
 #' @export
 calc_internal_dose <- function(C_ext, IR, time = 1, BW = 1, scaling = 1) {
   
-  C_ext_err <- FALSE
-  if (inherits(C_ext, "matrix")) {
-    C_ext <- list(C_ext)
-  } else if (inherits(C_ext, "list")) {
-    if (!all(sapply(C_ext, inherits, "matrix"))) {
-      C_ext_err <- TRUE
-    }
-  } else {
-    C_ext_err <- TRUE
-  }
-  if (C_ext_err) {
-    stop("`C_ext` must be a matrix or a list of matrices",
-         call. = FALSE)
-  }
+  C_ext <- .check_types(C_ext,
+                        "matrix",
+                        "`C_ext` must be a matrix or a list of matrices.")
   
-  IR_err <- FALSE
-  if (inherits(IR, c("numeric", "integer"))) {
-    IR <- list(IR)
-  } else if (inherits(IR, "list")) {
-    if (!all(sapply(IR, inherits, c("numeric", "integer")))) {
-      IR_err <- TRUE
-    }
-  } else {
-    IR_err <- TRUE
-  }
-  if (IR_err) {
-    stop("`IR` must be a numeric atomic vector or a list of atomic vectors",
-         call. = FALSE)
-  }
-  
+  IR <- .check_types(IR,
+                     c("numeric", "integer"),
+                     paste("`IR` must be a numeric atomic vector or a list of",
+                           "atomic vectors."))
+
   mapply(.calc_internal_dose, C_ext, IR, time, BW, scaling, SIMPLIFY = FALSE)
 }
 

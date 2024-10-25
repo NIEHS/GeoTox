@@ -33,41 +33,19 @@
 #' @export
 calc_invitro_concentration <- function(D_int, C_ss = NULL) {
 
-  D_int_err <- FALSE
-  if (inherits(D_int, "matrix")) {
-    D_int <- list(D_int)
-  } else if (inherits(D_int, "list")) {
-    if (!all(sapply(D_int, inherits, "matrix"))) {
-      D_int_err <- TRUE
-    }
-  } else {
-    D_int_err <- TRUE
-  }
-  if (D_int_err) {
-    stop("`D_int` must be a matrix or a list of matrices",
-         call. = FALSE)
-  }
+  D_int <- .check_types(D_int,
+                        "matrix",
+                        "`D_int` must be a matrix or a list of matrices.")
 
   if (is.null(C_ss)) {
     stop("real-time computation of C_ss values has not been implemented")
   }
   
-  C_ss_err <- FALSE
-  if (inherits(C_ss, c("matrix", "numeric", "integer"))) {
-    C_ss <- list(C_ss)
-  } else if (inherits(C_ss, "list")) {
-    if (!all(sapply(C_ss, inherits, c("matrix", "numeric", "integer")))) {
-      C_ss_err <- TRUE
-    }
-  } else {
-    C_ss_err <- TRUE
-  }
-  if (C_ss_err) {
-    stop("`C_ss` must be a matrix or numeric atomic vector, ",
-         "or a list of those types",
-         call. = FALSE)
-  }
-  
+  C_ss <- .check_types(C_ss,
+                       c("matrix", "numeric", "integer"),
+                       paste("`C_ss` must be a matrix or numeric atomic",
+                             "vector, or a list of those types."))
+
   mapply(.calc_invitro_concentration, D_int, C_ss, SIMPLIFY = FALSE)
 }
 
