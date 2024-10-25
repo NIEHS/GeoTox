@@ -20,7 +20,7 @@ GeoTox <- function() {
         internal_dose = list(time    = 1,
                              BW      = 1,
                              scaling = 1),
-        resp = list(tp_b_mult = 1.5)
+        resp = list(max_mult = 1.5)
       )
     ),
     class = "GeoTox")

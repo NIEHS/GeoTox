@@ -7,7 +7,7 @@
 compute_sensitivity(
   x,
   vary = c("age", "obesity", "css_params", "fit_params", "C_ext"),
-  tp_b_mult = NULL
+  max_mult = NULL
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ compute_sensitivity(
 
 \item{vary}{which parameter to vary.}
 
-\item{tp_b_mult}{input for \link{calc_concentration_response} step.}
+\item{max_mult}{input for \link{calc_concentration_response} step.}
 }
 \value{
 output from \link{calc_concentration_response}

@@ -3,7 +3,7 @@
 #'
 #' @param C_invitro in vitro concentrations
 #' @param hill_params output from `fit_hill()`
-#' @param tp_b_mult upper bound multiplier for tp rtruncnorm
+#' @param max_mult upper bound multiplier for max response
 #' @param fixed if TRUE, sd = 0
 #'
 #' @description
@@ -16,14 +16,13 @@
 #' @export
 calc_concentration_response <- function(C_invitro,
                                         hill_params,
-                                        tp_b_mult = 1.5,
+                                        max_mult = 1.5,
                                         fixed = FALSE) {
 
-  if (!any(c("matrix", "list") %in% class(C_invitro))) {
-    stop("C_invitro must be a matrix or list")
-  }
-  if (!is.list(C_invitro)) C_invitro <- list(C_invitro)
-  
+  C_invitro <- .check_types(C_invitro,
+                            "matrix",
+                            "`C_invitro` must be a matrix or list of matrices.")
+
   # Split hill_params by assay
   if ("assay" %in% names(hill_params)) {
     hill_params <- split(hill_params, ~assay)
@@ -35,7 +34,7 @@ calc_concentration_response <- function(C_invitro,
   lapply(C_invitro, \(C_invitro_i) {
     lapply(hill_params, \(hill_params_j) {
       if (ncol(C_invitro_i) == 1 & nrow(hill_params_j) == 1) {
-        .calc_concentration_response(C_invitro_i, hill_params_j, tp_b_mult, fixed)
+        .calc_concentration_response(C_invitro_i, hill_params_j, max_mult, fixed)
       } else {
         if (!"chem" %in% names(hill_params_j)) {
           stop("'hill_params' must contain a 'chem' column", call. = FALSE)
@@ -47,7 +46,7 @@ calc_concentration_response <- function(C_invitro,
         C_invitro_i <- C_invitro_i[, chems, drop = FALSE]
         res <- .calc_concentration_response(C_invitro_i,
                                             hill_params_j,
-                                            tp_b_mult,
+                                            max_mult,
                                             fixed) |> 
           dplyr::mutate(sample = dplyr::row_number(), .before = 1)
         if ("assay" %in% names(hill_params_j)) {
@@ -62,18 +61,16 @@ calc_concentration_response <- function(C_invitro,
 }
 
 .calc_concentration_response <- function(
-    C_invitro, hill_params, tp_b_mult, fixed
+    C_invitro, hill_params, max_mult, fixed
 ) {
 
   interval <- c(-50,50)
 
-  # TODO value of b not consistent
-  # grep "tp.sim <-" ~/github/GeoToxMIE/*.R
   tp <- lapply(1:nrow(C_invitro), function(x) {
     truncnorm::rtruncnorm(
       1,
       a    = 0,
-      b    = hill_params$resp_max * tp_b_mult,
+      b    = hill_params$resp_max * max_mult,
       mean = hill_params$tp,
       sd   = if (fixed) 0 else hill_params$tp.sd
     )
@@ -117,7 +114,6 @@ calc_concentration_response <- function(C_invitro,
                                       AC50 = AC50_i)
     GCA.eff[i] <- exp(mixture.result$minimum)
 
-    # TODO replace with positive control value if given
     Emax_resp <- stats::optimize(obj_GCA,
                                  interval = interval,
                                  conc = C_i * 10^14,

@@ -8,7 +8,7 @@ IA, GCA, or Hazard Quotient}
 calc_concentration_response(
   C_invitro,
   hill_params,
-  tp_b_mult = 1.5,
+  max_mult = 1.5,
   fixed = FALSE
 )
 }
@@ -17,7 +17,7 @@ calc_concentration_response(
 
 \item{hill_params}{output from \code{fit_hill()}}
 
-\item{tp_b_mult}{upper bound multiplier for tp rtruncnorm}
+\item{max_mult}{upper bound multiplier for max response}
 
 \item{fixed}{if TRUE, sd = 0}
 }

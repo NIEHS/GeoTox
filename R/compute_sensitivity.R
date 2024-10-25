@@ -2,14 +2,14 @@
 #'
 #' @param x GeoTox object.
 #' @param vary which parameter to vary.
-#' @param tp_b_mult input for [calc_concentration_response] step.
+#' @param max_mult input for [calc_concentration_response] step.
 #'
 #' @return output from [calc_concentration_response]
 #' @export
 compute_sensitivity <- function(x,
                                 vary = c("age", "obesity", "css_params",
                                          "fit_params", "C_ext"),
-                                tp_b_mult = NULL) {
+                                max_mult = NULL) {
   
   vary <- match.arg(vary)
   
@@ -19,8 +19,8 @@ compute_sensitivity <- function(x,
                  css_params  = x$css_sensitivity$params,
                  x$css_sensitivity$other)
   
-  if (is.null(tp_b_mult)) {
-    tp_b_mult <- x$par$resp$tp_b_mult
+  if (is.null(max_mult)) {
+    max_mult <- x$par$resp$max_mult
   }
   
   if (is.null(x$age)) {
@@ -62,7 +62,7 @@ compute_sensitivity <- function(x,
   C_invitro <- calc_invitro_concentration(D_int, C_ss)
   resp <- calc_concentration_response(C_invitro,
                                       x$hill_params,
-                                      tp_b_mult = tp_b_mult,
+                                      max_mult = max_mult,
                                       fixed     = vary != "fit_params")
   
   resp

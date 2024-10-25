@@ -19,7 +19,7 @@ Calculate mixture response for GeoTox population data
 }
 \details{
 Additional parameters include \code{time}, \code{BW}, and \code{scaling} for
-\link{calc_internal_dose}, and \code{tp_b_mult} for \link{calc_concentration_response}.
+\link{calc_internal_dose}, and \code{max_mult} for \link{calc_concentration_response}.
 }
 \seealso{
 \link{calc_internal_dose}, \link{calc_invitro_concentration},

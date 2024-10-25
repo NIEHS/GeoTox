@@ -143,7 +143,7 @@ test_that("default params", {
                     internal_dose = list(time    = 1,
                                          BW      = 1,
                                          scaling = 1),
-                    resp = list(tp_b_mult = 1.5)))
+                    resp = list(max_mult = 1.5)))
 })
 
 test_that("update params", {
@@ -159,7 +159,7 @@ test_that("update params", {
   expos_mean <- "ex_m"
   expos_sd <- "ex_sd"
   expos_label <- "ex_l"
-  # time, BW, scaling and tp_b_mult are calculation fields
+  # time, BW, scaling and max_mult are calculation fields
   
   # Create GeoTox object
   geoTox <- GeoTox()
@@ -188,5 +188,5 @@ test_that("update params", {
                     internal_dose = list(time    = 1,
                                          BW      = 1,
                                          scaling = 1),
-                    resp = list(tp_b_mult = 1.5)))
+                    resp = list(max_mult = 1.5)))
 })
