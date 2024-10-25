@@ -26,7 +26,7 @@ Estimate the internal dose from inhalation of a chemical given inhalation
 rate, time, and body weight
 }
 \details{
-Input \code{C_ext} must be a matrix or lists of matrices. Input \code{IR} must be an
+Input \code{C_ext} must be a matrix or list of matrices. Input \code{IR} must be an
 atomic vector or list of atomic vectors. The \code{time}, \code{BW} and \code{scaling}
 arguments are scalars.
 

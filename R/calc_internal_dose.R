@@ -11,7 +11,7 @@
 #' @param scaling scaling factor encompassing any required unit adjustments
 #'
 #' @details
-#' Input `C_ext` must be a matrix or lists of matrices. Input `IR` must be an
+#' Input `C_ext` must be a matrix or list of matrices. Input `IR` must be an
 #' atomic vector or list of atomic vectors. The `time`, `BW` and `scaling`
 #' arguments are scalars.
 #' 
