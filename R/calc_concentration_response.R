@@ -33,9 +33,7 @@ calc_concentration_response <- function(C_invitro,
   # Calculate response for each assay
   lapply(C_invitro, \(C_invitro_i) {
     lapply(hill_params, \(hill_params_j) {
-      if (ncol(C_invitro_i) == 1 & nrow(hill_params_j) == 1) {
-        .calc_concentration_response(C_invitro_i, hill_params_j, max_mult, fixed)
-      } else {
+      if (ncol(C_invitro_i) != 1 | nrow(hill_params_j) != 1) {
         if (!"chem" %in% names(hill_params_j)) {
           stop("'hill_params' must contain a 'chem' column", call. = FALSE)
         }
@@ -44,17 +42,17 @@ calc_concentration_response <- function(C_invitro,
           stop("'hill_params' chemicals missing in 'C_invitro'", call. = FALSE)
         }
         C_invitro_i <- C_invitro_i[, chems, drop = FALSE]
-        res <- .calc_concentration_response(C_invitro_i,
-                                            hill_params_j,
-                                            max_mult,
-                                            fixed) |> 
-          dplyr::mutate(sample = dplyr::row_number(), .before = 1)
-        if ("assay" %in% names(hill_params_j)) {
-          res <- res |> 
-            dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)
-        }
-        res
       }
+      res <- .calc_concentration_response(C_invitro_i,
+                                          hill_params_j,
+                                          max_mult,
+                                          fixed) |> 
+        dplyr::mutate(sample = dplyr::row_number(), .before = 1)
+      if ("assay" %in% names(hill_params_j)) {
+        res <- res |> 
+          dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)
+      }
+      res
     }) |> 
       dplyr::bind_rows()
   })
@@ -143,7 +141,6 @@ calc_concentration_response <- function(C_invitro,
     IA.HQ.10[i]  <- sum(C_i / AC10.ij)
 
   }
-
 
   data.frame(
     "GCA.Eff" = GCA.eff, "IA.Eff" = IA.eff,
