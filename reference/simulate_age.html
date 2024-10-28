@@ -77,7 +77,7 @@ from 0 to 89 in increments of 5 years.</p>
 <span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 44 41 41 41 44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42 41 44 41 42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># List of 2 data frames</span></span></span>
@@ -88,10 +88,10 @@ from 0 to 89 in increments of 5 years.</p>
 <span class="r-in"><span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, <span class="fl">15</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 41 41 40 40 41 42 41 43 40 44 40 40 44 41 40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 41 41 42 43 44 44 40 42 42 41 43 44 40 41 40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 52  5  9 52 53 54  9  5 50 51 52 54  9  5 52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 53  5 50 52 53  9  8 50 51 50  5  8 53 51  6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

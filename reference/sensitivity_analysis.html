@@ -42,7 +42,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sensitivity_analysis</span><span class="op">(</span><span class="va">x</span>, tp_b_mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1.2</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sensitivity_analysis</span><span class="op">(</span><span class="va">x</span>, max_mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="cn">NULL</span>, <span class="fl">1.2</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -53,7 +53,7 @@
 <dd><p>GeoTox object.</p></dd>
 
 
-<dt id="arg-tp-b-mult">tp_b_mult<a class="anchor" aria-label="anchor" href="#arg-tp-b-mult"></a></dt>
+<dt id="arg-max-mult">max_mult<a class="anchor" aria-label="anchor" href="#arg-max-mult"></a></dt>
 <dd><p>numeric list of length 5 for each step of the sensitivity
 analysis.</p></dd>
 
@@ -68,8 +68,8 @@ analysis.</p></dd>
 function with inputs <code>age</code>, <code>obesity</code>, <code>css_params</code>, <code>fit_params</code>, and
 <code>C_ext</code>. The results will be returned as a named list and stored in the
 <code>sensitivity</code> field of the input GeoTox object.</p>
-<p>Values of <code>NULL</code> in the <code>tp_b_mult</code> input will use the default value stored
-in the <code>GeoTox</code> object (<code>x$par$resp$tp_b_mult</code>). When a <code>GeoTox</code> object is
+<p>Values of <code>NULL</code> in the <code>max_mult</code> input will use the default value stored
+in the <code>GeoTox</code> object (<code>x$par$resp$max_mult</code>). When a <code>GeoTox</code> object is
 created this is initialized at <code>1.5</code>, but can be changed via the
 <a href="calculate_response.html">calculate_response</a> function or directly in the object.</p>
     </div>
