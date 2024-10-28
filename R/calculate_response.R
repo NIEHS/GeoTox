@@ -7,7 +7,7 @@
 #'
 #' @details
 #' Additional parameters include `time`, `BW`, and `scaling` for
-#' [calc_internal_dose], and `tp_b_mult` for [calc_concentration_response].
+#' [calc_internal_dose], and `max_mult` for [calc_concentration_response].
 #'
 #' @return The same object with additional fields added or updated
 #' @export
@@ -21,7 +21,7 @@ calculate_response <- function(x, ...) {
   x$par$internal_dose$time    <- dots$time    %||% x$par$internal_dose$time
   x$par$internal_dose$BW      <- dots$BW      %||% x$par$internal_dose$BW
   x$par$internal_dose$scaling <- dots$scaling %||% x$par$internal_dose$scaling
-  x$par$resp$tp_b_mult <- dots$tp_b_mult %||% x$par$resp$tp_b_mult
+  x$par$resp$max_mult <- dots$max_mult %||% x$par$resp$max_mult
 
   # Internal dose
   if (is.null(x$IR) | is.null(x$C_ext)) {
@@ -45,7 +45,7 @@ calculate_response <- function(x, ...) {
   }
   x$resp <- calc_concentration_response(x$C_invitro,
                                         x$hill_params,
-                                        tp_b_mult = x$par$resp$tp_b_mult,
+                                        max_mult = x$par$resp$max_mult,
                                         fixed     = FALSE)
   
   x

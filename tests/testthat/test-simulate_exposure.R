@@ -98,30 +98,30 @@ test_that("internal special cases", {
   out <- .simulate_exposure(data.frame(mean = c(), sd = c()),
                             mean = "mean",
                             sd = "sd",
-                            n = 5)
+                            n = 1)
   
   # Output is a matrix, so type == "double" with 2 dimensions
   expect_type(out, "double")
-  expect_equal(dim(out), c(5, 0))
+  expect_equal(dim(out), c(1, 0))
   
   out <- .simulate_exposure(data.frame(mean = 0, sd = 0),
                             mean = "mean",
                             sd = "sd",
-                            n = 5)
+                            n = 1)
   
   # Output is a matrix, so type == "double" with 2 dimensions
   expect_type(out, "double")
-  expect_equal(dim(out), c(5, 1))
+  expect_equal(dim(out), c(1, 1))
   expect_true(all(out == 0))
   
   out <- .simulate_exposure(data.frame(mean = 1, sd = NA),
                             mean = "mean",
                             sd = "sd",
-                            n = 5)
+                            n = 1)
   
   # Output is a matrix, so type == "double" with 2 dimensions
   expect_type(out, "double")
-  expect_equal(dim(out), c(5, 1))
+  expect_equal(dim(out), c(1, 1))
   expect_true(all(out == 1))
   
 })

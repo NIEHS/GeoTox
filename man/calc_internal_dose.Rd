@@ -18,31 +18,33 @@ calc_internal_dose(C_ext, IR, time = 1, BW = 1, scaling = 1)
 \item{scaling}{scaling factor encompassing any required unit adjustments}
 }
 \value{
-internal chemical dose in \eqn{\frac{mg}{kg}}
+list of matrices containing internal chemical doses in
+\eqn{\frac{mg}{kg}}
 }
 \description{
 Estimate the internal dose from inhalation of a chemical given inhalation
 rate, time, and body weight
 }
 \details{
-TODO Additional details...
-\deqn{D_{int} = \frac{C_{ext} \,\times\, IR \,\times\, time}{BW}}
+Input \code{C_ext} must be a matrix or list of matrices. Input \code{IR} must be an
+atomic vector or list of atomic vectors. The \code{time}, \code{BW} and \code{scaling}
+arguments are scalars.
+
+The internal dose is calculated as:
+\deqn{D_{int} = \frac{C_{ext} \times IR \times time}{BW} \times scaling}
 }
 \examples{
-n_chem <- 3
-n_sample <- 5
-
 # Single population
-C_ext <- matrix(runif(n_sample * n_chem), ncol = n_chem)
-IR <- runif(n_sample)
+C_ext <- matrix(1:15, ncol = 3)
+IR <- 1:5
 calc_internal_dose(C_ext, IR)
 
 # Multiple populations
 C_ext <- list(
-  "a" = matrix(runif(n_sample * n_chem), ncol = n_chem),
-  "b" = matrix(runif(n_sample * n_chem), ncol = n_chem)
+  "a" = matrix(1:15 / 10, ncol = 3),
+  "b" = matrix(1:8, ncol = 2)
 )
-IR <- list(runif(n_sample), runif(n_sample))
+IR <- list(1:5, 1:4 / 2)
 calc_internal_dose(C_ext, IR)
 
 }

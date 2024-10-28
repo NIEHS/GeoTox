@@ -69,7 +69,7 @@ simulate_exposure <- function(x,
     matrix(0, nrow = n, ncol = 0)
   } else {
     mapply(
-      function(mean, sd, n) {
+      function(mean, sd) {
         if (mean == 0) {
           rep(0, n)
         } else if (mean > 0 & is.na(sd)) {
@@ -82,7 +82,8 @@ simulate_exposure <- function(x,
       },
       mean = mean,
       sd = sd,
-      n = n
-    )
+      SIMPLIFY = FALSE
+    ) |> 
+      do.call(what = cbind)
   }
 }

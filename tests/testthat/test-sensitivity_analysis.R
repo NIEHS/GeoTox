@@ -23,7 +23,7 @@ test_that("results", {
   geoTox$IR <- list(0.5)
   geoTox$obesity <- list("Normal")
   geoTox$exposure <- list(data.frame(mean = 1, sd = 0))
-  geoTox$C_ext <- list(1)
+  geoTox$C_ext <- list(matrix(1))
   geoTox$css_sensitivity <- list(age = list(matrix(5)),
                                  obesity = list(matrix(10)),
                                  params = list(matrix(15)),

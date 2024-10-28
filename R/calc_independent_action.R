@@ -16,7 +16,7 @@
 #' @details
 #' The concentration is computed as:
 #' \deqn{
-#'   IA = E_{max}
+#'   IA = E_{max} \times
 #'   \left(
 #'     1 - \prod\limits_{i} \left(1 - \frac{x_i}{E_{max}}\right)
 #'   \right),
