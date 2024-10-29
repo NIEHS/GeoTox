@@ -10,7 +10,7 @@ Description: Connecting spatiotemporal exposure to individual and population-lev
 License: MIT + file LICENSE
 URL: https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.4.0)
 Imports: 
     dplyr,
     ggplot2,
