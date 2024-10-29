@@ -1,6 +1,6 @@
 Package: GeoTox
-Title: Spatiotemporal mixture risk assessment
-Version: 0.1.2
+Title: Spatiotemporal Mixture Risk Assessment
+Version: 0.1.3
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-2971-9743")),
     person("David", "Reif", , "david.reif@nih.gov", role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-7815-6767")),
@@ -8,9 +8,9 @@ Authors@R: c(
   )
 Description: Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.
 License: MIT + file LICENSE
-URL: https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox
+URL: https://niehs.github.io/GeoTox/, https://github.com/NIEHS/GeoTox
 Depends: 
-    R (>= 4.1.0)
+    R (>= 4.4.0)
 Imports: 
     dplyr,
     ggplot2,

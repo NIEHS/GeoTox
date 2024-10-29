@@ -18,11 +18,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml)
+[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml)
 [![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
-
 <!-- badges: end -->
 
 
@@ -37,9 +36,7 @@ The package will be on CRAN in the near future - please stay tuned. You can inst
 [GitHub](https://github.com/NIEHS/GeoTox) with:
 
 ```{r, eval=FALSE}
-if (!require("pak", quietly = TRUE)) {
-  install.packages("pak")
-}
+install.packages("pak")
 pak::pkg_install("NIEHS/GeoTox")
 ```
 

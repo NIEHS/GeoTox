@@ -8,12 +8,11 @@
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml)
+[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml)
 [![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
-
 <!-- badges: end -->
 
 `GeoTox` open-source R software package for characterizing the risk of
@@ -36,9 +35,7 @@ can install the development version of GeoTox from
 [GitHub](https://github.com/NIEHS/GeoTox) with:
 
 ``` r
-if (!require("pak", quietly = TRUE)) {
-  install.packages("pak")
-}
+install.packages("pak")
 pak::pkg_install("NIEHS/GeoTox")
 ```
 
@@ -55,6 +52,7 @@ the information required to run the analysis including tracking
 exposure, assays, dose-response, and geospatial referencing.
 
 <p align="center">
+
 <img src="man/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow"> <br>
 <em>Figure 1: Overview of the steps in the GeoTox framework</em>
 </p>

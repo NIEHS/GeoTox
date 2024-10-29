@@ -3,7 +3,7 @@
 \docType{package}
 \name{GeoTox-package}
 \alias{GeoTox-package}
-\title{GeoTox: Spatiotemporal mixture risk assessment}
+\title{GeoTox: Spatiotemporal Mixture Risk Assessment}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
@@ -12,7 +12,8 @@ Connecting spatiotemporal exposure to individual and population-level risk via s
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox}
+  \item \url{https://niehs.github.io/GeoTox/}
+  \item \url{https://github.com/NIEHS/GeoTox}
 }
 
 }
