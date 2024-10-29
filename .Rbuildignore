@@ -1,6 +1,7 @@
 ^renv$
 ^renv\.lock$
 ^\.Rprofile$
+^\.DS_Store$
 ^GeoTox\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
