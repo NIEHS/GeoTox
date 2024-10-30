@@ -2,6 +2,7 @@ url: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   bootswatch: minty
+  math-rendering: mathjax
 
 navbar:
   structure:
