@@ -1,6 +1,7 @@
 #' Get response quantiles
 #'
-#' @param resp calculated mixture response output from [calculate_response].
+#' @param resp calculated mixture response output from
+#' [calc_concentration_response].
 #' @param metric response metric, one of "GCA.Eff", "IA.Eff", "GCA.HQ.10"
 #' or "IA.HQ.10".
 #' @param assays assays to summarize. If NULL and multiple assays exist, then
@@ -18,6 +19,35 @@
 #'
 #' @return data frame with computed response quantiles.
 #' @export
+#' 
+#' @examples
+#' # Dummy response data
+#' resp <- list(
+#'   "r1" = data.frame(assay = c("a1", "a1", "a2", "a2"),
+#'                     sample = c(1, 2, 1, 2),
+#'                     GCA.Eff = c(1, 2, 3, 4),
+#'                     IA.Eff = c(5, 6, 7, 8),
+#'                     "GCA.HQ.10" = c(9, 10, 11, 12),
+#'                     "IA.HQ.10" = c(13, 14, 15, 16)))
+#'
+#' # Summarize single assay
+#' resp_quantiles(resp)
+#' # Specify assay
+#' resp_quantiles(resp, assays = "a1")
+#' # Specify quantiles
+#' resp_quantiles(resp, assays = "a1", assay_quantiles = c(0.25, 0.75))
+#' # Specify metric
+#' resp_quantiles(resp, assays = "a1", metric = "IA.HQ.10")
+#' 
+#' # Summarize across assays
+#' resp_quantiles(resp, assay_summary = TRUE)
+#' # Specify quantiles
+#' suppressWarnings(
+#'   resp_quantiles(resp,
+#'                  assay_summary = TRUE,
+#'                  assay_quantiles = c(0.25, 0.75),
+#'                  summary_quantiles = c(0.1, 0.9))
+#' )
 resp_quantiles <- function(
     resp,
     metric = c("GCA.Eff", "IA.Eff", "GCA.HQ.10", "IA.HQ.10"),
