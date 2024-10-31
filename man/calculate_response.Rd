@@ -21,6 +21,25 @@ Calculate mixture response for GeoTox population data
 Additional parameters include \code{time}, \code{BW}, and \code{scaling} for
 \link{calc_internal_dose}, and \code{max_mult} for \link{calc_concentration_response}.
 }
+\examples{
+# Create GeoTox object
+geoTox <- GeoTox()
+
+# The following fields are required inputs
+geoTox$IR <- 2
+geoTox$C_ext <- matrix(3)
+geoTox$C_ss <- 5
+geoTox$hill_params <- fit_hill(data.frame(logc = c(-1, 0, 1),
+                                          resp = c(10, 5, 0)))
+
+# Calculate response
+geoTox <- calculate_response(geoTox)
+
+# The following fields will be computed
+geoTox$D_int
+geoTox$C_invitro
+geoTox$resp
+}
 \seealso{
 \link{calc_internal_dose}, \link{calc_invitro_concentration},
 \link{calc_concentration_response}
