@@ -13,7 +13,7 @@ plot_exposure(
 )
 }
 \arguments{
-\item{exposure}{exposure data.}
+\item{exposure}{list of exposure data named by region label.}
 
 \item{region_boundary}{"sf" data.frame mapping features to a "geometry"
 column. Used to color regions.}
@@ -30,4 +30,28 @@ ggplot2 object.
 }
 \description{
 Plot exposure data.
+}
+\examples{
+# Load package data
+exposure <- split(geo_tox_data$exposure, ~FIPS)
+region_boundary <- geo_tox_data$boundaries$county
+group_boundary <- geo_tox_data$boundaries$state
+
+# Plot county exposure data
+plot_exposure(exposure,
+              region_boundary,
+              ncol = 5)
+
+# Add state boundaries
+plot_exposure(exposure,
+              region_boundary,
+              group_boundary = group_boundary,
+              ncol = 5)
+
+# Change facet strip label source
+plot_exposure(exposure,
+              region_boundary,
+              group_boundary = group_boundary,
+              chem_label = "casn",
+              ncol = 5)
 }
