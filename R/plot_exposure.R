@@ -18,17 +18,13 @@
 #' group_boundary <- geo_tox_data$boundaries$state
 #' 
 #' # Plot county exposure data
+#' # Use CASN as label to avoid long chemical names
 #' plot_exposure(exposure,
 #'               region_boundary,
+#'               chem_label = "casn",
 #'               ncol = 5)
 #'
 #' # Add state boundaries
-#' plot_exposure(exposure,
-#'               region_boundary,
-#'               group_boundary = group_boundary,
-#'               ncol = 5)
-#'
-#' # Change facet strip label source
 #' plot_exposure(exposure,
 #'               region_boundary,
 #'               group_boundary = group_boundary,
