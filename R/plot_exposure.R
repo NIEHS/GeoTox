@@ -51,7 +51,7 @@ plot_exposure <- function(exposure,
     # Fix for grid.Call error in examples due to
     # 'mbcsToSbcs': for ​ (U+200B)
     # Remove any zero-width space characters
-    dplyr::mutate(dplyr::across(tidyselect::all_of(chem_label),
+    dplyr::mutate(dplyr::across(tidyselect::any_of(chem_label),
                                 ~ stringr::str_remove_all(., "\u200b")))
   
   fig <- ggplot2::ggplot() +
