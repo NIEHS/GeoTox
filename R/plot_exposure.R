@@ -51,7 +51,12 @@ plot_exposure <- function(exposure,
     tidyr::unnest(cols = "data") |> 
     dplyr::inner_join(region_boundary |> dplyr::rename("_temp_join_id_" = 1),
                       by = dplyr::join_by("_temp_join_id_")) |> 
-    dplyr::select(-"_temp_join_id_")
+    dplyr::select(-"_temp_join_id_") |> 
+    # Fix for grid.Call error in examples due to
+    # 'mbcsToSbcs': for ​ (U+200B)
+    # Remove any zero-width space characters
+    dplyr::mutate(dplyr::across(tidyselect::all_of(chem_label),
+                                ~ stringr::str_remove_all(., "\u200b")))
   
   fig <- ggplot2::ggplot() +
     ggplot2::geom_sf(
