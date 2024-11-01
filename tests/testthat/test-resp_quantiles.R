@@ -35,6 +35,8 @@ test_that("assay_summary == FALSE", {
   expect_warning(resp_quantiles(resp),
                  "Multiple assays found, using first assay")
   
+  expect_no_warning(resp_quantiles(resp, assays = "a1"))
+  
   expect_error(resp_quantiles(resp, assays = "not found"),
                "No response data for given assays")
   
