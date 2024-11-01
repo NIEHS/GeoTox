@@ -72,6 +72,39 @@
 <a href="calc_concentration_response.html">calc_concentration_response</a></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create GeoTox object</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The following fields are required inputs</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">IR</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_ss</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>logc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                          resp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Calculate response</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu">calculate_response</span><span class="op">(</span><span class="va">geoTox</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The following fields will be computed</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">D_int</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_invitro</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">resp</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample   GCA.Eff    IA.Eff GCA.HQ.10 IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.9951611 0.9951585  534.4758 534.4654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
