@@ -18,6 +18,7 @@ Imports:
     rlang,
     sf,
     stats,
+    stringr,
     tibble,
     tidyr,
     tidyselect,
@@ -33,7 +34,6 @@ Suggests:
     readxl,
     rmarkdown,
     scales,
-    stringr,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr

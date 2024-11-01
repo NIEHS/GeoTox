@@ -10,6 +10,44 @@
 #'
 #' @return ggplot2 object.
 #' @export
+#' 
+#' @examples
+#' # Use example boundary data from package
+#' region_boundary <- geo_tox_data$boundaries$county
+#' group_boundary <- geo_tox_data$boundaries$state
+#' n <- nrow(region_boundary)
+#' 
+#' # Single assay quantile
+#' df <- data.frame(id = region_boundary$FIPS,
+#'                  metric = "GCA.Eff",
+#'                  assay_quantile = 0.5,
+#'                  value = runif(n)^3)
+#' # Default plot
+#' plot_resp(df, region_boundary)
+#' # Add group boundary, a state border in this case
+#' plot_resp(df, region_boundary, group_boundary)
+#' # Change quantile label
+#' plot_resp(df, region_boundary, group_boundary,
+#'           assay_quantiles = c("Q50" = 0.5))
+#' 
+#' # Multiple assay quantiles
+#' df <- data.frame(id = rep(region_boundary$FIPS, 2),
+#'                  metric = "GCA.Eff",
+#'                  assay_quantile = rep(c(0.25, 0.75), each = n),
+#'                  value = c(runif(n)^3, runif(n)^3 + 0.15))
+#' plot_resp(df, region_boundary, group_boundary,
+#'           assay_quantiles = c("Q25" = 0.25, "Q75" = 0.75))
+#' 
+#' # Summary quantiles
+#' df <- data.frame(id = rep(region_boundary$FIPS, 4),
+#'                  assay_quantile = rep(rep(c(0.25, 0.75), each = n), 2),
+#'                  summary_quantile = rep(c(0.05, 0.95), each = n * 2),
+#'                  metric = "GCA.Eff",
+#'                  value = c(runif(n)^3, runif(n)^3 + 0.15,
+#'                            runif(n)^3 + 0.7, runif(n)^3 + 0.85))
+#' plot_resp(df, region_boundary, group_boundary,
+#'           assay_quantiles = c("A_Q25" = 0.25, "A_Q75" = 0.75),
+#'           summary_quantiles = c("S_Q05" = 0.05, "S_Q95" = 0.95))
 plot_resp <- function(
     df,
     region_boundary,
@@ -45,9 +83,12 @@ plot_resp <- function(
   
   metric <- df$metric[1]
   
-  fig <- ggplot2::ggplot(df, ggplot2::aes(fill = .data$value)) +
+  fig <- ggplot2::ggplot() +
     # Plot county data using fill, hide county borders by setting color = NA
-    ggplot2::geom_sf(ggplot2::aes(geometry = .data$geometry), color = NA) +
+    ggplot2::geom_sf(data = df,
+                     ggplot2::aes(fill = .data$value,
+                                  geometry = .data$geometry),
+                     color = NA) +
     # Add fill scale
     ggplot2::scale_fill_viridis_c(
       name = metric,
@@ -91,15 +132,18 @@ plot_resp <- function(
       # Create separate plots for each stat
       ggplot2::facet_wrap(
         ~assay_quantile,
-        ncol = length(assay_quantiles),
+        ncol = length(unique(df$assay_quantile)),
         labeller = ggplot2::labeller(
           assay_quantile = stats::setNames(names(assay_quantiles),
                                            assay_quantiles)))
   }
   
   if (!is.null(group_boundary)) {
-    fig <- fig + ggplot2::geom_sf(data = group_boundary, fill = NA,
-                                  size = 0.15)
+    fig <- fig + 
+      ggplot2::geom_sf(data = group_boundary,
+                       ggplot2::aes(geometry = .data$geometry),
+                       fill = NA,
+                       size = 0.15)
   }
   
   fig
