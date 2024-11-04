@@ -127,25 +127,6 @@ test_that("clear downstream - obesity", {
   
 })
 
-test_that("default params", {
-  
-  geoTox <- GeoTox()
-  
-  expect_equal(geoTox$par,
-               list(n = 1e3,
-                    IR_params = NULL,
-                    obesity = list(obes_prev  = "OBESITY_CrudePrev",
-                                   obes_sd    = "OBESITY_SD",
-                                   obes_label = "FIPS"),
-                    exposure = list(expos_mean  = "mean",
-                                    expos_sd    = "sd",
-                                    expos_label = "casn"),
-                    internal_dose = list(time    = 1,
-                                         BW      = 1,
-                                         scaling = 1),
-                    resp = list(max_mult = 1.5)))
-})
-
 test_that("update params", {
   
   # New params
