@@ -18,6 +18,8 @@ reference:
   - compute_sensitivity
   - plot_sensitivity
   - sensitivity_analysis
+  - set_boundaries
+  - set_hill_params
   - simulate_population
 - subtitle: Simulate
   desc: Functions that perform Monte Carlo simulation
@@ -45,7 +47,6 @@ reference:
   - starts_with("get_")
   - starts_with("hill_")
   - starts_with("obj_")
-  - starts_with("set_")
 - subtitle: Datasets
   desc: Package datasets
 - contents:
