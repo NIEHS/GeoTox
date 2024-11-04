@@ -20,6 +20,9 @@ plot_sensitivity <- function(x,
   if (is.null(x$sensitivity)) {
     stop("No sensitivity data found.", call. = FALSE)
   }
+  if (is.null(x$resp)) {
+    stop("No baseline response data found.", call. = FALSE)
+  }
   
   df <- get_sensitivity_df(x, metric = metric, assay = assay)
   fig <- plot_sensitivity_df(df, y = y, xlab = xlab, ylab = ylab)
