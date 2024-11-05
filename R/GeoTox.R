@@ -38,7 +38,7 @@
 #' # Plot hill fits
 #' plot(geoTox, type = "hill")
 #' # Plot exposure data
-#' plot(geoTox, type = "exposure")
+#' plot(geoTox, type = "exposure", ncol = 5)
 #' # Plot response data
 #' plot(geoTox)
 #' plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
