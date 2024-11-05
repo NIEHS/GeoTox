@@ -22,3 +22,4 @@ objective value
 Use to find the optimal efficacy value based on a regular space AC50 and
 concentrations.
 }
+\keyword{internal}

@@ -9,6 +9,8 @@
 #' @param max maximal (asymtotic) responses
 #' @param AC50 concentrations of half-maximal response
 #'
+#' @keywords internal
+#'
 #' @return objective value
 obj_GCA <- function(ln_resp, conc, max, AC50) {
   # Solving for the efficacy on the natural log-scale. This allows for

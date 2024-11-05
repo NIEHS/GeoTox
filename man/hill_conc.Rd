@@ -31,3 +31,4 @@ The concentration is computed as:
 \seealso{
 \code{\link{hill_val}}
 }
+\keyword{internal}

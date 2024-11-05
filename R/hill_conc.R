@@ -8,8 +8,9 @@
 #' @param AC50 concentration of half-maximal response
 #' @param n Hill coefficient (slope)
 #'
+#' @keywords internal
+#'
 #' @return concentration in regular space
-#' @export
 #' 
 #' @details
 #' This is a regular space version of

@@ -31,3 +31,4 @@ The Hill model is defined as:
 \seealso{
 \code{\link{hill_conc}}
 }
+\keyword{internal}
