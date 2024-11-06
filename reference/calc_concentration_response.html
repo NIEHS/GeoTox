@@ -11,7 +11,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,9 +78,54 @@ response, and a hazard quotient</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>data frame</p>
+    <p>list of data frames</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">C_invitro</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span> <span class="op">/</span> <span class="fl">1e3</span>, ncol <span class="op">=</span> <span class="fl">2</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c1"</span>, <span class="st">"c2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">9</span><span class="op">:</span><span class="fl">16</span> <span class="op">/</span> <span class="fl">1e3</span>, ncol <span class="op">=</span> <span class="fl">2</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c1"</span>, <span class="st">"c2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>chem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c1"</span>, <span class="st">"c2"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             logc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             resp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  chem <span class="op">=</span> <span class="st">"chem"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample      GCA.Eff       IA.Eff  GCA.HQ.10   IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.0076864671 0.0077364934 0.55601871 0.55600659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.0006767173 0.0006770262 0.01534725 0.01534744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.0722956637 0.0741979092 1.45744108 1.45745710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.0273376842 0.0274220130 0.39699362 0.39699367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample    GCA.Eff     IA.Eff GCA.HQ.10  IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.18688743 0.18693404 3.7723954 3.7724269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.01226720 0.01227572 0.3474801 0.3474778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.01883785 0.01894890 1.7068482 1.7068523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.12791787 0.12799417 2.2230433 2.2230437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample   GCA.Eff    IA.Eff GCA.HQ.10 IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.2393398 0.2742427  13.49985     13.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.3102525 0.3493325  23.39997     23.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.3479706 0.3866123  33.29939     33.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.3713827 0.4087487  43.19904     43.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample   GCA.Eff    IA.Eff GCA.HQ.10 IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.4200784 0.4517192  92.70122     92.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.4246337 0.4554551 102.60133    102.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.4284513 0.4585306 112.50143    112.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.4316926 0.4611019 122.40154    122.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

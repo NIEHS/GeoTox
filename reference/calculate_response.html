@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,35 +74,27 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create GeoTox object</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Use a subset of the package data for demonstration purposes</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co"># Population size</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Number of regions</span></span></span>
+<span class="r-in"><span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">m</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">m</span><span class="op">)</span> <span class="kw">else</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The following fields are required inputs</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">IR</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_ext</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_ss</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>logc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                          resp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Create GeoTox object and populate required fields</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># Simulate populations for each region</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="simulate_population.html">simulate_population</a></span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      obesity <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span><span class="op">[</span><span class="va">idx</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span></span>
+<span class="r-in"><span>                      n <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># Estimated Hill parameters</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="set_hill_params.html">set_hill_params</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>                    <span class="fu"><a href="fit_hill.html">fit_hill</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="st">"endp"</span>, chem <span class="op">=</span> <span class="st">"casn"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>                    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">tp.sd.imputed</span>, <span class="op">!</span><span class="va">logAC50.sd.imputed</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Calculate response</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu">calculate_response</span><span class="op">(</span><span class="va">geoTox</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The following fields will be computed</span></span></span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">D_int</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">C_invitro</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="va">geoTox</span><span class="op">$</span><span class="va">resp</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample  GCA.Eff   IA.Eff GCA.HQ.10 IA.HQ.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 2.860487 2.860519  26243.15 26242.82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># Response computations can now be done</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="va">geoTox</span> <span class="op">|&gt;</span> <span class="fu">calculate_response</span><span class="op">(</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
