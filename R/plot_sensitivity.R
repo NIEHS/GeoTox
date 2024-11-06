@@ -20,15 +20,15 @@
 #'                        c("sample", metric)))
 #' }
 #' 
-#' x <- GeoTox()
-#' x$resp <- make_data()
-#' x$sensitivity <- list(age = make_data(),
-#'                       obesity = make_data(),
-#'                       css_params = make_data(),
-#'                       fit_params = make_data(),
-#'                       C_ext = make_data())
+#' geoTox <- GeoTox()
+#' geoTox$resp <- make_data()
+#' geoTox$sensitivity <- list(age = make_data(),
+#'                            obesity = make_data(),
+#'                            css_params = make_data(),
+#'                            fit_params = make_data(),
+#'                            C_ext = make_data())
 #' 
-#' plot_sensitivity(x)
+#' plot_sensitivity(geoTox)
 plot_sensitivity <- function(x,
                              metric = "GCA.Eff",
                              assay = NULL,

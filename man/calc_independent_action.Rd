@@ -35,6 +35,15 @@ The concentration is computed as:
 where \eqn{x_i = hill\_val(conc_i, max_i, AC50_i, n_i)} is the Hill model
 response function for each chemical.
 }
+\examples{
+n_chem <- 5
+conc <- 10^sample(-1:4, n_chem, replace = TRUE)
+max <- 80 * runif(n_chem)
+AC50 <- 10^(5 * runif(n_chem) - 1)
+Emax <- 100
+
+calc_independent_action(conc, max, AC50, Emax)
+}
 \seealso{
 \code{\link{hill_val}}
 }

@@ -25,6 +25,15 @@
 #' response function for each chemical.
 #' 
 #' @seealso \code{\link{hill_val}}
+#' 
+#' @examples
+#' n_chem <- 5
+#' conc <- 10^sample(-1:4, n_chem, replace = TRUE)
+#' max <- 80 * runif(n_chem)
+#' AC50 <- 10^(5 * runif(n_chem) - 1)
+#' Emax <- 100
+#' 
+#' calc_independent_action(conc, max, AC50, Emax)
 calc_independent_action <- function(conc, max, AC50, Emax, n = 1) {
   
   # if (any(max > Emax)) {
