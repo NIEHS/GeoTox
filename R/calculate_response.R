@@ -16,23 +16,27 @@
 #' [calc_concentration_response]
 #' 
 #' @examples
-#' # Create GeoTox object
-#' geoTox <- GeoTox()
+#' # Use a subset of the package data for demonstration purposes
+#' set.seed(2357)
+#' n <- 10 # Population size
+#' m <- 5 # Number of regions
+#' idx <- if (m < 100) sample(1:100, m) else 1:100
 #'
-#' # The following fields are required inputs
-#' geoTox$IR <- 2
-#' geoTox$C_ext <- matrix(3)
-#' geoTox$C_ss <- 5
-#' geoTox$hill_params <- fit_hill(data.frame(logc = c(-1, 0, 1),
-#'                                           resp = c(10, 5, 0)))
+#' # Create GeoTox object and populate required fields
+#' geoTox <- GeoTox() |>
+#'   # Simulate populations for each region
+#'   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+#'                       obesity = geo_tox_data$obesity[idx, ],
+#'                       exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+#'                       simulated_css = geo_tox_data$simulated_css,
+#'                       n = n) |>
+#'   # Estimated Hill parameters
+#'   set_hill_params(geo_tox_data$dose_response |>
+#'                     fit_hill(assay = "endp", chem = "casn") |>
+#'                     dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed))
 #'
-#' # Calculate response
-#' geoTox <- calculate_response(geoTox)
-#' 
-#' # The following fields will be computed
-#' geoTox$D_int
-#' geoTox$C_invitro
-#' geoTox$resp
+#' # Response computations can now be done
+#' geoTox <- geoTox |> calculate_response()
 calculate_response <- function(x, ...) {
   
   # Update parameters

@@ -41,13 +41,18 @@ Additional parameters include \code{n} for sample size,
 and \code{expos_mean}, \code{expos_sd}, and \code{expos_label} for \link{simulate_exposure}.
 }
 \examples{
-# For information about geo_tox_data, see:
-# vignette("package_data", package = "GeoTox")
+# Use a subset of the package data for demonstration purposes
+set.seed(2357)
+n <- 10 # Population size
+m <- 5 # Number of regions
+idx <- if (m < 100) sample(1:100, m) else 1:100
 
-geoTox <- GeoTox() |> 
-  simulate_population(age = split(geo_tox_data$age, ~FIPS)[1:5],
-                      obesity = geo_tox_data$obesity[1:5, ],
-                      exposure = split(geo_tox_data$exposure, ~FIPS)[1:5],
+# Create GeoTox object
+geoTox <- GeoTox() |>
+  # Simulate populations for each region
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+                      obesity = geo_tox_data$obesity[idx, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
                       simulated_css = geo_tox_data$simulated_css,
-                      n = 10)
+                      n = n)
 }

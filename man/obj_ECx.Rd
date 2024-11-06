@@ -25,3 +25,4 @@ Find the effective concentration of a mixture via an objective function
 given the concentrations and inverse, based on a regular space AC50 and
 concentrations.
 }
+\keyword{internal}

@@ -43,10 +43,8 @@ reference:
 - subtitle: Auxiliary
   desc: Auxillary and helper functions
 - contents:
-  - starts_with("fit_")
+  - fit_hill
   - starts_with("get_")
-  - starts_with("hill_")
-  - starts_with("obj_")
 - subtitle: Datasets
   desc: Package datasets
 - contents:

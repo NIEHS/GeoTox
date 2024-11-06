@@ -19,3 +19,4 @@ value of the objective function
 \description{
 Objective function for 2- or 3-parameter Hill model
 }
+\keyword{internal}

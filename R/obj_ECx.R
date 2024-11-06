@@ -11,6 +11,8 @@
 #' @param max maximal (asymtotic) response
 #' @param AC50 concentrations of half-maximal response
 #'
+#' @keywords internal
+#'
 #' @return objective value
 obj_ECx <- function(conc_mix, resp, conc, max, AC50) {
   x <- hill_conc(resp, max, AC50, 1)
