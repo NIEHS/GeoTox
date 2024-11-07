@@ -32,9 +32,12 @@ The GeoTox framework was first described in
 
 ## Installation
 
+The package will be on CRAN in the near future - please stay tuned.
+<!--
 ```{r, eval=FALSE}
 install.packages("GeoTox")
 ```
+-->
 
 ## Development Version
 
