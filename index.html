@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><script src="deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Spatiotemporal Mixture Risk Assessment">
-<meta name="description" content="Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.">
-<meta property="og:description" content="Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.">
+<meta name="description" content="Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling. The package, methods, and case-studies are described in Messier, Reif, and Marvel (2024) &lt;doi:10.1101/2024.09.23.24314096&gt; and Eccles et al. (2023) &lt;doi:10.1016/j.scitotenv.2022.158905&gt;.">
+<meta property="og:description" content="Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling. The package, methods, and case-studies are described in Messier, Reif, and Marvel (2024) &lt;doi:10.1101/2024.09.23.24314096&gt; and Eccles et al. (2023) &lt;doi:10.1016/j.scitotenv.2022.158905&gt;.">
 <meta property="og:image" content="https://github.com/NIEHS/GeoTox/logo.svg">
 </head>
 <body>
@@ -61,15 +61,26 @@
 </div>
 <!-- badges: start -->
 
-<p><code>GeoTox</code> open-source R software package for characterizing the risk of perturbing molecular targets involved in adverse human health outcomes based on exposure to spatially-referenced stressor mixtures via the GeoTox framework - otherwise known as source-to-outcome-continuum modeling. The package, methods, and case-studies are described in <a href="https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1" class="external-link">Messier, Reif, and Marvel, 2024, medRxiv-Preprint</a>.</p>
+<!-- badges: end -->
+<p><code>GeoTox</code> open-source R software package for characterizing the risk of perturbing molecular targets involved in adverse human health outcomes based on exposure to spatially-referenced stressor mixtures via the GeoTox framework - otherwise known as source-to-outcome-continuum modeling. The package, methods, and case-studies are described in <a href="https://www.medrxiv.org/content/10.1101/2024.09.23.24314096" class="external-link">Messier, Reif, and Marvel, 2024, medRxiv-Preprint</a>.</p>
 <p>The GeoTox framework was first described in <a href="https://pubmed.ncbi.nlm.nih.gov/36152849/" class="external-link">Eccles et al. A geospatial modeling approach to quantifying the risk of exposure to environmental chemical mixtures via a common molecular target. Sci Total Environ. 2023 Jan 10;855:158905.</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The package will be on CRAN in the near future - please stay tuned. You can install the development version of GeoTox from <a href="https://github.com/NIEHS/GeoTox">GitHub</a> with:</p>
+<p>The package will be on CRAN in the near future - please stay tuned. <!--
+
+``` r
+install.packages("GeoTox")
+```
+--></p>
+</div>
+<div class="section level2">
+<h2 id="development-version">Development Version<a class="anchor" aria-label="anchor" href="#development-version"></a>
+</h2>
+<p>The development version can be installed from <a href="https://github.com/NIEHS/GeoTox">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"NIEHS/GeoTox"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"NIEHS/GeoTox"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -132,6 +143,7 @@
 <li>Skylar Marvel <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-2971-9743" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>David Reif <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0001-7815-6767" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Kyle Messier <br><small class="roles"> Maintainer, author, contributor </small> <a href="https://orcid.org/0000-0001-9508-9623" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
