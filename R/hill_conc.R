@@ -8,10 +8,8 @@
 #' @param AC50 concentration of half-maximal response
 #' @param n Hill coefficient (slope)
 #'
-#' @keywords internal
-#' @noRd
-#'
 #' @return concentration in regular space
+#' @export
 #' 
 #' @details
 #' This is a regular space version of
@@ -21,6 +19,10 @@
 #' \deqn{conc = AC50 * (\frac{max}{resp} - 1)^{-1 / n}}
 #' 
 #' @seealso \code{\link{hill_val}}
+#' 
+#' @examples
+#' hill_conc(c(0.2, 0.5, 0.75), 1, 0.01, 1)
+#' hill_conc(c(0.2, 0.5, 0.9), 1, c(0.1, 0.01, 0.001), 2)
 hill_conc <- function(resp, max, AC50, n) {
   
   if (any(AC50 < 0)) {

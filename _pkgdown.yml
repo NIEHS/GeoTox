@@ -44,6 +44,8 @@ reference:
   desc: Auxillary and helper functions
 - contents:
   - fit_hill
+  - hill_conc
+  - hill_val
   - starts_with("get_")
 - subtitle: Datasets
   desc: Package datasets
