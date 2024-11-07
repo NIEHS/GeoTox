@@ -5,6 +5,7 @@
 #' @param resp response
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return value of the objective function
 obj_hill <- function(par, log10_conc, resp) {

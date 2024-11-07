@@ -13,6 +13,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org/package=GeoTox)
+
 <!-- badges: end -->
 
 `GeoTox` open-source R software package for characterizing the risk of
@@ -21,7 +22,7 @@ based on exposure to spatially-referenced stressor mixtures via the
 GeoTox framework - otherwise known as source-to-outcome-continuum
 modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2024,
-medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096v1).
+medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096).
 
 The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
@@ -30,13 +31,21 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
-The package will be on CRAN in the near future - please stay tuned. You
-can install the development version of GeoTox from
+The package will be on CRAN in the near future - please stay tuned. <!--
+
+``` r
+install.packages("GeoTox")
+```
+-->
+
+## Development Version
+
+The development version can be installed from
 [GitHub](https://github.com/NIEHS/GeoTox) with:
 
 ``` r
-install.packages("pak")
-pak::pkg_install("NIEHS/GeoTox")
+#install.packages("pak")
+pak::pak("NIEHS/GeoTox")
 ```
 
 ## Overview
