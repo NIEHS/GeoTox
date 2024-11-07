@@ -4,9 +4,14 @@ Version: 0.1.4
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-2971-9743")),
     person("David", "Reif", , "david.reif@nih.gov", role = c("aut", "ctb"), comment = c(ORCID = "0000-0001-7815-6767")),
-    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0001-9508-9623"))
+    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0001-9508-9623")),
+    person("Spatiotemporal Exposures and Toxicology Group", role = c("cph"))
   )
-Description: Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.
+Description: Connecting spatiotemporal exposure to individual and
+    population-level risk via source-to-outcome continuum modeling. The package,
+    methods, and case-studies are described in Messier, Reif, and Marvel (2024)
+    <doi:10.1101/2024.09.23.24314096> and Eccles et al. (2023)
+    <doi:10.1016/j.scitotenv.2022.158905>.
 License: MIT + file LICENSE
 URL: https://niehs.github.io/GeoTox/, https://github.com/NIEHS/GeoTox
 Depends: 
