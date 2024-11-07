@@ -7,7 +7,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling.
+Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling. The package, methods, and case-studies are described in Messier, Reif, and Marvel (2024) \doi{10.1101/2024.09.23.24314096} and Eccles et al. (2023) \doi{10.1016/j.scitotenv.2022.158905}.
 }
 \seealso{
 Useful links:
@@ -24,6 +24,11 @@ Authors:
 \itemize{
   \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID}) [contributor]
   \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID}) [contributor]
+}
+
+Other contributors:
+\itemize{
+  \item Spatiotemporal Exposures and Toxicology Group [copyright holder]
 }
 
 }
