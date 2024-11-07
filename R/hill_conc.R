@@ -9,6 +9,7 @@
 #' @param n Hill coefficient (slope)
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return concentration in regular space
 #' 

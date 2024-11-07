@@ -10,6 +10,7 @@
 #' @param AC50 concentrations of half-maximal response
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return objective value
 obj_GCA <- function(ln_resp, conc, max, AC50) {

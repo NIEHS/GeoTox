@@ -12,6 +12,7 @@
 #' @param AC50 concentrations of half-maximal response
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return objective value
 obj_ECx <- function(conc_mix, resp, conc, max, AC50) {

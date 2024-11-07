@@ -5,6 +5,7 @@
 #' @param msg error message
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return list version of input
 .check_types <- function(x, types, msg = "Incorrect type") {
