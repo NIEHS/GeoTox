@@ -31,17 +31,13 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
-The package will be on CRAN in the near future - please stay tuned. <!--
-
 ``` r
 install.packages("GeoTox")
 ```
--->
 
 ## Development Version
 
-The development version can be installed from
-[GitHub](https://github.com/NIEHS/GeoTox) with:
+The development version can be installed from GitHub.
 
 ``` r
 #install.packages("pak")
