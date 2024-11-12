@@ -14,6 +14,7 @@ Useful links:
 \itemize{
   \item \url{https://niehs.github.io/GeoTox/}
   \item \url{https://github.com/NIEHS/GeoTox}
+  \item Report bugs at \url{https://github.com/NIEHS/GeoTox/issues}
 }
 
 }
