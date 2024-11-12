@@ -2,13 +2,13 @@ Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
 Version: 0.2.0
 Authors@R: c(
-    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = "aut",
+    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut"),
            comment = c(ORCID = "0000-0002-2971-9743")),
-    person("David", "Reif", , "david.reif@nih.gov", role = "aut",
+    person("David", "Reif", , "david.reif@nih.gov", role = c("aut"),
            comment = c(ORCID = "0000-0001-7815-6767")),
-    person("Kyle", "Messier", , "skylar.marvel@nih.gov", role = c("cre", "aut"),
+    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0001-9508-9623")),
-    person("Spatiotemporal Exposures and Toxicology Group", role = "cph")
+    person("Spatiotemporal Exposures and Toxicology Group", role = c("cph"))
   )
 Description: Connecting spatiotemporal exposure to individual and
     population-level risk via source-to-outcome continuum modeling. The package,
