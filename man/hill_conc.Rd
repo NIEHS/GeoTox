@@ -9,7 +9,7 @@ hill_conc(resp, max, AC50, n)
 \arguments{
 \item{resp}{response value}
 
-\item{max}{maximal (asymtotic) response}
+\item{max}{maximal (asymptotic) response}
 
 \item{AC50}{concentration of half-maximal response}
 

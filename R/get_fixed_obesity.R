@@ -1,10 +1,10 @@
-#' Get C_ss Data for Fixed Obesity Status
+#' Get `C_ss` Data for Fixed Obesity Status
 #'
-#' @param simulated_css list of pre-generated C_ss data, for details see:
+#' @param simulated_css list of pre-generated `C_ss` data, for details see:
 #' \code{vignette("package_data", package = "GeoTox")}.
 #' @param obesity list of atomic vectors containing obesity status.
 #'
-#' @return list of matrices containing median C_ss values.
+#' @return list of matrices containing median `C_ss` values.
 #' @export
 #' 
 #' @examples

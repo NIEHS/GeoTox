@@ -47,7 +47,7 @@ pak::pak("NIEHS/GeoTox")
 ## Overview
 
 Figure 1 below shows the steps in the source-to-outcome-continuum or
-GeoTox modelling framework that is capable in the `GeoTox` package.
+GeoTox modeling framework that is capable in the `GeoTox` package.
 <span style="color: blue;">blue text</span> nodes represent an object
 and <span style="color: green;">green text</span>, rounded nodes
 represent a methodology or function required to go from one to the next.

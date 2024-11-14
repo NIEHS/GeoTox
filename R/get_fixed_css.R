@@ -1,15 +1,15 @@
-#' Get Fixed C_ss Data
+#' Get Fixed `C_ss` Data
 #' 
 #' @description
-#' Get C_ss values for use in [sensitivity_analysis] and [compute_sensitivity].
+#' Get `C_ss` values for use in [sensitivity_analysis] and [compute_sensitivity].
 #'
-#' @param simulated_css list of pre-generated C_ss data, for details see:
+#' @param simulated_css list of pre-generated `C_ss` data, for details see:
 #' \code{vignette("package_data", package = "GeoTox")}.
 #' @param age list of atomic vectors containing ages.
 #' @param obesity list of atomic vectors containing obesity status.
-#' @param C_ss list of matrices containing C_ss values.
+#' @param C_ss list of matrices containing `C_ss` values.
 #'
-#' @return list of matrices or atomic vectors containing C_ss values.
+#' @return list of matrices or atomic vectors containing `C_ss` values.
 #' @export
 #' 
 #' @examples

@@ -9,7 +9,7 @@ calc_independent_action(conc, max, AC50, Emax, n = 1)
 \arguments{
 \item{conc}{concentrations in regular space}
 
-\item{max}{maximal (asymtotic) responses}
+\item{max}{maximal (asymptotic) responses}
 
 \item{AC50}{concentrations of half-maximal response}
 

@@ -5,7 +5,7 @@
 #' concentration-response curves.
 #'
 #' @param conc concentrations in regular space
-#' @param max maximal (asymtotic) responses
+#' @param max maximal (asymptotic) responses
 #' @param AC50 concentrations of half-maximal response
 #' @param Emax maximum mixture response
 #' @param n Hill coefficients (slopes)

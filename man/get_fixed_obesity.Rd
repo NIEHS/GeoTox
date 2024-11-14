@@ -2,21 +2,21 @@
 % Please edit documentation in R/get_fixed_obesity.R
 \name{get_fixed_obesity}
 \alias{get_fixed_obesity}
-\title{Get C_ss Data for Fixed Obesity Status}
+\title{Get \code{C_ss} Data for Fixed Obesity Status}
 \usage{
 get_fixed_obesity(simulated_css, obesity)
 }
 \arguments{
-\item{simulated_css}{list of pre-generated C_ss data, for details see:
+\item{simulated_css}{list of pre-generated \code{C_ss} data, for details see:
 \code{vignette("package_data", package = "GeoTox")}.}
 
 \item{obesity}{list of atomic vectors containing obesity status.}
 }
 \value{
-list of matrices containing median C_ss values.
+list of matrices containing median \code{C_ss} values.
 }
 \description{
-Get C_ss Data for Fixed Obesity Status
+Get \code{C_ss} Data for Fixed Obesity Status
 }
 \examples{
 get_fixed_obesity(simulated_css = geo_tox_data$simulated_css,
