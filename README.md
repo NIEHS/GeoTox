@@ -58,8 +58,8 @@ exposure, assays, dose-response, and geospatial referencing.
 
 <p align="center">
 
-<img src="man/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow"> <br>
-<em>Figure 1: Overview of the steps in the GeoTox framework</em>
+<img src="man/figures/GeoTox.png" alt="GeoTox"> <br> <em>Figure 1:
+Overview of the steps in the GeoTox framework</em>
 </p>
 
 ## Getting Started
