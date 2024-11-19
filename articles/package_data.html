@@ -8,8 +8,8 @@
 <title>GeoTox Package Data • GeoTox</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="../deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="GeoTox Package Data">
 </head>
 <body>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>GeoTox Package Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/vignettes/package_data.Rmd"><code>vignettes/package_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.2.0/vignettes/package_data.Rmd"><code>vignettes/package_data.Rmd</code></a></small>
       <div class="d-none name"><code>package_data.Rmd</code></div>
     </div>
 
@@ -358,12 +358,13 @@ package data as <code>geo_tox_data$obesity</code>.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">OBESITY_Crude95CI</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="steady-state-plasma-concentration-css">Steady-state plasma concentration (Css)<a class="anchor" aria-label="anchor" href="#steady-state-plasma-concentration-css"></a>
+<h3 id="steady-state-plasma-concentration-c_ss">Steady-state plasma concentration (<code>C_ss</code>)<a class="anchor" aria-label="anchor" href="#steady-state-plasma-concentration-c_ss"></a>
 </h3>
-<p>Use <code>httk</code> to generate Css values for combinations of age
-group and weight status for each chemical. The generation of these
-values is a time-intensive step, so one approach is to generate
-populations of Css values initially and then sample them later.</p>
+<p>Use <code>httk</code> to generate <code>C_ss</code> values for
+combinations of age group and weight status for each chemical. The
+generation of these values is a time-intensive step, so one approach is
+to generate populations of <code>C_ss</code> values initially and then
+sample them later.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2345</span><span class="op">)</span></span>
 <span><span class="va">n_samples</span> <span class="op">&lt;-</span> <span class="fl">500</span></span>
@@ -433,7 +434,7 @@ populations of Css values initially and then sample them later.</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Simulate Css values</span></span>
+<span><span class="co"># Simulate `C_ss` values</span></span>
 <span><span class="va">simulated_css</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">casn</span>, <span class="kw">function</span><span class="op">(</span><span class="va">chem.cas</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">pop_demo</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -450,7 +451,7 @@ populations of Css values initially and then sample them later.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">simulated_css</span> <span class="op">&lt;-</span> <span class="va">simulated_css</span><span class="op">[</span><span class="va">casn_keep</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Get median Css values for each age_group</span></span>
+<span><span class="co"># Get median `C_ss` values for each age_group</span></span>
 <span><span class="va">simulated_css</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
 <span>  <span class="va">simulated_css</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">cas_df</span><span class="op">)</span> <span class="op">{</span></span>
@@ -464,7 +465,7 @@ populations of Css values initially and then sample them later.</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Get median Css values for each weight</span></span>
+<span><span class="co"># Get median `C_ss` values for each weight</span></span>
 <span><span class="va">simulated_css</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
 <span>  <span class="va">simulated_css</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">cas_df</span><span class="op">)</span> <span class="op">{</span></span>
@@ -485,8 +486,8 @@ populations of Css values initially and then sample them later.</p>
 <div class="section level2">
 <h2 id="prune-data">Prune data<a class="anchor" aria-label="anchor" href="#prune-data"></a>
 </h2>
-<p>Retain only those chemicals found in exposure, dose-response and Css
-datasets.</p>
+<p>Retain only those chemicals found in exposure, dose-response and
+<code>C_ss</code> datasets.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">casn_keep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span><span class="op">)</span></span>
 <span></span>
