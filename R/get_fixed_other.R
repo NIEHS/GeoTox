@@ -1,8 +1,8 @@
-#' Get median C_ss Values
+#' Get median `C_ss` Values
 #'
-#' @param C_ss list of matrices containing C_ss data
+#' @param C_ss list of matrices containing `C_ss` data
 #'
-#' @return list of atomic vectors containing median C_ss values.
+#' @return list of atomic vectors containing median `C_ss` values.
 #' @export
 #' 
 #' @examples

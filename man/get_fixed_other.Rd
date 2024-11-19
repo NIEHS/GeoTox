@@ -2,18 +2,18 @@
 % Please edit documentation in R/get_fixed_other.R
 \name{get_fixed_other}
 \alias{get_fixed_other}
-\title{Get median C_ss Values}
+\title{Get median \code{C_ss} Values}
 \usage{
 get_fixed_other(C_ss)
 }
 \arguments{
-\item{C_ss}{list of matrices containing C_ss data}
+\item{C_ss}{list of matrices containing \code{C_ss} data}
 }
 \value{
-list of atomic vectors containing median C_ss values.
+list of atomic vectors containing median \code{C_ss} values.
 }
 \description{
-Get median C_ss Values
+Get median \code{C_ss} Values
 }
 \examples{
 # Generate input C_ss data

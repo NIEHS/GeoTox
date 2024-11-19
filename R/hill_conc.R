@@ -4,7 +4,7 @@
 #' Calculate the concentration in regular space for a given response value.
 #'
 #' @param resp response value
-#' @param max maximal (asymtotic) response
+#' @param max maximal (asymptotic) response
 #' @param AC50 concentration of half-maximal response
 #' @param n Hill coefficient (slope)
 #'

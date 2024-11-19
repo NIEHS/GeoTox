@@ -9,8 +9,8 @@
 ^CODE_OF_CONDUCT.md$
 ^cran-comments\.md$
 ^\.github$
-^script-replication$
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^CRAN-SUBMISSION$

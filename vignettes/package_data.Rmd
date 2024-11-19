@@ -283,9 +283,9 @@ geo_tox_data$obesity <- places |>
   select(-OBESITY_Crude95CI)
 ```
 
-## Steady-state plasma concentration (Css)
+## Steady-state plasma concentration (`C_ss`)
 
-Use `httk` to generate Css values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of Css values initially and then sample them later.
+Use `httk` to generate `C_ss` values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of `C_ss` values initially and then sample them later.
 
 ```{r, eval=FALSE}
 set.seed(2345)
@@ -356,7 +356,7 @@ simulate_css <- function(chem.cas, agelim_years, weight_category,
   }
 }
 
-# Simulate Css values
+# Simulate `C_ss` values
 simulated_css <- map(casn, function(chem.cas) {
   pop_demo |>
     rowwise() |>
@@ -373,7 +373,7 @@ casn_keep <- map_lgl(simulated_css, function(df) {
 })
 simulated_css <- simulated_css[casn_keep]
 
-# Get median Css values for each age_group
+# Get median `C_ss` values for each age_group
 simulated_css <- map(
   simulated_css,
   function(cas_df) {
@@ -387,7 +387,7 @@ simulated_css <- map(
   }
 )
 
-# Get median Css values for each weight
+# Get median `C_ss` values for each weight
 simulated_css <- map(
   simulated_css,
   function(cas_df) {
@@ -407,7 +407,7 @@ geo_tox_data$simulated_css <- simulated_css
 
 # Prune data
 
-Retain only those chemicals found in exposure, dose-response and Css datasets.
+Retain only those chemicals found in exposure, dose-response and `C_ss` datasets.
 
 ```{r, eval=FALSE}
 casn_keep <- names(geo_tox_data$simulated_css)

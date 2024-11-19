@@ -16,6 +16,9 @@ GeoTox()
 
 \item{...}{arguments passed to subsequent methods.}
 }
+\value{
+a GeoTox S3 object
+}
 \description{
 An S3 object that can be used to help organize the data and results of a
 GeoTox analysis.

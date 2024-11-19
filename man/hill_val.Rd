@@ -9,7 +9,7 @@ hill_val(conc, max, AC50, n)
 \arguments{
 \item{conc}{concentration in regular space}
 
-\item{max}{maximal (asymtotic) response}
+\item{max}{maximal (asymptotic) response}
 
 \item{AC50}{concentration of half-maximal response}
 

@@ -1,11 +1,11 @@
-#' Sample from pre-generated C_ss data
+#' Sample from pre-generated `C_ss` data
 #'
-#' @param simulated_css list of pre-generated C_ss data, for details see:
+#' @param simulated_css list of pre-generated `C_ss` data, for details see:
 #' \code{vignette("package_data", package = "GeoTox")}.
 #' @param age list or atomic vector of ages.
 #' @param obesity list or atomic vector of obesity status.
 #'
-#' @return list of matrices containing C_ss values. Columns are sorted to have
+#' @return list of matrices containing `C_ss` values. Columns are sorted to have
 #' consistent order across functions.
 #' 
 #' @examples

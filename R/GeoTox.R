@@ -4,6 +4,7 @@
 #' An S3 object that can be used to help organize the data and results of a
 #' GeoTox analysis.
 #'
+#' @return a GeoTox S3 object
 #' @export
 #' 
 #' @examples

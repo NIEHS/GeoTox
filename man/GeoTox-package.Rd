@@ -14,16 +14,17 @@ Useful links:
 \itemize{
   \item \url{https://niehs.github.io/GeoTox/}
   \item \url{https://github.com/NIEHS/GeoTox}
+  \item Report bugs at \url{https://github.com/NIEHS/GeoTox/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID}) [contributor]
+\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
 
 Authors:
 \itemize{
-  \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID}) [contributor]
-  \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID}) [contributor]
+  \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID})
+  \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID})
 }
 
 Other contributors:

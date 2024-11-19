@@ -31,18 +31,13 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
-The package will be on CRAN in the near future - please stay tuned.
-
-<!--
 ``` r
 install.packages("GeoTox")
 ```
--->
 
 ## Development Version
 
-The development version can be installed from
-[GitHub](https://github.com/NIEHS/GeoTox) with:
+The development version can be installed from GitHub.
 
 ``` r
 #install.packages("pak")
@@ -52,7 +47,7 @@ pak::pak("NIEHS/GeoTox")
 ## Overview
 
 Figure 1 below shows the steps in the source-to-outcome-continuum or
-GeoTox modelling framework that is capable in the `GeoTox` package.
+GeoTox modeling framework that is capable in the `GeoTox` package.
 <span style="color: blue;">blue text</span> nodes represent an object
 and <span style="color: green;">green text</span>, rounded nodes
 represent a methodology or function required to go from one to the next.
@@ -63,8 +58,8 @@ exposure, assays, dose-response, and geospatial referencing.
 
 <p align="center">
 
-<img src="man/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow"> <br>
-<em>Figure 1: Overview of the steps in the GeoTox framework</em>
+<img src="man/figures/GeoTox.png" alt="GeoTox"> <br> <em>Figure 1:
+Overview of the steps in the GeoTox framework</em>
 </p>
 
 ## Getting Started
