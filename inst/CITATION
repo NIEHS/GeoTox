@@ -2,14 +2,17 @@ citHeader("To cite package GeoTox in publications, please use:")
 
 bibentry(
   bibtype = "article",
-  author = c("Messier, Kyle P", "Reif, David M", "Marvel, Skylar W"),
-  title = "The GeoTox Package: Open-source software for connecting spatiotemporal exposure to individual and population-level risk",
-  journal = "medRxiv",
-  year = "2024",
-  doi = "10.1101/2024.09.23.24314096",
-  elocationid = "2024.09.23.24314096",
-  url = "https://www.medrxiv.org/content/early/2024/09/24/2024.09.23.24314096",
-  eprint = "https://www.medrxiv.org/content/early/2024/09/24/2024.09.23.24314096.full.pdf"
+  author       = {Kyle P. Messier and David M. Reif and Skylar W. Marvel},
+  title        = {The GeoTox Package: open-source software for connecting spatiotemporal exposure to individual and population-level risk},
+  journal      = {Human Genomics},
+  year         = {2025},
+  volume       = {19},
+  number       = {1},
+  pages        = {5},
+  doi          = {10.1186/s40246-024-00711-8},
+  url          = {https://doi.org/10.1186/s40246-024-00711-8},
+  issn         = {1479-7364}
+  publisher = "Springer"
 )
 
 bibentry(
