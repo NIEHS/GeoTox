@@ -1,11 +1,5 @@
-# GeoTox 0.1.2
+# GeoTox (development version)
 
-# GeoTox 0.1.1
+# GeoTox 0.2.0
 
-# GeoTox 0.1.0
-
-# 0.0.1
-- Adding supporting documents to the `GeoTox` repository such as this news.md, issue templates, and contributor's guide
-- NC areal level analysis vignette is complete
-- Key developments on the object oriented approach: simulate and sensitivity wrappers
-- oo-s3.Rmd is updated to include object oriented improvements including more plotting options 
+* Initial CRAN submission.

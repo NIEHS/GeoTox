@@ -3,24 +3,33 @@
 \docType{package}
 \name{GeoTox-package}
 \alias{GeoTox-package}
-\title{GeoTox: Spatiotemporal mixture risk assessment}
+\title{GeoTox: Spatiotemporal Mixture Risk Assessment}
 \description{
-Open-source software for connecting spatiotemporal exposure to individual and population-level risk.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling. The package, methods, and case-studies are described in Messier, Reif, and Marvel (2024) \doi{10.1101/2024.09.23.24314096} and Eccles et al. (2023) \doi{10.1016/j.scitotenv.2022.158905}.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://niehs.github.io/GeoTox/ https://github.com/NIEHS/GeoTox}
+  \item \url{https://niehs.github.io/GeoTox/}
+  \item \url{https://github.com/NIEHS/GeoTox}
+  \item Report bugs at \url{https://github.com/NIEHS/GeoTox/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} [contributor]
+\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
 
 Authors:
 \itemize{
-  \item Skylar Marvel \email{skylar.marvel@nih.gov} [contributor]
-  \item David Reif \email{david.reif@nih.gov} [contributor]
+  \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID})
+  \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Spatiotemporal Exposures and Toxicology Group [copyright holder]
 }
 
 }

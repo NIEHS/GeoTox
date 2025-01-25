@@ -8,7 +8,7 @@
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/check-release.yaml)
+[![R-CMD-check](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/NIEHS/GeoTox/actions/workflows/pkgdown.yaml)
 [![cov](https://NIEHS.github.io/GeoTox/badges/coverage.svg)](https://github.com/NIEHS/GeoTox/actions)
 [![CRAN
@@ -24,6 +24,7 @@ modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2025, Human
 Genomics](https://doi.org/10.1186/s40246-024-00711-8).
 
+
 The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
 chemical mixtures via a common molecular target. Sci Total Environ. 2023
@@ -31,21 +32,23 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
-The package will be on CRAN in the near future - please stay tuned. You
-can install the development version of GeoTox from
-[GitHub](https://github.com/NIEHS/GeoTox) with:
+``` r
+install.packages("GeoTox")
+```
+
+## Development Version
+
+The development version can be installed from GitHub.
 
 ``` r
-if (!require("pak", quietly = TRUE)) {
-  install.packages("pak")
-}
-pak::pkg_install("NIEHS/GeoTox")
+#install.packages("pak")
+pak::pak("NIEHS/GeoTox")
 ```
 
 ## Overview
 
 Figure 1 below shows the steps in the source-to-outcome-continuum or
-GeoTox modelling framework that is capable in the `GeoTox` package.
+GeoTox modeling framework that is capable in the `GeoTox` package.
 <span style="color: blue;">blue text</span> nodes represent an object
 and <span style="color: green;">green text</span>, rounded nodes
 represent a methodology or function required to go from one to the next.
@@ -55,8 +58,9 @@ the information required to run the analysis including tracking
 exposure, assays, dose-response, and geospatial referencing.
 
 <p align="center">
-<img src="man/figures/GeoTox-Workflow.png" alt="GeoTox-Workflow"> <br>
-<em>Figure 1: Overview of the steps in the GeoTox framework</em>
+
+<img src="man/figures/GeoTox.png" alt="GeoTox"> <br> <em>Figure 1:
+Overview of the steps in the GeoTox framework</em>
 </p>
 
 ## Getting Started

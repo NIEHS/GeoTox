@@ -2,6 +2,7 @@ url: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   bootswatch: minty
+  math-rendering: mathjax
 
 navbar:
   structure:
@@ -17,6 +18,8 @@ reference:
   - compute_sensitivity
   - plot_sensitivity
   - sensitivity_analysis
+  - set_boundaries
+  - set_hill_params
   - simulate_population
 - subtitle: Simulate
   desc: Functions that perform Monte Carlo simulation
@@ -40,11 +43,10 @@ reference:
 - subtitle: Auxiliary
   desc: Auxillary and helper functions
 - contents:
-  - starts_with("fit_")
+  - fit_hill
+  - hill_conc
+  - hill_val
   - starts_with("get_")
-  - starts_with("hill_")
-  - starts_with("obj_")
-  - starts_with("set_")
 - subtitle: Datasets
   desc: Package datasets
 - contents:

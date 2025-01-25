@@ -3,7 +3,7 @@
 #'
 #' @param C_invitro in vitro concentrations
 #' @param hill_params output from `fit_hill()`
-#' @param tp_b_mult upper bound multiplier for tp rtruncnorm
+#' @param max_mult upper bound multiplier for max response
 #' @param fixed if TRUE, sd = 0
 #'
 #' @description
@@ -11,19 +11,32 @@
 #' generalized concentration addition response, the independent action
 #' response, and a hazard quotient
 #'
-#' @return data frame
-#'
+#' @return list of data frames
 #' @export
+#' 
+#' @examples
+#' C_invitro <- list(
+#'   matrix(1:8 / 1e3, ncol = 2, dimnames = list(NULL, c("c1", "c2"))),
+#'   matrix(9:16 / 1e3, ncol = 2, dimnames = list(NULL, c("c1", "c2")))
+#' )
+#' hill_params <- fit_hill(
+#'   data.frame(chem = rep(c("c1", "c2"), each = 3),
+#'              logc = c(-1, 0, 1, 0, 1, 2),
+#'              resp = c(10, 5, 0, 4, 2, 0) / 10),
+#'   chem = "chem"
+#' )
+#'
+#' calc_concentration_response(C_invitro, hill_params)
+#' calc_concentration_response(C_invitro, hill_params, fixed = TRUE)
 calc_concentration_response <- function(C_invitro,
                                         hill_params,
-                                        tp_b_mult = 1.5,
+                                        max_mult = 1.5,
                                         fixed = FALSE) {
 
-  if (!any(c("matrix", "list") %in% class(C_invitro))) {
-    stop("C_invitro must be a matrix or list")
-  }
-  if (!is.list(C_invitro)) C_invitro <- list(C_invitro)
-  
+  C_invitro <- .check_types(C_invitro,
+                            "matrix",
+                            "`C_invitro` must be a matrix or list of matrices.")
+
   # Split hill_params by assay
   if ("assay" %in% names(hill_params)) {
     hill_params <- split(hill_params, ~assay)
@@ -34,9 +47,7 @@ calc_concentration_response <- function(C_invitro,
   # Calculate response for each assay
   lapply(C_invitro, \(C_invitro_i) {
     lapply(hill_params, \(hill_params_j) {
-      if (ncol(C_invitro_i) == 1 & nrow(hill_params_j) == 1) {
-        .calc_concentration_response(C_invitro_i, hill_params_j, tp_b_mult, fixed)
-      } else {
+      if (ncol(C_invitro_i) != 1 | nrow(hill_params_j) != 1) {
         if (!"chem" %in% names(hill_params_j)) {
           stop("'hill_params' must contain a 'chem' column", call. = FALSE)
         }
@@ -45,35 +56,33 @@ calc_concentration_response <- function(C_invitro,
           stop("'hill_params' chemicals missing in 'C_invitro'", call. = FALSE)
         }
         C_invitro_i <- C_invitro_i[, chems, drop = FALSE]
-        res <- .calc_concentration_response(C_invitro_i,
-                                            hill_params_j,
-                                            tp_b_mult,
-                                            fixed) |> 
-          dplyr::mutate(sample = dplyr::row_number(), .before = 1)
-        if ("assay" %in% names(hill_params_j)) {
-          res <- res |> 
-            dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)
-        }
-        res
       }
+      res <- .calc_concentration_response(C_invitro_i,
+                                          hill_params_j,
+                                          max_mult,
+                                          fixed) |> 
+        dplyr::mutate(sample = dplyr::row_number(), .before = 1)
+      if ("assay" %in% names(hill_params_j)) {
+        res <- res |> 
+          dplyr::mutate(assay = hill_params_j$assay[[1]], .before = 1)
+      }
+      res
     }) |> 
       dplyr::bind_rows()
   })
 }
 
 .calc_concentration_response <- function(
-    C_invitro, hill_params, tp_b_mult, fixed
+    C_invitro, hill_params, max_mult, fixed
 ) {
 
   interval <- c(-50,50)
 
-  # TODO value of b not consistent
-  # grep "tp.sim <-" ~/github/GeoToxMIE/*.R
   tp <- lapply(1:nrow(C_invitro), function(x) {
     truncnorm::rtruncnorm(
       1,
       a    = 0,
-      b    = hill_params$resp_max * tp_b_mult,
+      b    = hill_params$resp_max * max_mult,
       mean = hill_params$tp,
       sd   = if (fixed) 0 else hill_params$tp.sd
     )
@@ -117,7 +126,6 @@ calc_concentration_response <- function(C_invitro,
                                       AC50 = AC50_i)
     GCA.eff[i] <- exp(mixture.result$minimum)
 
-    # TODO replace with positive control value if given
     Emax_resp <- stats::optimize(obj_GCA,
                                  interval = interval,
                                  conc = C_i * 10^14,
@@ -147,7 +155,6 @@ calc_concentration_response <- function(C_invitro,
     IA.HQ.10[i]  <- sum(C_i / AC10.ij)
 
   }
-
 
   data.frame(
     "GCA.Eff" = GCA.eff, "IA.Eff" = IA.eff,

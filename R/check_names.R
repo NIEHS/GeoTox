@@ -4,6 +4,7 @@
 #' @param names names to look for
 #'
 #' @keywords internal
+#' @noRd
 #'
 #' @return boolean, TRUE for error
 .check_names <- function(x, names) {

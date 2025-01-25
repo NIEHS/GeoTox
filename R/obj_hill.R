@@ -4,6 +4,9 @@
 #' @param log10_conc base-10 log scale concentration
 #' @param resp response
 #'
+#' @keywords internal
+#' @noRd
+#'
 #' @return value of the objective function
 obj_hill <- function(par, log10_conc, resp) {
 

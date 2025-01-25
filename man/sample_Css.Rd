@@ -2,12 +2,12 @@
 % Please edit documentation in R/sample_Css.R
 \name{sample_Css}
 \alias{sample_Css}
-\title{Sample from pre-generated C_ss data}
+\title{Sample from pre-generated \code{C_ss} data}
 \usage{
 sample_Css(simulated_css, age, obesity)
 }
 \arguments{
-\item{simulated_css}{list of pre-generated C_ss data, for details see:
+\item{simulated_css}{list of pre-generated \code{C_ss} data, for details see:
 \code{vignette("package_data", package = "GeoTox")}.}
 
 \item{age}{list or atomic vector of ages.}
@@ -15,11 +15,11 @@ sample_Css(simulated_css, age, obesity)
 \item{obesity}{list or atomic vector of obesity status.}
 }
 \value{
-list of matrices containing C_ss values. Columns are sorted to have
+list of matrices containing \code{C_ss} values. Columns are sorted to have
 consistent order across functions.
 }
 \description{
-Sample from pre-generated C_ss data
+Sample from pre-generated \code{C_ss} data
 }
 \examples{
 # Vector inputs

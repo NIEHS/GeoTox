@@ -36,14 +36,14 @@ simulate_exposure <- function(x,
                               n = 1e3) {
 
   if (!any(c("data.frame", "list") %in% class(x))) {
-    stop("x must be a data.frame or list")
+    stop("'x' must be a data.frame or list", call. = FALSE)
   }
   
   if (is.data.frame(x)) x <- list(x)
 
   if (.check_names(x, c(expos_mean, expos_sd))) {
-    stop("x data frames must contain columns named by 'expos_mean' and ",
-         "'expos_sd'")
+    stop("'x' data frames must contain columns named by 'expos_mean' and ",
+         "'expos_sd'", call. = FALSE)
   }
   
   lapply(x, function(df) {
@@ -53,7 +53,7 @@ simulate_exposure <- function(x,
       # Have consistent output order
       out <- out[, order(colnames(out)), drop = FALSE]
     } else if (nrow(df) > 1) {
-      stop("x data frames must contain a column named by 'expos_label'",
+      stop("'x' data frames must contain a column named by 'expos_label'",
            call. = FALSE)
     }
     out
@@ -69,7 +69,7 @@ simulate_exposure <- function(x,
     matrix(0, nrow = n, ncol = 0)
   } else {
     mapply(
-      function(mean, sd, n) {
+      function(mean, sd) {
         if (mean == 0) {
           rep(0, n)
         } else if (mean > 0 & is.na(sd)) {
@@ -82,7 +82,8 @@ simulate_exposure <- function(x,
       },
       mean = mean,
       sd = sd,
-      n = n
-    )
+      SIMPLIFY = FALSE
+    ) |> 
+      do.call(what = cbind)
   }
 }

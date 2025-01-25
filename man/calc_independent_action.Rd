@@ -9,7 +9,7 @@ calc_independent_action(conc, max, AC50, Emax, n = 1)
 \arguments{
 \item{conc}{concentrations in regular space}
 
-\item{max}{maximal (asymtotic) responses}
+\item{max}{maximal (asymptotic) responses}
 
 \item{AC50}{concentrations of half-maximal response}
 
@@ -27,13 +27,22 @@ concentration-response curves.
 \details{
 The concentration is computed as:
 \deqn{
-  IA = E_{max}
+  IA = E_{max} \times
   \left(
     1 - \prod\limits_{i} \left(1 - \frac{x_i}{E_{max}}\right)
   \right),
 }
 where \eqn{x_i = hill\_val(conc_i, max_i, AC50_i, n_i)} is the Hill model
 response function for each chemical.
+}
+\examples{
+n_chem <- 5
+conc <- 10^sample(-1:4, n_chem, replace = TRUE)
+max <- 80 * runif(n_chem)
+AC50 <- 10^(5 * runif(n_chem) - 1)
+Emax <- 100
+
+calc_independent_action(conc, max, AC50, Emax)
 }
 \seealso{
 \code{\link{hill_val}}

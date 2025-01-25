@@ -19,7 +19,30 @@ Calculate mixture response for GeoTox population data
 }
 \details{
 Additional parameters include \code{time}, \code{BW}, and \code{scaling} for
-\link{calc_internal_dose}, and \code{tp_b_mult} for \link{calc_concentration_response}.
+\link{calc_internal_dose}, and \code{max_mult} for \link{calc_concentration_response}.
+}
+\examples{
+# Use a subset of the package data for demonstration purposes
+set.seed(2357)
+n <- 10 # Population size
+m <- 5 # Number of regions
+idx <- if (m < 100) sample(1:100, m) else 1:100
+
+# Create GeoTox object and populate required fields
+geoTox <- GeoTox() |>
+  # Simulate populations for each region
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+                      obesity = geo_tox_data$obesity[idx, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+                      simulated_css = geo_tox_data$simulated_css,
+                      n = n) |>
+  # Estimated Hill parameters
+  set_hill_params(geo_tox_data$dose_response |>
+                    fit_hill(assay = "endp", chem = "casn") |>
+                    dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed))
+
+# Response computations can now be done
+geoTox <- geoTox |> calculate_response()
 }
 \seealso{
 \link{calc_internal_dose}, \link{calc_invitro_concentration},

@@ -9,7 +9,7 @@ hill_val(conc, max, AC50, n)
 \arguments{
 \item{conc}{concentration in regular space}
 
-\item{max}{maximal (asymtotic) response}
+\item{max}{maximal (asymptotic) response}
 
 \item{AC50}{concentration of half-maximal response}
 
@@ -27,6 +27,10 @@ This is a regular space version of
 
 The Hill model is defined as:
 \deqn{resp = \frac{max}{1 + (\frac{AC50}{conc})^{n}}}
+}
+\examples{
+hill_val(c(0.0025, 0.01, 0.03), 1, 0.01, 1)
+hill_val(c(0.05, 0.01, 0.003), 1, c(0.1, 0.01, 0.001), 2)
 }
 \seealso{
 \code{\link{hill_conc}}

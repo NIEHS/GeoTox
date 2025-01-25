@@ -4,12 +4,12 @@
 \alias{sensitivity_analysis}
 \title{Perform sensitivity analysis}
 \usage{
-sensitivity_analysis(x, tp_b_mult = list(NULL, NULL, NULL, 1.2, NULL))
+sensitivity_analysis(x, max_mult = list(NULL, NULL, NULL, 1.2, NULL))
 }
 \arguments{
 \item{x}{GeoTox object.}
 
-\item{tp_b_mult}{numeric list of length 5 for each step of the sensitivity
+\item{max_mult}{numeric list of length 5 for each step of the sensitivity
 analysis.}
 }
 \value{
@@ -24,10 +24,33 @@ function with inputs \code{age}, \code{obesity}, \code{css_params}, \code{fit_pa
 \code{C_ext}. The results will be returned as a named list and stored in the
 \code{sensitivity} field of the input GeoTox object.
 
-Values of \code{NULL} in the \code{tp_b_mult} input will use the default value stored
-in the \code{GeoTox} object (\code{x$par$resp$tp_b_mult}). When a \code{GeoTox} object is
+Values of \code{NULL} in the \code{max_mult} input will use the default value stored
+in the \code{GeoTox} object (\code{x$par$resp$max_mult}). When a \code{GeoTox} object is
 created this is initialized at \code{1.5}, but can be changed via the
 \link{calculate_response} function or directly in the object.
+}
+\examples{
+# Use a subset of the package data for demonstration purposes
+set.seed(2357)
+n <- 10 # Population size
+m <- 5 # Number of regions
+idx <- if (m < 100) sample(1:100, m) else 1:100
+
+# Create GeoTox object and populate required fields
+geoTox <- GeoTox() |>
+  # Simulate populations for each region
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+                      obesity = geo_tox_data$obesity[idx, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+                      simulated_css = geo_tox_data$simulated_css,
+                      n = n) |>
+  # Estimated Hill parameters
+  set_hill_params(geo_tox_data$dose_response |>
+                    fit_hill(assay = "endp", chem = "casn") |>
+                    dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed))
+
+# Sensitivity analysis can now be done
+geoTox <- geoTox |> sensitivity_analysis()
 }
 \seealso{
 \code{\link{compute_sensitivity}}

@@ -1,6 +1,7 @@
 test_that("bad inputs", {
   # Missing age/obesity data
   expect_error(sample_Css(age = c(), obesity = c()))
+  expect_error(sample_Css(age = NULL, obesity = NULL))
   # Age/obesity data do not match lengths
   expect_error(sample_Css(age = 1:3, obesity = c("Normal", "Obese")))
   # Age/obesity data do not match names

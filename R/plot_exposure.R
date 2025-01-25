@@ -1,6 +1,6 @@
 #' Plot exposure data.
 #'
-#' @param exposure exposure data.
+#' @param exposure list of exposure data named by region label.
 #' @param region_boundary "sf" data.frame mapping features to a "geometry"
 #' column. Used to color regions.
 #' @param group_boundary (optional) "sf" data.frame containing a "geometry"
@@ -10,6 +10,26 @@
 #'
 #' @return ggplot2 object.
 #' @export
+#' 
+#' @examples
+#' # Load package data
+#' exposure <- split(geo_tox_data$exposure, ~FIPS)
+#' region_boundary <- geo_tox_data$boundaries$county
+#' group_boundary <- geo_tox_data$boundaries$state
+#' 
+#' # Plot county exposure data
+#' # Use CASN as label to avoid long chemical names
+#' plot_exposure(exposure,
+#'               region_boundary,
+#'               chem_label = "casn",
+#'               ncol = 5)
+#'
+#' # Add state boundaries
+#' plot_exposure(exposure,
+#'               region_boundary,
+#'               group_boundary = group_boundary,
+#'               chem_label = "casn",
+#'               ncol = 5)
 plot_exposure <- function(exposure,
                           region_boundary,
                           group_boundary = NULL,
@@ -19,14 +39,27 @@ plot_exposure <- function(exposure,
   if (is.null(exposure)) {
     stop("No exposure data found.", call. = FALSE)
   }
+  if (is.null(region_boundary)) {
+    stop("No region_boundary data found.", call. = FALSE)
+  }
   
-  df <- tibble::tibble(id = names(exposure), data = exposure) |> 
+  df <- tibble::tibble("_temp_join_id_" = names(exposure), data = exposure) |> 
     tidyr::unnest(cols = "data") |> 
-    dplyr::inner_join(region_boundary |> dplyr::rename("id" = 1),
-                      by = dplyr::join_by("id"))
+    dplyr::inner_join(region_boundary |> dplyr::rename("_temp_join_id_" = 1),
+                      by = dplyr::join_by("_temp_join_id_")) |> 
+    dplyr::select(-"_temp_join_id_") |> 
+    # Fix for grid.Call error in examples due to
+    # 'mbcsToSbcs': for ​ (U+200B)
+    # Remove any zero-width space characters
+    dplyr::mutate(dplyr::across(tidyselect::any_of(chem_label),
+                                ~ stringr::str_remove_all(., "\u200b")))
   
-  ggplot2::ggplot(df, ggplot2::aes(fill = .data$norm)) +
-    ggplot2::geom_sf(ggplot2::aes(geometry = .data$geometry), color = NA) +
+  fig <- ggplot2::ggplot() +
+    ggplot2::geom_sf(
+      data = df,
+      ggplot2::aes(fill = .data$norm,
+                   geometry = .data$geometry),
+      color = NA) +
     ggplot2::facet_wrap(chem_label, ncol = ncol) +
     # Recolor subset as light grey
     ggplot2::geom_sf(
@@ -34,9 +67,18 @@ plot_exposure <- function(exposure,
       ggplot2::aes(geometry = .data$geometry),
       fill = "light grey",
       color = "light grey",
-      lwd = 0.01) +
-    # State borders
-    ggplot2::geom_sf(data = group_boundary, fill = NA, size = 0.15) +
+      lwd = 0.01)
+  
+  # State borders
+  if (!is.null(group_boundary)) {
+    fig <- fig +
+      ggplot2::geom_sf(data = group_boundary,
+                       ggplot2::aes(geometry = .data$geometry),
+                       fill = NA,
+                       size = 0.15)
+  }
+  
+  fig +
     ggplot2::scale_fill_viridis_c(
       name = "Normalized\nConcentration",
       direction = -1,

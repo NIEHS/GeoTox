@@ -2,25 +2,25 @@
 % Please edit documentation in R/get_fixed_css.R
 \name{get_fixed_css}
 \alias{get_fixed_css}
-\title{Get Fixed C_ss Data}
+\title{Get Fixed \code{C_ss} Data}
 \usage{
 get_fixed_css(simulated_css, age, obesity, C_ss)
 }
 \arguments{
-\item{simulated_css}{list of pre-generated C_ss data, for details see:
+\item{simulated_css}{list of pre-generated \code{C_ss} data, for details see:
 \code{vignette("package_data", package = "GeoTox")}.}
 
 \item{age}{list of atomic vectors containing ages.}
 
 \item{obesity}{list of atomic vectors containing obesity status.}
 
-\item{C_ss}{list of matrices containing C_ss values.}
+\item{C_ss}{list of matrices containing \code{C_ss} values.}
 }
 \value{
-list of matrices or atomic vectors containing C_ss values.
+list of matrices or atomic vectors containing \code{C_ss} values.
 }
 \description{
-Get C_ss values for use in \link{sensitivity_analysis} and \link{compute_sensitivity}.
+Get \code{C_ss} values for use in \link{sensitivity_analysis} and \link{compute_sensitivity}.
 }
 \examples{
 # Define inputs

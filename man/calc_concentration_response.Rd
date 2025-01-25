@@ -8,7 +8,7 @@ IA, GCA, or Hazard Quotient}
 calc_concentration_response(
   C_invitro,
   hill_params,
-  tp_b_mult = 1.5,
+  max_mult = 1.5,
   fixed = FALSE
 )
 }
@@ -17,15 +17,30 @@ calc_concentration_response(
 
 \item{hill_params}{output from \code{fit_hill()}}
 
-\item{tp_b_mult}{upper bound multiplier for tp rtruncnorm}
+\item{max_mult}{upper bound multiplier for max response}
 
 \item{fixed}{if TRUE, sd = 0}
 }
 \value{
-data frame
+list of data frames
 }
 \description{
 Calculate the combined response of multiple chemicals. It calculates the
 generalized concentration addition response, the independent action
 response, and a hazard quotient
+}
+\examples{
+C_invitro <- list(
+  matrix(1:8 / 1e3, ncol = 2, dimnames = list(NULL, c("c1", "c2"))),
+  matrix(9:16 / 1e3, ncol = 2, dimnames = list(NULL, c("c1", "c2")))
+)
+hill_params <- fit_hill(
+  data.frame(chem = rep(c("c1", "c2"), each = 3),
+             logc = c(-1, 0, 1, 0, 1, 2),
+             resp = c(10, 5, 0, 4, 2, 0) / 10),
+  chem = "chem"
+)
+
+calc_concentration_response(C_invitro, hill_params)
+calc_concentration_response(C_invitro, hill_params, fixed = TRUE)
 }

@@ -12,12 +12,31 @@ calc_invitro_concentration(D_int, C_ss = NULL)
 \item{C_ss}{steady-state plasma concentration in \eqn{\frac{\mu M}{mg / kg}}}
 }
 \value{
-\emph{in vitro} equivalent plasma concentration in \eqn{\mu M}
+list of matrices containing concentrations in \eqn{\mu M}
 }
 \description{
-TODO A short description...
+Estimate the \emph{in vitro} equivalent plasma concentration given internal
+chemical dose and steady-state plasma concentration.
 }
 \details{
-TODO Additional details...
-\deqn{C_{plasma} = C_{ss} \,\times\, D_{int}}
+Input \code{D_int} must be a matrix or list of matrices. Input \code{C_ss} must be a
+numeric atomic vector or matrix, or a list of those types.
+
+The \emph{in vitro} equivalent plasma concentration is calculated as:
+\deqn{C_{plasma} = C_{ss} \times D_{int}}
+}
+\examples{
+# Single population
+D_int <- matrix(1:15, ncol = 3)
+C_ss <- 1:5
+calc_invitro_concentration(D_int, C_ss)
+
+# Multiple populations
+D_int <- list(
+  "a" = matrix(1:15 / 10, ncol = 3),
+  "b" = matrix(1:8, ncol = 2)
+)
+C_ss <- list(1:5, 1:4 / 2)
+calc_invitro_concentration(D_int, C_ss)
+
 }

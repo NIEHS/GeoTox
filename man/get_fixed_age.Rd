@@ -2,21 +2,21 @@
 % Please edit documentation in R/get_fixed_age.R
 \name{get_fixed_age}
 \alias{get_fixed_age}
-\title{Get C_ss Data for Fixed Age}
+\title{Get \code{C_ss} Data for Fixed Age}
 \usage{
 get_fixed_age(simulated_css, age)
 }
 \arguments{
-\item{simulated_css}{list of pre-generated C_ss data, for details see:
+\item{simulated_css}{list of pre-generated \code{C_ss} data, for details see:
 \code{vignette("package_data", package = "GeoTox")}.}
 
 \item{age}{list of atomic vectors containing ages.}
 }
 \value{
-list of matrices containing median C_ss values.
+list of matrices containing median \code{C_ss} values.
 }
 \description{
-Get C_ss Data for Fixed Age
+Get \code{C_ss} Data for Fixed Age
 }
 \examples{
 get_fixed_age(simulated_css = geo_tox_data$simulated_css,

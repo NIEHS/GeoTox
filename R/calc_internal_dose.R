@@ -11,41 +11,43 @@
 #' @param scaling scaling factor encompassing any required unit adjustments
 #'
 #' @details
-#' TODO Additional details...
-#' \deqn{D_{int} = \frac{C_{ext} \,\times\, IR \,\times\, time}{BW}}
+#' Input `C_ext` must be a matrix or list of matrices. Input `IR` must be an
+#' atomic vector or list of atomic vectors. The `time`, `BW` and `scaling`
+#' arguments are scalars.
+#' 
+#' The internal dose is calculated as:
+#' \deqn{D_{int} = \frac{C_{ext} \times IR \times time}{BW} \times scaling}
 #'
-#' @return internal chemical dose in \eqn{\frac{mg}{kg}}
+#' @return list of matrices containing internal chemical doses in
+#' \eqn{\frac{mg}{kg}}
 #'
 #' @examples
-#' n_chem <- 3
-#' n_sample <- 5
-#'
 #' # Single population
-#' C_ext <- matrix(runif(n_sample * n_chem), ncol = n_chem)
-#' IR <- runif(n_sample)
+#' C_ext <- matrix(1:15, ncol = 3)
+#' IR <- 1:5
 #' calc_internal_dose(C_ext, IR)
 #'
 #' # Multiple populations
 #' C_ext <- list(
-#'   "a" = matrix(runif(n_sample * n_chem), ncol = n_chem),
-#'   "b" = matrix(runif(n_sample * n_chem), ncol = n_chem)
+#'   "a" = matrix(1:15 / 10, ncol = 3),
+#'   "b" = matrix(1:8, ncol = 2)
 #' )
-#' IR <- list(runif(n_sample), runif(n_sample))
+#' IR <- list(1:5, 1:4 / 2)
 #' calc_internal_dose(C_ext, IR)
 #'
 #' @export
 calc_internal_dose <- function(C_ext, IR, time = 1, BW = 1, scaling = 1) {
-  # TODO How to handle inputs with different units?
-  # e.g. simulated inhalation rate is in m^3/(day * kg), so BW isn't needed
-  # TODO paper states t = 365 in section 2.3, also states that C_ss achieved
-  # in 1 day and repeated exposure accumulates additively. Computation done
-  # with t = 1, is that correct?
+  
+  C_ext <- .check_types(C_ext,
+                        "matrix",
+                        "`C_ext` must be a matrix or a list of matrices.")
+  
+  IR <- .check_types(IR,
+                     c("numeric", "integer"),
+                     paste("`IR` must be a numeric atomic vector or a list of",
+                           "atomic vectors."))
 
-  if ("matrix" %in% class(C_ext)) {
-    .calc_internal_dose(C_ext, IR, time, BW, scaling)
-  } else {
-    mapply(.calc_internal_dose, C_ext, IR, time, BW, scaling, SIMPLIFY = FALSE)
-  }
+  mapply(.calc_internal_dose, C_ext, IR, time, BW, scaling, SIMPLIFY = FALSE)
 }
 
 .calc_internal_dose <- function(C_ext, IR, time, BW, scaling) {
