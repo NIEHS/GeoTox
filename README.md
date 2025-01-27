@@ -21,8 +21,9 @@ perturbing molecular targets involved in adverse human health outcomes
 based on exposure to spatially-referenced stressor mixtures via the
 GeoTox framework - otherwise known as source-to-outcome-continuum
 modeling. The package, methods, and case-studies are described in
-[Messier, Reif, and Marvel, 2024,
-medRxiv-Preprint](https://www.medrxiv.org/content/10.1101/2024.09.23.24314096).
+[Messier, Reif, and Marvel, 2025, Human
+Genomics](https://doi.org/10.1186/s40246-024-00711-8).
+
 
 The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
