@@ -24,7 +24,7 @@ test_that("populate fields - IR_params", {
   geoTox <- GeoTox()
   IR_params <- data.frame("age" = c(20, 0, 50),
                           "mean" = c(0.3, 0.5, 0.2),
-                          "sd" = 0)
+                          "sd" = c(0.1, 0.2, 0.05))
   
   expect_null(geoTox$IR)
   
@@ -32,6 +32,18 @@ test_that("populate fields - IR_params", {
   geoTox <- geoTox |> simulate_population(IR_params = IR_params)
   
   expect_false(is.null(geoTox$IR))
+  
+  # IR should not be overwritten
+  geoTox2 <- geoTox |> simulate_population()
+  expect_true(identical(geoTox$IR, geoTox2$IR))
+  
+  # IR should be overwritten
+  IR_params2 <- data.frame("age" = c(20, 0, 50),
+                           "mean" = c(5, 1, 10),
+                           "sd" = 0)
+  geoTox2 <- geoTox |> simulate_population(IR_params = IR_params2)
+  expect_false(identical(geoTox$IR, geoTox2$IR))
+  
 })
 
 test_that("populate fields - obesity", {

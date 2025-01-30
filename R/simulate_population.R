@@ -72,13 +72,24 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
   }
   
   # Inhalation rate
+  # Stop if IR_params is provided but no age data exists
+  if (!is.null(dots$IR_params) & is.null(x$age)) {
+    stop("Age data is required to simulate inhalation rate", call. = FALSE)
+  }
+  simulate_IR <- FALSE
   if (!is.null(age) | !is.null(dots$IR_params)) {
-    if (is.null(x$age)) {
-      stop("Age data is required to simulate inhalation rate", call. = FALSE)
-    }
+    # If age was just simulated or IR_params were updated, i.e. provided as
+    # inputs, then simulate IR even if it exists
+    simulate_IR <- TRUE
+  } else if (!is.null(x$age) & is.null(x$IR)) {
+    # Otherwise, if age already exists, e.g. via set_population(), then
+    # simulate IR only if it doesn't exist
+    simulate_IR <- TRUE
+  }
+  if (simulate_IR) {
     x$IR <- simulate_inhalation_rate(x$age, IR_params = x$par$IR_params)
   }
-  
+
   # Obesity status
   if (!is.null(obesity)) {
     x$obesity <- simulate_obesity(x          = obesity,
