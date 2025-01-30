@@ -1,12 +1,22 @@
 test_that("bad inputs", {
   # Input should be a data frame
-  expect_error(simulate_exposure(c()))
+  expect_error(simulate_exposure(c()),
+               "`x` must be a data frame or list of data frames")
   # Need columns named by "expos_mean" and "expos_sd"
-  expect_error(simulate_exposure(data.frame(x = 0, y = 0)))
+  expect_error(simulate_exposure(data.frame(x = 0, y = 0)),
+               paste0("`x` data frames must contain columns named by ",
+                      "`expos_mean` and `expos_sd`"))
   expect_error(simulate_exposure(list(data.frame(x = 0, y = 0),
-                                      data.frame(mean = 0, sd = 0))))
+                                      data.frame(mean = 0, sd = 0))),
+               paste0("`x` data frames must contain columns named by ",
+                      "`expos_mean` and `expos_sd`"))
   # Need column named by "expos_label" if nrows > 1
-  expect_error(simulate_exposure(data.frame(mean = c(0, 0), sd = c(0, 0))))
+  expect_error(simulate_exposure(data.frame(mean = c(0, 0), sd = c(0, 0))),
+               "'x' data frames must contain a column named by 'expos_label'")
+  # Length mismatch
+  expect_error(simulate_exposure(data.frame(mean = 10, sd = 1), n = c(5, 10)),
+               paste0("`n` must be a single value or a vector with values for ",
+                      "each data frame in `x`"))
 })
 
 test_that("single row", {
@@ -33,7 +43,7 @@ test_that("single data frame", {
   expect_equal(colnames(out[[1]]), letters[1:3])
   
 })
-  
+
 test_that("two data frames", {
   
   out <- simulate_exposure(
@@ -123,5 +133,26 @@ test_that("internal special cases", {
   expect_type(out, "double")
   expect_equal(dim(out), c(1, 1))
   expect_true(all(out == 1))
+  
+})
+
+test_that("variable n", {
+  
+  out <- simulate_exposure(
+    list(loc1 = data.frame(mean = 1:3,
+                           sd = (1:3) / 10,
+                           casn = letters[1:3]),
+         loc2 = data.frame(mean = 4:7,
+                           sd = 0.1,
+                           casn = letters[c(4, 7, 6, 5)])),
+    n = c(5, 6))
+  
+  expect_type(out, "list")
+  expect_length(out, 2)
+  expect_equal(names(out), c("loc1", "loc2"))
+  expect_equal(dim(out[[1]]), c(5, 3))
+  expect_equal(dim(out[[2]]), c(6, 4))
+  expect_equal(colnames(out[[1]]), letters[1:3])
+  expect_equal(colnames(out[[2]]), letters[4:7])
   
 })

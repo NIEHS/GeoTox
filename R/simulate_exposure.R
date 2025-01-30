@@ -5,8 +5,14 @@
 #' @param expos_sd column name of standard deviations.
 #' @param expos_label column name of labeling term, required if `x` has more
 #' than one row.
-#' @param n simulated sample size.
+#' @param n simulated sample size(s).
 #'
+#' @details
+#' The sample size can be either a single value or a vector the same length as
+#' the number of data frames in x. If a single value is provided, the same
+#' sample size is used for all data frames. If a vector is provided, each
+#' element corresponds to the sample size for each data frame in x.
+#' 
 #' @return list of matrices containing inhalation rates. Matrix columns are
 #' named using the values in the `expos_label` column for more than one data
 #' frame row. Columns are sorted to have consistent order across functions.
@@ -19,6 +25,8 @@
 #' # List of 2 data frames
 #' y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
 #' simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
+#' # different sample sizes
+#' simulate_exposure(list(loc1 = x, loc2 = y), n = c(5, 3))
 #' 
 #' # Input has custom column names
 #' z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chnm = letters[1:3])
@@ -35,18 +43,21 @@ simulate_exposure <- function(x,
                               expos_label = "casn",
                               n = 1e3) {
 
-  if (!any(c("data.frame", "list") %in% class(x))) {
-    stop("'x' must be a data.frame or list", call. = FALSE)
-  }
+  x <- .check_types(x,
+                    "data.frame",
+                    "`x` must be a data frame or list of data frames")
   
-  if (is.data.frame(x)) x <- list(x)
-
   if (.check_names(x, c(expos_mean, expos_sd))) {
-    stop("'x' data frames must contain columns named by 'expos_mean' and ",
-         "'expos_sd'", call. = FALSE)
+    stop("`x` data frames must contain columns named by ",
+         "`expos_mean` and `expos_sd`", call. = FALSE)
   }
   
-  lapply(x, function(df) {
+  if (!(length(n) == 1 | length(n) == length(x))) {
+    stop("`n` must be a single value or a vector with values for ",
+         "each data frame in `x`", call. = FALSE)
+  }
+  
+  purrr::pmap(list(x, n), function(df, n) {
     out <- .simulate_exposure(df, expos_mean, expos_sd, n)
     if (expos_label %in% names(df)) {
       colnames(out) <- df[[expos_label]]

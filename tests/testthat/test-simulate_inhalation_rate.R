@@ -1,14 +1,17 @@
 test_that("NAs", {
   expect_equal(simulate_inhalation_rate(c(-1, 101)), list(c(NA, NA)))
-  expect_equal(simulate_inhalation_rate(c(1, 2, "a")), list(c(NA, NA, NA)))
 })
 
 test_that("bad inputs", {
-  expect_error(simulate_inhalation_rate(c()))
-  expect_error(simulate_inhalation_rate(0:5, IR_params = 0))
+  expect_error(simulate_inhalation_rate(c()),
+               "`x` must be a numeric vector or list of numeric vectors")
+  expect_error(simulate_inhalation_rate(c(1, 2, "a")),
+               "`x` must be a numeric vector or list of numeric vectors")
+  expect_error(simulate_inhalation_rate(0:5, IR_params = 0),
+               "`IR_params` must contain columns `age`, `mean` and `sd`")
 })
 
-test_that("single atomic vector", {
+test_that("single numeric vector", {
   
   x <- c(0, 1, 2, 5, 7, 11, 23, 30, 40, 65)
   
@@ -20,7 +23,7 @@ test_that("single atomic vector", {
 
 })
 
-test_that("two atomic vectors", {
+test_that("two numeric vectors", {
   
   x <- c(0, 1, 2, 5, 7, 11, 23, 30, 40, 65)
   y <- seq(0, 80, by = 10)

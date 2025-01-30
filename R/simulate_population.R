@@ -13,7 +13,7 @@
 #' @param ... additional arguments passed to other functions. See details.
 #'
 #' @details
-#' Additional parameters include `n` for sample size,
+#' Additional parameters include `n` for sample size(s),
 #' `IR_params` for [simulate_inhalation_rate],
 #' `obes_prev`, `obes_sd`, and `obes_label` for [simulate_obesity],
 #' and `expos_mean`, `expos_sd`, and `expos_label` for [simulate_exposure].
@@ -29,6 +29,16 @@
 #' idx <- if (m < 100) sample(1:100, m) else 1:100
 #'
 #' # Create GeoTox object
+#' geoTox <- GeoTox() |>
+#'   # Simulate populations for each region
+#'   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+#'                       obesity = geo_tox_data$obesity[idx, ],
+#'                       exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+#'                       simulated_css = geo_tox_data$simulated_css,
+#'                       n = n)
+#'                       
+#' # Variable population sizes
+#' n <- 6:10
 #' geoTox <- GeoTox() |>
 #'   # Simulate populations for each region
 #'   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
