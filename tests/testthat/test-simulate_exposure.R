@@ -12,7 +12,7 @@ test_that("bad inputs", {
                       "`expos_mean` and `expos_sd`"))
   # Need column named by "expos_label" if nrows > 1
   expect_error(simulate_exposure(data.frame(mean = c(0, 0), sd = c(0, 0))),
-               "'x' data frames must contain a column named by 'expos_label'")
+               "'x' data frames must contain a column named by `expos_label`")
   # Length mismatch
   expect_error(simulate_exposure(data.frame(mean = 10, sd = 1), n = c(5, 10)),
                paste0("`n` must be a single value or a vector with values for ",

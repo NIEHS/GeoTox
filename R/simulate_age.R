@@ -41,7 +41,7 @@ simulate_age <- function(x, n = 1e3) {
                     "`x` must be a data frame or list of data frames")
 
   if (.check_names(x, c("AGEGRP", "TOT_POP"))) {
-    stop("`x` data frames must contain columns `AGEGRP` and `TOT_POP`")
+    stop("`x` data frames must contain columns 'AGEGRP' and 'TOT_POP'")
   }
   
   if (any(unlist(lapply(x, \(y) nrow(y) != 19)))) {

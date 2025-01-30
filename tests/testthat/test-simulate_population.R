@@ -1,6 +1,7 @@
 test_that("errors", {
   # If IR_params is input, then age must be input or already exist
-  expect_error(GeoTox() |> simulate_population(IR_params = "test"))
+  expect_error(GeoTox() |> simulate_population(IR_params = "test"),
+               "Age data is required to simulate inhalation rate")
 })
 
 test_that("populate fields - age", {
@@ -98,9 +99,9 @@ test_that("clear downstream - age", {
   geoTox$css_sensitivity <- "test"
   
   # Re-simulate age
-  expect_warning({
-    geoTox <- geoTox |> simulate_population(age = age, n = 5)
-  })
+  expect_warning(geoTox <- geoTox |> 
+                   simulate_population(age = age, n = 5),
+                 "Clearing `C_ss` and `css_sensitivity` fields")
   expect_null(geoTox$C_ss)
   expect_null(geoTox$css_sensitivity)
   
@@ -119,9 +120,9 @@ test_that("clear downstream - obesity", {
   geoTox$css_sensitivity <- "test"
   
   # Re-simulate obesity
-  expect_warning({
-    geoTox <- geoTox |> simulate_population(obesity = obesity, n = 5)
-  })
+  expect_warning(geoTox <- geoTox |> 
+                   simulate_population(obesity = obesity, n = 5),
+                 "Clearing `C_ss` and `css_sensitivity` fields")
   expect_null(geoTox$C_ss)
   expect_null(geoTox$css_sensitivity)
   

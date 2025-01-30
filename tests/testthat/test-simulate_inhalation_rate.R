@@ -8,7 +8,7 @@ test_that("bad inputs", {
   expect_error(simulate_inhalation_rate(c(1, 2, "a")),
                "`x` must be a numeric vector or list of numeric vectors")
   expect_error(simulate_inhalation_rate(0:5, IR_params = 0),
-               "`IR_params` must contain columns `age`, `mean` and `sd`")
+               "`IR_params` must contain columns 'age', 'mean' and 'sd'")
 })
 
 test_that("single numeric vector", {

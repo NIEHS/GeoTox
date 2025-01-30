@@ -64,7 +64,7 @@ simulate_exposure <- function(x,
       # Have consistent output order
       out <- out[, order(colnames(out)), drop = FALSE]
     } else if (nrow(df) > 1) {
-      stop("'x' data frames must contain a column named by 'expos_label'",
+      stop("'x' data frames must contain a column named by `expos_label`",
            call. = FALSE)
     }
     out

@@ -60,7 +60,7 @@ simulate_inhalation_rate <- function(x, IR_params = NULL) {
     IR_params$sd   = rowMeans(IR_params[, c("male.sd", "female.sd")])
   } else {
     if (!all(c("age", "mean", "sd") %in% names(IR_params))) {
-      stop("`IR_params` must contain columns `age`, `mean` and `sd`")
+      stop("`IR_params` must contain columns 'age', 'mean' and 'sd'")
     }
   }
   

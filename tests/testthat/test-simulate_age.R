@@ -4,7 +4,7 @@ test_that("bad inputs", {
                "`x` must be a data frame or list of data frames")
   # Expected column names
   expect_error(simulate_age(data.frame(x = 0, y = 0)),
-               "`x` data frames must contain columns `AGEGRP` and `TOT_POP`")
+               "`x` data frames must contain columns 'AGEGRP' and 'TOT_POP'")
   # Too few rows
   expect_error(simulate_age(data.frame(AGEGRP = 0, TOT_POP = 0)),
                "`x` data frames must contain 19 rows")
