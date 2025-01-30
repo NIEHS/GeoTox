@@ -41,11 +41,11 @@
 #' # Plot exposure data
 #' plot(geoTox, type = "exposure", ncol = 5)
 #' # Plot response data
-#' plot(geoTox)
 #' plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 #' # Plot sensitivity data
-#' plot(geoTox, type = "sensitivity")
-#' plot(geoTox, type = "sensitivity", assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+#' plot(geoTox,
+#'      type = "sensitivity",
+#'      assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 GeoTox <- function() {
   structure(
     list(
@@ -70,78 +70,104 @@ GeoTox <- function() {
 #' @export
 print.GeoTox <- function(x, ...) {
   
-  names_simulated <- c("age", "IR", "obesity", "C_ext", "C_ss")
-  names_computed <- c("D_int", "C_invitro", "resp", "sensitivity")
-  names_other <- setdiff(names(x),
-                         c(names_simulated, names_computed))
-  
-  get_info <- function(names) {
-    info <- lapply(names, \(name) {
-      class <- dim <- ""
-      if (is.null(x[[name]])) {
-        return(data.frame(Name = name, Class = "", Dim = ""))
-      }
-      is_list <- inherits(x[[name]], "list")
-      if (is_list && length(x[[name]]) > 0) {
-        item <- x[[name]][[1]]
-      } else if (!is_list) {
-        item <- x[[name]]
-      } else {
-        item <- NULL
-      }
-      class <- class(item)
-      if (any(c("matrix", "data.frame") %in% class)) {
-        dim <- paste(dim(item), collapse = " x ")
-      } else {
-        dim <- length(item)
-      }
-      if (is_list) {
-        dim <- paste0(length(x[[name]]), " x (", dim, ")")
-        class <- paste0("list(", class[[1]], ")")
-      } else {
-        class <- paste(class, collapse = ", ")
-      }
-      data.frame(Name = name, Class = class, Dim = dim)
-    })
-    do.call(rbind, info)
-  }
-  
-  info_simulated <- get_info(names_simulated)
-  info_simulated <- info_simulated[info_simulated$Class != "", , drop = FALSE]
-  info_computed <- get_info(names_computed)
-  info_computed <- info_computed[info_computed$Class != "", , drop = FALSE]
-  
-  cat("GeoTox object\n")
+  # Get n_assay and n_chem from GeoTox()$hill_params
   if (is.null(x$hill_params)) {
-    n_assays <- 0
-    n_chems <- 0
+    n_assay <- 0
+    n_chem <- 0
   } else {
     if ("assay" %in% names(x$hill_params)) {
-      n_assays <- length(unique(x$hill_params$assay))
+      n_assay <- length(unique(x$hill_params$assay))
     } else {
-      n_assays <- 1
+      n_assay <- 1
     }
     if ("chem" %in% names(x$hill_params)) {
-      n_chems <- length(unique(x$hill_params$chem))
+      n_chem <- length(unique(x$hill_params$chem))
     } else {
-      n_chems <- 1
+      n_chem <- 1
     }
   }
-  cat("Assays: ", n_assays, "\n", sep = "")
-  cat("Chemicals: ", n_chems, "\n", sep = "")
-  if (nrow(info_simulated) > 0) {
-    n_regions <- length(x[[info_simulated$Name[1]]])
-  } else if (nrow(info_computed) > 0) {
-    n_regions <- length(x[[info_computed$Name[1]]])
-  } else {
-    n_regions <- 0
+  
+  # Categorize different GeoTox() fields
+  names_data_vec      <- c("age", "IR", "obesity")
+  names_data_mat      <- c("C_ext", "C_ss")
+  names_computed_mat  <- c("D_int", "C_invitro")
+  names_computed_df   <- c("resp")
+  names_computed_list <- c("sensitivity")
+  names_other <- setdiff(names(x),
+                         c(names_data_vec, names_data_mat,
+                           names_computed_mat, names_computed_df,
+                           names_computed_list))
+
+  # Functions to get size info for each type of field
+  # m = number of regions
+  # n = population size
+  get_info_vec <- function(name) {
+    size <- ifelse(is.null(x[[name]]), "", "m * (n)")
+    data.frame(Name = name, Size = size)
   }
-  cat("Regions: ", n_regions, "\n", sep = "")
-  cat("Population: ", x$par$n, "\n", sep = "")
+  get_info_mat <- function(name) {
+    size <- ""
+    if (!is.null(x[[name]])) {
+      dim <- dim(x[[name]][[1]])
+      size <- paste0("m * (n x ", dim[2], ")")
+    }
+    data.frame(Name = name, Size = size)
+  }
+  get_info_df <- function(name) {
+    size <- ""
+    if (!is.null(x[[name]])) {
+      dim <- dim(x[[name]][[1]])
+      size <- paste0("m * (", n_assay, " * n x ", dim[2], ")")
+    }
+    data.frame(Name = name, Size = size)
+  }
+  get_info_list <- function(name) {
+    size <- ""
+    if (!is.null(x[[name]])) {
+      n_list <- length(x[[name]])
+      dim <- dim(x[[name]][[1]][[1]])
+      size <- paste0(n_list, " * (m * (", n_assay, " * n x ", dim[2], "))")
+    }
+    data.frame(Name = name, Size = size)
+  }
+  
+  # Get size info for each type of field
+  info_data <- dplyr::bind_rows(
+    purrr::map(names_data_vec, \(name) get_info_vec(name)),
+    purrr::map(names_data_mat, \(name) get_info_mat(name))) |> 
+    dplyr::filter(Size != "")
+  
+  info_computed <- dplyr::bind_rows(
+    purrr::map(names_computed_mat,  \(name) get_info_mat(name)),
+    purrr::map(names_computed_df,   \(name) get_info_df(name)),
+    purrr::map(names_computed_list, \(name) get_info_list(name))) |> 
+    dplyr::filter(Size != "")
+  
+  # Get population size from GeoTox()$par$n
+  if (is.null(x$par$n)) {
+    n_pop <- 0
+  } else if (length(unique(x$par$n)) == 1) {
+    n_pop <- x$par$n[[1]]
+  } else {
+    n_pop <- paste0("[", paste(range(x$par$n), collapse = ", "), "]")
+  }
+  
+  # Get number of regions from potential data fields
+  n_region <- purrr::map_int(c(names_data_vec, names_data_mat,
+                               names_computed_mat, names_computed_df),
+                             \(name) length(x[[name]])) |> 
+    max()
+  
+  # Output info
+  cat("GeoTox object\n")
+  cat("Assays: ", n_assay, "\n", sep = "")
+  cat("Chemicals: ", n_chem, "\n", sep = "")
+  cat("Regions: m = ", n_region, "\n", sep = "")
+  cat("Population: n = ", n_pop, "\n", sep = "")
   cat("Data Fields:")
-  if (nrow(info_simulated) > 0) {
+  if (nrow(info_data) > 0) {
     cat("\n")
-    print(info_simulated, row.names = FALSE, print.gap = 2)
+    print(info_data, row.names = FALSE, print.gap = 2)
   } else {
     cat(" None\n")
   }
