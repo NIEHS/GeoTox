@@ -57,11 +57,11 @@ plot(geoTox, type = "hill")
 # Plot exposure data
 plot(geoTox, type = "exposure", ncol = 5)
 # Plot response data
-plot(geoTox)
 plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 # Plot sensitivity data
-plot(geoTox, type = "sensitivity")
-plot(geoTox, type = "sensitivity", assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+plot(geoTox,
+     type = "sensitivity",
+     assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 }
 \seealso{
 \link{plot_resp}, \link{plot_hill}, \link{plot_exposure}, \link{plot_sensitivity}

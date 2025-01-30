@@ -22,7 +22,7 @@ simulate_obesity(
 \item{obes_label}{column name of labeling term, required if \code{x} has more than
 one row.}
 
-\item{n}{simulated sample size.}
+\item{n}{simulated sample size(s).}
 }
 \value{
 List of arrays containing simulated obesity status.
@@ -30,12 +30,20 @@ List of arrays containing simulated obesity status.
 \description{
 Simulate obesity status
 }
+\details{
+The sample size can be either a single value or a vector the same length as
+the number of rows in x. If a single value is provided, the same
+sample size is used for all data frames. If a vector is provided, each
+element corresponds to the sample size for each row in x.
+}
 \examples{
 # Input has default column names
 df <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
                  OBESITY_SD = c(5, 5, 5),
                  FIPS = letters[1:3])
 simulate_obesity(df, n = 5)
+# different sample sizes
+simulate_obesity(df, n = 5:3)
 
 # Input has custom column names
 df <- data.frame(prev = c(20, 50, 80),

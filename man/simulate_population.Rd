@@ -35,7 +35,7 @@ The same object with simulated fields added.
 Simulate population data for given input fields
 }
 \details{
-Additional parameters include \code{n} for sample size,
+Additional parameters include \code{n} for sample size(s),
 \code{IR_params} for \link{simulate_inhalation_rate},
 \code{obes_prev}, \code{obes_sd}, and \code{obes_label} for \link{simulate_obesity},
 and \code{expos_mean}, \code{expos_sd}, and \code{expos_label} for \link{simulate_exposure}.
@@ -48,6 +48,16 @@ m <- 5 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
 
 # Create GeoTox object
+geoTox <- GeoTox() |>
+  # Simulate populations for each region
+  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+                      obesity = geo_tox_data$obesity[idx, ],
+                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+                      simulated_css = geo_tox_data$simulated_css,
+                      n = n)
+                      
+# Variable population sizes
+n <- 6:10
 geoTox <- GeoTox() |>
   # Simulate populations for each region
   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],

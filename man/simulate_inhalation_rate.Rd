@@ -7,13 +7,13 @@
 simulate_inhalation_rate(x, IR_params = NULL)
 }
 \arguments{
-\item{x}{atomic vector or list of atomic vectors containing ages.}
+\item{x}{numeric vector or list of numeric vectors containing ages.}
 
 \item{IR_params}{(optional) data frame with columns "age", "mean" and "sd".
 See details for more information.}
 }
 \value{
-List of atomic vectors containing inhalation rates.
+List of numeric vectors containing inhalation rates.
 }
 \description{
 Simulate inhalation rates
@@ -26,11 +26,11 @@ of EPA's 2011 Exposure Factors Handbook using the mean of male and female
 values.
 }
 \examples{
-# Single atomic vector
+# Single numeric vector
 ages <- sample(1:100, 6, replace = TRUE)
 simulate_inhalation_rate(ages)
 
-# List of atomic vectors
+# List of numeric vectors
 ages <- list(
   sample(1:100, 5, replace = TRUE),
   sample(1:100, 3, replace = TRUE)
