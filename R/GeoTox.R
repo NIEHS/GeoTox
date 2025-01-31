@@ -135,13 +135,13 @@ print.GeoTox <- function(x, ...) {
   info_data <- dplyr::bind_rows(
     purrr::map(names_data_vec, \(name) get_info_vec(name)),
     purrr::map(names_data_mat, \(name) get_info_mat(name))) |> 
-    dplyr::filter(Size != "")
+    dplyr::filter(.data$Size != "")
   
   info_computed <- dplyr::bind_rows(
     purrr::map(names_computed_mat,  \(name) get_info_mat(name)),
     purrr::map(names_computed_df,   \(name) get_info_df(name)),
     purrr::map(names_computed_list, \(name) get_info_list(name))) |> 
-    dplyr::filter(Size != "")
+    dplyr::filter(.data$Size != "")
   
   # Get population size from GeoTox()$par$n
   if (is.null(x$par$n)) {
