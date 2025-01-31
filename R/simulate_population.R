@@ -13,7 +13,7 @@
 #' @param ... additional arguments passed to other functions. See details.
 #'
 #' @details
-#' Additional parameters include `n` for sample size,
+#' Additional parameters include `n` for sample size(s),
 #' `IR_params` for [simulate_inhalation_rate],
 #' `obes_prev`, `obes_sd`, and `obes_label` for [simulate_obesity],
 #' and `expos_mean`, `expos_sd`, and `expos_label` for [simulate_exposure].
@@ -29,6 +29,16 @@
 #' idx <- if (m < 100) sample(1:100, m) else 1:100
 #'
 #' # Create GeoTox object
+#' geoTox <- GeoTox() |>
+#'   # Simulate populations for each region
+#'   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
+#'                       obesity = geo_tox_data$obesity[idx, ],
+#'                       exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
+#'                       simulated_css = geo_tox_data$simulated_css,
+#'                       n = n)
+#'                       
+#' # Variable population sizes
+#' n <- 6:10
 #' geoTox <- GeoTox() |>
 #'   # Simulate populations for each region
 #'   simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
@@ -55,20 +65,31 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
     x$age <- simulate_age(age, n = x$par$n)
     # Clear downstream fields
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
-      warning("Clearing 'C_ss' and 'css_sensitivity' fields", call. = FALSE)
+      warning("Clearing `C_ss` and `css_sensitivity` fields", call. = FALSE)
       x$C_ss <- NULL
       x$css_sensitivity <- NULL
     }
   }
   
   # Inhalation rate
+  # Stop if IR_params is provided but no age data exists
+  if (!is.null(dots$IR_params) & is.null(x$age)) {
+    stop("Age data is required to simulate inhalation rate", call. = FALSE)
+  }
+  simulate_IR <- FALSE
   if (!is.null(age) | !is.null(dots$IR_params)) {
-    if (is.null(x$age)) {
-      stop("Age data is required to simulate inhalation rate", call. = FALSE)
-    }
+    # If age was just simulated or IR_params were updated, i.e. provided as
+    # inputs, then simulate IR even if it exists
+    simulate_IR <- TRUE
+  } else if (!is.null(x$age) & is.null(x$IR)) {
+    # Otherwise, if age already exists, e.g. via set_population(), then
+    # simulate IR only if it doesn't exist
+    simulate_IR <- TRUE
+  }
+  if (simulate_IR) {
     x$IR <- simulate_inhalation_rate(x$age, IR_params = x$par$IR_params)
   }
-  
+
   # Obesity status
   if (!is.null(obesity)) {
     x$obesity <- simulate_obesity(x          = obesity,
@@ -78,7 +99,7 @@ simulate_population <- function(x, age = NULL, obesity = NULL, exposure = NULL,
                                   n          = x$par$n)
     # Clear downstream fields
     if (!is.null(x$C_ss) & is.null(simulated_css)) {
-      warning("Clearing 'C_ss' and 'css_sensitivity' fields", call. = FALSE)
+      warning("Clearing `C_ss` and `css_sensitivity` fields", call. = FALSE)
       x$C_ss <- NULL
       x$css_sensitivity <- NULL
     }

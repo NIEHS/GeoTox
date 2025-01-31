@@ -20,6 +20,7 @@ reference:
   - sensitivity_analysis
   - set_boundaries
   - set_hill_params
+  - set_population
   - simulate_population
 - subtitle: Simulate
   desc: Functions that perform Monte Carlo simulation

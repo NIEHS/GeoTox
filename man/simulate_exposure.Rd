@@ -22,7 +22,7 @@ simulate_exposure(
 \item{expos_label}{column name of labeling term, required if \code{x} has more
 than one row.}
 
-\item{n}{simulated sample size.}
+\item{n}{simulated sample size(s).}
 }
 \value{
 list of matrices containing inhalation rates. Matrix columns are
@@ -32,6 +32,12 @@ frame row. Columns are sorted to have consistent order across functions.
 \description{
 Simulate external exposure
 }
+\details{
+The sample size can be either a single value or a vector the same length as
+the number of data frames in x. If a single value is provided, the same
+sample size is used for all data frames. If a vector is provided, each
+element corresponds to the sample size for each data frame in x.
+}
 \examples{
 # Single data frame
 x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
@@ -40,6 +46,8 @@ simulate_exposure(x, n = 5)
 # List of 2 data frames
 y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
 simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
+# different sample sizes
+simulate_exposure(list(loc1 = x, loc2 = y), n = c(5, 3))
 
 # Input has custom column names
 z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chnm = letters[1:3])

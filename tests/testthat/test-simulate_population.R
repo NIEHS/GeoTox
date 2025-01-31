@@ -1,6 +1,7 @@
 test_that("errors", {
   # If IR_params is input, then age must be input or already exist
-  expect_error(GeoTox() |> simulate_population(IR_params = "test"))
+  expect_error(GeoTox() |> simulate_population(IR_params = "test"),
+               "Age data is required to simulate inhalation rate")
 })
 
 test_that("populate fields - age", {
@@ -23,7 +24,7 @@ test_that("populate fields - IR_params", {
   geoTox <- GeoTox()
   IR_params <- data.frame("age" = c(20, 0, 50),
                           "mean" = c(0.3, 0.5, 0.2),
-                          "sd" = 0)
+                          "sd" = c(0.1, 0.2, 0.05))
   
   expect_null(geoTox$IR)
   
@@ -31,6 +32,18 @@ test_that("populate fields - IR_params", {
   geoTox <- geoTox |> simulate_population(IR_params = IR_params)
   
   expect_false(is.null(geoTox$IR))
+  
+  # IR should not be overwritten
+  geoTox2 <- geoTox |> simulate_population()
+  expect_true(identical(geoTox$IR, geoTox2$IR))
+  
+  # IR should be overwritten
+  IR_params2 <- data.frame("age" = c(20, 0, 50),
+                           "mean" = c(5, 1, 10),
+                           "sd" = 0)
+  geoTox2 <- geoTox |> simulate_population(IR_params = IR_params2)
+  expect_false(identical(geoTox$IR, geoTox2$IR))
+  
 })
 
 test_that("populate fields - obesity", {
@@ -98,9 +111,9 @@ test_that("clear downstream - age", {
   geoTox$css_sensitivity <- "test"
   
   # Re-simulate age
-  expect_warning({
-    geoTox <- geoTox |> simulate_population(age = age, n = 5)
-  })
+  expect_warning(geoTox <- geoTox |> 
+                   simulate_population(age = age, n = 5),
+                 "Clearing `C_ss` and `css_sensitivity` fields")
   expect_null(geoTox$C_ss)
   expect_null(geoTox$css_sensitivity)
   
@@ -119,9 +132,9 @@ test_that("clear downstream - obesity", {
   geoTox$css_sensitivity <- "test"
   
   # Re-simulate obesity
-  expect_warning({
-    geoTox <- geoTox |> simulate_population(obesity = obesity, n = 5)
-  })
+  expect_warning(geoTox <- geoTox |> 
+                   simulate_population(obesity = obesity, n = 5),
+                 "Clearing `C_ss` and `css_sensitivity` fields")
   expect_null(geoTox$C_ss)
   expect_null(geoTox$css_sensitivity)
   

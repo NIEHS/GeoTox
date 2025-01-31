@@ -1,6 +1,6 @@
 #' Simulate inhalation rates
 #'
-#' @param x atomic vector or list of atomic vectors containing ages.
+#' @param x numeric vector or list of numeric vectors containing ages.
 #' @param IR_params (optional) data frame with columns "age", "mean" and "sd".
 #' See details for more information.
 #'
@@ -11,14 +11,14 @@
 #' of EPA's 2011 Exposure Factors Handbook using the mean of male and female
 #' values.
 #'
-#' @return List of atomic vectors containing inhalation rates.
+#' @return List of numeric vectors containing inhalation rates.
 #'
 #' @examples
-#' # Single atomic vector
+#' # Single numeric vector
 #' ages <- sample(1:100, 6, replace = TRUE)
 #' simulate_inhalation_rate(ages)
 #'
-#' # List of atomic vectors
+#' # List of numeric vectors
 #' ages <- list(
 #'   sample(1:100, 5, replace = TRUE),
 #'   sample(1:100, 3, replace = TRUE)
@@ -34,9 +34,9 @@
 #' @export
 simulate_inhalation_rate <- function(x, IR_params = NULL) {
 
-  if (!(is.atomic(x) | is.list(x))) {
-    stop("x must be an atomic vector or a list")
-  }
+  x <- .check_types(x,
+                    c("integer", "numeric"),
+                    "`x` must be a numeric vector or list of numeric vectors")
   
   if (is.null(IR_params)) {
     # Data comes from https://www.epa.gov/sites/default/files/2015-09/documents/efh-chapter06.pdf
@@ -60,15 +60,13 @@ simulate_inhalation_rate <- function(x, IR_params = NULL) {
     IR_params$sd   = rowMeans(IR_params[, c("male.sd", "female.sd")])
   } else {
     if (!all(c("age", "mean", "sd") %in% names(IR_params))) {
-      stop("IR_params must contain columns \"age\", \"mean\" and \"sd\"")
+      stop("`IR_params` must contain columns 'age', 'mean' and 'sd'")
     }
   }
   
   IR_params <- IR_params[order(IR_params$age), ]
   
-  if (is.atomic(x)) x <- list(x)
-
-  lapply(x, function(y) .simulate_inhalation_rate(y, IR_params))
+  purrr::map(x, \(ages) .simulate_inhalation_rate(ages, IR_params))
 }
 
 .simulate_inhalation_rate <- function(x, IR_params) {
@@ -82,9 +80,11 @@ simulate_inhalation_rate <- function(x, IR_params = NULL) {
       x[age_idx],
       function(age) max(which(age >= IR_params$age))
     )
-    out[age_idx] <- truncnorm::rtruncnorm(
-      1, 0, Inf, IR_params$mean[param_idx], IR_params$sd[param_idx]
-    )
+    out[age_idx] <- truncnorm::rtruncnorm(1,
+                                          0,
+                                          Inf,
+                                          IR_params$mean[param_idx],
+                                          IR_params$sd[param_idx])
   }
 
   out

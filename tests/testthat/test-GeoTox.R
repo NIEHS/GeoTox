@@ -92,6 +92,10 @@ test_that("print corner cases", {
   
   expect_no_error(capture_output(print(geoTox)))
   
+  geoTox$par$n <- 1:3
+  
+  expect_no_error(capture_output(print(geoTox)))
+  
   geoTox <- GeoTox() |>
     set_hill_params(geo_tox_data$dose_response |>
                       dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
