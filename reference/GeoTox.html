@@ -9,7 +9,7 @@ GeoTox analysis."><meta property="og:image" content="https://github.com/NIEHS/Ge
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,21 +108,21 @@ GeoTox analysis.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeoTox object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assays: 13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chemicals: 20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Regions: 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Population: 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Regions: m = 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Population: n = 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Data Fields:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Name            Class            Dim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       age    list(integer)       5 x (10)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        IR    list(numeric)       5 x (10)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   obesity  list(character)       5 x (10)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     C_ext     list(matrix)  5 x (10 x 21)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      C_ss     list(matrix)  5 x (10 x 21)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Name          Size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       age       m * (n)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        IR       m * (n)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   obesity       m * (n)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     C_ext  m * (n x 21)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      C_ss  m * (n x 21)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Computed Fields:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          Name             Class            Dim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         D_int      list(matrix)  5 x (10 x 21)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     C_invitro      list(matrix)  5 x (10 x 21)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          resp  list(data.frame)  5 x (130 x 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sensitivity        list(list)        5 x (5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Name                    Size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         D_int            m * (n x 21)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     C_invitro            m * (n x 21)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          resp        m * (13 * n x 6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sensitivity  5 * (m * (13 * n x 6))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot hill fits</span></span></span>
@@ -132,20 +132,14 @@ GeoTox analysis.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"exposure"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeoTox-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># Plot response data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Multiple assays found, using first assay 'APR_HepG2_p53Act_24h_up'</span>
-<span class="r-plt img"><img src="GeoTox-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, assays <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="GeoTox-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="GeoTox-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># Plot sensitivity data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Multiple assays found, using first assay 'APR_HepG2_p53Act_24h_up'</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 240 NA values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Picking joint bandwidth of 0.204</span>
-<span class="r-plt img"><img src="GeoTox-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span>, assay <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>,</span></span>
+<span class="r-in"><span>     type <span class="op">=</span> <span class="st">"sensitivity"</span>,</span></span>
+<span class="r-in"><span>     assay <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Picking joint bandwidth of 0.489</span>
-<span class="r-plt img"><img src="GeoTox-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="GeoTox-4.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

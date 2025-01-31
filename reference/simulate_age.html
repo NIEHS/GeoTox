@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,7 @@ groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>simulated sample size.</p></dd>
+<dd><p>simulated sample size(s).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -67,6 +67,10 @@ groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".</p></dd>
     <p>Each data frame must contain 19 rows. The first row represents the total
 population of all age groups while the next 18 rows represent age groups
 from 0 to 89 in increments of 5 years.</p>
+<p>The sample size can be either a single value or a vector the same length as
+the number of data frames in x. If a single value is provided, the same
+sample size is used for all data frames. If a vector is provided, each
+element corresponds to the sample size for each data frame in x.</p>
     </div>
 
     <div class="section level2">
@@ -77,7 +81,7 @@ from 0 to 89 in increments of 5 years.</p>
 <span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41 40 40 40 44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42 44 41 44 43</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># List of 2 data frames</span></span></span>
@@ -88,10 +92,18 @@ from 0 to 89 in increments of 5 years.</p>
 <span class="r-in"><span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, <span class="fl">15</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 44 41 41 44 44 40 42 41 44 41 42 42 41 44 43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 42 42 41 41 40 43 40 41 43 43 40 43 42 41 42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8  9 53 53 52 51  7  7 50  6  5 51 54 51  7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8  6 54  6  7 53  8 54  9  6 54  7 53 51 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># different sample sizes</span></span></span>
+<span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 41 42 43 43 43 42 43 41 43 42 41 41 41 44 41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  6 53  8  5  8  8 51 52 53 51</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

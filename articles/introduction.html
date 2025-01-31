@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,21 +110,21 @@ combinations.</p>
 <span><span class="co">#&gt; GeoTox object</span></span>
 <span><span class="co">#&gt; Assays: 1</span></span>
 <span><span class="co">#&gt; Chemicals: 5</span></span>
-<span><span class="co">#&gt; Regions: 100</span></span>
-<span><span class="co">#&gt; Population: 250</span></span>
+<span><span class="co">#&gt; Regions: m = 100</span></span>
+<span><span class="co">#&gt; Population: n = 250</span></span>
 <span><span class="co">#&gt; Data Fields:</span></span>
-<span><span class="co">#&gt;      Name            Class               Dim</span></span>
-<span><span class="co">#&gt;       age    list(integer)       100 x (250)</span></span>
-<span><span class="co">#&gt;        IR    list(numeric)       100 x (250)</span></span>
-<span><span class="co">#&gt;   obesity  list(character)       100 x (250)</span></span>
-<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;      Name          Size</span></span>
+<span><span class="co">#&gt;       age       m * (n)</span></span>
+<span><span class="co">#&gt;        IR       m * (n)</span></span>
+<span><span class="co">#&gt;   obesity       m * (n)</span></span>
+<span><span class="co">#&gt;     C_ext  m * (n x 21)</span></span>
+<span><span class="co">#&gt;      C_ss  m * (n x 21)</span></span>
 <span><span class="co">#&gt; Computed Fields:</span></span>
-<span><span class="co">#&gt;          Name             Class               Dim</span></span>
-<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;          resp  list(data.frame)   100 x (250 x 5)</span></span>
-<span><span class="co">#&gt;   sensitivity        list(list)         5 x (100)</span></span>
+<span><span class="co">#&gt;          Name                   Size</span></span>
+<span><span class="co">#&gt;         D_int           m * (n x 21)</span></span>
+<span><span class="co">#&gt;     C_invitro           m * (n x 21)</span></span>
+<span><span class="co">#&gt;          resp        m * (1 * n x 5)</span></span>
+<span><span class="co">#&gt;   sensitivity  5 * (m * (1 * n x 5))</span></span>
 <span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
 <p>Plot outputs</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -167,21 +167,21 @@ combinations.</p>
 <span><span class="co">#&gt; GeoTox object</span></span>
 <span><span class="co">#&gt; Assays: 13</span></span>
 <span><span class="co">#&gt; Chemicals: 20</span></span>
-<span><span class="co">#&gt; Regions: 100</span></span>
-<span><span class="co">#&gt; Population: 250</span></span>
+<span><span class="co">#&gt; Regions: m = 100</span></span>
+<span><span class="co">#&gt; Population: n = 250</span></span>
 <span><span class="co">#&gt; Data Fields:</span></span>
-<span><span class="co">#&gt;      Name            Class               Dim</span></span>
-<span><span class="co">#&gt;       age    list(integer)       100 x (250)</span></span>
-<span><span class="co">#&gt;        IR    list(numeric)       100 x (250)</span></span>
-<span><span class="co">#&gt;   obesity  list(character)       100 x (250)</span></span>
-<span><span class="co">#&gt;     C_ext     list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;      C_ss     list(matrix)  100 x (250 x 21)</span></span>
+<span><span class="co">#&gt;      Name          Size</span></span>
+<span><span class="co">#&gt;       age       m * (n)</span></span>
+<span><span class="co">#&gt;        IR       m * (n)</span></span>
+<span><span class="co">#&gt;   obesity       m * (n)</span></span>
+<span><span class="co">#&gt;     C_ext  m * (n x 21)</span></span>
+<span><span class="co">#&gt;      C_ss  m * (n x 21)</span></span>
 <span><span class="co">#&gt; Computed Fields:</span></span>
-<span><span class="co">#&gt;          Name             Class               Dim</span></span>
-<span><span class="co">#&gt;         D_int      list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;     C_invitro      list(matrix)  100 x (250 x 21)</span></span>
-<span><span class="co">#&gt;          resp  list(data.frame)  100 x (3250 x 6)</span></span>
-<span><span class="co">#&gt;   sensitivity        list(list)         5 x (100)</span></span>
+<span><span class="co">#&gt;          Name                    Size</span></span>
+<span><span class="co">#&gt;         D_int            m * (n x 21)</span></span>
+<span><span class="co">#&gt;     C_invitro            m * (n x 21)</span></span>
+<span><span class="co">#&gt;          resp        m * (13 * n x 6)</span></span>
+<span><span class="co">#&gt;   sensitivity  5 * (m * (13 * n x 6))</span></span>
 <span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
 <p>Plot outputs</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">

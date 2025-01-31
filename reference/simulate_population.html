@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,7 @@ inhalation rate is subsequently calculated using <a href="simulate_inhalation_ra
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Additional parameters include <code>n</code> for sample size,
+    <p>Additional parameters include <code>n</code> for sample size(s),
 <code>IR_params</code> for <a href="simulate_inhalation_rate.html">simulate_inhalation_rate</a>,
 <code>obes_prev</code>, <code>obes_sd</code>, and <code>obes_label</code> for <a href="simulate_obesity.html">simulate_obesity</a>,
 and <code>expos_mean</code>, <code>expos_sd</code>, and <code>expos_label</code> for <a href="simulate_exposure.html">simulate_exposure</a>.</p>
@@ -103,6 +103,16 @@ and <code>expos_mean</code>, <code>expos_sd</code>, and <code>expos_label</code>
 <span class="r-in"><span><span class="va">idx</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">m</span> <span class="op">&lt;</span> <span class="fl">100</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="va">m</span><span class="op">)</span> <span class="kw">else</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create GeoTox object</span></span></span>
+<span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="co"># Simulate populations for each region</span></span></span>
+<span class="r-in"><span>  <span class="fu">simulate_population</span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      obesity <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span><span class="op">[</span><span class="va">idx</span>, <span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      exposure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                      simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span></span>
+<span class="r-in"><span>                      n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                      </span></span>
+<span class="r-in"><span><span class="co"># Variable population sizes</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># Simulate populations for each region</span></span></span>
 <span class="r-in"><span>  <span class="fu">simulate_population</span><span class="op">(</span>age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>,</span></span>
