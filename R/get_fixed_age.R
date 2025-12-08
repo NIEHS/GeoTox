@@ -6,18 +6,18 @@
 #'
 #' @return list of matrices containing median `C_ss` values.
 #' @export
-#' 
+#'
 #' @examples
 #' get_fixed_age(simulated_css = geo_tox_data$simulated_css,
 #'               age = list(c(25, 35, 55), c(15, 60)))
 get_fixed_age <- function(simulated_css, age) {
-  
+
   if (!is.list(age)) age <- list(age)
-  
+
   lapply(age, function(x) {
-    do.call(cbind, lapply(simulated_css, function(df) {
-      df <- df |> 
-        dplyr::distinct(.data$age_min, .data$age_median_css) |> 
+    out <- do.call(cbind, lapply(simulated_css, function(df) {
+      df <- df |>
+        dplyr::distinct(.data$age_min, .data$age_median_css) |>
         dplyr::arrange(.data$age_min)
       idx <- sapply(
         x,
@@ -25,5 +25,7 @@ get_fixed_age <- function(simulated_css, age) {
       )
       df$age_median_css[idx]
     }))
+    out <- out[, sort(colnames(out)), drop = FALSE]
+    out
   })
 }
