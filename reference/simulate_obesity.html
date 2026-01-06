@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Simulate obesity status</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.2.1-alpha/R/simulate_obesity.R"><code>R/simulate_obesity.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/R/simulate_obesity.R"><code>R/simulate_obesity.R</code></a></small>
       <div class="d-none name"><code>simulate_obesity.Rd</code></div>
     </div>
 
@@ -102,24 +102,24 @@ element corresponds to the sample size for each row in x.</p>
 <span class="r-in"><span>                 FIPS <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_obesity</span><span class="op">(</span><span class="va">df</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Obese"  "Normal"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese"  "Normal" "Normal" "Obese"  "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Obese"  "Obese" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Obese"  "Obese"  "Obese"  "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese"  "Obese"  "Normal" "Obese"  "Obese" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese" "Obese" "Obese" "Obese" "Obese"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># different sample sizes</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_obesity</span><span class="op">(</span><span class="va">df</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Obese"  "Normal" "Normal"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Normal" "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Obese" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Obese"  "Obese"  "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Obese"  "Obese" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese"  "Obese"  "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Input has custom column names</span></span></span>
@@ -132,13 +132,13 @@ element corresponds to the sample size for each row in x.</p>
 <span class="r-in"><span>                 obes_label <span class="op">=</span> <span class="st">"label"</span>,</span></span>
 <span class="r-in"><span>                 n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Normal" "Obese" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Obese"  "Normal" "Obese"  "Normal"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Obese"  "Normal" "Normal"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Normal" "Normal" "Normal" "Normal" "Obese" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese" "Obese" "Obese" "Obese" "Obese"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Obese"  "Normal" "Obese"  "Obese"  "Obese" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -152,7 +152,7 @@ element corresponds to the sample size for each row in x.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

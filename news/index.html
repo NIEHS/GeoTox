@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,12 +38,13 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.2.1-alpha/NEWS.md"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="geotox-development-version">GeoTox (development version)<a class="anchor" aria-label="anchor" href="#geotox-development-version"></a></h2>
-<ul><li><p>Added set_population() function.</p></li>
+<ul><li><p>Fixed a bug that affected sensitivity analysis. The column order of C_ss values used for sensitivity analysis is now explicitly ordered similar to other functions.</p></li>
+<li><p>Added set_population() function.</p></li>
 <li><p>The simulate_* functions can now handle population sizes that vary across regions.</p></li>
 </ul></div>
     <div class="section level2">
@@ -59,7 +60,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

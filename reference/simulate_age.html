@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Simulate ages</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.2.1-alpha/R/simulate_age.R"><code>R/simulate_age.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/R/simulate_age.R"><code>R/simulate_age.R</code></a></small>
       <div class="d-none name"><code>simulate_age.Rd</code></div>
     </div>
 
@@ -87,7 +87,7 @@ element corresponds to the sample size for each data frame in x.</p>
 <span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="va">x</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42 44 41 44 43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41 40 43 40 41</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># List of 2 data frames</span></span></span>
@@ -98,18 +98,18 @@ element corresponds to the sample size for each data frame in x.</p>
 <span class="r-in"><span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">$</span><span class="va">TOT_POP</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, <span class="fl">15</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 42 42 41 41 40 43 40 41 43 43 40 43 42 41 42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 43 43 40 43 42 41 42 42 43 43 43 40 40 42 43</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8  6 54  6  7 53  8 54  9  6 54  7 53 51 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  9  6 54  7 53 51 51 51  9  6  6  6  9  6 52</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># different sample sizes</span></span></span>
 <span class="r-in"><span><span class="fu">simulate_age</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 41 42 43 43 43 42 43 41 43 42 41 41 41 44 41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 43 42 41 41 41 44 41 43 40 42 44 42 42 41 41</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  6 53  8  5  8  8 51 52 53 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 53 51 53 50 53  6 52  6 52 53</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -123,7 +123,7 @@ element corresponds to the sample size for each data frame in x.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

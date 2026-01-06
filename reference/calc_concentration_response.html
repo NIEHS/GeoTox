@@ -17,7 +17,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Calculate the mixture response from one of three different approaches: IA, GCA, or Hazard Quotient</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.2.1-alpha/R/calc_concentration_response.R"><code>R/calc_concentration_response.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/R/calc_concentration_response.R"><code>R/calc_concentration_response.R</code></a></small>
       <div class="d-none name"><code>calc_concentration_response.Rd</code></div>
     </div>
 
@@ -102,18 +102,18 @@ response, and a hazard quotient</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample      GCA.Eff       IA.Eff  GCA.HQ.10   IA.HQ.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.0076864671 0.0077364934 0.55601871 0.55600659</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.0006767173 0.0006770262 0.01534725 0.01534744</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.0722956637 0.0741979092 1.45744108 1.45745710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.0273376842 0.0274220130 0.39699362 0.39699367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample     GCA.Eff      IA.Eff GCA.HQ.10  IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.028270714 0.028272509 0.9937854 0.9937733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.008705295 0.008744529 0.2732778 0.2732794</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.051285865 0.051589675 1.3656292 1.3656570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.014618856 0.014628658 0.1604956 0.1604959</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample    GCA.Eff     IA.Eff GCA.HQ.10  IA.HQ.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.18688743 0.18693404 3.7723954 3.7724269</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.01226720 0.01227572 0.3474801 0.3474778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.01883785 0.01894890 1.7068482 1.7068523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.12791787 0.12799417 2.2230433 2.2230437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample      GCA.Eff       IA.Eff   GCA.HQ.10    IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.0006860256 0.0006875129  0.06600302  0.06600216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.0024571582 0.0024584975  0.05117355  0.05117333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.1533998726 0.1553036850 12.48329280 12.48322361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.0061522761 0.0061696397  0.07868211  0.07868161</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
@@ -141,7 +141,7 @@ response, and a hazard quotient</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
