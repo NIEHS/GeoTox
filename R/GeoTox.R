@@ -1,41 +1,41 @@
 #' GeoTox S3 object
-#' 
+#'
 #' @description
 #' An S3 object that can be used to help organize the data and results of a
 #' GeoTox analysis.
 #'
 #' @return a GeoTox S3 object
 #' @export
-#' 
+#'
 #' @examples
 #' # Use a subset of the package data for demonstration purposes
 #' set.seed(2357)
 #' n <- 10 # Population size
-#' m <- 5 # Number of regions
+#' m <- 2 # Number of regions
 #' idx <- if (m < 100) sample(1:100, m) else 1:100
-#' 
-#' geoTox <- GeoTox() |> 
+#'
+#' geoTox <- GeoTox() |>
 #'   # Set region and group boundaries (for plotting)
 #'   set_boundaries(region = geo_tox_data$boundaries$county,
-#'                  group  = geo_tox_data$boundaries$state) |> 
+#'                  group  = geo_tox_data$boundaries$state) |>
 #'   # Simulate populations for each region
 #'   simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
 #'                       obesity       = geo_tox_data$obesity[idx, ],
 #'                       exposure      = split(geo_tox_data$exposure, ~FIPS)[idx],
 #'                       simulated_css = geo_tox_data$simulated_css,
-#'                       n             = n) |> 
+#'                       n             = n) |>
 #'   # Estimated Hill parameters
 #'   set_hill_params(geo_tox_data$dose_response |>
-#'                     fit_hill(assay = "endp", chem = "casn") |> 
+#'                     fit_hill(assay = "endp", chem = "casn") |>
 #'                     dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
 #'   # Calculate response
 #'   calculate_response() |>
 #'   # Perform sensitivity analysis
 #'   sensitivity_analysis()
-#' 
+#'
 #' # Print GeoTox object
 #' geoTox
-#' 
+#'
 #' # Plot hill fits
 #' plot(geoTox, type = "hill")
 #' # Plot exposure data
@@ -69,7 +69,7 @@ GeoTox <- function() {
 
 #' @export
 print.GeoTox <- function(x, ...) {
-  
+
   # Get n_assay and n_chem from GeoTox()$hill_params
   if (is.null(x$hill_params)) {
     n_assay <- 0
@@ -86,7 +86,7 @@ print.GeoTox <- function(x, ...) {
       n_chem <- 1
     }
   }
-  
+
   # Categorize different GeoTox() fields
   names_data_vec      <- c("age", "IR", "obesity")
   names_data_mat      <- c("C_ext", "C_ss")
@@ -130,19 +130,19 @@ print.GeoTox <- function(x, ...) {
     }
     data.frame(Name = name, Size = size)
   }
-  
+
   # Get size info for each type of field
   info_data <- dplyr::bind_rows(
     purrr::map(names_data_vec, \(name) get_info_vec(name)),
-    purrr::map(names_data_mat, \(name) get_info_mat(name))) |> 
+    purrr::map(names_data_mat, \(name) get_info_mat(name))) |>
     dplyr::filter(.data$Size != "")
-  
+
   info_computed <- dplyr::bind_rows(
     purrr::map(names_computed_mat,  \(name) get_info_mat(name)),
     purrr::map(names_computed_df,   \(name) get_info_df(name)),
-    purrr::map(names_computed_list, \(name) get_info_list(name))) |> 
+    purrr::map(names_computed_list, \(name) get_info_list(name))) |>
     dplyr::filter(.data$Size != "")
-  
+
   # Get population size from GeoTox()$par$n
   if (is.null(x$par$n)) {
     n_pop <- 0
@@ -151,13 +151,13 @@ print.GeoTox <- function(x, ...) {
   } else {
     n_pop <- paste0("[", paste(range(x$par$n), collapse = ", "), "]")
   }
-  
+
   # Get number of regions from potential data fields
   n_region <- purrr::map_int(c(names_data_vec, names_data_mat,
                                names_computed_mat, names_computed_df),
-                             \(name) length(x[[name]])) |> 
+                             \(name) length(x[[name]])) |>
     max()
-  
+
   # Output info
   cat("GeoTox object\n")
   cat("Assays: ", n_assay, "\n", sep = "")

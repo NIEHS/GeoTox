@@ -27,22 +27,22 @@ GeoTox analysis.
 # Use a subset of the package data for demonstration purposes
 set.seed(2357)
 n <- 10 # Population size
-m <- 5 # Number of regions
+m <- 2 # Number of regions
 idx <- if (m < 100) sample(1:100, m) else 1:100
 
-geoTox <- GeoTox() |> 
+geoTox <- GeoTox() |>
   # Set region and group boundaries (for plotting)
   set_boundaries(region = geo_tox_data$boundaries$county,
-                 group  = geo_tox_data$boundaries$state) |> 
+                 group  = geo_tox_data$boundaries$state) |>
   # Simulate populations for each region
   simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
                       obesity       = geo_tox_data$obesity[idx, ],
                       exposure      = split(geo_tox_data$exposure, ~FIPS)[idx],
                       simulated_css = geo_tox_data$simulated_css,
-                      n             = n) |> 
+                      n             = n) |>
   # Estimated Hill parameters
   set_hill_params(geo_tox_data$dose_response |>
-                    fit_hill(assay = "endp", chem = "casn") |> 
+                    fit_hill(assay = "endp", chem = "casn") |>
                     dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
   # Calculate response
   calculate_response() |>
