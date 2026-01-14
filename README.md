@@ -24,7 +24,6 @@ modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2025, Human
 Genomics](https://doi.org/10.1186/s40246-024-00711-8).
 
-
 The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
 chemical mixtures via a common molecular target. Sci Total Environ. 2023
