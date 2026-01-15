@@ -8,6 +8,10 @@
 #' @export
 #'
 #' @examples
+#' # See the vignette for a full example:
+#' #   vignette("introduction", package = "geotox")
+#'
+#' \dontrun{
 #' # Use a subset of the package data for demonstration purposes
 #' set.seed(2357)
 #' n <- 10 # Population size
@@ -46,6 +50,7 @@
 #' plot(geoTox,
 #'      type = "sensitivity",
 #'      assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
+#' }
 GeoTox <- function() {
   structure(
     list(
