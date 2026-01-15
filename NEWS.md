@@ -1,4 +1,4 @@
-# GeoTox (development version)
+# GeoTox 0.3.0
 
 * `compute_sensitivity()` and the wrapper `sensitivity_analysis()` now use fixed
 Css data with column orders explicitly set to match other functions. The column
