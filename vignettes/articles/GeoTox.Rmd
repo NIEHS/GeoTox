@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitr, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -29,7 +29,7 @@ n <- 250 # Sample size
 
 Create GeoTox object, run simulations and computations
 
-```{r}
+```{r single-assay-analysis}
 set.seed(2357)
 geoTox <- GeoTox() |> 
   # Set region and group boundaries (for plotting)
@@ -56,7 +56,7 @@ geoTox
 
 Plot outputs
 
-```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+```{r single-assay-plots, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox)
 plot(geoTox, type = "hill")
 plot(geoTox, type = "sensitivity")
@@ -66,7 +66,7 @@ plot(geoTox, type = "sensitivity")
 
 Create GeoTox object, run simulations and computations
 
-```{r}
+```{r multi-assay-analysis}
 set.seed(2357)
 geoTox <- GeoTox() |> 
   # Set region and group boundaries (for plotting)
@@ -92,7 +92,7 @@ geoTox
 
 Plot outputs
 
-```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+```{r multi-assay-plots, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox)
 plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 plot(geoTox, type = "hill")
@@ -104,12 +104,12 @@ plot(geoTox, type = "sensitivity", assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 
 The exposure map is the same for both single and multiple assay analyses. The map shows the distribution of chemical exposure across regions for all chemicals, not just those used in a particular analysis.
 
-```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+```{r exposure, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox, type = "exposure", ncol = 5)
 ```
 
 If other facet labels are present they can be specified using the `chem_label` argument.
 
-```{r, fig.width = 7, fig.height = 3, fig.align = 'center'}
+```{r exposure-chnm, fig.width = 7, fig.height = 3, fig.align = 'center'}
 plot(geoTox, type = "exposure", chem_label = "chnm", ncol = 5)
 ```

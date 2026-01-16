@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This package includes example data `geo_tox_data`. Below is a description of the data and example code for how it was gathered.
+This package includes example data `geo_tox_data`. Below is a description of the data and example code for how it was gathered. Please refer to the articles on the package <a href="https://niehs.github.io/GeoTox/" target="_blank">website</a> for examples of how the data are used.
 
 > **NOTE:** The websites used in this vignette were last accessed, and data were generated using the latest package versions, on January 12, 2026.
 
