@@ -18,8 +18,7 @@ INPUT,FOUND_BY,DTXSID,PREFERRED_NAME,CASRN
 2-NITROPROPANE,Approved Name,DTXSID6020981,2-Nitropropane,79-46-9
 "2,2,4-TRIMETHYLPENTANE",Approved Name,DTXSID7024370,"2,2,4-Trimethylpentane",540-84-1
 "2,4-D, SALTS AND ESTERS",Searched by Synonym: Found 0 results,N/A,N/A,N/A
-"2,4-DINITROPHENOL",Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID0020523,"2,4-Dinitrophenol",51-28-5
-"2,4-DINITROPHENOL",Integrated Source Name - WARNING: Synonym mapped to two or more chemicals,DTXSID10174261,"Phenol, 2,4-dinitro-, ion(1-)",20350-26-9
+"2,4-DINITROPHENOL",Approved Name,DTXSID0020523,"2,4-Dinitrophenol",51-28-5
 "2,4-DINITROTOLUENE",Approved Name,DTXSID0020529,"2,4-Dinitrotoluene",121-14-2
 "2,4-TOLUENE DIISOCYANATE",Expert Validated Synonym,DTXSID7026156,"Toluene 2,4-diisocyanate",584-84-9
 "2,4,5-TRICHLOROPHENOL",Approved Name,DTXSID4024359,"2,4,5-Trichlorophenol",95-95-4
@@ -36,7 +35,8 @@ INPUT,FOUND_BY,DTXSID,PREFERRED_NAME,CASRN
 "4,4'-METHYLENEDIPHENYL DIISOCYANATE (MDI)",Searched by Synonym: Found 0 results,N/A,N/A,N/A
 "4,6-DINITRO-O-CRESOL (INCLUDING SALTS)",Searched by Synonym: Found 0 results,N/A,N/A,N/A
 ACETALDEHYDE,Approved Name,DTXSID5039224,Acetaldehyde,75-07-0
-ACETAMIDE,Approved Name,DTXSID7020005,Acetamide,60-35-5
+ACETAMIDE,Expert Validated Synonym - WARNING: Synonym mapped to two or more chemicals,DTXSID70198009,Amidantel,49745-00-8
+ACETAMIDE,Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID7020005,Acetamide,60-35-5
 ACETONITRILE,Approved Name,DTXSID7020009,Acetonitrile,75-05-8
 ACETOPHENONE,Approved Name,DTXSID6021828,Acetophenone,98-86-2
 ACROLEIN,Approved Name,DTXSID5020023,Acrolein,107-02-8
@@ -55,7 +55,7 @@ BENZYL CHLORIDE,Approved Name,DTXSID0020153,Benzyl chloride,100-44-7
 BERYLLIUM COMPOUNDS,Approved Name,DTXSID601351486,Beryllium Compounds,NOCAS_1351486
 BIPHENYL,Approved Name,DTXSID4020161,Biphenyl,92-52-4
 BIS(2-ETHYLHEXYL)PHTHALATE (DEHP),Searched by Synonym: Found 0 results,N/A,N/A,N/A
-BIS(CHLOROMETHYL) ETHER,Approved Name,DTXSID8020173,bis(Chloromethyl) ether,542-88-1
+BIS(CHLOROMETHYL) ETHER,Approved Name,DTXSID8020173,Bis(Chloromethyl) ether,542-88-1
 BROMOFORM,Approved Name,DTXSID1021374,Bromoform,75-25-2
 CADMIUM COMPOUNDS,Expert Validated Synonym,DTXSID10872417,Cadmium & Cadmium Compounds,NOCAS_872417
 CALCIUM CYANAMIDE,Approved Name,DTXSID6020353,Calcium cyanamide,156-62-7
@@ -66,8 +66,7 @@ CARBON TETRACHLORIDE,Approved Name,DTXSID8020250,Carbon tetrachloride,56-23-5
 CARBONYL SULFIDE,Approved Name,DTXSID6023949,Carbonyl sulfide,463-58-1
 CATECHOL,Expert Validated Synonym,DTXSID3020257,"1,​2-​Benzenediol",120-80-9
 Chloramben,Approved Name,DTXSID2020262,Chloramben,133-90-4
-CHLORDANE,Synonym - WARNING: Synonym mapped to two or more chemicals,DTXSID5023954,Technical chlordane,12789-03-6
-CHLORDANE,Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID7020267,Chlordane,57-74-9
+CHLORDANE,Synonym,DTXSID5023954,Technical chlordane,12789-03-6
 CHLORINE,Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID1020273,Chlorine,7782-50-5
 CHLORINE,Systematic Name - WARNING: Synonym mapped to two or more chemicals,DTXSID801014230,"Chlorine, atomic",22537-15-1
 CHLOROACETIC ACID,Approved Name,DTXSID4020901,Chloroacetic acid,79-11-8
@@ -81,7 +80,7 @@ COBALT COMPOUNDS,Expert Validated Synonym,DTXSID30872419,Cobalt & Cobalt Compoun
 COKE OVEN EMISSIONS,Approved Name,DTXSID7023984,Coke oven emissions,NOCAS_23984
 CRESOL_CRESYLIC ACID (MIXED ISOMERS),Searched by Synonym: Found 0 results,N/A,N/A,N/A
 CUMENE,Approved Name,DTXSID1021827,Cumene,98-82-8
-CYANIDE COMPOUNDS,Searched by Synonym: Found 0 results,N/A,N/A,N/A
+CYANIDE COMPOUNDS,Approved Name,DTXSID001364352,Cyanide compounds,NOCAS_1364352
 DIBENZOFURAN,Approved Name,DTXSID2021993,Dibenzofuran,132-64-9
 DIBUTYLPHTHALATE,Synonym from Valid Source,DTXSID2021781,"Dibutyl 1,2-benzenedicarboxylate",84-74-2
 DICHLOROETHYL ETHER (BIS[2-CHLOROETHYL]ETHER),Searched by Synonym: Found 0 results,N/A,N/A,N/A
@@ -155,7 +154,7 @@ PENTACHLOROPHENOL,Approved Name,DTXSID7021106,Pentachlorophenol,87-86-5
 PHENOL,Approved Name,DTXSID5021124,Phenol,108-95-2
 PHOSGENE,Approved Name,DTXSID0024260,Phosgene,75-44-5
 PHOSPHINE,Approved Name,DTXSID2021157,Phosphine,7803-51-2
-PHOSPHORUS,Approved Name,DTXSID1024382,Phosphorus,7723-14-0
+PHOSPHORUS,Systematic Name,DTXSID1024382,Phosphorus-31,7723-14-0
 PHTHALIC ANHYDRIDE,Approved Name,DTXSID2021159,Phthalic anhydride,85-44-9
 PROPIONALDEHYDE,Expert Validated Synonym,DTXSID2021658,Propanal,123-38-6
 PROPOXUR (BAYGON),Searched by Synonym: Found 0 results,N/A,N/A,N/A

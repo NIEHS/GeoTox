@@ -24,7 +24,6 @@ modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2025, Human
 Genomics](https://doi.org/10.1186/s40246-024-00711-8).
 
-
 The GeoTox framework was first described in [Eccles et al. A geospatial
 modeling approach to quantifying the risk of exposure to environmental
 chemical mixtures via a common molecular target. Sci Total Environ. 2023
@@ -65,9 +64,8 @@ Overview of the steps in the GeoTox framework</em>
 
 ## Getting Started
 
-Please refer to the [introduction
-vignette](https://niehs.github.io/GeoTox/articles/introduction.html) for
-a detailed description of how to use `GeoTox`.
+Please refer to the [package website](https://niehs.github.io/GeoTox/)
+for a detailed description of how to use `GeoTox`.
 
 ## Citation
 
