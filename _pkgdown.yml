@@ -4,11 +4,6 @@ template:
   bootswatch: minty
   math-rendering: mathjax
 
-navbar:
-  structure:
-    left:  [reference, articles, search]
-    right: [github]
-
 reference:
 - subtitle: GeoTox S3 Object
   desc: Functions using a GeoTox object
