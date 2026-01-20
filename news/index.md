@@ -1,5 +1,7 @@
 # Changelog
 
+## GeoTox (development version)
+
 ## GeoTox 0.3.0
 
 CRAN release: 2026-01-16
