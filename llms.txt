@@ -44,9 +44,8 @@ exposure, assays, dose-response, and geospatial referencing.
 
 ## Getting Started
 
-Please refer to the [introduction
-vignette](https://niehs.github.io/GeoTox/articles/introduction.html) for
-a detailed description of how to use `GeoTox`.
+Please refer to the [package website](https://niehs.github.io/GeoTox/)
+for a detailed description of how to use `GeoTox`.
 
 ## Citation
 
@@ -194,6 +193,6 @@ Package datasets
 ### All vignettes
 
 - [GeoTox
-  Introduction](https://github.com/NIEHS/GeoTox/articles/introduction.md):
+  Introduction](https://github.com/NIEHS/GeoTox/articles/GeoTox.md):
 - [GeoTox Package
   Data](https://github.com/NIEHS/GeoTox/articles/package_data.md):

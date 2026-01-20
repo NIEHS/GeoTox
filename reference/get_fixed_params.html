@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +24,7 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/introduction.html">GeoTox Introduction</a></li>
-    <li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
   </ul></li>
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -38,7 +37,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Get <code>C_ss</code> Data for Fixed <code>C_ss</code> Generation Parameters</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/R/get_fixed_params.R"><code>R/get_fixed_params.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.3.0/R/get_fixed_params.R"><code>R/get_fixed_params.R</code></a></small>
       <div class="d-none name"><code>get_fixed_params.Rd</code></div>
     </div>
 
@@ -74,29 +73,29 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_fixed_params</span><span class="op">(</span>simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span></span>
 <span class="r-in"><span>                 age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">35</span>, <span class="fl">55</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      100-02-7 101-14-4 101-77-9 106-50-3 119-90-4 120-80-9 123-31-9 133-06-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   0.3483  0.43290   1.2600   0.4962    9.425   7.0520   0.1799   2.9650</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.2783  0.52750   0.7204   0.1679   10.140   0.4308   0.2523   0.8707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.2405  0.08364   2.1660   0.4789    5.639   2.9400   0.3256   3.7480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      100-02-7 101-14-4 101-77-9 119-90-4 120-80-9 123-31-9 133-06-2 51-28-5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   3.7470   0.1963    1.919    5.179    2.561   0.1202    1.114   34.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.0040   0.1739    1.783   18.780    1.026   0.3502    4.669  143.40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.2282   0.9145    6.259    3.574    2.860   0.1428    2.775   53.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      510-15-6 53-96-3 56-38-2 60-11-7 63-25-2 72-43-5 84-74-2 87-86-5 88-06-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.72240  2.7210   3.339  0.9713 0.11470   5.279  1.0980   3.519   5.296</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.09003  2.5650   3.733  1.7710 0.07522   2.260  1.6300   2.567  13.510</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.03109  0.9679   1.226  0.7050 0.70890   4.772  0.4558  24.270  10.630</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      91-94-1 92-87-5  95-80-7 95-95-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.17140  0.5233 3.792000   7.011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.08058  0.2407 0.003797  29.210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.07496  4.8780 2.812000  15.210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.06726   3.148   4.864   1.993 0.16910   2.570  0.5825  0.5356  0.5755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.19100   2.728   1.291   5.795 0.46430   3.516  0.7203  1.4800  3.9520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.69360  10.560   2.018   5.628 0.06376   4.655  1.2680  2.7590  3.8900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      91-94-1 92-87-5 95-80-7 95-95-4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.16720  0.9514   2.125  20.820</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.06596  1.1710   3.382  16.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.04506  2.1360   2.854   8.415</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      100-02-7 101-14-4 101-77-9 106-50-3 119-90-4 120-80-9 123-31-9 133-06-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   2.0730   0.3458    1.623   0.2754    15.77   1.0500   0.1367    3.514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.3003   0.4988    1.305   0.1460    12.03   0.2306   0.6960    6.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      100-02-7 101-14-4 101-77-9 119-90-4 120-80-9 123-31-9 133-06-2 51-28-5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   0.6615   2.2930   0.8829    8.841    1.128   0.1151    1.795   61.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   1.0930   0.0672   0.8129    4.530    8.510   0.1274    1.422  343.90</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      510-15-6 53-96-3 56-38-2 60-11-7 63-25-2 72-43-5 84-74-2 87-86-5 88-06-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   0.1409   8.489   1.959   1.964 0.03215   2.639   1.199   12.87   9.820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.2524   1.164   2.495   1.525 0.06444   9.476   4.407   55.21   5.332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.09053   5.447   1.999   1.417  0.0834  1.9480   1.650  2.0120  3.1840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  1.18600   1.982   7.304   1.195  1.4980  0.7697   1.351  0.5335  0.5292</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      91-94-1 92-87-5 95-80-7 95-95-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.10080   5.493   3.061  18.720</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.07557   1.938   4.758   1.099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.49100   6.493   3.029   4.315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.06472  15.990   1.448   5.211</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

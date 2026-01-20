@@ -17,7 +17,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,8 +28,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/introduction.html">GeoTox Introduction</a></li>
-    <li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
   </ul></li>
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -42,7 +41,7 @@ response, and a hazard quotient"><meta property="og:image" content="https://gith
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Calculate the mixture response from one of three different approaches: IA, GCA, or Hazard Quotient</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/R/calc_concentration_response.R"><code>R/calc_concentration_response.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.3.0/R/calc_concentration_response.R"><code>R/calc_concentration_response.R</code></a></small>
       <div class="d-none name"><code>calc_concentration_response.Rd</code></div>
     </div>
 
@@ -102,18 +101,18 @@ response, and a hazard quotient</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample     GCA.Eff      IA.Eff GCA.HQ.10  IA.HQ.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.028270714 0.028272509 0.9937854 0.9937733</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.008705295 0.008744529 0.2732778 0.2732794</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.051285865 0.051589675 1.3656292 1.3656570</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.014618856 0.014628658 0.1604956 0.1604959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample     GCA.Eff      IA.Eff   GCA.HQ.10    IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.183849941 0.183893327  5.28553221  5.28563746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.484278834 0.489458143 13.26584330 13.26572506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.023988052 0.024449693  1.16115966  1.16117227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.001461523 0.001462722  0.04062655  0.04062632</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample      GCA.Eff       IA.Eff   GCA.HQ.10    IA.HQ.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.0006860256 0.0006875129  0.06600302  0.06600216</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.0024571582 0.0024584975  0.05117355  0.05117333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.1533998726 0.1553036850 12.48329280 12.48322361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.0061522761 0.0061696397  0.07868211  0.07868161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample     GCA.Eff      IA.Eff  GCA.HQ.10    IA.HQ.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.001218893 0.001220453  0.0475080  0.04750807</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      2 0.021832508 0.021930591  0.2312863  0.23128746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      3 0.110684704 0.115328461 11.0633429 11.06323273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      4 0.045493261 0.046659088  2.1877855  2.18778258</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">calc_concentration_response</span><span class="op">(</span><span class="va">C_invitro</span>, <span class="va">hill_params</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>

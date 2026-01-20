@@ -56,24 +56,24 @@ df <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
                  FIPS = letters[1:3])
 simulate_obesity(df, n = 5)
 #> $a
-#> [1] "Obese"  "Normal" "Normal" "Obese"  "Normal"
+#> [1] "Normal" "Obese"  "Normal" "Normal" "Normal"
 #> 
 #> $b
-#> [1] "Normal" "Obese"  "Obese"  "Obese"  "Normal"
+#> [1] "Obese"  "Obese"  "Obese"  "Obese"  "Normal"
 #> 
 #> $c
-#> [1] "Obese" "Obese" "Obese" "Obese" "Obese"
+#> [1] "Obese"  "Obese"  "Normal" "Obese"  "Obese" 
 #> 
 # different sample sizes
 simulate_obesity(df, n = 5:3)
 #> $a
-#> [1] "Normal" "Normal" "Normal" "Normal" "Normal"
+#> [1] "Normal" "Normal" "Normal" "Normal" "Obese" 
 #> 
 #> $b
-#> [1] "Normal" "Obese"  "Obese"  "Normal"
+#> [1] "Normal" "Obese"  "Obese"  "Obese" 
 #> 
 #> $c
-#> [1] "Obese"  "Obese"  "Normal"
+#> [1] "Obese" "Obese" "Obese"
 #> 
 
 # Input has custom column names
@@ -86,12 +86,12 @@ simulate_obesity(df,
                  obes_label = "label",
                  n = 5)
 #> $a
-#> [1] "Normal" "Obese"  "Normal" "Obese"  "Normal"
+#> [1] "Normal" "Normal" "Normal" "Normal" "Normal"
 #> 
 #> $b
-#> [1] "Normal" "Normal" "Normal" "Normal" "Obese" 
+#> [1] "Obese"  "Normal" "Normal" "Obese"  "Obese" 
 #> 
 #> $c
-#> [1] "Obese"  "Normal" "Obese"  "Obese"  "Obese" 
+#> [1] "Obese" "Obese" "Obese" "Obese" "Obese"
 #> 
 ```

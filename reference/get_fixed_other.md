@@ -33,9 +33,9 @@ C_ss <- sample_Css(simulated_css = geo_tox_data$simulated_css,
 # Get median C_ss values
 get_fixed_other(C_ss)
 #> [[1]]
-#> [1] 2.308 2.308 2.308
+#> [1] 1.927 1.927 1.927
 #> 
 #> [[2]]
-#> [1] 1.584 1.584
+#> [1] 1.451 1.451
 #> 
 ```

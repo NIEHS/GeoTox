@@ -1,7 +1,14 @@
 # GeoTox Package Data
 
 This package includes example data `geo_tox_data`. Below is a
-description of the data and example code for how it was gathered.
+description of the data and example code for how it was gathered. Please
+refer to the articles on the package
+[website](https://niehs.github.io/GeoTox/) for examples of how the data
+are used.
+
+> **NOTE:** The websites used in this vignette were last accessed, and
+> data were generated using the latest package versions, on January 12,
+> 2026.
 
 > **NOTE:** FIPS codes can change. Since data is being pulled from
 > various sources, ensure that the FIPS values can be used to connect
@@ -31,9 +38,8 @@ Download modeled exposure data from
 AirToxScreen 2019 for a subset of chemicals in North Carolina counties
 are included in the package data as `geo_tox_data$exposure`.
 
-> **NOTE:** The 2020 release does not currently provide a single file
-> for the exposure national concentration summaries. The 2019 data can
-> be found following the “Previous air toxics assessments” link.
+> **NOTE:** The 2019 data can be found following the “Previous air
+> toxics assessments” link.
 
 ``` r
 filename <- "2019_Toxics_Exposure_Concentrations.xlsx"
@@ -78,15 +84,8 @@ cat(geo_tox_data$exposure |> distinct(chemical) |> pull(), sep = "\n")
 
 exposure_casrn <- read_csv("CCD-Batch-Search.csv",
                            show_col_types = FALSE) |> 
-  filter(DTXSID != "N/A") |> 
-  # Prioritize results based on FOUND_BY status
-  arrange(INPUT,
-          grepl("Approved Name", FOUND_BY),
-          grepl("^Synonym", FOUND_BY)) |> 
-  # Keep one result per INPUT
-  group_by(INPUT) |> 
-  slice(1) |> 
-  ungroup()
+  filter(DTXSID != "N/A",
+         !grepl("WARNING", FOUND_BY))
 
 # Update exposure data with CompTox Dashboard data
 geo_tox_data$exposure <- geo_tox_data$exposure |> 
@@ -142,16 +141,13 @@ get_cHTS_hits <- function(assays = NULL, chemids = NULL) {
     distinct()
 }
 
-assays <- c("APR_HepG2_p53Act_1h_dn",
-            "APR_HepG2_p53Act_1h_up",
-            "APR_HepG2_p53Act_24h_dn",
-            "APR_HepG2_p53Act_24h_up",
-            "APR_HepG2_p53Act_72h_dn",
-            "APR_HepG2_p53Act_72h_up",
-            "ATG_p53_CIS_up",
-            "TOX21_DT40",
-            "TOX21_DT40_100",
-            "TOX21_DT40_657",
+assays <- c("APR_HepG2_p53Act_1hr",
+            "APR_HepG2_p53Act_24hr",
+            "APR_HepG2_p53Act_72hr",
+            "ATG_p53_CIS",
+            "TOX21_DT40_LUC",
+            "TOX21_DT40_100_LUC",
+            "TOX21_DT40_657_LUC",
             "TOX21_ELG1_LUC_Agonist",
             "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
             "TOX21_p53_BLA_p1_ratio",
@@ -240,13 +236,13 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
 Download age data from the [U.S. Census Bureau](https://www.census.gov/)
 by searching for “County Population by Characteristics”. A subset of
 data for North Carolina from
-[2019](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-detail.html)
+[2019](https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-county-detail.html)
 is included in the package data as `geo_tox_data$age`.
 
 ``` r
 # Data for North Carolina
 url <- paste0("https://www2.census.gov/programs-surveys/popest/datasets/",
-              "2010-2019/counties/asrh/cc-est2019-alldata-37.csv")
+              "2010-2020/counties/asrh/CC-EST2020-ALLDATA-37.csv")
 age <- read_csv(url, show_col_types = FALSE)
 
 geo_tox_data$age <- age |>
@@ -270,7 +266,7 @@ subset of data for North Carolina is included in the package data as
 `geo_tox_data$obesity`.
 
 ``` r
-places <- read_csv("PLACES__County_Data__GIS_Friendly_Format___2020_release.csv",
+places <- read_csv("PLACES__County_Data_(GIS_Friendly_Format),_2020_release.csv",
                    show_col_types = FALSE)
 
 # Convert confidence interval to standard deviation

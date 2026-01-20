@@ -56,5 +56,5 @@ AC50 <- 10^(5 * runif(n_chem) - 1)
 Emax <- 100
 
 calc_independent_action(conc, max, AC50, Emax)
-#> [1] 79.23677
+#> [1] 87.93304
 ```

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,8 +39,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/introduction.html">GeoTox Introduction</a></li>
-    <li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
+<li><a class="dropdown-item" href="../articles/package_data.html">GeoTox Package Data</a></li>
   </ul>
 </li>
 <li class="nav-item"><form class="form-inline" role="search">
@@ -64,15 +63,22 @@
       <img src="../logo.svg" class="logo" alt=""><h1>GeoTox Package Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/vignettes/package_data.Rmd"><code>vignettes/package_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v0.3.0/vignettes/package_data.Rmd"><code>vignettes/package_data.Rmd</code></a></small>
       <div class="d-none name"><code>package_data.Rmd</code></div>
     </div>
 
     
     
 <p>This package includes example data <code>geo_tox_data</code>. Below
-is a description of the data and example code for how it was
-gathered.</p>
+is a description of the data and example code for how it was gathered.
+Please refer to the articles on the package
+<a href="https://niehs.github.io/GeoTox/" target="_blank" class="external-link">website</a>
+for examples of how the data are used.</p>
+<blockquote>
+<p><strong>NOTE:</strong> The websites used in this vignette were last
+accessed, and data were generated using the latest package versions, on
+January 12, 2026.</p>
+</blockquote>
 <blockquote>
 <p><strong>NOTE:</strong> FIPS codes can change. Since data is being
 pulled from various sources, ensure that the FIPS values can be used to
@@ -104,10 +110,8 @@ Results from AirToxScreen 2019 for a subset of chemicals in North
 Carolina counties are included in the package data as
 <code>geo_tox_data$exposure</code>.</p>
 <blockquote>
-<p><strong>NOTE:</strong> The 2020 release does not currently provide a
-single file for the exposure national concentration summaries. The 2019
-data can be found following the “Previous air toxics assessments”
-link.</p>
+<p><strong>NOTE:</strong> The 2019 data can be found following the
+“Previous air toxics assessments” link.</p>
 </blockquote>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"2019_Toxics_Exposure_Concentrations.xlsx"</span></span>
@@ -151,15 +155,8 @@ link.</p>
 <span></span>
 <span><span class="va">exposure_casrn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"CCD-Batch-Search.csv"</span>,</span>
 <span>                           show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DTXSID</span> <span class="op">!=</span> <span class="st">"N/A"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Prioritize results based on FOUND_BY status</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">INPUT</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Approved Name"</span>, <span class="va">FOUND_BY</span><span class="op">)</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"^Synonym"</span>, <span class="va">FOUND_BY</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Keep one result per INPUT</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">INPUT</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DTXSID</span> <span class="op">!=</span> <span class="st">"N/A"</span>,</span>
+<span>         <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"WARNING"</span>, <span class="va">FOUND_BY</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Update exposure data with CompTox Dashboard data</span></span>
 <span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span> <span class="op">&lt;-</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span> <span class="op">|&gt;</span> </span>
@@ -215,16 +212,13 @@ cHTS data to identify active chemicals for a given set of assays.</p>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">assays</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"APR_HepG2_p53Act_1h_dn"</span>,</span>
-<span>            <span class="st">"APR_HepG2_p53Act_1h_up"</span>,</span>
-<span>            <span class="st">"APR_HepG2_p53Act_24h_dn"</span>,</span>
-<span>            <span class="st">"APR_HepG2_p53Act_24h_up"</span>,</span>
-<span>            <span class="st">"APR_HepG2_p53Act_72h_dn"</span>,</span>
-<span>            <span class="st">"APR_HepG2_p53Act_72h_up"</span>,</span>
-<span>            <span class="st">"ATG_p53_CIS_up"</span>,</span>
-<span>            <span class="st">"TOX21_DT40"</span>,</span>
-<span>            <span class="st">"TOX21_DT40_100"</span>,</span>
-<span>            <span class="st">"TOX21_DT40_657"</span>,</span>
+<span><span class="va">assays</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"APR_HepG2_p53Act_1hr"</span>,</span>
+<span>            <span class="st">"APR_HepG2_p53Act_24hr"</span>,</span>
+<span>            <span class="st">"APR_HepG2_p53Act_72hr"</span>,</span>
+<span>            <span class="st">"ATG_p53_CIS"</span>,</span>
+<span>            <span class="st">"TOX21_DT40_LUC"</span>,</span>
+<span>            <span class="st">"TOX21_DT40_100_LUC"</span>,</span>
+<span>            <span class="st">"TOX21_DT40_657_LUC"</span>,</span>
 <span>            <span class="st">"TOX21_ELG1_LUC_Agonist"</span>,</span>
 <span>            <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span>,</span>
 <span>            <span class="st">"TOX21_p53_BLA_p1_ratio"</span>,</span>
@@ -315,12 +309,12 @@ and chemicals.</p>
 <a href="https://www.census.gov/" target="_blank" class="external-link">U.S. Census Bureau</a>
 by searching for “County Population by Characteristics”. A subset of
 data for North Carolina from
-<a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-detail.html" target="_blank" class="external-link">2019</a>
+<a href="https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-county-detail.html" target="_blank" class="external-link">2019</a>
 is included in the package data as <code>geo_tox_data$age</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Data for North Carolina</span></span>
 <span><span class="va">url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://www2.census.gov/programs-surveys/popest/datasets/"</span>,</span>
-<span>              <span class="st">"2010-2019/counties/asrh/cc-est2019-alldata-37.csv"</span><span class="op">)</span></span>
+<span>              <span class="st">"2010-2020/counties/asrh/CC-EST2020-ALLDATA-37.csv"</span><span class="op">)</span></span>
 <span><span class="va">age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="va">url</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;-</span> <span class="va">age</span> <span class="op">|&gt;</span></span>
@@ -343,7 +337,7 @@ county data</a>, and download the data by selecting Actions → API →
 Download file. A subset of data for North Carolina is included in the
 package data as <code>geo_tox_data$obesity</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">places</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"PLACES__County_Data__GIS_Friendly_Format___2020_release.csv"</span>,</span>
+<code class="sourceCode R"><span><span class="va">places</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"PLACES__County_Data_(GIS_Friendly_Format),_2020_release.csv"</span>,</span>
 <span>                   show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Convert confidence interval to standard deviation</span></span>

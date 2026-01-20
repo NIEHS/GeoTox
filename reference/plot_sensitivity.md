@@ -66,5 +66,5 @@ geoTox$sensitivity <- list(age = make_data(),
                            C_ext = make_data())
 
 plot_sensitivity(geoTox)
-#> Picking joint bandwidth of 0.125
+#> Picking joint bandwidth of 0.188
 ```

@@ -60,20 +60,20 @@ respective imputed flag being TRUE.
 # Multiple assays, multiple chemicals
 df <- geo_tox_data$dose_response
 fit_hill(df, assay = "endp", chem = "casn")
-#> # A tibble: 89 × 15
-#>    assay  chem     tp  tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max
-#>    <chr>  <chr> <dbl>  <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>
-#>  1 APR_H… 510-…  4.44  5.86     2.06      0.448     1        0   -0.398     2.30
-#>  2 APR_H… 92-8…  2.14  0.945    2.05      0.271     1        0   -0.398     2.30
-#>  3 APR_H… 95-9…  1.46  0.556    1.67      0.246     1        0   -0.699     2   
-#>  4 APR_H… 510-…  2.33  0.542    1.79      0.192     1        0   -0.398     2.30
-#>  5 APR_H… 72-4…  1.93  1.93     1.95      1.95      1        0   -0.398     2.30
-#>  6 APR_H… 92-8…  2.43  1.50     2.22      0.317     1        0   -0.398     2.30
-#>  7 ATG_p… 87-8…  2.15  0.877    1.57      0.321     1        0   -1.30      2   
-#>  8 TOX21… 100-… 71.4  27.2      1.54      0.294     1        0   -3         2   
-#>  9 TOX21… 101-… 80.1  80.1      2.31      2.31      1        0   -3         1.95
-#> 10 TOX21… 101-…  0     0        2.45      0.101     1        0   -3         1.95
-#> # ℹ 79 more rows
+#> # A tibble: 85 × 15
+#>    assay   chem     tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max
+#>    <chr>   <chr> <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>
+#>  1 APR_He… 510-…  4.44 5.86     2.06      0.448     1        0   -0.398     2.30
+#>  2 APR_He… 92-8…  2.14 0.945    2.05      0.271     1        0   -0.398     2.30
+#>  3 APR_He… 95-9…  1.46 0.556    1.67      0.246     1        0   -0.699     2   
+#>  4 APR_He… 510-…  2.33 0.542    1.79      0.192     1        0   -0.398     2.30
+#>  5 APR_He… 72-4…  1.93 1.93     1.95      1.95      1        0   -0.398     2.30
+#>  6 APR_He… 92-8…  2.43 1.50     2.22      0.317     1        0   -0.398     2.30
+#>  7 ATG_p5… 87-8…  2.15 0.877    1.57      0.321     1        0   -1.30      2   
+#>  8 TOX21_… 100-…  0    0        1.45      1.45      1        0   -3         1.95
+#>  9 TOX21_… 101-…  0    0        1.45      1.45      1        0   -3         1.95
+#> 10 TOX21_… 119-…  0    0        1.10      1.10      1        0   -3         1.95
+#> # ℹ 75 more rows
 #> # ℹ 5 more variables: resp_min <dbl>, resp_max <dbl>, AIC <dbl>,
 #> #   tp.sd.imputed <lgl>, logAC50.sd.imputed <lgl>
 
@@ -81,18 +81,17 @@ fit_hill(df, assay = "endp", chem = "casn")
 df <- geo_tox_data$dose_response |>
   dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
 fit_hill(df, chem = "casn")
-#> # A tibble: 7 × 14
-#>   chem        tp  tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max
-#>   <chr>    <dbl>  <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 106-50-3  29.9  14.7     1.88     0.363      1        0    -3        1.90
-#> 2 119-90-4  65.6  65.6     2.09     2.09       1        0    -2.70     2.30
-#> 3 120-80-9 126.    8.29    1.54     0.0796     1        0    -2.70     2.30
-#> 4 123-31-9 108.  108.      2.39     2.39       1        0    -2.70     2.30
-#> 5 510-15-6  48.5   7.47    2.24     0.123      1        0    -2.70     2.30
-#> 6 88-06-2   58.7  37.0     2.80     0.310      1        0    -2.70     2.30
-#> 7 92-87-5   73.7   7.22    2.06     0.0863     1        0    -2.70     2.30
-#> # ℹ 5 more variables: resp_min <dbl>, resp_max <dbl>, AIC <dbl>,
-#> #   tp.sd.imputed <lgl>, logAC50.sd.imputed <lgl>
+#> # A tibble: 6 × 14
+#>   chem     tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max resp_min
+#>   <chr> <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#> 1 119-…  65.6 65.6     2.09     2.09       1        0    -2.70     2.30    -3.01
+#> 2 120-… 126.   8.29    1.54     0.0796     1        0    -2.70     2.30    -5.22
+#> 3 123-… 186.  17.8     2.21     0.0808     1        0    -2.70     2.30    -3.45
+#> 4 510-…  48.5  7.47    2.24     0.123      1        0    -2.70     2.30    -2.38
+#> 5 88-0…  58.7 37.0     2.80     0.310      1        0    -2.70     2.30    -4.79
+#> 6 92-8…  73.7  7.22    2.06     0.0863     1        0    -2.70     2.30    -4.44
+#> # ℹ 4 more variables: resp_max <dbl>, AIC <dbl>, tp.sd.imputed <lgl>,
+#> #   logAC50.sd.imputed <lgl>
 
 # Single assay, single chemical
 df <- geo_tox_data$dose_response |>
