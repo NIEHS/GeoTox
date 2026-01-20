@@ -1,6 +1,6 @@
 Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
-Version: 0.3.0
+Version: 0.3.0.9000
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut"),
            comment = c(ORCID = "0000-0002-2971-9743")),

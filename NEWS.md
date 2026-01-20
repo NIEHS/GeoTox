@@ -1,3 +1,5 @@
+# GeoTox (development version)
+
 # GeoTox 0.3.0
 
 * `compute_sensitivity()` and the wrapper `sensitivity_analysis()` now use fixed
