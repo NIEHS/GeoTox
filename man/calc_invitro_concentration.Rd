@@ -2,41 +2,80 @@
 % Please edit documentation in R/calc_invitro_concentration.R
 \name{calc_invitro_concentration}
 \alias{calc_invitro_concentration}
-\title{Calculate \emph{in vitro} concentration}
+\title{Calculate in vitro concentration}
 \usage{
-calc_invitro_concentration(D_int, C_ss = NULL)
+calc_invitro_concentration(GT, overwrite = FALSE, sensitivity = FALSE)
 }
 \arguments{
-\item{D_int}{internal chemical dose in \eqn{\frac{mg}{kg}}}
+\item{GT}{GeoTox object.}
 
-\item{C_ss}{steady-state plasma concentration in \eqn{\frac{\mu M}{mg / kg}}}
+\item{overwrite}{Logical indicating whether to overwrite existing 'C_invitro'
+values in the 'concentration' table (default FALSE).}
+
+\item{sensitivity}{Logical indicating whether to simulate in vitro
+concentration for sensitivity analysis (default FALSE).}
 }
 \value{
-list of matrices containing concentrations in \eqn{\mu M}
+The same GeoTox object, invisibly.
 }
 \description{
-Estimate the \emph{in vitro} equivalent plasma concentration given internal
-chemical dose and steady-state plasma concentration.
+Calculates the in vitro concentration (C_invitro) as the product of steady
+state plasma concentration (C_ss) and internal dose (D_int), and stores the
+results in the 'C_invitro' column of the 'concentration' table in the GeoTox
+database.
 }
 \details{
-Input \code{D_int} must be a matrix or list of matrices. Input \code{C_ss} must be a
-numeric atomic vector or matrix, or a list of those types.
-
-The \emph{in vitro} equivalent plasma concentration is calculated as:
-\deqn{C_{plasma} = C_{ss} \times D_{int}}
+If \code{sensitivity = TRUE}, 'C_invitro' will be calculated for sensitivity
+analysis. Typically this shouldn't be used directly by the user, but rather
+called by \code{\link[=calc_sensitivity]{calc_sensitivity()}}. In this case, the function will use the
+'concentration_sensitivity' table instead of the 'concentration' table.
 }
 \examples{
-# Single population
-D_int <- matrix(1:15, ncol = 3)
-C_ss <- 1:5
-calc_invitro_concentration(D_int, C_ss)
-
-# Multiple populations
-D_int <- list(
-  "a" = matrix(1:15 / 10, ncol = 3),
-  "b" = matrix(1:8, ncol = 2)
+# Setup required tables
+sample_df <- tibble::tribble(
+  ~FIPS, ~age, ~weight,
+  10000, 25, "Normal",
+  10000, 35,  "Obese",
+  20000, 50, "Normal"
 )
-C_ss <- list(1:5, 1:4 / 2)
-calc_invitro_concentration(D_int, C_ss)
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
+css_df <- tibble::tribble(
+  ~casn, ~age_lb, ~age_ub, ~weight, ~css,
+  "00-00-1",  0, 49, "Normal", 21,
+  "00-00-1", 50, 99, "Normal", 22,
+  "00-00-1",  0, 49,  "Obese", 61,
+  "00-00-1", 50, 99,  "Obese", 62,
+  "00-00-2",  0, 49, "Normal", 11,
+  "00-00-2", 50, 99, "Normal", 12,
+  "00-00-2",  0, 49,  "Obese", 31,
+  "00-00-2", 50, 99,  "Obese", 32
+)
+GT <- GeoTox() |>
+  set_sample(sample_df) |>
+  set_simulated_css(css_df) |>
+  add_exposure_rate_params() |>
+  simulate_population(exposure = exposure_df) |>
+  calc_internal_dose()
 
+# Calculate in vitro concentration
+GT <- GT |> calc_invitro_concentration()
+
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at relevant tables
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+}
+\seealso{
+\code{\link[=calc_internal_dose]{calc_internal_dose()}}, \code{\link[=calc_response]{calc_response()}}
 }

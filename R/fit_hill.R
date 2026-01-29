@@ -1,65 +1,101 @@
 #' Fit 2- or 3-parameter Hill model
 #'
-#' @param x data frame of dose response data.
-#' @param conc column name of base-10 log scaled concentration.
-#' @param resp column name of response.
-#' @param fixed_slope if TRUE, slope is fixed at 1.
-#' @param chem (optional) column name of chemical identifiers.
-#' @param assay (optional) column name of assay identifiers.
+#' Fit a 2-parameter (fixed slope) or 3-parameter (variable slope) Hill model to
+#' concentration-response data.
 #'
-#' @details
-#' Optional `chem` and `assay` identifiers can be used to fit multiple
-#' chemicals and/or assays. Returned columns `tp` is the top asymptote and
-#' `logAC50` is the 50% response concentration. If the computation of the
-#' standard deviations of these two parameters fails, then the standard
-#' deviation is set equal to the parameter estimate and is indicated by the
-#' respective imputed flag being TRUE.
-#' 
-#' @return data frame of fit parameters.
+#' The input `x` data frame must contain columns specified by `conc` and `resp`
+#' arguments representing the log10-transformed concentration and response,
+#' respectively.
+#'
+#' Optional `assay` and `substance` identifiers can be named vectors that are
+#' used to fit multiple substances and/or assays. For example, `assay = c(name =
+#' "assay", "model")` would indicate that `x` contains both and assay name and
+#' model. The `name = "assay"` part would rename the "assay" column in `x` to
+#' "name" in the 'assay' table when aded with [add_hill_params()].
+#'
+#' Returned column 'tp' is the top asymptote and 'logAC50' is the 50% response
+#' concentration. If the computation of the standard deviations of these two
+#' parameters fails, then the standard deviation is set equal to the parameter
+#' estimate and is indicated by the respective imputed flag being TRUE.
+#'
+#' @param x Data frame of dose response data.
+#' @param conc Column name of base-10 log scaled concentration (default "logc").
+#' @param resp Column name of response (default "resp").
+#' @param fixed_slope Logical indicating whether to fit a 2-parameter (TRUE) or
+#'   3-parameter (FALSE) Hill model (default TRUE).
+#' @param assay Column name of assay identifier(s) (optional, default NULL).
+#' @param substance Column name of substance identifier(s) (optional, default
+#'   NULL).
+#'
+#' @returns A list with elements 'fit', 'assay', 'substance'. The 'fit' element
+#'   is a data frame of fit parameters, while the 'assay' and 'substance'
+#'   elements indicate the column names used for assay and substance
+#'   identifiers, respectively.
 #' @export
+#' @seealso [add_hill_params()]
 #'
 #' @examples
-#' # Multiple assays, multiple chemicals
-#' df <- geo_tox_data$dose_response
-#' fit_hill(df, assay = "endp", chem = "casn")
-#' 
-#' # Single assay, multiple chemicals
-#' df <- geo_tox_data$dose_response |>
-#'   dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
-#' fit_hill(df, chem = "casn")
-#' 
-#' # Single assay, single chemical
-#' df <- geo_tox_data$dose_response |>
-#'   dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-#'                 casn == "510-15-6")
-#' fit_hill(df)
-#' # 3-parameter Hill model
-#' fit_hill(df, fixed_slope = FALSE)
-fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE,
-                     chem = NULL, assay = NULL) {
-
+#' hill_df <- tibble::tribble(
+#'   ~assay, ~model, ~casn, ~logc, ~resp,
+#'   "a1", "human", "00-00-1",    0,  10,
+#'   "a1", "human", "00-00-1",    1,  20,
+#'   "a1", "human", "00-00-1",    2,  80,
+#'   "a1", "human", "00-00-1",    3, 100,
+#'   "a1", "human", "00-00-2", -0.5,   5,
+#'   "a1", "human", "00-00-2",  0.5,  20,
+#'   "a1", "human", "00-00-2",  1.5,  55,
+#'   "a1", "human", "00-00-2",  2.5,  60,
+#'   "a2",   "rat", "00-00-1",   -1,   0,
+#'   "a2",   "rat", "00-00-1",    0,  10,
+#'   "a2",   "rat", "00-00-1",    1,  30,
+#'   "a2",   "rat", "00-00-1",    2,  40
+#' )
+#'
+#' # Fit 2-parameter Hill model
+#' fit_hill(
+#'   hill_df, assay = c(name = "assay", model = "model"), substance = "casn"
+#' )
+#'
+#' # Fit 3-parameter Hill model
+#' fit_hill(hill_df, assay = "assay", substance = "casn", fixed_slope = FALSE)
+fit_hill <- function(
+    x, conc = "logc", resp = "resp", fixed_slope = TRUE, assay = NULL,
+    substance = NULL
+) {
   if (!inherits(x, "data.frame")) {
-    stop("x must be a data.frame")
+    stop("`x` must be a data.frame")
   }
   if (!all(c(conc, resp) %in% names(x))) {
-    stop("x must contain columns named by 'conc' and 'resp' inputs")
+    stop("`x` must contain columns named by 'conc' and 'resp' inputs")
   }
-  if (!is.null(chem) && !chem %in% names(x)) {
-    stop("x must contain a column named by 'chem' when not NULL")
+  if (!is.null(substance) && !all(substance %in% names(x))) {
+    stop("`x` must contain column(s) named by 'substance' when not NULL")
   }
-  if (!is.null(assay) && !assay %in% names(x)) {
-    stop("x must contain a column named by 'assay' when not NULL")
+  if (!is.null(assay) && !all(assay %in% names(x))) {
+    stop("`x` must contain column(s) named by 'assay' when not NULL")
   }
-  
-  cols <- c("assay" = assay, "chem" = chem, "x" = conc, "y" = resp)
-  x |> 
-    dplyr::select(tidyselect::any_of(cols)) |> 
-    tidyr::nest(.by = tidyselect::any_of(c("assay", "chem")), .key = "df") |> 
+
+  assay_val <- unname(assay)
+  substance_val <- unname(substance)
+  cols <- c(assay_val, substance_val, "x" = conc, "y" = resp)
+
+  fit <- x |>
+    dplyr::select(tidyselect::all_of(cols)) |>
+    tidyr::nest(
+      .by = tidyselect::all_of(c(assay_val, substance_val)),
+      .key = "df"
+    ) |>
     dplyr::mutate(
       df = purrr::map(.data$df, \(x) .fit_hill(x, "x", "y", fixed_slope)),
-      df = purrr::map(.data$df, \(x) .extract_hill_params(x))) |> 
-    tidyr::unnest("df") |> 
-    dplyr::arrange(dplyr::across(tidyselect::any_of(c("assay", "chem"))))
+      df = purrr::map(.data$df, \(x) .extract_hill_params(x))) |>
+    tidyr::unnest("df") |>
+    dplyr::arrange(dplyr::across(tidyselect::all_of(c(assay_val, substance_val))))
+
+  list(
+    fit = fit,
+    assay = assay,
+    substance = substance
+  )
 }
 
 .fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE) {
@@ -148,11 +184,11 @@ fit_hill <- function(x, conc = "logc", resp = "resp", fixed_slope = TRUE,
             "logAC50" = "par.logAC50", "logAC50.sd" = "sds.logAC50",
             "slope" = "par.slope", "slope.sd" = "sds.slope",
             "logc_min", "logc_max", "resp_min", "resp_max", "AIC")
-  params <- tibble::as_tibble(t(unlist(fit))) |> 
+  params <- tibble::as_tibble(t(unlist(fit))) |>
     dplyr::select(tidyselect::all_of(cols))
 
   # Impute sd NAs with mean for tp and logAC50
-  params |> 
+  params |>
     dplyr::mutate(
       tp.sd.imputed = is.na(.data$tp.sd),
       tp.sd = dplyr::if_else(.data$tp.sd.imputed,

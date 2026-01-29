@@ -1,186 +1,73 @@
-test_that("errors", {
-  # If IR_params is input, then age must be input or already exist
-  expect_error(GeoTox() |> simulate_population(IR_params = "test"),
-               "Age data is required to simulate inhalation rate")
-})
+test_that("simulate population", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
 
-test_that("populate fields - age", {
+  age_df <- data.frame(
+    FIPS = rep(c("00001", "00002"), each = 19),
+    AGEGRP = rep(0:18, times = 2),
+    TOT_POP = 0
+  )
+  # location 1, age group 40-44
+  age_df$TOT_POP[c(1, 10)]  = 100
+  # location 2, age group 5-9 and 50-54
+  age_df$TOT_POP[c(3, 12) + 19] = 100
+  age_df$TOT_POP[20] <- 200
 
-  geoTox <- GeoTox()
-  age <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-  age$TOT_POP[c(1, 10)] <- 100
-  
-  expect_null(geoTox$age)
-  expect_null(geoTox$IR)
-  
-  geoTox <- geoTox |> simulate_population(age = age, n = 5)
-  
-  expect_false(is.null(geoTox$age))
-  expect_false(is.null(geoTox$IR))
-})
+  obesity_df <- data.frame(
+    FIPS = c("00001", "00002"),
+    OBESITY_CrudePrev = c(10, 20),
+    OBESITY_SD = c(5, 10)
+  )
 
-test_that("populate fields - IR_params", {
-  
-  geoTox <- GeoTox()
-  IR_params <- data.frame("age" = c(20, 0, 50),
-                          "mean" = c(0.3, 0.5, 0.2),
-                          "sd" = c(0.1, 0.2, 0.05))
-  
-  expect_null(geoTox$IR)
-  
-  geoTox$age <- list(seq(10, 90, by = 10))
-  geoTox <- geoTox |> simulate_population(IR_params = IR_params)
-  
-  expect_false(is.null(geoTox$IR))
-  
-  # IR should not be overwritten
-  geoTox2 <- geoTox |> simulate_population()
-  expect_true(identical(geoTox$IR, geoTox2$IR))
-  
-  # IR should be overwritten
-  IR_params2 <- data.frame("age" = c(20, 0, 50),
-                           "mean" = c(5, 1, 10),
-                           "sd" = 0)
-  geoTox2 <- geoTox |> simulate_population(IR_params = IR_params2)
-  expect_false(identical(geoTox$IR, geoTox2$IR))
-  
-})
+  exposure_df <- data.frame(
+    FIPS = c("00001", "00002"),
+    casn = c("50-00-0", "50-00-0"),
+    route = "inhalation",
+    mean = c(10, 20),
+    sd = c(2, 4)
+  )
 
-test_that("populate fields - obesity", {
-  
-  geoTox <- GeoTox()
-  obesity <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
-                        OBESITY_SD = c(5, 5, 5),
-                        FIPS = c("c", "a", "b"))
-  
-  expect_null(geoTox$obesity)
-  
-  geoTox <- geoTox |> simulate_population(obesity = obesity, n = 5)
+  css_df <- tibble::tribble(
+    ~casn, ~age_lb, ~age_ub, ~weight, ~css,
+    "50-00-0",  0, 44, "Normal",  1,
+    "50-00-0", 45, 89, "Normal",  2,
+    "50-00-0",  0, 44, "Obese",  11,
+    "50-00-0", 45, 89, "Obese",  12
+  )
 
-  expect_false(is.null(geoTox$obesity))
-})
+  expect_silent(
+    GT |>
+      set_simulated_css(css_df) |>
+      add_exposure_rate_params() |>
+      simulate_population(
+        age = age_df,
+        obesity = obesity_df,
+        exposure = exposure_df,
+        n = 3
+      )
+  )
 
-test_that("populate fields - exposure", {
-  
-  geoTox <- GeoTox()
-  exposure <- data.frame(mean = 10, sd = 1)
-  
-  expect_null(geoTox$exposure)
-  expect_null(geoTox$C_ext)
-  
-  geoTox <- geoTox |> simulate_population(exposure = exposure, n = 5)
-  
-  expect_false(is.null(geoTox$exposure))
-  expect_false(is.null(geoTox$C_ext))
-})
+  # Add another exposure substance column
+  exposure_df$chnm <- c("chem1", "chem2")
+  DBI::dbRemoveTable(con, "exposure")
+  expect_silent(
+    simulate_population(
+      GT,
+      exposure = exposure_df,
+      substance = c("casn", "chnm"),
+      simulate_rate = FALSE,
+      overwrite = TRUE
+    )
+  )
 
-test_that("populate fields - simulated_css", {
-  
-  geoTox <- GeoTox()
-  x <- y <- expand.grid(age_min = seq(0, 50, 10), weight = c("Normal", "Obese"))
-  x$css <- lapply(1:nrow(x), function(i) {
-    rep(x$age_min[i] / 5 + as.integer(x$weight[i] == "Obese"), 2)
-  })
-  x$age_median_css <- x$weight_median_css <- 10
-  y$css <- lapply(1:nrow(y), function(i) {
-    rep(y$age_min[i] / 10 + as.integer(y$weight[i] == "Obese") / 2, 2)
-  })
-  y$age_median_css <- y$weight_median_css <- 10
-  simulated_css <- list("chem1" = x, "chem2" = y)
-
-  expect_null(geoTox$C_ss)
-  expect_null(geoTox$css_sensitivity)
-  
-  geoTox$age <- seq(5, 50, by = 5)
-  geoTox$obesity <- rep("Normal", 10)
-  geoTox <- geoTox |> simulate_population(simulated_css = simulated_css)
-  
-  expect_false(is.null(geoTox$C_ss))
-  expect_false(is.null(geoTox$css_sensitivity))
-})
-
-test_that("clear downstream - age", {
-  
-  # Simulate GeoTox age field
-  age <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-  age$TOT_POP[c(1, 10)] <- 100
-  geoTox <- GeoTox() |> simulate_population(age = age, n = 5)
-  
-  # Make C_ss fields not null
-  geoTox$C_ss <- "test"
-  geoTox$css_sensitivity <- "test"
-  
-  # Re-simulate age
-  expect_warning(geoTox <- geoTox |> 
-                   simulate_population(age = age, n = 5),
-                 "Clearing `C_ss` and `css_sensitivity` fields")
-  expect_null(geoTox$C_ss)
-  expect_null(geoTox$css_sensitivity)
-  
-})
-
-test_that("clear downstream - obesity", {
-  
-  # Simulate GeoTox obesity field
-  obesity <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
-                        OBESITY_SD = c(5, 5, 5),
-                        FIPS = c("c", "a", "b"))
-  geoTox <- GeoTox() |> simulate_population(obesity = obesity, n = 5)
-  
-  # Make C_ss fields not null
-  geoTox$C_ss <- "test"
-  geoTox$css_sensitivity <- "test"
-  
-  # Re-simulate obesity
-  expect_warning(geoTox <- geoTox |> 
-                   simulate_population(obesity = obesity, n = 5),
-                 "Clearing `C_ss` and `css_sensitivity` fields")
-  expect_null(geoTox$C_ss)
-  expect_null(geoTox$css_sensitivity)
-  
-})
-
-test_that("update params", {
-  
-  # New params
-  n <- 5
-  IR_params <- data.frame("age" = c(20, 0, 50),
-                          "mean" = c(0.3, 0.5, 0.2),
-                          "sd" = 0)
-  obes_prev <- "ob_p"
-  obes_sd <- "ob_sd"
-  obes_label <- "ob_l"
-  expos_mean <- "ex_m"
-  expos_sd <- "ex_sd"
-  expos_label <- "ex_l"
-  # time, BW, scaling and max_mult are calculation fields
-  
-  # Create GeoTox object
-  geoTox <- GeoTox()
-  # Prevent IR error by setting age field
-  geoTox$age <- list(c(0))
-  # Update GeoTox params
-  geoTox <- geoTox |> 
-    simulate_population(n = n,
-                        IR_params = IR_params,
-                        obes_prev = obes_prev,
-                        obes_sd = obes_sd,
-                        obes_label = obes_label,
-                        expos_mean = expos_mean,
-                        expos_sd = expos_sd,
-                        expos_label = expos_label)
-  
-  expect_equal(geoTox$par,
-               list(n = n,
-                    IR_params = IR_params,
-                    obesity = list(obes_prev  = obes_prev,
-                                   obes_sd    = obes_sd,
-                                   obes_label = obes_label),
-                    exposure = list(expos_mean  = expos_mean,
-                                    expos_sd    = expos_sd,
-                                    expos_label = expos_label),
-                    internal_dose = list(time    = 1,
-                                         BW      = 1,
-                                         scaling = 1),
-                    resp = list(max_mult = 1.5)))
+  # Check results
+  sample_df <- dplyr::tbl(con, "sample") |> dplyr::collect()
+  expect_equal(nrow(sample_df), 6)
+  conc_df <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(nrow(conc_df), 6)
+  expect_equal(
+    colnames(conc_df),
+    c("id", "sample_id", "substance_id", "route_id", "C_ext", "C_ss")
+  )
 })

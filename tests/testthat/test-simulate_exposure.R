@@ -1,158 +1,125 @@
-test_that("bad inputs", {
-  # Input should be a data frame
-  expect_error(simulate_exposure(c()),
-               "`x` must be a data frame or list of data frames")
-  # Need columns named by "expos_mean" and "expos_sd"
-  expect_error(simulate_exposure(data.frame(x = 0, y = 0)),
-               paste0("`x` data frames must contain columns named by ",
-                      "`expos_mean` and `expos_sd`"))
-  expect_error(simulate_exposure(list(data.frame(x = 0, y = 0),
-                                      data.frame(mean = 0, sd = 0))),
-               paste0("`x` data frames must contain columns named by ",
-                      "`expos_mean` and `expos_sd`"))
-  # Need column named by "expos_label" if nrows > 1
-  expect_error(simulate_exposure(data.frame(mean = c(0, 0), sd = c(0, 0))),
-               "'x' data frames must contain a column named by `expos_label`")
-  # Length mismatch
-  expect_error(simulate_exposure(data.frame(mean = 10, sd = 1), n = c(5, 10)),
-               paste0("`n` must be a single value or a vector with values for ",
-                      "each data frame in `x`"))
+test_that("missing tables", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+
+  expect_error(
+    simulate_exposure(GT),
+    "No 'exposure' table found in the GeoTox connection."
+  )
+  DBI::dbWriteTable(con, "exposure", data.frame(a = 1))
+  expect_error(
+    simulate_exposure(GT, sensitivity = TRUE),
+    "No 'concentration_sensitivity' table found in the GeoTox connection."
+  )
+  DBI::dbWriteTable(con, "concentration_sensitivity", data.frame(a = 1))
+  expect_error(
+    simulate_exposure(GT, sensitivity = TRUE),
+    "No 'sample' table found in the GeoTox connection."
+  )
 })
 
-test_that("single row", {
-  
-  out <- simulate_exposure(data.frame(mean = 10, sd = 1), n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 1)
-  expect_equal(dim(out[[1]]), c(5, 1))
-  expect_equal(colnames(out[[1]]), NULL)
-  
+test_that("sample table already exists", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+
+  # Setup needed tables
+  sample_df <- tibble::tibble(
+    FIPS = c(rep("00001", 2), rep("00002", 3))
+  )
+  exposure_df <- tibble::tribble(
+    ~FIPS, ~casn, ~route, ~mean, ~sd,
+    "00001", "50-00-0", "inhalation",  0, 2,
+    "00001", "64-17-5", "inhalation", 20, 5,
+    "00002", "50-00-0", "inhalation", 15, 3,
+    "00002", "64-17-5", "inhalation", 25, 4,
+    "00003", "50-00-0", "inhalation", 12, 2
+  )
+  GT |> set_sample(sample_df) |> add_exposure(exposure_df)
+
+  # No concentration table
+  expect_silent(simulate_exposure(GT))
+
+  # Overwrite
+  expect_error(
+    simulate_exposure(GT),
+    "GeoTox connection already has a 'concentration' table with a 'C_ext' column."
+  )
+
+  # Concentration table w/o C_ext
+  DBI::dbExecute(con, "ALTER TABLE concentration DROP COLUMN C_ext")
+  expect_silent(simulate_exposure(GT))
+
+  # Output
+  conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(nrow(conc_tbl), 10)
+  expect_true("C_ext" %in% colnames(conc_tbl))
+
+  # Sensitivity
+  conc_sens_tbl <- dplyr::tbl(con, "concentration") |>
+    dplyr::select(id, sample_id, substance_id, route_id, C_ext) |>
+    dplyr::compute(
+      name = "concentration_sensitivity",
+      overwrite = TRUE,
+      temporary = FALSE
+    )
+  expect_silent(simulate_exposure(GT, sensitivity = TRUE))
 })
 
-test_that("single data frame", {
-  
-  out <- simulate_exposure(data.frame(mean = 1:3,
-                                      sd = (1:3) / 10,
-                                      casn = letters[1:3]),
-                           n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 1)
-  expect_equal(dim(out[[1]]), c(5, 3))
-  expect_equal(colnames(out[[1]]), letters[1:3])
-  
+test_that("sample table doesn't exist", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+
+  # Setup needed tables
+  exposure_df <- tibble::tribble(
+    ~FIPS, ~casn, ~route, ~mean, ~sd,
+    "00001", "50-00-0", "inhalation",  0, 2,
+    "00001", "64-17-5", "inhalation", 20, 5,
+    "00002", "50-00-0", "inhalation", 15, 3,
+    "00002", "64-17-5", "inhalation", 25, 4,
+    "00003", "50-00-0", "inhalation", 12, 2
+  )
+  GT |> add_exposure(exposure_df)
+
+  # Simulate
+  expect_silent(simulate_exposure(GT, n = 4))
+
+  # Output
+  conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(nrow(conc_tbl), 24) # 3 locations * 4 samples * 2 substances
+  expect_true("C_ext" %in% colnames(conc_tbl))
+  sample_tbl <- dplyr::tbl(con, "sample") |> dplyr::collect()
+  expect_equal(nrow(sample_tbl), 12) # 3 locations * 4 samples
 })
 
-test_that("two data frames", {
-  
-  out <- simulate_exposure(
-    list(loc1 = data.frame(mean = 1:3,
-                           sd = (1:3) / 10,
-                           casn = letters[1:3]),
-         loc2 = data.frame(mean = 4:7,
-                           sd = 0.1,
-                           casn = letters[c(4, 7, 6, 5)])),
-    n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 2)
-  expect_equal(names(out), c("loc1", "loc2"))
-  expect_equal(dim(out[[1]]), c(5, 3))
-  expect_equal(dim(out[[2]]), c(5, 4))
-  expect_equal(colnames(out[[1]]), letters[1:3])
-  expect_equal(colnames(out[[2]]), letters[4:7])
-  
-})
+test_that("other column names", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
 
-test_that("custom column names", {
-  
-  out <- simulate_exposure(
-    split(data.frame(ave = 1:6,
-                     stdev = 0.1,
-                     label = rep(c("c", "a", "b"), 2),
-                     loc = rep(c("B", "A"), each = 3)),
-          ~loc),
-    expos_mean = "ave",
-    expos_sd = "stdev",
-    expos_label = "label",
-    n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 2)
-  expect_equal(names(out), c("A", "B"))
-  expect_equal(dim(out[[1]]), c(5, 3))
-  expect_equal(dim(out[[2]]), c(5, 3))
-  # Output data.frame columns should be sorted by "expos_label"
-  expect_equal(colnames(out[[1]]), c("a", "b", "c"))
-  expect_equal(colnames(out[[2]]), c("a", "b", "c"))
-  
-})
+  # Setup needed tables
+  sample_df <- tibble::tibble(
+    FIPS = c(rep("00001", 2), rep("00002", 3))
+  )
+  exposure_df <- tibble::tribble(
+    ~FIPS, ~casn, ~route, ~mu, ~sigma,
+    "00001", "50-00-0", "inhalation", 10, 2,
+    "00001", "64-17-5", "inhalation", 20, 5,
+    "00002", "50-00-0", "inhalation", 15, 3,
+    "00002", "64-17-5", "inhalation", 25, 4,
+    "00003", "50-00-0", "inhalation", 12, 2
+  )
+  GT |> set_sample(sample_df) |> add_exposure(exposure_df)
 
-test_that("internal", {
-  
-  out <- .simulate_exposure(data.frame(mean = 1:3, sd = (1:3) / 10),
-                            mean = "mean",
-                            sd = "sd",
-                            n = 5)
-  
-  # Output is a matrix, so type == "double" with 2 dimensions
-  expect_type(out, "double")
-  expect_equal(dim(out), c(5, 3))
-  expect_true(all(out >= 0))
-  
-})
+  # Input column names
+  expect_silent(
+    GT <- simulate_exposure(GT, expos_mean = "mu", expos_sd = "sigma")
+  )
 
-test_that("internal special cases", {
-  
-  out <- .simulate_exposure(data.frame(mean = c(), sd = c()),
-                            mean = "mean",
-                            sd = "sd",
-                            n = 1)
-  
-  # Output is a matrix, so type == "double" with 2 dimensions
-  expect_type(out, "double")
-  expect_equal(dim(out), c(1, 0))
-  
-  out <- .simulate_exposure(data.frame(mean = 0, sd = 0),
-                            mean = "mean",
-                            sd = "sd",
-                            n = 1)
-  
-  # Output is a matrix, so type == "double" with 2 dimensions
-  expect_type(out, "double")
-  expect_equal(dim(out), c(1, 1))
-  expect_true(all(out == 0))
-  
-  out <- .simulate_exposure(data.frame(mean = 1, sd = NA),
-                            mean = "mean",
-                            sd = "sd",
-                            n = 1)
-  
-  # Output is a matrix, so type == "double" with 2 dimensions
-  expect_type(out, "double")
-  expect_equal(dim(out), c(1, 1))
-  expect_true(all(out == 1))
-  
-})
-
-test_that("variable n", {
-  
-  out <- simulate_exposure(
-    list(loc1 = data.frame(mean = 1:3,
-                           sd = (1:3) / 10,
-                           casn = letters[1:3]),
-         loc2 = data.frame(mean = 4:7,
-                           sd = 0.1,
-                           casn = letters[c(4, 7, 6, 5)])),
-    n = c(5, 6))
-  
-  expect_type(out, "list")
-  expect_length(out, 2)
-  expect_equal(names(out), c("loc1", "loc2"))
-  expect_equal(dim(out[[1]]), c(5, 3))
-  expect_equal(dim(out[[2]]), c(6, 4))
-  expect_equal(colnames(out[[1]]), letters[1:3])
-  expect_equal(colnames(out[[2]]), letters[4:7])
-  
+  # Using stored GT$par values
+  expect_silent(
+    simulate_exposure(GT, overwrite = TRUE)
+  )
 })

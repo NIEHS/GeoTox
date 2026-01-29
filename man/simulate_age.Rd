@@ -2,47 +2,66 @@
 % Please edit documentation in R/simulate_age.R
 \name{simulate_age}
 \alias{simulate_age}
-\title{Simulate ages}
+\title{Simulate age values}
 \usage{
-simulate_age(x, n = 1000)
+simulate_age(GT, n = 1000, overwrite = FALSE)
 }
 \arguments{
-\item{x}{data frame or list of data frames containing population data for age
-groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".}
+\item{GT}{GeoTox object.}
 
-\item{n}{simulated sample size(s).}
+\item{n}{Number of individuals to simulate per location (default 1000).
+Ignored if 'sample' table already exists.}
+
+\item{overwrite}{Logical indicating whether to overwrite existing 'age'
+values in the 'sample' table (default FALSE).}
 }
 \value{
-List of arrays containing simulated ages.
+The same GeoTox object, invisibly.
 }
 \description{
-Simulate ages
+Simulate 'age' values to be stored in the 'sample' table of a GeoTox
+database.
 }
 \details{
-Each data frame must contain 19 rows. The first row represents the total
-population of all age groups while the next 18 rows represent age groups
-from 0 to 89 in increments of 5 years.
-
-The sample size can be either a single value or a vector the same length as
-the number of data frames in x. If a single value is provided, the same
-sample size is used for all data frames. If a vector is provided, each
-element corresponds to the sample size for each data frame in x.
+An 'age' table containing simulation data must already exist in the GeoTox
+database, which is added using \code{\link[=add_age]{add_age()}}.
 }
 \examples{
-# Single data frame
-x <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-# populate only age range 40-44, set population total of all ages
-x$TOT_POP[c(1, 10)] <- 100
-simulate_age(x, 5)
+# Example age simulation data
+age_df <- data.frame(
+  FIPS = rep(c(10000, 20000), each = 19),
+  AGEGRP = rep(0:18, times = 2),
+  TOT_POP = 0
+)
+# FIPS 10000, populate age group 40-44
+age_df$TOT_POP[c(1, 10)] = 100
+# FIPS 20000, populate age groups 50-59
+age_df$TOT_POP[c(1, 12, 13) + 19] = c(200, 100, 100)
 
-# List of 2 data frames
-y <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-# populate age ranges 5-9 and 50-54
-y$TOT_POP[c(3, 12)] <- 10
-# set population total for all age groups
-y$TOT_POP[1] <- sum(y$TOT_POP)
-simulate_age(list(x = x, y = y), 15)
-# different sample sizes
-simulate_age(list(x = x, y = y), c(15, 10))
+# Simulate age values
+GT <- GeoTox() |>
+  add_age(age_df) |>
+  simulate_age(n = 5)
 
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at created tables
+
+dplyr::tbl(con, "sample") |> dplyr::collect()
+
+dplyr::tbl(con, "location") |> dplyr::collect()
+
+# Overwrite existing age values
+GT <- GT |> simulate_age(overwrite = TRUE)
+
+# Look at updated 'sample' table
+dplyr::tbl(con, "sample") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+}
+\seealso{
+\code{\link[=add_age]{add_age()}}, \code{\link[=simulate_population]{simulate_population()}}
 }

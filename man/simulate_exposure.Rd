@@ -2,59 +2,107 @@
 % Please edit documentation in R/simulate_exposure.R
 \name{simulate_exposure}
 \alias{simulate_exposure}
-\title{Simulate external exposure}
+\title{Simulate exposure concentrations}
 \usage{
 simulate_exposure(
-  x,
-  expos_mean = "mean",
-  expos_sd = "sd",
-  expos_label = "casn",
-  n = 1000
+  GT,
+  n = 1000,
+  overwrite = FALSE,
+  expos_mean = NULL,
+  expos_sd = NULL,
+  sensitivity = FALSE
 )
 }
 \arguments{
-\item{x}{data frame or list of data frames containing exposure data.}
+\item{GT}{GeoTox object.}
 
-\item{expos_mean}{column name of mean values.}
+\item{n}{Number of individuals to simulate per location (default 1000).
+Ignored if 'sample' table already exists.}
 
-\item{expos_sd}{column name of standard deviations.}
+\item{overwrite}{Logical indicating whether to overwrite existing 'C_ext'
+values in the 'concentration' table (default FALSE).}
 
-\item{expos_label}{column name of labeling term, required if \code{x} has more
-than one row.}
+\item{expos_mean}{Column name of exposure concentration mean in the
+'exposure' table (default "mean").}
 
-\item{n}{simulated sample size(s).}
+\item{expos_sd}{Column name of exposure concentration standard deviation in
+the 'exposure' table (default "sd").}
+
+\item{sensitivity}{Logical indicating whether to simulate exposures for
+sensitivity analysis (default FALSE).}
 }
 \value{
-list of matrices containing inhalation rates. Matrix columns are
-named using the values in the \code{expos_label} column for more than one data
-frame row. Columns are sorted to have consistent order across functions.
+The updated GeoTox object, invisibly.
 }
 \description{
-Simulate external exposure
+Simulate external exposure (C_ext) values to be stored in the
+'concentration' table of a GeoTox database.
 }
 \details{
-The sample size can be either a single value or a vector the same length as
-the number of data frames in x. If a single value is provided, the same
-sample size is used for all data frames. If a vector is provided, each
-element corresponds to the sample size for each data frame in x.
+An 'external' table containing simulation data must already exist in the
+GeoTox database, which is added using \code{\link[=add_exposure]{add_exposure()}}.
+
+The inputs \code{expos_mean} and \code{expos_sd} will be assigned default values of
+"mean" and "sd", respectively, if not provided and not already set in the
+GeoTox object's parameters, \code{GT$par}. If not \code{NULL}, the provided values will
+also be saved to \code{GT$par}.
+
+If \code{sensitivity = TRUE}, exposure concentrations will be simulated for
+sensitivity analysis. Typically this shouldn't be used directly by the user,
+but rather called by \code{\link[=calc_sensitivity]{calc_sensitivity()}}. In this case, the function will
+use the 'concentration_sensitivity' table instead of the 'concentration'
+table, and will assume that the 'sample' table already exists.
 }
 \examples{
-# Single data frame
-x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
-simulate_exposure(x, n = 5)
+# Example exposure simulation data
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
 
-# List of 2 data frames
-y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
-simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
-# different sample sizes
-simulate_exposure(list(loc1 = x, loc2 = y), n = c(5, 3))
+# Simulate C_ext values
+GT <- GeoTox() |>
+  add_exposure(exposure_df) |>
+  simulate_exposure(n = 3)
 
-# Input has custom column names
-z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chnm = letters[1:3])
-simulate_exposure(z,
-                  expos_mean = "ave",
-                  expos_sd = "stdev",
-                  expos_label = "chnm",
-                  n = 5)
+# Open a connection to GeoTox database
+con <- get_con(GT)
 
+# Look at created tables
+
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+
+dplyr::tbl(con, "sample") |> dplyr::collect()
+
+dplyr::tbl(con, "location") |> dplyr::collect()
+
+dplyr::tbl(con, "substance") |> dplyr::collect()
+
+dplyr::tbl(con, "route") |> dplyr::collect()
+
+# Replace 'exposure' table with different column names
+names(exposure_df)[4:5] <- c("mu", "sigma")
+DBI::dbRemoveTable(con, "exposure")
+GT |> add_exposure(exposure_df)
+
+# Overwrite 'C_ext' values in existing 'concentration' table
+# Must specify new 'exposure' column names
+# Notice how the column names are added to GT$par
+str(GT$par)
+GT <- GT |>
+  simulate_exposure(expos_mean = "mu", expos_sd = "sigma", overwrite = TRUE)
+str(GT$par)
+
+# Look at updated 'concentration' table
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+}
+\seealso{
+\code{\link[=add_exposure]{add_exposure()}}, \code{\link[=simulate_population]{simulate_population()}}
 }

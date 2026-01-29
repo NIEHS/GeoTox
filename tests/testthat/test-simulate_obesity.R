@@ -1,88 +1,75 @@
-test_that("bad inputs", {
-  # Input should be a data frame
-  expect_error(simulate_obesity(c()),
-               "`x` must be a data frame")
-  # Need columns named by "obes_prev" and "obes_sd"
-  expect_error(simulate_obesity(data.frame(x = 0, y = 0)),
-               "`x` must contain columns named by `obes_prev` and `obes_sd`")
-  # Need column named by "obes_label" if nrows > 1
-  expect_error(simulate_obesity(data.frame(OBESITY_CrudePrev = c(0, 0),
-                                           OBESITY_SD = c(0, 0))),
-               "`x` must contain a column named by `obes_label`")
-  # Length mismatch
-  expect_error(simulate_obesity(data.frame(OBESITY_CrudePrev = c(0, 0),
-                                           OBESITY_SD = c(0, 0),
-                                           FIPS = letters[1:2]),
-                                n = 1:3),
-               paste("`n` must be a single value or a vector the same length",
-                     "as `nrow\\(x\\)`"))
+test_that("missing table", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  expect_error(
+    simulate_obesity(GT),
+    "No 'obesity' table found in the GeoTox connection."
+  )
 })
 
-test_that("single row", {
-  
-  x <- data.frame(OBESITY_CrudePrev = 50,
-                  OBESITY_SD = 5)
-  
-  out <- simulate_obesity(x, n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 1)
-  expect_equal(names(out), NULL)
-  expect_equal(length(out[[1]]), 5)
-  expect_true(all(out[[1]] %in% c("Normal", "Obese")))
-
+test_that("duplicate location", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+  bad_df <- data.frame(
+    location_id = 1,
+    OBESITY_CrudePrev = c(10, 20),
+    OBESITY_SD = c(5, 10)
+  )
+  DBI::dbWriteTable(con, "obesity", bad_df)
+  expect_error(
+    simulate_obesity(GT),
+    "The 'obesity' table must not contain duplicated location values."
+  )
 })
 
-test_that("default column names", {
-  
-  x <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
-                  OBESITY_SD = c(5, 5, 5),
-                  FIPS = c("c", "a", "b"))
-  
-  out <- simulate_obesity(x, n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 3)
-  expect_equal(names(out), x$FIPS)
-  expect_equal(lapply(out, length), stats::setNames(list(5, 5, 5), x$FIPS))
-  expect_true(all(unlist(out) %in% c("Normal", "Obese")))
+test_that("simulate weight", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
 
-})
+  obesity_df <- data.frame(
+    location_id = c(1, 2, 3),
+    OBESITY_CrudePrev = c(10, NA_real_, 30),
+    OBESITY_SD = c(5, 10, 15)
+  )
+  DBI::dbWriteTable(con, "obesity", obesity_df)
 
-test_that("custom column names", {
-  
-  x <- data.frame(prev = c(0, 50, 100),
-                  sd = c(0, 5, 0),
-                  label = letters[1:3])
-  
-  out <- simulate_obesity(x,
-                          obes_prev = "prev",
-                          obes_sd = "sd",
-                          obes_label = "label",
-                          n = 5)
-  
-  expect_type(out, "list")
-  expect_length(out, 3)
-  expect_equal(names(out), x$label)
-  expect_equal(lapply(out, length), stats::setNames(list(5, 5, 5), x$label))
-  expect_true(all(unlist(out) %in% c("Normal", "Obese")))
-  expect_true(all(out[[1]] == "Normal"))
-  expect_true(all(out[[3]] == "Obese"))
-  
-})
+  # No sample table
+  expect_silent(
+    simulate_obesity(GT, n = 10)
+  )
 
-test_that("variable n", {
-  
-  x <- data.frame(OBESITY_CrudePrev = c(20, 50, 80),
-                  OBESITY_SD = c(5, 5, 5),
-                  FIPS = c("c", "a", "b"))
-  
-  out <- simulate_obesity(x, n = 5:3)
-  
-  expect_type(out, "list")
-  expect_length(out, 3)
-  expect_equal(names(out), x$FIPS)
-  expect_equal(lapply(out, length), stats::setNames(list(5, 4, 3), x$FIPS))
-  expect_true(all(unlist(out) %in% c("Normal", "Obese")))
-  
+  # Sample table exists with age column
+  expect_error(
+    simulate_obesity(GT),
+    "GeoTox connection already has a 'sample' table with a 'weight' column."
+  )
+
+  # Sample table exists without weight column, has an unmatched location_id
+  sample_df <- data.frame(
+    id = 1:6,
+    location_id = c(1, 1, 2, 2, 2, 4)
+  )
+  DBI::dbWriteTable(con, "sample", sample_df, overwrite = TRUE)
+  expect_silent(
+    simulate_obesity(GT)
+  )
+
+  # Custom inputs
+  colnames(obesity_df)[2:3] <- c("prev", "sd")
+  DBI::dbWriteTable(con, "obesity", obesity_df, overwrite = TRUE)
+  GT <- simulate_obesity(GT, obes_prev = "prev", obes_sd = "sd", overwrite = TRUE)
+
+  # Stored GT params
+  simulate_obesity(GT, overwrite = TRUE)
+
+  # Check output values
+  sample_tbl <- dplyr::tbl(con, "sample") |> dplyr::collect()
+  x <- split(sample_tbl$weight, sample_tbl$location_id)
+  expect_length(x[[1]], 2)
+  expect_length(x[[2]], 3)
+  expect_length(x[[3]], 1)
+  expect_true(all(x[[1]] %in% c("Normal", "Obese")))
+  expect_true(all(is.na(x[[2]])))
+  expect_true(is.na(x[[3]]))
 })

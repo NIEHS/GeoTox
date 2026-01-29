@@ -2,49 +2,71 @@
 % Please edit documentation in R/calc_internal_dose.R
 \name{calc_internal_dose}
 \alias{calc_internal_dose}
-\title{Calculate internal chemical dose}
+\title{Calculate internal dose}
 \usage{
-calc_internal_dose(C_ext, IR, time = 1, BW = 1, scaling = 1)
+calc_internal_dose(GT, overwrite = FALSE, sensitivity = FALSE)
 }
 \arguments{
-\item{C_ext}{ambient chemical concentration in \eqn{\frac{mg}{m^3}}}
+\item{GT}{GeoTox object.}
 
-\item{IR}{inhalation rate in \eqn{\frac{m^3}{day}}}
+\item{overwrite}{Logical indicating whether to overwrite existing 'D_int'
+values in the 'concentration' table (default FALSE).}
 
-\item{time}{total time in \eqn{days}}
-
-\item{BW}{body weight in \eqn{kg}}
-
-\item{scaling}{scaling factor encompassing any required unit adjustments}
+\item{sensitivity}{Logical indicating whether to simulate internal dose for
+sensitivity analysis (default FALSE).}
 }
 \value{
-list of matrices containing internal chemical doses in
-\eqn{\frac{mg}{kg}}
+The same GeoTox object, invisibly.
 }
 \description{
-Estimate the internal dose from inhalation of a chemical given inhalation
-rate, time, and body weight
+Calculates internal dose (D_int) as the product of external concentration
+('C_ext' in the 'concentration' table) and exposure rate ('rate' in the
+'exposure_rate' table), and stores the results in the 'D_int' column of the
+'concentration' table in the GeoTox database.
 }
 \details{
-Input \code{C_ext} must be a matrix or list of matrices. Input \code{IR} must be an
-atomic vector or list of atomic vectors. The \code{time}, \code{BW} and \code{scaling}
-arguments are scalars.
-
-The internal dose is calculated as:
-\deqn{D_{int} = \frac{C_{ext} \times IR \times time}{BW} \times scaling}
+If \code{sensitivity = TRUE}, 'D_int' will be calculated for sensitivity
+analysis. Typically this shouldn't be used directly by the user, but rather
+called by \code{\link[=calc_sensitivity]{calc_sensitivity()}}. In this case, the function will use the
+'concentration_sensitivity' and 'exposure_rate_sensitivity' tables instead of
+the 'concentration' and 'exposure_rate' tables.
 }
 \examples{
-# Single population
-C_ext <- matrix(1:15, ncol = 3)
-IR <- 1:5
-calc_internal_dose(C_ext, IR)
-
-# Multiple populations
-C_ext <- list(
-  "a" = matrix(1:15 / 10, ncol = 3),
-  "b" = matrix(1:8, ncol = 2)
+# Setup required tables
+sample_df <- tibble::tribble(
+  ~FIPS, ~age, ~weight,
+  10000, 25, "Normal",
+  10000, 35,  "Obese",
+  20000, 50, "Normal"
 )
-IR <- list(1:5, 1:4 / 2)
-calc_internal_dose(C_ext, IR)
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
+GT <- GeoTox() |>
+  set_sample(sample_df) |>
+  add_exposure_rate_params() |>
+  simulate_population(exposure = exposure_df, sample_css = FALSE)
 
+# Calculate internal dose
+GT <- GT |> calc_internal_dose()
+
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at relevant tables
+
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+
+dplyr::tbl(con, "exposure_rate") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+}
+\seealso{
+\code{\link[=calc_response]{calc_response()}}
 }

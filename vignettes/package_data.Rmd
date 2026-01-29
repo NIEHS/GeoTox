@@ -22,14 +22,14 @@ This package includes example data `geo_tox_data`. Below is a description of the
 
 ```{r setup, message=FALSE}
 library(dplyr)
-library(sf)
-library(tidyr)
-library(readr)
-library(stringr)
-library(purrr)
-library(readxl)
 library(httk)
 library(httr2)
+library(purrr)
+library(readr)
+library(readxl)
+library(sf)
+library(stringr)
+library(tidyr)
 
 geo_tox_data <- list()
 ```

@@ -9,52 +9,75 @@ fit_hill(
   conc = "logc",
   resp = "resp",
   fixed_slope = TRUE,
-  chem = NULL,
-  assay = NULL
+  assay = NULL,
+  substance = NULL
 )
 }
 \arguments{
-\item{x}{data frame of dose response data.}
+\item{x}{Data frame of dose response data.}
 
-\item{conc}{column name of base-10 log scaled concentration.}
+\item{conc}{Column name of base-10 log scaled concentration (default "logc").}
 
-\item{resp}{column name of response.}
+\item{resp}{Column name of response (default "resp").}
 
-\item{fixed_slope}{if TRUE, slope is fixed at 1.}
+\item{fixed_slope}{Logical indicating whether to fit a 2-parameter (TRUE) or
+3-parameter (FALSE) Hill model (default TRUE).}
 
-\item{chem}{(optional) column name of chemical identifiers.}
+\item{assay}{Column name of assay identifier(s) (optional, default NULL).}
 
-\item{assay}{(optional) column name of assay identifiers.}
+\item{substance}{Column name of substance identifier(s) (optional, default
+NULL).}
 }
 \value{
-data frame of fit parameters.
+A list with elements 'fit', 'assay', 'substance'. The 'fit' element
+is a data frame of fit parameters, while the 'assay' and 'substance'
+elements indicate the column names used for assay and substance
+identifiers, respectively.
 }
 \description{
-Fit 2- or 3-parameter Hill model
+Fit a 2-parameter (fixed slope) or 3-parameter (variable slope) Hill model to
+concentration-response data.
 }
 \details{
-Optional \code{chem} and \code{assay} identifiers can be used to fit multiple
-chemicals and/or assays. Returned columns \code{tp} is the top asymptote and
-\code{logAC50} is the 50\% response concentration. If the computation of the
-standard deviations of these two parameters fails, then the standard
-deviation is set equal to the parameter estimate and is indicated by the
-respective imputed flag being TRUE.
+The input \code{x} data frame must contain columns specified by \code{conc} and \code{resp}
+arguments representing the log10-transformed concentration and response,
+respectively.
+
+Optional \code{assay} and \code{substance} identifiers can be named vectors that are
+used to fit multiple substances and/or assays. For example, \code{assay = c(name = "assay", "model")} would indicate that \code{x} contains both and assay name and
+model. The \code{name = "assay"} part would rename the "assay" column in \code{x} to
+"name" in the 'assay' table when aded with \code{\link[=add_hill_params]{add_hill_params()}}.
+
+Returned column 'tp' is the top asymptote and 'logAC50' is the 50\% response
+concentration. If the computation of the standard deviations of these two
+parameters fails, then the standard deviation is set equal to the parameter
+estimate and is indicated by the respective imputed flag being TRUE.
 }
 \examples{
-# Multiple assays, multiple chemicals
-df <- geo_tox_data$dose_response
-fit_hill(df, assay = "endp", chem = "casn")
+hill_df <- tibble::tribble(
+  ~assay, ~model, ~casn, ~logc, ~resp,
+  "a1", "human", "00-00-1",    0,  10,
+  "a1", "human", "00-00-1",    1,  20,
+  "a1", "human", "00-00-1",    2,  80,
+  "a1", "human", "00-00-1",    3, 100,
+  "a1", "human", "00-00-2", -0.5,   5,
+  "a1", "human", "00-00-2",  0.5,  20,
+  "a1", "human", "00-00-2",  1.5,  55,
+  "a1", "human", "00-00-2",  2.5,  60,
+  "a2",   "rat", "00-00-1",   -1,   0,
+  "a2",   "rat", "00-00-1",    0,  10,
+  "a2",   "rat", "00-00-1",    1,  30,
+  "a2",   "rat", "00-00-1",    2,  40
+)
 
-# Single assay, multiple chemicals
-df <- geo_tox_data$dose_response |>
-  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
-fit_hill(df, chem = "casn")
+# Fit 2-parameter Hill model
+fit_hill(
+  hill_df, assay = c(name = "assay", model = "model"), substance = "casn"
+)
 
-# Single assay, single chemical
-df <- geo_tox_data$dose_response |>
-  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-                casn == "510-15-6")
-fit_hill(df)
-# 3-parameter Hill model
-fit_hill(df, fixed_slope = FALSE)
+# Fit 3-parameter Hill model
+fit_hill(hill_df, assay = "assay", substance = "casn", fixed_slope = FALSE)
+}
+\seealso{
+\code{\link[=add_hill_params]{add_hill_params()}}
 }

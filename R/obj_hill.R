@@ -1,13 +1,11 @@
 #' Objective function for 2- or 3-parameter Hill model
 #'
-#' @param par parameters
-#' @param log10_conc base-10 log scale concentration
-#' @param resp response
+#' @param par Parameters.
+#' @param log10_conc Base-10 log scale concentration.
+#' @param resp Response.
 #'
-#' @keywords internal
+#' @returns Objective value.
 #' @noRd
-#'
-#' @return value of the objective function
 obj_hill <- function(par, log10_conc, resp) {
 
   max        <- par[1]  # maximal response

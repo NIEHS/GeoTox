@@ -4,54 +4,96 @@
 \alias{sensitivity_analysis}
 \title{Perform sensitivity analysis}
 \usage{
-sensitivity_analysis(x, max_mult = list(NULL, NULL, NULL, 1.2, NULL))
+sensitivity_analysis(GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5))
 }
 \arguments{
-\item{x}{GeoTox object.}
+\item{GT}{GeoTox object.}
 
-\item{max_mult}{numeric list of length 5 for each step of the sensitivity
-analysis.}
+\item{max_mult}{Vector of length 5 containing upper bound multipliers for max
+response (default 1.5).}
 }
 \value{
-The same GeoTox object with added \code{sensitivity} field.
+The updated GeoTox object, invisibly.
 }
 \description{
-Perform sensitivity analysis
+Calculate risk sensitivity to all available \code{vary} parameters in
+\code{\link[=calc_sensitivity]{calc_sensitivity()}}.
 }
 \details{
-This wrapper function will sequentially call the \link{compute_sensitivity}
-function with inputs \code{age}, \code{obesity}, \code{css_params}, \code{fit_params}, and
-\code{C_ext}. The results will be returned as a named list and stored in the
-\code{sensitivity} field of the input GeoTox object.
-
-Values of \code{NULL} in the \code{max_mult} input will use the default value stored
-in the \code{GeoTox} object (\code{x$par$resp$max_mult}). When a \code{GeoTox} object is
-created this is initialized at \code{1.5}, but can be changed via the
-\link{calculate_response} function or directly in the object.
+Sensitivity is calculated in the order: age, weight, css_params, fit_params,
+C_ext. The \code{max_mult} vector allows specifying different upper bound
+multipliers for each parameter.
 }
 \examples{
-# Use a subset of the package data for demonstration purposes
-set.seed(2357)
-n <- 10 # Population size
-m <- 5 # Number of regions
-idx <- if (m < 100) sample(1:100, m) else 1:100
+# Setup required tables
+sample_df <- tibble::tribble(
+  ~FIPS, ~age, ~weight,
+  10000, 25, "Normal",
+  10000, 35,  "Obese",
+  20000, 50, "Normal"
+)
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
+css_df <- tibble::tribble(
+  ~casn, ~age_lb, ~age_ub, ~weight, ~css,
+  "00-00-1",  0, 49, "Normal", 21,
+  "00-00-1", 50, 99, "Normal", 22,
+  "00-00-1",  0, 49,  "Obese", 61,
+  "00-00-1", 50, 99,  "Obese", 62,
+  "00-00-2",  0, 49, "Normal", 11,
+  "00-00-2", 50, 99, "Normal", 12,
+  "00-00-2",  0, 49,  "Obese", 31,
+  "00-00-2", 50, 99,  "Obese", 32
+)
+hill_df <- tibble::tribble(
+  ~assay, ~casn, ~logc, ~resp,
+  "a1", "00-00-1",    0,  10,
+  "a1", "00-00-1",    1,  20,
+  "a1", "00-00-1",    2,  80,
+  "a1", "00-00-1",    3, 100,
+  "a1", "00-00-2", -0.5,   5,
+  "a1", "00-00-2",  0.5,  20,
+  "a1", "00-00-2",  1.5,  55,
+  "a1", "00-00-2",  2.5,  60
+)
+GT <- GeoTox() |>
+  set_sample(sample_df) |>
+  set_simulated_css(css_df) |>
+  add_exposure_rate_params() |>
+  add_hill_params(fit_hill(hill_df, assay = "assay", substance = "casn")) |>
+  simulate_population(exposure = exposure_df) |>
+  calc_response()
 
-# Create GeoTox object and populate required fields
-geoTox <- GeoTox() |>
-  # Simulate populations for each region
-  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
-                      obesity = geo_tox_data$obesity[idx, ],
-                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
-                      simulated_css = geo_tox_data$simulated_css,
-                      n = n) |>
-  # Estimated Hill parameters
-  set_hill_params(geo_tox_data$dose_response |>
-                    fit_hill(assay = "endp", chem = "casn") |>
-                    dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed))
+# Perform sensitivity analysis
+GT <- GT |> sensitivity_analysis()
 
-# Sensitivity analysis can now be done
-geoTox <- geoTox |> sensitivity_analysis()
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at relevant table
+
+dplyr::tbl(con, "risk_sensitivity_age") |> dplyr::collect()
+
+dplyr::tbl(con, "risk_sensitivity_weight") |> dplyr::collect()
+
+dplyr::tbl(con, "risk_sensitivity_css_params") |> dplyr::collect()
+
+dplyr::tbl(con, "risk_sensitivity_fit_params") |> dplyr::collect()
+
+dplyr::tbl(con, "risk_sensitivity_C_ext") |> dplyr::collect()
+
+# Compared to baseline risk table
+dplyr::tbl(con, "risk") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
 }
 \seealso{
-\code{\link{compute_sensitivity}}
+\code{\link[=calc_sensitivity]{calc_sensitivity()}}
 }

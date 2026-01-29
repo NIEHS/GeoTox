@@ -1,50 +1,72 @@
-test_that("inputs", {
-  
-  expect_no_error(calc_internal_dose(C_ext = matrix(1), IR = 2))
-  expect_no_error(calc_internal_dose(C_ext = matrix(1), IR = as.integer(2)))
-  expect_no_error(calc_internal_dose(C_ext = list(matrix(1)), IR = list(2)))
-  
-  expect_error(calc_internal_dose(C_ext = 1, IR = 2))
-  expect_error(calc_internal_dose(C_ext = list(matrix(1), c(1)), IR = 2))
-  expect_error(calc_internal_dose(C_ext = matrix(1), IR = "a"))
-  expect_error(calc_internal_dose(C_ext = matrix(1), IR = list(2, "a")))
+test_that("missing tables", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+
+  expect_error(
+    calc_internal_dose(GT),
+    "No 'concentration' table found in the GeoTox connection."
+  )
+  expect_error(
+    calc_internal_dose(GT, sensitivity = TRUE),
+    "No 'concentration_sensitivity' table found in the GeoTox connection."
+  )
+  df <- tibble::tribble(
+    ~id, ~sample_id, ~route_id, ~C_ext,
+    1, 1, 1, 0.5
+  )
+  write_table(con, "concentration", df)
+  write_table(con, "concentration_sensitivity", df)
+  expect_error(
+    calc_internal_dose(GT),
+    "No 'exposure_rate' table found in the GeoTox connection."
+  )
+  expect_error(
+    calc_internal_dose(GT, sensitivity = TRUE),
+    "No 'exposure_rate_sensitivity' table found in the GeoTox connection."
+  )
 })
 
-test_that("output dimensions", {
-  
-  # Single value
-  
-  out <- calc_internal_dose(C_ext = matrix(1), IR = 2)
-  
-  expect_type(out, "list")
-  expect_length(out, 1)
-  expect_equal(lapply(out, dim),
-               list(c(1, 1)))
+test_that("calculate internal dose", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
 
-  # Single population
-  
-  C_ext <- matrix(1:15, ncol = 3)
-  IR <- 1:5
-  
-  out <- calc_internal_dose(C_ext, IR)
-
-  expect_type(out, "list")
-  expect_length(out, 1)
-  expect_equal(lapply(out, dim),
-               list(c(5, 3)))
-  
-  # Multiple populations
-  
-  C_ext <- list(
-    "a" = matrix(1:15 / 10, ncol = 3),
-    "b" = matrix(1:8, ncol = 2)
+  # Don't match rows to make sure join is working
+  conc_df <- tibble::tribble(
+    ~id, ~sample_id, ~route_id, ~C_ext,
+    1, 1, 1, 0.5,
+    2, 1, 2, 0.3,
+    3, 2, 1, 0.2
   )
-  IR <- list(1:5, 1:4 / 2)
-  
-  out <- calc_internal_dose(C_ext, IR)
-  
-  expect_type(out, "list")
-  expect_length(out, 2)
-  expect_equal(lapply(out, dim),
-               list(a = c(5, 3), b = c(4, 2)))
+  rate_df <- tibble::tribble(
+    ~sample_id, ~route_id, ~rate,
+    2, 1, 20,
+    1, 2, 5,
+    1, 1, 10
+  )
+  write_table(con, "concentration", conc_df)
+  write_table(con, "exposure_rate", rate_df)
+
+  # Call function
+  calc_internal_dose(GT)
+
+  # Check results
+  conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(conc_tbl$D_int, c(0.5 * 10, 0.3 * 5, 0.2 * 20))
+
+  # Overwrite error
+  expect_error(
+    calc_internal_dose(GT),
+    "GeoTox connection already has a 'D_int' column in the 'concentration' table."
+  )
+
+  # Modify input data and overwrite results
+  sql <- "UPDATE concentration SET C_ext = C_ext + 1"
+  invisible(DBI::dbExecute(con, sql))
+  calc_internal_dose(GT, overwrite = TRUE)
+
+  # Check results
+  conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(conc_tbl$D_int, c(1.5 * 10, 1.3 * 5, 1.2 * 20))
 })

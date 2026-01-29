@@ -2,67 +2,177 @@
 % Please edit documentation in R/simulate_population.R
 \name{simulate_population}
 \alias{simulate_population}
-\title{Simulate population data}
+\title{Simulate population characteristics and exposures}
 \usage{
 simulate_population(
-  x,
+  GT,
   age = NULL,
   obesity = NULL,
   exposure = NULL,
-  simulated_css = NULL,
+  simulate_rate = TRUE,
+  sample_css = TRUE,
   ...
 )
 }
 \arguments{
-\item{x}{GeoTox object.}
+\item{GT}{GeoTox object.}
 
-\item{age}{input \code{x} to function \link{simulate_age}. After simulating ages, the
-inhalation rate is subsequently calculated using \link{simulate_inhalation_rate}.}
+\item{age}{Data frame with age data.}
 
-\item{obesity}{input \code{x} to function \link{simulate_obesity}.}
+\item{obesity}{Data frame with obesity data.}
 
-\item{exposure}{input \code{x} to function \link{simulate_exposure}.}
+\item{exposure}{Data frame with exposure data.}
 
-\item{simulated_css}{input \code{simulated_css} to functions \link{sample_Css} and
-\link{get_fixed_css}.}
+\item{simulate_rate}{Logical indicating whether to simulate exposure rates.
+This requires that exposure rate parameters have been added using
+\code{\link[=add_exposure_rate_params]{add_exposure_rate_params()}}.}
 
-\item{...}{additional arguments passed to other functions. See details.}
+\item{sample_css}{Logical indicating whether to sample steady-state plasma
+concentrations (C\eqn{_{ss}}). This requires that a table of simulated
+C\eqn{_{ss}} values has been set using \code{\link[=set_simulated_css]{set_simulated_css()}}. In addition,
+\code{\link[=set_fixed_css]{set_fixed_css()}} will be called after sampling to prepare C\eqn{_{ss}}
+values for sensitivity analysis.}
+
+\item{...}{Additional arguments passed to wrapped functions (see 'Additional
+arguments' section of 'Details').}
 }
 \value{
-The same object with simulated fields added.
+The updated GeoTox object, invisibly.
 }
 \description{
-Simulate population data for given input fields
+Simulate age, weight category, exposure rates, and external exposures. Sample
+from pre-simulated steady-state plasma concentrations.
 }
 \details{
-Additional parameters include \code{n} for sample size(s),
-\code{IR_params} for \link{simulate_inhalation_rate},
-\code{obes_prev}, \code{obes_sd}, and \code{obes_label} for \link{simulate_obesity},
-and \code{expos_mean}, \code{expos_sd}, and \code{expos_label} for \link{simulate_exposure}.
+This is a wrapper around several other functions:
+\itemize{
+\item \code{\link[=add_age]{add_age()}} and \code{\link[=simulate_age]{simulate_age()}} for age simulation.
+\item \code{\link[=add_obesity]{add_obesity()}} and \code{\link[=simulate_obesity]{simulate_obesity()}} for weight category simulation.
+\item \code{\link[=add_exposure]{add_exposure()}} and \code{\link[=simulate_exposure]{simulate_exposure()}} for external exposure
+concentration simulation (C\eqn{_{ext}}).
+\item \code{\link[=simulate_exposure_rate]{simulate_exposure_rate()}} for exposure rate simulation.
+\item \code{\link[=sample_simulated_css]{sample_simulated_css()}} for sampling steady-state plasma concentrations
+(C\eqn{_{ss}}).
+\item \code{\link[=set_fixed_css]{set_fixed_css()}} to prepare C\eqn{_{ss}} values for sensitivity analysis.
+}
+
+The user can provide data frames for age, obesity, and exposure data; if any
+of these are provided, the corresponding add and simulate functions will be
+called. The user can also specify whether to simulate exposure rates and
+sample C\eqn{_{ss}} values using the \code{simulate_rate} and \code{sample_css}
+arguments, respectively. If \code{simulate_rate} is \code{TRUE}, exposure rate
+parameters must have been added using \code{\link[=add_exposure_rate_params]{add_exposure_rate_params()}}. If
+\code{sample_css} is \code{TRUE}, a table of simulated C\eqn{_{ss}} values must already
+exist using \code{\link[=set_simulated_css]{set_simulated_css()}}.
+\subsection{Additional arguments:}{
+
+\describe{
+\item{n}{Number of samples to simulate (default 1000). Used in
+\code{\link[=simulate_age]{simulate_age()}}, \code{\link[=simulate_obesity]{simulate_obesity()}}, and \code{\link[=simulate_exposure]{simulate_exposure()}}. Ignored
+if the 'sample' table already exists, in which case the existing sample sizes
+are used.}
+\item{location}{Column name for location ID (default "FIPS"). Used in
+\code{\link[=add_age]{add_age()}}, \code{\link[=add_obesity]{add_obesity()}}, and \code{\link[=add_exposure]{add_exposure()}}.}
+\item{overwrite}{Logical indicating whether to overwrite existing values
+(default FALSE). Used in \code{\link[=simulate_age]{simulate_age()}}, \code{\link[=simulate_obesity]{simulate_obesity()}},
+\code{\link[=simulate_exposure_rate]{simulate_exposure_rate()}}, and \code{\link[=simulate_exposure]{simulate_exposure()}}.}
+\item{substance}{Column name for substance ID (default "casn"). Used in
+\code{\link[=add_exposure]{add_exposure()}}.}
+\item{route}{Column name for exposure route (default "route"). Used in
+\code{\link[=add_exposure]{add_exposure()}}.}
+\item{rate_extra_cols}{Additional columns to include in exposure_rate table.
+Used in \code{\link[=simulate_exposure_rate]{simulate_exposure_rate()}}.}
+\item{obes_prev, obes_sd}{Column names for obesity prevalence and standard
+deviation (default "OBESITY_CrudePrev" and "OBESITY_SD", respectively). Used
+in \code{\link[=simulate_obesity]{simulate_obesity()}}.}
+\item{expos_mean, expos_sd}{Column names for exposure concentration mean and
+standard deviation (default "mean" and "sd", respectively). Used in
+\code{\link[=simulate_exposure]{simulate_exposure()}}.}
+\item{css_extra_cols}{Additional columns to include in simulated_css table.
+Used in \code{\link[=sample_simulated_css]{sample_simulated_css()}}.}
+\item{substance_order}{Named list specifying order of substances. Used in
+\code{\link[=sample_simulated_css]{sample_simulated_css()}} and \code{\link[=set_fixed_css]{set_fixed_css()}}.}
+}
+}
 }
 \examples{
-# Use a subset of the package data for demonstration purposes
-set.seed(2357)
-n <- 10 # Population size
-m <- 5 # Number of regions
-idx <- if (m < 100) sample(1:100, m) else 1:100
+# Example simulation data
 
-# Create GeoTox object
-geoTox <- GeoTox() |>
-  # Simulate populations for each region
-  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
-                      obesity = geo_tox_data$obesity[idx, ],
-                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
-                      simulated_css = geo_tox_data$simulated_css,
-                      n = n)
-                      
-# Variable population sizes
-n <- 6:10
-geoTox <- GeoTox() |>
-  # Simulate populations for each region
-  simulate_population(age = split(geo_tox_data$age, ~FIPS)[idx],
-                      obesity = geo_tox_data$obesity[idx, ],
-                      exposure = split(geo_tox_data$exposure, ~FIPS)[idx],
-                      simulated_css = geo_tox_data$simulated_css,
-                      n = n)
+age_df <- data.frame(
+  FIPS = rep(c(10000, 20000), each = 19),
+  AGEGRP = rep(0:18, times = 2),
+  TOT_POP = 0
+)
+# FIPS 10000, populate age group 40-44
+age_df$TOT_POP[c(1, 10)] = 100
+# FIPS 20000, populate age groups 50-59
+age_df$TOT_POP[c(1, 12, 13) + 19] = c(200, 100, 100)
+
+obesity_df <- data.frame(
+  FIPS = c(10000, 20000),
+  OBESITY_CrudePrev = c(20, 80),
+  OBESITY_SD = 5
+)
+
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
+
+# Note: normally the css_df would have many more rows for each combination of
+# the non-'css' columns to allow for sampling.
+css_df <- tibble::tribble(
+  ~casn, ~age_lb, ~age_ub, ~weight, ~css,
+  "00-00-1",  0, 49, "Normal",  1,
+  "00-00-1", 50, 99, "Normal",  2,
+  "00-00-1",  0, 49,  "Obese", 11,
+  "00-00-1", 50, 99,  "Obese", 12,
+  "00-00-2",  0, 49, "Normal", 21,
+  "00-00-2", 50, 99, "Normal", 22,
+  "00-00-2",  0, 49,  "Obese", 31,
+  "00-00-2", 50, 99,  "Obese", 32
+)
+
+# Simulate population
+GT <- GeoTox() |>
+  add_exposure_rate_params() |>
+  set_simulated_css(css_df) |>
+  simulate_population(
+    age = age_df,
+    obesity = obesity_df,
+    exposure = exposure_df,
+    n = 3
+  )
+
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at created tables
+
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+
+dplyr::tbl(con, "sample") |> dplyr::collect()
+
+dplyr::tbl(con, "location") |> dplyr::collect()
+
+dplyr::tbl(con, "substance") |> dplyr::collect()
+
+dplyr::tbl(con, "route") |> dplyr::collect()
+
+# Note: the 'age', 'weight', 'params', and 'other' columns of the
+# 'fixed_css' table contain the C_ss values for sensitivity analysis.
+# For example, the 'age' column doesn't contain ages, but C_ss values.
+dplyr::tbl(con, "fixed_css") |> dplyr::collect()
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+}
+\seealso{
+\code{\link[=add_age]{add_age()}}, \code{\link[=simulate_age]{simulate_age()}}, \code{\link[=add_obesity]{add_obesity()}},
+\code{\link[=simulate_obesity]{simulate_obesity()}}, \code{\link[=add_exposure]{add_exposure()}}, \code{\link[=simulate_exposure]{simulate_exposure()}},
+\code{\link[=simulate_exposure_rate]{simulate_exposure_rate()}}, \code{\link[=sample_simulated_css]{sample_simulated_css()}}, \code{\link[=set_fixed_css]{set_fixed_css()}}
 }

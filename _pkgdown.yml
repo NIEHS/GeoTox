@@ -2,48 +2,81 @@ url: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   bootswatch: minty
-  math-rendering: mathjax
+
+development:
+  mode: auto
 
 reference:
-- subtitle: GeoTox S3 Object
-  desc: Functions using a GeoTox object
+- title: GeoTox
+  desc: Initialize a GeoTox object.
 - contents:
   - GeoTox
-  - calculate_response
-  - compute_sensitivity
-  - plot_sensitivity
-  - sensitivity_analysis
-  - set_boundaries
-  - set_hill_params
-  - set_population
-  - simulate_population
-- subtitle: Simulate
-  desc: Functions that perform Monte Carlo simulation
+
+- title: Wrapper functions
+  desc: >
+    Call a single function for each major step of the workflow. Ordered by
+    workflow sequence.
 - contents:
-  - sample_Css
+  - simulate_population
+  - calc_response
+  - sensitivity_analysis
+
+- title: Simulate population
+  desc: >
+    Generate population characteristics and exposures using Monte Carlo
+    simulation.
+- contents:
+  - add_age
+  - add_exposure
+  - add_exposure_rate_params
+  - add_obesity
   - simulate_age
   - simulate_exposure
-  - simulate_inhalation_rate
+  - simulate_exposure_rate
   - simulate_obesity
-- subtitle: Calculate Functions
-  desc: Functions that calculate various metrics
+
+- subtitle: Pre-simulated C<sub>ss</sub>
+  desc: >
+    Set and sample from pre-simulated steady-state plasma concentrations
+    C<sub>ss</sub>.
 - contents:
-  - starts_with("calc_")
-  - resp_quantiles
-- subtitle: Plot
-  desc: Plotting functions
+  - sample_simulated_css
+  - set_fixed_css
+  - set_simulated_css
+
+- subtitle: Set 'sample' table
+  desc: Set population characteristics directly instead of simulating them.
 - contents:
-  - plot_exposure
-  - plot_hill
-  - plot_resp
-- subtitle: Auxiliary
-  desc: Auxillary and helper functions
+  - set_sample
+
+- title: Calculate response
+  desc: >
+    Calculate risk scores using population characteristics, exposures, and
+    concentration-response data.
 - contents:
+  - calc_internal_dose
+  - calc_invitro_concentration
+  - calc_risk
+
+- title: Sensitivity analysis
+- contents:
+  - calc_sensitivity
+
+- title: Hill model
+- contents:
+  - add_hill_params
   - fit_hill
-  - hill_conc
-  - hill_val
-  - starts_with("get_")
-- subtitle: Datasets
-  desc: Package datasets
+
+- title: Boundary information
+- contents:
+  - set_boundary
+
+- title: Utility
+  desc: Extract information from a GeoTox object.
+- contents:
+  - get_risk_values
+  - get_concentration_mean
+
+- title: Datasets
 - contents:
   - geo_tox_data
