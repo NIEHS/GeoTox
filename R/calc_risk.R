@@ -206,7 +206,7 @@ calc_risk <- function(
           dplyr::select("id"),
         by = dplyr::join_by("sample_id" == "id")
       ) |>
-      dplyr::filter(.data$C_invitro > 0) |>
+      dplyr::filter(is.finite(.data$C_invitro) && .data$C_invitro > 0) |>
       dplyr::collect()
 
     if (nrow(conc_df) == 0) return(NULL)
