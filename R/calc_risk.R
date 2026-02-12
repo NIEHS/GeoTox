@@ -161,13 +161,14 @@ calc_risk <- function(
     tbls <- DBI::dbListTables(con)
   }
   risk_tbl <- dplyr::cross_join(
+    hill_df |>
+      dplyr::select("assay_id"),
     sample_tbl |>
       dplyr::select("id") |>
       dplyr::rename(sample_id = "id"),
-    hill_df |> dplyr::select("assay_id"),
     copy = TRUE
   ) |>
-    dplyr::select("assay_id", "sample_id") |>
+    dplyr::arrange(.data$assay_id, .data$sample_id) |>
     dplyr::compute(
       name = risk_name,
       temporary = FALSE

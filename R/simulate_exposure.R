@@ -171,6 +171,7 @@ simulate_exposure <- function(
         dplyr::tbl(con, "exposure") |>
           dplyr::distinct(.data$substance_id, .data$route_id)
       ) |>
+        dplyr::arrange(.data$sample_id, .data$substance_id, .data$route_id) |>
         dplyr::mutate(id = dplyr::row_number(), .before = 1) |>
         dplyr::compute(
           name = conc_name,
