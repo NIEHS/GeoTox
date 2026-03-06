@@ -127,6 +127,7 @@ simulate_exposure_rate <- function(
         dplyr::select("id") |>
         dplyr::rename(route_id = "id")
     ) |>
+      dplyr::arrange(.data$sample_id, .data$route_id) |>
       dplyr::compute(
         name = rate_name,
         temporary = FALSE,

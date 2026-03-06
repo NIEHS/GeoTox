@@ -161,6 +161,8 @@ calc_risk <- function(
     tbls <- DBI::dbListTables(con)
   }
   risk_tbl <- dplyr::cross_join(
+    # Have sample_tbl first so hill_df is copied into the database.
+    # If hill_df is first, then the sample table is copied into memory.
     sample_tbl |>
       dplyr::select("id") |>
       dplyr::rename(sample_id = "id"),
@@ -168,6 +170,7 @@ calc_risk <- function(
     copy = TRUE
   ) |>
     dplyr::select("assay_id", "sample_id") |>
+    dplyr::arrange(.data$assay_id, .data$sample_id) |>
     dplyr::compute(
       name = risk_name,
       temporary = FALSE
@@ -205,7 +208,7 @@ calc_risk <- function(
           dplyr::select("id"),
         by = dplyr::join_by("sample_id" == "id")
       ) |>
-      dplyr::filter(.data$C_invitro > 0) |>
+      dplyr::filter(is.finite(.data$C_invitro) && .data$C_invitro > 0) |>
       dplyr::collect()
 
     if (nrow(conc_df) == 0) return(NULL)

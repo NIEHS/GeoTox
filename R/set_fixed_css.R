@@ -154,9 +154,12 @@ set_fixed_css <- function(GT, substance_order = NULL) {
 
   # Initialize "fixed_css" table
   fixed_css_tbl <- dplyr::cross_join(
-    sample_tbl |> dplyr::select(sample_id = "id"),
-    css_tbl |> dplyr::distinct(.data$substance_id)
+    sample_tbl |>
+      dplyr::select(sample_id = "id"),
+    css_tbl |>
+      dplyr::distinct(.data$substance_id)
   ) |>
+    dplyr::arrange(.data$sample_id, .data$substance_id) |>
     dplyr::mutate(id = as.integer(dplyr::row_number()), .before = 1) |>
     dplyr::compute(
       name = "fixed_css",
