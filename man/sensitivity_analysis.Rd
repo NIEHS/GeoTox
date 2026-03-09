@@ -4,13 +4,15 @@
 \alias{sensitivity_analysis}
 \title{Perform sensitivity analysis}
 \usage{
-sensitivity_analysis(GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5))
+sensitivity_analysis(GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5), ...)
 }
 \arguments{
 \item{GT}{GeoTox object.}
 
 \item{max_mult}{Vector of length 5 containing upper bound multipliers for max
 response (default 1.5).}
+
+\item{...}{Additional arguments passed to each call of \code{\link[=calc_sensitivity]{calc_sensitivity()}}.}
 }
 \value{
 The updated GeoTox object, invisibly.

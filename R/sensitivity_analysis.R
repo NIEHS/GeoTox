@@ -10,6 +10,7 @@
 #' @param GT GeoTox object.
 #' @param max_mult Vector of length 5 containing upper bound multipliers for max
 #'   response (default 1.5).
+#' @param ... Additional arguments passed to each call of [calc_sensitivity()].
 #'
 #' @returns The updated GeoTox object, invisibly.
 #' @export
@@ -85,13 +86,13 @@
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
 sensitivity_analysis <- function(
-    GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5)
+    GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5), ...
 ) {
   GT |>
-    calc_sensitivity("age",        max_mult = max_mult[1]) |>
-    calc_sensitivity("weight",     max_mult = max_mult[2]) |>
-    calc_sensitivity("css_params", max_mult = max_mult[3]) |>
-    calc_sensitivity("fit_params", max_mult = max_mult[4]) |>
-    calc_sensitivity("C_ext",      max_mult = max_mult[5])
+    calc_sensitivity("age",        max_mult = max_mult[1], ...) |>
+    calc_sensitivity("weight",     max_mult = max_mult[2], ...) |>
+    calc_sensitivity("css_params", max_mult = max_mult[3], ...) |>
+    calc_sensitivity("fit_params", max_mult = max_mult[4], ...) |>
+    calc_sensitivity("C_ext",      max_mult = max_mult[5], ...)
   invisible(GT)
 }
