@@ -120,11 +120,12 @@ fit_hill <- function(
   # Determine bounds
   resp_max <- max(resp)
   resp_min <- min(resp)
+  resp_val <- max(abs(c(resp_max, resp_min)))
   log10_conc_min <- min(log10_conc)
   log10_conc_max <- max(log10_conc)
 
   bounds <- as.data.frame(rbind(
-    c(                 0,       1.2 * resp_max), # top asymptote
+    c(   -1.2 * resp_val,       1.2 * resp_val), # top asymptote
     c(log10_conc_min - 2, log10_conc_max + 0.5), # log10(AC50)
     c(               0.3,                    8), # slope
     c(              -Inf,                  Inf)  # err
