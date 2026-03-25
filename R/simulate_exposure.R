@@ -203,8 +203,9 @@ simulate_exposure <- function(
         dplyr::arrange(.data$id) |>
         dplyr::collect()
       if (nrow(sample_df) == 0) return()
+      data <- data |> dplyr::arrange(.data$substance_id)
       update_df <- .simulate_exposure(
-        data |> dplyr::arrange(.data$substance_id),
+        data,
         expos_mean,
         expos_sd,
         n = nrow(sample_df)

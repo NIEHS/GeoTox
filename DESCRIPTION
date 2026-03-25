@@ -1,6 +1,6 @@
 Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
-Version: 0.3.0.9002
+Version: 0.3.0.9003
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut"),
            comment = c(ORCID = "0000-0002-2971-9743")),
@@ -38,6 +38,7 @@ Suggests:
     httk,
     httr2,
     knitr,
+    quarto,
     readr,
     readxl,
     rmarkdown,
@@ -50,6 +51,6 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
+VignetteBuilder: knitr, quarto
 BugReports: https://github.com/NIEHS/GeoTox/issues
-Config/Needs/website: rmarkdown
+Config/Needs/website: rmarkdown, quarto

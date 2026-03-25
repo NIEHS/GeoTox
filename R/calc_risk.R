@@ -120,7 +120,7 @@ calc_risk <- function(
   sample_cols <- c("id", "location_id")
   hill_cols <- c(
     "substance_id", "tp", "tp.sd", "logAC50", "logAC50.sd", "logc_min",
-    "logc_max", "resp_max"
+    "logc_max", "resp_min", "resp_max"
   )
   if ("assay_id" %in% colnames(hill_tbl)) {
     hill_cols <- c("assay_id", hill_cols)
@@ -208,7 +208,7 @@ calc_risk <- function(
           dplyr::select("id"),
         by = dplyr::join_by("sample_id" == "id")
       ) |>
-      dplyr::filter(is.finite(.data$C_invitro) && .data$C_invitro > 0) |>
+      dplyr::filter(is.finite(.data$C_invitro) & .data$C_invitro > 0) |>
       dplyr::collect()
 
     if (nrow(conc_df) == 0) return(NULL)
@@ -243,12 +243,14 @@ calc_risk <- function(
     dplyr::pull() |>
     sort()
 
+  resp_val <- pmax(abs(hill_params$resp_max), abs(hill_params$resp_min))
+
   tp <- lapply(sample_id, \(x) {
     out <- truncnorm::rtruncnorm(
       1,
       a    = 0,
-      b    = hill_params$resp_max * max_mult,
-      mean = hill_params$tp,
+      b    = resp_val * max_mult,
+      mean = abs(hill_params$tp),
       sd   = if (fixed) 0 else hill_params$tp.sd
     )
     # Replace NAs with 0 (can occur when tp and tp.sd are 0)

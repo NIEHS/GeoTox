@@ -12,7 +12,7 @@ INPUT,FOUND_BY,DTXSID,PREFERRED_NAME,CASRN
 "1,3-DICHLOROPROPENE",Approved Name,DTXSID1022057,"1,3-Dichloropropene",542-75-6
 "1,3-PROPANE SULTONE",Approved Name,DTXSID8021195,"1,3-Propane sultone",1120-71-4
 "1,4-DICHLOROBENZENE",Approved Name,DTXSID1020431,"1,4-Dichlorobenzene",106-46-7
-1-BROMOPROPANE,Approved Name,DTXSID6021874,1-Bromopropane,106-94-5
+1-Bromopropane,Approved Name,DTXSID6021874,1-Bromopropane,106-94-5
 2-ACETYLAMINOFLUORENE,Approved Name,DTXSID0039227,2-Acetylaminofluorene,53-96-3
 2-CHLOROACETOPHENONE,Approved Name,DTXSID9020293,2-Chloroacetophenone,532-27-4
 2-NITROPROPANE,Approved Name,DTXSID6020981,2-Nitropropane,79-46-9
@@ -31,7 +31,7 @@ INPUT,FOUND_BY,DTXSID,PREFERRED_NAME,CASRN
 4-NITROBIPHENYL,Approved Name,DTXSID9041522,4-Nitrobiphenyl,92-93-3
 4-NITROPHENOL,Approved Name,DTXSID0021834,4-Nitrophenol,100-02-7
 "4,4'-METHYLENE BIS(2-CHLOROANILINE)",Synonym from Valid Source,DTXSID5020865,"4,4'-Methylenebis(2-chloroaniline)",101-14-4
-"4,4'-METHYLENEDIANILINE",Synonym from Valid Source,DTXSID6022422,"4,4'-Diaminobiphenyl methane",101-77-9
+"4,4'-METHYLENEDIANILINE",Systematic Name,DTXSID6022422,"4,4'-Diaminobiphenyl methane",101-77-9
 "4,4'-METHYLENEDIPHENYL DIISOCYANATE (MDI)",Searched by Synonym: Found 0 results,N/A,N/A,N/A
 "4,6-DINITRO-O-CRESOL (INCLUDING SALTS)",Searched by Synonym: Found 0 results,N/A,N/A,N/A
 ACETALDEHYDE,Approved Name,DTXSID5039224,Acetaldehyde,75-07-0
@@ -48,7 +48,7 @@ ANILINE,Approved Name,DTXSID8020090,Aniline,62-53-3
 ANTIMONY COMPOUNDS,Expert Validated Synonym,DTXSID30872414,Antimony & Antimony Compounds,NOCAS_872414
 ARSENIC COMPOUNDS(INORGANIC INCLUDING ARSINE),Searched by Synonym: Found 0 results,N/A,N/A,N/A
 BENZENE,Approved Name,DTXSID3039242,Benzene,71-43-2
-BENZIDINE,Expert Validated Synonym,DTXSID2020137,"4,4′-Diamino-1,1′-biphenyl",92-87-5
+BENZIDINE,Expert Validated Synonym,DTXSID2020137,"4,4?-Diamino-1,1?-biphenyl",92-87-5
 BENZOAPYRENE,Searched by Synonym: Found 0 results,N/A,N/A,N/A
 BENZOTRICHLORIDE,Approved Name,DTXSID1020148,Benzotrichloride,98-07-7
 BENZYL CHLORIDE,Approved Name,DTXSID0020153,Benzyl chloride,100-44-7
@@ -64,9 +64,10 @@ CARBARYL,Approved Name,DTXSID9020247,Carbaryl,63-25-2
 CARBON DISULFIDE,Approved Name,DTXSID6023947,Carbon disulfide,75-15-0
 CARBON TETRACHLORIDE,Approved Name,DTXSID8020250,Carbon tetrachloride,56-23-5
 CARBONYL SULFIDE,Approved Name,DTXSID6023949,Carbonyl sulfide,463-58-1
-CATECHOL,Expert Validated Synonym,DTXSID3020257,"1,​2-​Benzenediol",120-80-9
-Chloramben,Approved Name,DTXSID2020262,Chloramben,133-90-4
-CHLORDANE,Synonym,DTXSID5023954,Technical chlordane,12789-03-6
+CATECHOL,Expert Validated Synonym,DTXSID3020257,"1,?2-?Benzenediol",120-80-9
+CHLORAMBEN,Approved Name,DTXSID2020262,Chloramben,133-90-4
+CHLORDANE,Synonym - WARNING: Synonym mapped to two or more chemicals,DTXSID5023954,Technical chlordane,12789-03-6
+CHLORDANE,Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID7020267,Chlordane,57-74-9
 CHLORINE,Approved Name - WARNING: Synonym mapped to two or more chemicals,DTXSID1020273,Chlorine,7782-50-5
 CHLORINE,Systematic Name - WARNING: Synonym mapped to two or more chemicals,DTXSID801014230,"Chlorine, atomic",22537-15-1
 CHLOROACETIC ACID,Approved Name,DTXSID4020901,Chloroacetic acid,79-11-8
@@ -87,7 +88,7 @@ DICHLOROETHYL ETHER (BIS[2-CHLOROETHYL]ETHER),Searched by Synonym: Found 0 resul
 DICHLORVOS,Approved Name,DTXSID5020449,Dichlorvos,62-73-7
 DIESEL PM,Searched by Synonym: Found 0 results,N/A,N/A,N/A
 DIETHANOLAMINE,Approved Name,DTXSID3021932,Diethanolamine,111-42-2
-DIETHYL SULFATE,Expert Validated Synonym,DTXSID1024045,Ethyl sulfate (Et2SO4),64-67-5
+DIETHYL SULFATE,Systematic Name,DTXSID1024045,Ethyl sulfate (Et2SO4),64-67-5
 DIMETHYL PHTHALATE,Approved Name,DTXSID3022455,Dimethyl phthalate,131-11-3
 DIMETHYL SULFATE,Approved Name,DTXSID5024055,Dimethyl sulfate,77-78-1
 DIMETHYLCARBAMOYL CHLORIDE,Approved Name,DTXSID1020512,Dimethylcarbamoyl chloride,79-44-7
@@ -112,7 +113,7 @@ HEXACHLOROCYCLOPENTADIENE,Approved Name,DTXSID2020688,Hexachlorocyclopentadiene,
 HEXACHLOROETHANE,Approved Name,DTXSID7020689,Hexachloroethane,67-72-1
 HEXAMETHYLENE DIISOCYANATE,Synonym from Valid Source,DTXSID4024143,"1,6-Diisocyanatohexane",822-06-0
 HEXAMETHYLPHOSPHORAMIDE,Approved Name,DTXSID6020694,Hexamethylphosphoramide,680-31-9
-HEXANE,Expert Validated Synonym,DTXSID0021917,n-Hexane,110-54-3
+HEXANE,Systematic Name,DTXSID0021917,n-Hexane,110-54-3
 HYDRAZINE,Approved Name,DTXSID3020702,Hydrazine,302-01-2
 HYDROCHLORIC ACID (HYDROGEN CHLORIDE [GAS ONLY]),Searched by Synonym: Found 0 results,N/A,N/A,N/A
 HYDROGEN FLUORIDE (HYDROFLUORIC ACID),Searched by Synonym: Found 0 results,N/A,N/A,N/A
@@ -154,7 +155,7 @@ PENTACHLOROPHENOL,Approved Name,DTXSID7021106,Pentachlorophenol,87-86-5
 PHENOL,Approved Name,DTXSID5021124,Phenol,108-95-2
 PHOSGENE,Approved Name,DTXSID0024260,Phosgene,75-44-5
 PHOSPHINE,Approved Name,DTXSID2021157,Phosphine,7803-51-2
-PHOSPHORUS,Systematic Name,DTXSID1024382,Phosphorus-31,7723-14-0
+PHOSPHORUS,Searched by Synonym: Found 0 results,N/A,N/A,N/A
 PHTHALIC ANHYDRIDE,Approved Name,DTXSID2021159,Phthalic anhydride,85-44-9
 PROPIONALDEHYDE,Expert Validated Synonym,DTXSID2021658,Propanal,123-38-6
 PROPOXUR (BAYGON),Searched by Synonym: Found 0 results,N/A,N/A,N/A
