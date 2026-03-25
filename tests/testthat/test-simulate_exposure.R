@@ -123,3 +123,38 @@ test_that("other column names", {
     simulate_exposure(GT, overwrite = TRUE)
   )
 })
+
+test_that("data order", {
+  GT <- GeoTox(withr::local_tempfile(fileext = ".duckdb"))
+  con <- get_con(GT)
+  withr::defer(DBI::dbDisconnect(con))
+
+  # Setup needed tables
+  exposure_df_1 <- tibble::tribble(
+    ~FIPS, ~casn, ~route, ~mean, ~sd,
+    "00001", "50-00-0", "inhalation",  0, 0,
+    "00001", "64-17-5", "inhalation", 20, 0
+  )
+  # Reverse substance order for this location
+  exposure_df_2 <- tibble::tribble(
+    ~FIPS, ~casn, ~route, ~mean, ~sd,
+    "00002", "64-17-5", "inhalation", 25, 0,
+    "00002", "50-00-0", "inhalation", 15, 0
+  )
+  GT |> add_exposure(exposure_df_1) |> add_exposure(exposure_df_2)
+
+  # Simulate
+  expect_silent(simulate_exposure(GT, n = 1))
+
+  # Output
+  conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
+  expect_equal(nrow(conc_tbl), 4) # 2 locations * 2 substances
+  expect_true("C_ext" %in% colnames(conc_tbl))
+  sample_tbl <- dplyr::tbl(con, "sample") |> dplyr::collect()
+  expect_equal(nrow(sample_tbl), 2) # 2 locations * 1 sample
+  # Check order of C_ext values, should be ordered by location then substance
+  expect_equal(
+    conc_tbl |> dplyr::arrange(id) |> dplyr::pull(C_ext),
+    c(0, 20, 15, 25)
+  )
+})
