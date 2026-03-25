@@ -1,23 +1,23 @@
 ---
 title: "GeoTox Introduction"
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GeoTox Introduction}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+format:
+  html:
+    toc: true
 ---
-
-```{r knitr, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 This vignette covers basic use of package functions. Package data, `geo_tox_data`, is used throughout the examples and details on how it was created can be found in the "GeoTox Package Data" vignette.
 
-```{r setup, message=FALSE}
-library(GeoTox)
+## Setup
+
+```{r}
+#| label: setup
+#| message: false
+devtools::load_all()
+# library(GeoTox)
 library(dplyr)
 library(ggplot2)
 library(purrr)
@@ -26,44 +26,65 @@ library(tibble)
 library(tidyr)
 ```
 
-## Data prep
+## Hill curve fitting
 
-```{r data-prep}
-# Load GeoTox dataset
-data("geo_tox_data", package = "GeoTox")
-
-# Reshape C_ss data
-css_df <- geo_tox_data$simulated_css |>
-  map(\(x) {
-    x |>
-      mutate(
-        age_lb = map_int(age_group, first),
-        age_ub = map_int(age_group, last)
-      ) |>
-      select(age_lb, age_ub, weight, css) |>
-      unnest(css)
-  }) |>
-  enframe(name = "casn") |>
-  unnest(value)
-
-# Fit hill model to dose-response data, group by assay and substance
+```{r}
+#| label: hill
+# Fit Hill model to dose-response data, group by assay and substance
 hill_params <- geo_tox_data$dose_response |>
   fit_hill(assay = "endp", substance = c("casn", "chnm"))
+
 # Remove fits that had imputed standard deviations
 hill_params$fit <- hill_params$fit |>
   filter(!tp.sd.imputed, !logAC50.sd.imputed)
 ```
 
+```{r}
+#| label: hill-plot
+#| out-width: 100%
+ggplot() +
+  # Add Hill curves
+  pmap(
+    hill_params$fit |> select(endp, chnm, tp, logAC50, slope),
+    \(endp, chnm, tp, logAC50, slope) {
+      geom_function(
+        data = tibble(endp = endp, chnm = chnm),
+        fun = GeoTox:::hill_val,
+        args = list(max = tp, AC50 = 10^logAC50, n = slope)
+      )
+    }
+  ) +
+  # Add points to curves
+  geom_point(
+    data = geo_tox_data$dose_response |>
+      semi_join(hill_params$fit, by = c("endp", "chnm")),
+    aes(x = 10^logc, y = resp),
+    pch = 1
+  ) +
+  # Format
+  facet_grid(endp ~ chnm, scales = "free_y") +
+  scale_x_log10(
+    limits = c(1e-4, 1e4),
+    labels = scales::label_log()
+  ) +
+  theme(
+    axis.title = element_blank(),
+    strip.text = element_text(size = 5)
+  )
+```
+
+
 ## Workflow steps
 
 Create GeoTox object, run simulations and computations
 
-```{r single-assay-analysis}
+```{r}
+#| label: workflow
 set.seed(2357)
 GT <- GeoTox("GeoTox-introduction.duckdb") |>
   # Add various data components
   set_boundary(geo_tox_data$boundaries) |>
-  set_simulated_css(css_df) |>
+  set_simulated_css(geo_tox_data$simulated_css) |>
   add_exposure_rate_params() |>
   add_hill_params(hill_params) |>
   # Simulate population characteristics and exposure
@@ -84,19 +105,25 @@ GT <- GeoTox("GeoTox-introduction.duckdb") |>
 
 ### Print
 
-```{r print}
+```{r}
+#| label: print
 GT
 ```
 
 ### Tables
 
-```{r tables}
+```{r}
+#| label: tables
 con <- get_con(GT)
 DBI::dbListTables(con)
 DBI::dbDisconnect(con)
 ```
 
-```{r table-png, out.width="70%", fig.align="center", echo=FALSE}
+```{r}
+#| label: table-png
+#| out.width: "70%"
+#| fig.align: "center"
+#| echo: false
 knitr::include_graphics("img/tables.png")
 ```
 
@@ -104,7 +131,12 @@ knitr::include_graphics("img/tables.png")
 
 #### Exposure
 
-```{r plot_exposure, fig.width=8, fig.height=4, out.width="90%", fig.align="center"}
+```{r}
+#| label: plot_exposure
+#| fig.width: 8
+#| fig.height: 4
+#| out.width: "90%"
+#| fig.align: "center"
 plot_exposure <- function(GT) {
   con <- get_con(GT)
   withr::defer(DBI::dbDisconnect(con))
@@ -133,7 +165,12 @@ plot_exposure(GT)
 
 #### Concentrations
 
-```{r plot_conc, fig.width=8, fig.height=4, out.width="90%", fig.align="center"}
+```{r}
+#| label: plot_conc
+#| fig.width: 8
+#| fig.height: 4
+#| out.width: "90%"
+#| fig.align: "center"
 plot_concentration_mean <- function(GT, col, wrap_var = "chnm") {
   con <- get_con(GT)
   withr::defer(DBI::dbDisconnect(con))
@@ -176,7 +213,12 @@ plot_concentration_mean(GT, "C_invitro")
 
 #### Risk
 
-```{r plot_risk, fig.width=8, fig.height=3, out.width="90%", fig.align="center"}
+```{r}
+#| label: plot_risk
+#| fig.width: 8
+#| fig.height: 3
+#| out.width: "90%"
+#| fig.align: "center"
 plot_risk_quantile <- function(
     GT, col, wrap_var = "endp", quantiles = c("Median" = 0.5)
 ) {
@@ -223,7 +265,12 @@ plot_risk_quantile(GT, "IA.HQ.10")
 
 #### Sensitivity
 
-```{r plot_sens, fig.width=8, fig.height=3, out.width="90%", fig.align="center"}
+```{r}
+#| label: plot_sens
+#| fig.width: 8
+#| fig.height: 3
+#| out.width: "90%"
+#| fig.align: "center"
 plot_risk_sensitivity <- function(GT, metric, assay) {
   df <- get_risk_sensitivity(GT, metric, assay) |> 
     rename(all_of(c(
@@ -267,10 +314,13 @@ plot_risk_sensitivity <- function(GT, metric, assay) {
 }
 
 metric <- "IA.Eff"
-assay <- c(endp = "TOX21_ELG1_LUC_Agonist")
+assay <- c(endp = "TOX21_DT40_LUC")
 plot_risk_sensitivity(GT, metric, assay)
 ```
 
-```{r remove-file, echo=FALSE, results='hide'}
+```{r}
+#| label: remove-file
+#| echo: false
+#| output: false
 file.remove(GT$db_info$dbdir)
 ```
