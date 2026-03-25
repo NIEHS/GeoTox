@@ -32,9 +32,9 @@ test_that("normal risk", {
   )
   hill_df <- tibble::tribble(
     ~substance_id,
-    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_max,
-    1, 0.5, 0.1, -5, 0.2, -8, -2, 1.0,
-    2, 0.6, 0.1, -6, 0.2, -9, -3, 1.0
+    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_min, ~resp_max,
+    1, 0.5, 0.1, -5, 0.2, -8, -2, 0.0, 1.0,
+    2, 0.6, 0.1, -6, 0.2, -9, -3, 0.0, 1.0
   )
   write_table(con, conc_name, conc_df)
   write_table(con, rate_name, rate_df)
@@ -88,9 +88,9 @@ test_that("risk sensitivity", {
   )
   hill_df <- tibble::tribble(
     ~substance_id,
-    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_max,
-    1, 0.5, 0.1, -5, 0.2, -8, -2, 1.0,
-    2, 0.6, 0.1, -6, 0.2, -9, -3, 1.0
+    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_min, ~resp_max,
+    1, 0.5, 0.1, -5, 0.2, -8, -2, 0.0, 1.0,
+    2, 0.6, 0.1, -6, 0.2, -9, -3, 0.0, 1.0
   )
   write_table(con, conc_name, conc_df)
   write_table(con, rate_name, rate_df)

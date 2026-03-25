@@ -57,9 +57,9 @@ test_that("no assay_id, reset_seed, extra loc", {
   )
   hill_df <- tibble::tribble(
     ~substance_id,
-    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_max,
-    1, 0.5, 0.1, -5, 0.2, -8, -2, 1.0,
-    2, 0.6, 0.1, -6, 0.2, -9, -3, 1.0
+    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_min, ~resp_max,
+    1, 0.5, 0.1, -5, 0.2, -8, -2, 0.0, 1.0,
+    2, 0.6, 0.1, -6, 0.2, -9, -3, 0.0, 1.0
   )
   write_table(con, "concentration", conc_df)
   write_table(con, "sample", sample_df)
@@ -100,10 +100,10 @@ test_that("with assay_id, extra hill", {
   )
   hill_df <- tibble::tribble(
     ~assay_id, ~substance_id,
-    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_max,
-    1, 1, 0.5, 0.1, -5, 0.2, -8, -2, 1.0,
-    2, 2, -0.6, 0.1, -6, 0.2, -9, -3, 1.0,
-    3, 3, 0.7, 0.1, -7, 0.2, -10, -4, 1.0
+    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_min, ~resp_max,
+    1, 1,  0.5, 0.1, -5, 0.2,  -8, -2, 0.0, 1.0,
+    2, 2, -0.6, 0.1, -6, 0.2,  -9, -3, 0.0, 1.0,
+    3, 3,  0.7, 0.1, -7, 0.2, -10, -4, 0.0, 1.0
   )
   write_table(con, "concentration", conc_df)
   write_table(con, "sample", sample_df)
@@ -141,8 +141,8 @@ test_that("overwrite", {
   )
   hill_df <- tibble::tribble(
     ~substance_id,
-    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_max,
-    1, 0.5, 0.1, -5, 0.2, -8, -2, 1.0
+    ~tp, ~tp.sd, ~logAC50, ~logAC50.sd, ~logc_min, ~logc_max, ~resp_min, ~resp_max,
+    1, 0.5, 0.1, -5, 0.2, -8, -2, 0.0, 1.0
   )
   write_table(con, "concentration", conc_df)
   write_table(con, "sample", sample_df)
