@@ -22,9 +22,9 @@ The websites linked in this vignette were last accessed on March 20, 2026. The l
 The package data are being pulled from various sources and are connected using FIPS codes. FIPS codes are a simple way to connect data, but they can change. For example, [Connecticut](https://www.bls.gov/cew/classifications/areas/new-2024-connecticut-counties.htm){target="_blank" rel="noopener noreferrer"} began the process of going from 8 legacy counties to 9 planning regions starting in 2022 and became effective in 2024.
 :::
 
-## Setup
+# Setup
 
-Load packages and create empty list to store data.
+Load packages and create an empty list to store data.
 
 ```{r}
 #| label: setup
@@ -42,9 +42,9 @@ library(tidyr)
 geo_tox_data <- list()
 ```
 
-## Chemicals
+# Chemicals
 
-### External exposure
+## External exposure
 
 Download modeled exposure data from [AirToxScreen](https://www.epa.gov/AirToxScreen){target="_blank" rel="noopener noreferrer"}. Results from 2020 for a subset of chemicals in North Carolina counties are included in the GeoTox package data as `geo_tox_data$exposure`.
 
@@ -96,7 +96,7 @@ geo_tox_data$exposure <- exposure |>
   mutate(norm = min_max_norm(mean), .by = chemical)
 ```
 
-#### Get chemical identifiers from CompTox Dashboard
+### Get chemical identifiers from CompTox Dashboard
 
 The exposure data is labeled with chemical names, but names can vary across resources and a more reliable way to connect datasets is by using Chemical Abstracts Service Registry Number (CAS-RN) identifiers. Use the batch search feature of the [CompTox Dashboard](https://comptox.epa.gov/dashboard/batch-search){target="_blank" rel="noopener noreferrer"} to retrieve CAS-RN and PREFERRED_NAME for the chemicals in the exposure dataset.
 
@@ -117,7 +117,7 @@ geo_tox_data$exposure <- geo_tox_data$exposure |>
   select(FIPS, casn = CASRN, chnm = PREFERRED_NAME, mean, sd, norm)
 ```
 
-### Active chemicals
+## Active chemicals
 
 Use the Integrated Chemical Environment ([ICE](https://ice.ntp.niehs.nih.gov/){target="_blank" rel="noopener noreferrer"})
 curated high-throughput screening ([cHTS](https://ice.ntp.niehs.nih.gov/DATASETDESCRIPTION?section=cHTS){target="_blank" rel="noopener noreferrer"}) data to identify active chemicals for a given set of assays.
@@ -214,7 +214,7 @@ chemids <- unique(geo_tox_data$exposure$casn)
 cHTS_hits <- get_cHTS_hits(assays = assays, chemids = chemids)
 ```
 
-### Dose-response
+## Dose-response
 
 Use the ICE API to retrieve dose-response data for selected assays and chemicals, which is included in the GeoTox package data as `geo_tox_data$dose_response`.
 
@@ -280,9 +280,9 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
   select(endp, casn, chnm = PREFERRED_NAME, logc, resp)
 ```
 
-## Population
+# Population
 
-### Age
+## Age
 
 Download age data from the [U.S. Census Bureau](https://www.census.gov/){target="_blank" rel="noopener noreferrer"} by searching for "County Population by Characteristics". A subset of data for North Carolina from [2020](https://www.census.gov/programs-surveys/popest/technical-documentation/research/evaluation-estimates/2020-evaluation-estimates/2010s-county-detail.html){target="_blank" rel="noopener noreferrer"} is included in the GeoTox package data as `geo_tox_data$age`.
 
@@ -304,7 +304,7 @@ geo_tox_data$age <- age |>
   select(FIPS, AGEGRP, TOT_POP)
 ```
 
-### Obesity status
+## Obesity status
 
 Search [CDC data](https://data.cdc.gov/){target="_blank" rel="noopener noreferrer"} for "places county data". Go to the desired dataset webpage, e.g. [2020 county data](https://data.cdc.gov/500-Cities-Places/PLACES-County-Data-GIS-Friendly-Format-2020-releas/mssc-ksj7/about_data){target="_blank" rel="noopener noreferrer"}, and download the data by selecting Actions &rarr; API &rarr; Download file. A subset of data for North Carolina is included in the GeoTox package data as `geo_tox_data$obesity`.
 
@@ -332,7 +332,7 @@ geo_tox_data$obesity <- places |>
   select(-OBESITY_Crude95CI)
 ```
 
-### Steady-state plasma concentration (C_ss)
+## Steady-state plasma concentration (C_ss)
 
 Use the `httk` package to generate C_ss values for combinations of age group and weight status for each chemical. The generation of these values is a time-intensive step, so one approach is to generate populations of C_ss values initially and then sample them later. The simulated C_ss values are included in the GeoTox package data as `geo_tox_data$simulated_css`.
 
@@ -449,7 +449,7 @@ geo_tox_data$simulated_css <- simulated_css |>
   unnest(value)
 ```
 
-## Retain overlap
+# Retain overlap
 
 Retain only those chemicals found in exposure, dose-response and C_ss datasets.
 
@@ -464,7 +464,7 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
   filter(casn %in% casn_keep)
 ```
 
-## County/State boundaries
+# County/State boundaries
 
 Download cartographic boundary files for counties and states from the [U.S. Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html){target="_blank" rel="noopener noreferrer"}. The geometry data for North Carolina counties and the state are included in the GeoTox package data as `geo_tox_data$boundaries`.
 

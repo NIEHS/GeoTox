@@ -5,7 +5,7 @@
 \alias{GeoTox-package}
 \title{GeoTox: Spatiotemporal Mixture Risk Assessment}
 \description{
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
 Connecting spatiotemporal exposure to individual and population-level risk via source-to-outcome continuum modeling. The package, methods, and case-studies are described in Messier, Reif, and Marvel (2025) \doi{10.1186/s40246-024-00711-8} and Eccles et al. (2023) \doi{10.1016/j.scitotenv.2022.158905}.
 }
@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
   \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID})
   \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID})
 }

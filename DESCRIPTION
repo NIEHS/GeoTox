@@ -2,21 +2,22 @@ Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
 Version: 0.3.0.9004
 Authors@R: c(
-    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut"),
+    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0002-2971-9743")),
-    person("David", "Reif", , "david.reif@nih.gov", role = c("aut"),
+    person("David", "Reif", , "david.reif@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0001-7815-6767")),
     person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0001-9508-9623")),
-    person("Spatiotemporal Exposures and Toxicology Group", role = c("cph"))
+    person("Spatiotemporal Exposures and Toxicology Group", role = "cph")
   )
 Description: Connecting spatiotemporal exposure to individual and
-    population-level risk via source-to-outcome continuum modeling. The package,
-    methods, and case-studies are described in Messier, Reif, and Marvel (2025)
-    <doi:10.1186/s40246-024-00711-8> and Eccles et al. (2023)
-    <doi:10.1016/j.scitotenv.2022.158905>.
+    population-level risk via source-to-outcome continuum modeling. The
+    package, methods, and case-studies are described in Messier, Reif, and
+    Marvel (2025) <doi:10.1186/s40246-024-00711-8> and Eccles et al.
+    (2023) <doi:10.1016/j.scitotenv.2022.158905>.
 License: MIT + file LICENSE
 URL: https://niehs.github.io/GeoTox/, https://github.com/NIEHS/GeoTox
+BugReports: https://github.com/NIEHS/GeoTox/issues
 Depends: 
     R (>= 4.4.0)
 Imports: 
@@ -46,11 +47,12 @@ Suggests:
     stringr,
     testthat (>= 3.0.0),
     withr
+VignetteBuilder: 
+    knitr,
+    quarto
+Config/Needs/website: rmarkdown, quarto
+Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr, quarto
-BugReports: https://github.com/NIEHS/GeoTox/issues
-Config/Needs/website: rmarkdown, quarto
