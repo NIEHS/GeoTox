@@ -19,13 +19,13 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
+\strong{Maintainer}: Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID})
 
 Authors:
 \itemize{
-  \item Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
   \item Skylar Marvel \email{skylar.marvel@nih.gov} (\href{https://orcid.org/0000-0002-2971-9743}{ORCID})
   \item David Reif \email{david.reif@nih.gov} (\href{https://orcid.org/0000-0001-7815-6767}{ORCID})
+  \item Kyle Messier \email{kyle.messier@nih.gov} (\href{https://orcid.org/0000-0001-9508-9623}{ORCID})
 }
 
 Other contributors:
