@@ -1,10 +1,12 @@
 # GeoTox (development version)
 
-* Reimplementation where data are now stored in a DuckDB database rather than an in-memory R object.
+* Reimplementation where data are now stored in a DuckDB database rather than an
+in-memory R object.
 
 * Majority of functions have been redone for the new storage structure.
 
-* Hill curve fits using `fit_hill()` are now bidirectional. Previously only the positive direction was fit.
+* Hill curve fits using `fit_hill()` are now bidirectional. Previously only the
+positive direction was fit.
 
 # GeoTox 0.3.0
 

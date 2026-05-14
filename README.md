@@ -16,10 +16,10 @@ status](https://www.r-pkg.org/badges/version/GeoTox)](https://CRAN.R-project.org
 
 <!-- badges: end -->
 
-`GeoTox` open-source R software package for characterizing the risk of
-perturbing molecular targets involved in adverse human health outcomes
-based on exposure to spatially-referenced stressor mixtures via the
-GeoTox framework - otherwise known as source-to-outcome-continuum
+`GeoTox` is an open-source R software package for characterizing the
+risk of perturbing molecular targets involved in adverse human health
+outcomes based on exposure to spatially-referenced stressor mixtures via
+the GeoTox framework - otherwise known as source-to-outcome-continuum
 modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2025, Human
 Genomics](https://doi.org/10.1186/s40246-024-00711-8).
@@ -31,8 +31,18 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
+The current stable version of the package can be installed from CRAN.
+
 ``` r
 install.packages("GeoTox")
+```
+
+The previous implementation of the package, which uses in-memory storage
+instead of DuckDB, can be installed by specifying the version.
+
+``` r
+#install.packages("pak")
+pak::pak("GeoTox@0.3.0")
 ```
 
 ## Development Version
@@ -41,7 +51,7 @@ The development version can be installed from GitHub.
 
 ``` r
 #install.packages("pak")
-pak::pak("NIEHS/GeoTox")
+pak::pak("NIEHS/GeoTox@dev")
 ```
 
 ## Overview
@@ -65,7 +75,8 @@ Overview of the steps in the GeoTox framework</em>
 ## Getting Started
 
 Please refer to the [package website](https://niehs.github.io/GeoTox/)
-for a detailed description of how to use `GeoTox`.
+for a detailed description of how to use `GeoTox`. The development
+version can be accessed [here](https://niehs.github.io/GeoTox/dev/).
 
 ## Citation
 
