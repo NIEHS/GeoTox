@@ -44,13 +44,12 @@ pak::pak("NIEHS/GeoTox@dev")
 ## Overview
 
 Figure 1 below shows the steps in the source-to-outcome-continuum or
-GeoTox modeling framework that is capable in the `GeoTox` package. blue
-text nodes represent an object and green text, rounded nodes represent a
-methodology or function required to go from one to the next. The
+GeoTox modeling framework that is capable in the `GeoTox` package. The
 `GeoTox` package uses R S3 object-oriented programming to create the
-**GeoTox** object. The **GeoTox** object is a list that contains all of
-the information required to run the analysis including tracking
-exposure, assays, dose-response, and geospatial referencing.
+**GeoTox** object. The **GeoTox** object contains all of the information
+required to run the analysis including tracking exposure, assays,
+dose-response, and geospatial referencing. Each component of the object
+and pipeline are stored in a relational DuckDB​​ database.
 
 ![GeoTox](reference/figures/GeoTox.png)  
 *Figure 1: Overview of the steps in the GeoTox framework*
