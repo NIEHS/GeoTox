@@ -27,6 +27,10 @@ C_ext. The \code{max_mult} vector allows specifying different upper bound
 multipliers for each parameter.
 }
 \examples{
+# Example setup is shown below in \dontrun().
+# Pre-generated results will be loaded instead to avoid long example runtime.
+
+\dontrun{
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -53,26 +57,43 @@ css_df <- tibble::tribble(
   "00-00-2", 50, 99,  "Obese", 32
 )
 hill_df <- tibble::tribble(
-  ~assay, ~casn, ~logc, ~resp,
-  "a1", "00-00-1",    0,  10,
-  "a1", "00-00-1",    1,  20,
-  "a1", "00-00-1",    2,  80,
-  "a1", "00-00-1",    3, 100,
-  "a1", "00-00-2", -0.5,   5,
-  "a1", "00-00-2",  0.5,  20,
-  "a1", "00-00-2",  1.5,  55,
-  "a1", "00-00-2",  2.5,  60
+  ~assay, ~model, ~casn, ~logc, ~resp,
+  "a1", "human", "00-00-1",    0,  10,
+  "a1", "human", "00-00-1",    1,  20,
+  "a1", "human", "00-00-1",    2,  80,
+  "a1", "human", "00-00-1",    3, 100,
+  "a1", "human", "00-00-2", -0.5,   5,
+  "a1", "human", "00-00-2",  0.5,  20,
+  "a1", "human", "00-00-2",  1.5,  55,
+  "a1", "human", "00-00-2",  2.5,  60,
+  "a2",   "rat", "00-00-1",   -1,   0,
+  "a2",   "rat", "00-00-1",    0,  10,
+  "a2",   "rat", "00-00-1",    1,  30,
+  "a2",   "rat", "00-00-1",    2,  40
 )
+set.seed(1234)
 GT <- GeoTox() |>
   set_sample(sample_df) |>
   set_simulated_css(css_df) |>
   add_exposure_rate_params() |>
-  add_hill_params(fit_hill(hill_df, assay = "assay", substance = "casn")) |>
+  add_hill_params(fit_hill(
+    hill_df, assay = c(name = "assay", model = "model"), substance = "casn"
+  )) |>
   simulate_population(exposure = exposure_df) |>
   calc_response()
 
 # Perform sensitivity analysis
 GT <- GT |> sensitivity_analysis()
+}
+
+# Load results from pre-generated database for this example
+temp_dir <- tempdir()
+zip::unzip(
+  system.file("extdata", "sensitivity.duckdb.zip", package = "GeoTox"),
+  junkpaths = TRUE,
+  exdir = temp_dir
+)
+GT <- GeoTox(paste0(temp_dir, "/sensitivity.duckdb"))
 
 # Open a connection to GeoTox database
 con <- get_con(GT)

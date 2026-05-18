@@ -42,6 +42,10 @@
 #'   [sensitivity_analysis()], [fit_hill()], [add_hill_params()]
 #'
 #' @examples
+#' # Example setup is shown below in \dontrun().
+#' # Pre-generated results will be loaded instead to avoid long example runtime.
+#' 
+#' \dontrun{
 #' # Setup required tables
 #' sample_df <- tibble::tribble(
 #'   ~FIPS, ~age, ~weight,
@@ -93,7 +97,17 @@
 #'   simulate_population(exposure = exposure_df) |>
 #'   calc_response() |>
 #'   sensitivity_analysis()
+#' }
 #'
+#' # Load results from pre-generated database for this example
+#' temp_dir <- tempdir()
+#' zip::unzip(
+#'   system.file("extdata", "sensitivity.duckdb.zip", package = "GeoTox"),
+#'   junkpaths = TRUE,
+#'   exdir = temp_dir
+#' )
+#' GT <- GeoTox(paste0(temp_dir, "/sensitivity.duckdb"))
+#' 
 #' # Look at 'assay' table contents
 #' get_assay_table(GT)
 #'

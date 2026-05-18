@@ -46,7 +46,8 @@ Suggests:
     sf,
     stringr,
     testthat (>= 3.0.0),
-    withr
+    withr,
+    zip
 VignetteBuilder: 
     knitr,
     quarto
