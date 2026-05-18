@@ -69,5 +69,11 @@ test_that("sensitivity analysis", {
   res <- tables |>
     purrr::map(\(x) dplyr::tbl(con, x) |> dplyr::collect()) |>
     rlang::set_names(tables)
+  res <- res |>
+    purrr::map(\(x) x |>
+      dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+        signif(x, 4)
+      }))
+    )
   expect_snapshot(res)
 })

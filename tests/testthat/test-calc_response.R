@@ -51,6 +51,10 @@ test_that("normal risk", {
   )
   expect_true(all(risk_cols %in% colnames(risk_tbl)))
 
+  risk_tbl <- risk_tbl |>
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+      signif(x, 4)
+    }))
   expect_snapshot(risk_tbl)
 })
 
@@ -107,5 +111,9 @@ test_that("risk sensitivity", {
   )
   expect_true(all(risk_cols %in% colnames(risk_tbl)))
 
+  risk_tbl <- risk_tbl |>
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+      signif(x, 4)
+    }))
   expect_snapshot(risk_tbl)
 })

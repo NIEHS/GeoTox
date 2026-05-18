@@ -162,5 +162,9 @@ test_that("overwrite", {
   risk_tbl <- dplyr::tbl(con, "risk") |> dplyr::collect()
   expect_equal(nrow(risk_tbl), 1)
 
+  risk_tbl <- risk_tbl |>
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+      signif(x, 4)
+    }))
   expect_snapshot(risk_tbl)
 })

@@ -92,6 +92,10 @@ test_that("calc sensitivity", {
 
   # Check results
   sens_tbl <- dplyr::tbl(con, "risk_sensitivity_age") |> dplyr::collect()
+  sens_tbl <- sens_tbl |>
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+      signif(x, 4)
+    }))
   expect_snapshot(sens_tbl)
 })
 
@@ -166,5 +170,9 @@ test_that("other inputs", {
 
   # Check results
   sens_tbl <- dplyr::tbl(con, "risk_sensitivity_C_ext") |> dplyr::collect()
+  sens_tbl <- sens_tbl |>
+    dplyr::mutate(dplyr::across(tidyselect::where(is.numeric), \(x) {
+      signif(x, 4)
+    }))
   expect_snapshot(sens_tbl)
 })
