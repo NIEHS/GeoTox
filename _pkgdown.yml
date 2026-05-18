@@ -2,6 +2,7 @@ url: https://github.com/NIEHS/GeoTox
 template:
   bootstrap: 5
   light-switch: true
+  math-rendering: katex
 
 development:
   mode: auto
