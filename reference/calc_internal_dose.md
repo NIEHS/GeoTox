@@ -1,85 +1,101 @@
-# Calculate internal chemical dose
+# Calculate internal dose
 
-Estimate the internal dose from inhalation of a chemical given
-inhalation rate, time, and body weight
+Calculates internal dose (D_int) as the product of external
+concentration ('C_ext' in the 'concentration' table) and exposure rate
+('rate' in the 'exposure_rate' table), and stores the results in the
+'D_int' column of the 'concentration' table in the GeoTox database.
 
 ## Usage
 
 ``` r
-calc_internal_dose(C_ext, IR, time = 1, BW = 1, scaling = 1)
+calc_internal_dose(GT, overwrite = FALSE, sensitivity = FALSE)
 ```
 
 ## Arguments
 
-- C_ext:
+- GT:
 
-  ambient chemical concentration in \\\frac{mg}{m^3}\\
+  GeoTox object.
 
-- IR:
+- overwrite:
 
-  inhalation rate in \\\frac{m^3}{day}\\
+  Logical indicating whether to overwrite existing 'D_int' values in the
+  'concentration' table (default FALSE).
 
-- time:
+- sensitivity:
 
-  total time in \\days\\
-
-- BW:
-
-  body weight in \\kg\\
-
-- scaling:
-
-  scaling factor encompassing any required unit adjustments
+  Logical indicating whether to simulate internal dose for sensitivity
+  analysis (default FALSE).
 
 ## Value
 
-list of matrices containing internal chemical doses in \\\frac{mg}{kg}\\
+The same GeoTox object, invisibly.
 
 ## Details
 
-Input `C_ext` must be a matrix or list of matrices. Input `IR` must be
-an atomic vector or list of atomic vectors. The `time`, `BW` and
-`scaling` arguments are scalars.
+If `sensitivity = TRUE`, 'D_int' will be calculated for sensitivity
+analysis. Typically this shouldn't be used directly by the user, but
+rather called by
+[`calc_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/calc_sensitivity.md).
+In this case, the function will use the 'concentration_sensitivity' and
+'exposure_rate_sensitivity' tables instead of the 'concentration' and
+'exposure_rate' tables.
 
-The internal dose is calculated as: \$\$D\_{int} = \frac{C\_{ext} \times
-IR \times time}{BW} \times scaling\$\$
+## See also
+
+[`calc_response()`](https://github.com/NIEHS/GeoTox/reference/calc_response.md)
 
 ## Examples
 
 ``` r
-# Single population
-C_ext <- matrix(1:15, ncol = 3)
-IR <- 1:5
-calc_internal_dose(C_ext, IR)
-#> [[1]]
-#>      [,1] [,2] [,3]
-#> [1,]    1    6   11
-#> [2,]    4   14   24
-#> [3,]    9   24   39
-#> [4,]   16   36   56
-#> [5,]   25   50   75
-#> 
-
-# Multiple populations
-C_ext <- list(
-  "a" = matrix(1:15 / 10, ncol = 3),
-  "b" = matrix(1:8, ncol = 2)
+# Setup required tables
+sample_df <- tibble::tribble(
+  ~FIPS, ~age, ~weight,
+  10000, 25, "Normal",
+  10000, 35,  "Obese",
+  20000, 50, "Normal"
 )
-IR <- list(1:5, 1:4 / 2)
-calc_internal_dose(C_ext, IR)
-#> $a
-#>      [,1] [,2] [,3]
-#> [1,]  0.1  0.6  1.1
-#> [2,]  0.4  1.4  2.4
-#> [3,]  0.9  2.4  3.9
-#> [4,]  1.6  3.6  5.6
-#> [5,]  2.5  5.0  7.5
-#> 
-#> $b
-#>      [,1] [,2]
-#> [1,]  0.5  2.5
-#> [2,]  2.0  6.0
-#> [3,]  4.5 10.5
-#> [4,]  8.0 16.0
-#> 
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
+GT <- GeoTox() |>
+  set_sample(sample_df) |>
+  add_exposure_rate_params() |>
+  simulate_population(exposure = exposure_df, sample_css = FALSE)
+
+# Calculate internal dose
+GT <- GT |> calc_internal_dose()
+
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at relevant tables
+
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+#> # A tibble: 6 × 6
+#>      id sample_id substance_id route_id C_ext D_int
+#>   <dbl>     <int>        <int>    <int> <dbl> <dbl>
+#> 1     1         1            1        1 10.7   3.06
+#> 2     2         1            2        1 20.2   5.78
+#> 3     3         2            1        1  8.47  2.37
+#> 4     4         2            2        1 18.7   5.22
+#> 5     5         3            1        1 31.4   5.87
+#> 6     6         3            2        1 40.0   7.48
+
+dplyr::tbl(con, "exposure_rate") |> dplyr::collect()
+#> # A tibble: 3 × 3
+#>   sample_id route_id  rate
+#>       <int>    <int> <dbl>
+#> 1         1        1 0.286
+#> 2         2        1 0.279
+#> 3         3        1 0.187
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+#> [1] TRUE
 ```

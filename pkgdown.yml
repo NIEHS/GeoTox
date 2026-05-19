@@ -1,10 +1,10 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/GeoTox: GeoTox.html
   package_data: package_data.html
-last_built: 2026-01-20T17:02Z
+last_built: 2026-05-19T22:05Z
 urls:
   reference: https://github.com/NIEHS/GeoTox/reference
   article: https://github.com/NIEHS/GeoTox/articles

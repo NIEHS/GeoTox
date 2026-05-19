@@ -17,7 +17,7 @@ A list with items:
 
 - exposure:
 
-  2019 AirToxScreen exposure concentrations for a subset of chemicals in
+  2020 AirToxScreen exposure concentrations for a subset of chemicals in
   North Carolina counties.
 
 - dose_response:
@@ -27,7 +27,7 @@ A list with items:
 
 - age:
 
-  County population estimates for 7/1/2019 in North Carolina.
+  County population estimates for 7/1/2020 in North Carolina.
 
 - obesity:
 
@@ -40,4 +40,4 @@ A list with items:
 
 - boundaries:
 
-  County and state boundaries for North Carolina in 2019.
+  County and state boundaries for North Carolina in 2020.

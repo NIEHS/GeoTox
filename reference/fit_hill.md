@@ -1,6 +1,7 @@
 # Fit 2- or 3-parameter Hill model
 
-Fit 2- or 3-parameter Hill model
+Fit a 2-parameter (fixed slope) or 3-parameter (variable slope) Hill
+model to concentration-response data.
 
 ## Usage
 
@@ -10,8 +11,8 @@ fit_hill(
   conc = "logc",
   resp = "resp",
   fixed_slope = TRUE,
-  chem = NULL,
-  assay = NULL
+  assay = NULL,
+  substance = NULL
 )
 ```
 
@@ -19,97 +20,116 @@ fit_hill(
 
 - x:
 
-  data frame of dose response data.
+  Data frame of dose response data.
 
 - conc:
 
-  column name of base-10 log scaled concentration.
+  Column name of base-10 log scaled concentration (default "logc").
 
 - resp:
 
-  column name of response.
+  Column name of response (default "resp").
 
 - fixed_slope:
 
-  if TRUE, slope is fixed at 1.
-
-- chem:
-
-  (optional) column name of chemical identifiers.
+  Logical indicating whether to fit a 2-parameter (TRUE) or 3-parameter
+  (FALSE) Hill model (default TRUE).
 
 - assay:
 
-  (optional) column name of assay identifiers.
+  Column name of assay identifier(s) (optional, default NULL).
+
+- substance:
+
+  Column name of substance identifier(s) (optional, default NULL).
 
 ## Value
 
-data frame of fit parameters.
+A list with elements 'fit', 'assay', 'substance'. The 'fit' element is a
+data frame of fit parameters, while the 'assay' and 'substance' elements
+indicate the column names used for assay and substance identifiers,
+respectively.
 
 ## Details
 
-Optional `chem` and `assay` identifiers can be used to fit multiple
-chemicals and/or assays. Returned columns `tp` is the top asymptote and
-`logAC50` is the 50% response concentration. If the computation of the
-standard deviations of these two parameters fails, then the standard
-deviation is set equal to the parameter estimate and is indicated by the
-respective imputed flag being TRUE.
+The input `x` data frame must contain columns specified by `conc` and
+`resp` arguments representing the log10-transformed concentration and
+response, respectively.
+
+Optional `assay` and `substance` identifiers can be named vectors that
+are used to fit multiple substances and/or assays. For example,
+`assay = c(name = "assay", "model")` would indicate that `x` contains
+both and assay name and model. The `name = "assay"` part would rename
+the "assay" column in `x` to "name" in the 'assay' table when aded with
+[`add_hill_params()`](https://github.com/NIEHS/GeoTox/reference/add_hill_params.md).
+
+Returned column 'tp' is the top asymptote and 'logAC50' is the 50%
+response concentration. If the computation of the standard deviations of
+these two parameters fails, then the standard deviation is set equal to
+the parameter estimate and is indicated by the respective imputed flag
+being TRUE.
+
+## See also
+
+[`add_hill_params()`](https://github.com/NIEHS/GeoTox/reference/add_hill_params.md)
 
 ## Examples
 
 ``` r
-# Multiple assays, multiple chemicals
-df <- geo_tox_data$dose_response
-fit_hill(df, assay = "endp", chem = "casn")
-#> # A tibble: 85 × 15
-#>    assay   chem     tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max
-#>    <chr>   <chr> <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>
-#>  1 APR_He… 510-…  4.44 5.86     2.06      0.448     1        0   -0.398     2.30
-#>  2 APR_He… 92-8…  2.14 0.945    2.05      0.271     1        0   -0.398     2.30
-#>  3 APR_He… 95-9…  1.46 0.556    1.67      0.246     1        0   -0.699     2   
-#>  4 APR_He… 510-…  2.33 0.542    1.79      0.192     1        0   -0.398     2.30
-#>  5 APR_He… 72-4…  1.93 1.93     1.95      1.95      1        0   -0.398     2.30
-#>  6 APR_He… 92-8…  2.43 1.50     2.22      0.317     1        0   -0.398     2.30
-#>  7 ATG_p5… 87-8…  2.15 0.877    1.57      0.321     1        0   -1.30      2   
-#>  8 TOX21_… 100-…  0    0        1.45      1.45      1        0   -3         1.95
-#>  9 TOX21_… 101-…  0    0        1.45      1.45      1        0   -3         1.95
-#> 10 TOX21_… 119-…  0    0        1.10      1.10      1        0   -3         1.95
-#> # ℹ 75 more rows
+hill_df <- tibble::tribble(
+  ~assay, ~model, ~casn, ~logc, ~resp,
+  "a1", "human", "00-00-1",    0,  10,
+  "a1", "human", "00-00-1",    1,  20,
+  "a1", "human", "00-00-1",    2,  80,
+  "a1", "human", "00-00-1",    3, 100,
+  "a1", "human", "00-00-2", -0.5,   5,
+  "a1", "human", "00-00-2",  0.5,  20,
+  "a1", "human", "00-00-2",  1.5,  55,
+  "a1", "human", "00-00-2",  2.5,  60,
+  "a2",   "rat", "00-00-1",   -1,   0,
+  "a2",   "rat", "00-00-1",    0,  10,
+  "a2",   "rat", "00-00-1",    1,  30,
+  "a2",   "rat", "00-00-1",    2,  40
+)
+
+# Fit 2-parameter Hill model
+fit_hill(
+  hill_df, assay = c(name = "assay", model = "model"), substance = "casn"
+)
+#> $fit
+#> # A tibble: 3 × 16
+#>   assay model casn       tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min
+#>   <chr> <chr> <chr>   <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>
+#> 1 a1    human 00-00-1 105.  3.43    1.54      0.0792     1        0      0  
+#> 2 a1    human 00-00-2  62.3 1.96    0.783     0.0643     1        0     -0.5
+#> 3 a2    rat   00-00-1  41.1 0.744   0.539     0.0507     1        0     -1  
+#> # ℹ 6 more variables: logc_max <dbl>, resp_min <dbl>, resp_max <dbl>,
+#> #   AIC <dbl>, tp.sd.imputed <lgl>, logAC50.sd.imputed <lgl>
+#> 
+#> $assay
+#>    name   model 
+#> "assay" "model" 
+#> 
+#> $substance
+#> [1] "casn"
+#> 
+
+# Fit 3-parameter Hill model
+fit_hill(hill_df, assay = "assay", substance = "casn", fixed_slope = FALSE)
+#> $fit
+#> # A tibble: 3 × 15
+#>   assay casn       tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max
+#>   <chr> <chr>   <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>
+#> 1 a1    00-00-1 102.  2.39    1.52      0.0410 1.16    0.0900      0        3  
+#> 2 a1    00-00-2  60.5 1.05    0.736     0.0309 1.27    0.125      -0.5      2.5
+#> 3 a2    00-00-1  41.8 0.622   0.557     0.0254 0.919   0.0421     -1        2  
 #> # ℹ 5 more variables: resp_min <dbl>, resp_max <dbl>, AIC <dbl>,
 #> #   tp.sd.imputed <lgl>, logAC50.sd.imputed <lgl>
-
-# Single assay, multiple chemicals
-df <- geo_tox_data$dose_response |>
-  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
-fit_hill(df, chem = "casn")
-#> # A tibble: 6 × 14
-#>   chem     tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max resp_min
-#>   <chr> <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#> 1 119-…  65.6 65.6     2.09     2.09       1        0    -2.70     2.30    -3.01
-#> 2 120-… 126.   8.29    1.54     0.0796     1        0    -2.70     2.30    -5.22
-#> 3 123-… 186.  17.8     2.21     0.0808     1        0    -2.70     2.30    -3.45
-#> 4 510-…  48.5  7.47    2.24     0.123      1        0    -2.70     2.30    -2.38
-#> 5 88-0…  58.7 37.0     2.80     0.310      1        0    -2.70     2.30    -4.79
-#> 6 92-8…  73.7  7.22    2.06     0.0863     1        0    -2.70     2.30    -4.44
-#> # ℹ 4 more variables: resp_max <dbl>, AIC <dbl>, tp.sd.imputed <lgl>,
-#> #   logAC50.sd.imputed <lgl>
-
-# Single assay, single chemical
-df <- geo_tox_data$dose_response |>
-  dplyr::filter(endp == "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-                casn == "510-15-6")
-fit_hill(df)
-#> # A tibble: 1 × 13
-#>      tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max resp_min
-#>   <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#> 1  48.5  7.47    2.24      0.123     1        0    -2.70     2.30    -2.38
-#> # ℹ 4 more variables: resp_max <dbl>, AIC <dbl>, tp.sd.imputed <lgl>,
-#> #   logAC50.sd.imputed <lgl>
-# 3-parameter Hill model
-fit_hill(df, fixed_slope = FALSE)
-#> # A tibble: 1 × 13
-#>      tp tp.sd logAC50 logAC50.sd slope slope.sd logc_min logc_max resp_min
-#>   <dbl> <dbl>   <dbl>      <dbl> <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#> 1  31.2  1.29    1.83     0.0173  4.02    0.864    -2.70     2.30    -2.38
-#> # ℹ 4 more variables: resp_max <dbl>, AIC <dbl>, tp.sd.imputed <lgl>,
-#> #   logAC50.sd.imputed <lgl>
+#> 
+#> $assay
+#> [1] "assay"
+#> 
+#> $substance
+#> [1] "casn"
+#> 
 ```

@@ -6,27 +6,25 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>GeoTox Introduction • GeoTox</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="GeoTox Introduction">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="GeoTox_files/libs/quarto-html/popper.min.js"></script><script src="GeoTox_files/libs/quarto-html/tippy.umd.min.js"></script><link href="GeoTox_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="GeoTox_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="GeoTox Introduction">
+<meta property="og:image" content="https://github.com/NIEHS/GeoTox/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,188 +48,580 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
 <li class="nav-item"><a class="nav-link" href="https://github.com/NIEHS/GeoTox/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
       </ul>
 </div>
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>GeoTox Introduction</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/vignettes/articles/GeoTox.Rmd"><code>vignettes/articles/GeoTox.Rmd</code></a></small>
-      <div class="d-none name"><code>GeoTox.Rmd</code></div>
+
+
+
+
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/v1.0.0/vignettes/articles/GeoTox.qmd"><code>vignettes/articles/GeoTox.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<p>This vignette covers basic use of package functions. Package data,
-<code>geo_tox_data</code>, is used throughout the examples and details
-on how it was created can be found in the “GeoTox Package Data”
-vignette.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+
+
+
+
+
+    <p>This vignette covers basic use of package functions. Package data, <code>geo_tox_data</code>, is used throughout the examples and details on how it was created can be found in the “GeoTox Package Data” vignette.</p>
+<section class="section level2"><h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<p>Load packages and set a seed for reproducibility.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://niehs.github.io/GeoTox/" class="external-link">GeoTox</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">250</span> <span class="co"># Sample size</span></span></code></pre></div>
-<blockquote>
-<p><strong>NOTE:</strong> The sample size here is the size of the
-simulated population in each region. This is different than the sample
-size in the “package_data” vignette, which is used to generate
-<code>C_ss</code> values for each chemical at specified age and weight
-combinations.</p>
-</blockquote>
-<div class="section level2">
-<h2 id="analysis-of-single-assay">Analysis of single assay<a class="anchor" aria-label="anchor" href="#analysis-of-single-assay"></a>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="section level2"><h2 id="hill-curve-fitting">Hill curve fitting<a class="anchor" aria-label="anchor" href="#hill-curve-fitting"></a>
 </h2>
-<p>Create GeoTox object, run simulations and computations</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span>
-<span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Set region and group boundaries (for plotting)</span></span>
-<span>  <span class="fu"><a href="../reference/set_boundaries.html">set_boundaries</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span>,</span>
-<span>                 group  <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">state</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Simulate populations for each region</span></span>
-<span>  <span class="fu"><a href="../reference/simulate_population.html">simulate_population</a></span><span class="op">(</span>age           <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>                      obesity       <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span>,</span>
-<span>                      exposure      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>                      simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span>
-<span>                      n             <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Estimated Hill parameters</span></span>
-<span>  <span class="fu"><a href="../reference/set_hill_params.html">set_hill_params</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span> <span class="op">|&gt;</span></span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">endp</span> <span class="op">==</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>                    <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span>chem <span class="op">=</span> <span class="st">"casn"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">tp.sd.imputed</span>, <span class="op">!</span><span class="va">logAC50.sd.imputed</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Calculate response</span></span>
-<span>  <span class="fu"><a href="../reference/calculate_response.html">calculate_response</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Perform sensitivity analysis</span></span>
-<span>  <span class="fu"><a href="../reference/sensitivity_analysis.html">sensitivity_analysis</a></span><span class="op">(</span><span class="op">)</span></span>
+<p>Hill curve fitting is a key step in the GeoTox workflow, as it provides the parameters needed to link internal concentrations to assay responses. The <code><a href="../reference/fit_hill.html">fit_hill()</a></code> function can be used to fit Hill models to dose-response data, and the resulting parameters can be added to a GeoTox object for use in subsequent calculations. Dose-reponse data can be grouped by assay and substance to fit separate Hill curves for each combination.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span></span>
+<span>  <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span>,</span>
+<span>  assay <span class="op">=</span> <span class="st">"endp"</span>,</span>
+<span>  substance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"casn"</span>, <span class="st">"chnm"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">hill_params</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+# A tibble: 85 × 16
+   endp    casn  chnm      tp   tp.sd logAC50 logAC50.sd slope slope.sd logc_min
+   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 APR_He… 510-… Chlo…   4.44   5.86     2.06      0.448     1        0   -0.398
+ 2 APR_He… 92-8… 4,4?…   2.14   0.945    2.05      0.271     1        0   -0.398
+ 3 APR_He… 95-9… 2,4,…   1.46   0.556    1.67      0.246     1        0   -0.699
+ 4 APR_He… 510-… Chlo…   2.33   0.542    1.79      0.192     1        0   -0.398
+ 5 APR_He… 72-4… Meth…   1.93   1.93     1.95      1.95      1        0   -0.398
+ 6 APR_He… 92-8… 4,4?…   2.43   1.50     2.22      0.317     1        0   -0.398
+ 7 ATG_p5… 87-8… Pent…   2.15   0.877    1.57      0.321     1        0   -1.30
+ 8 TOX21_… 100-… 4-Ni… -63.4   94.6      2.18      0.784     1        0   -3
+ 9 TOX21_… 101-… 4,4'… -65.6  169.       2.45      1.04      1        0   -3
+10 TOX21_… 119-… C.I.… -95.5   18.6      1.45      0.175     1        0   -3
+# ℹ 75 more rows
+# ℹ 6 more variables: logc_max &lt;dbl&gt;, resp_min &lt;dbl&gt;, resp_max &lt;dbl&gt;,
+#   AIC &lt;dbl&gt;, tp.sd.imputed &lt;lgl&gt;, logAC50.sd.imputed &lt;lgl&gt;
+
+$assay
+[1] "endp"
+
+$substance
+[1] "casn" "chnm"</code></pre>
+</div>
+</div>
+<p>Sometimes the standard deviation estimates may be missing. In these cases, <code><a href="../reference/fit_hill.html">fit_hill()</a></code> will impute missing standard deviations with the corresponding parameter estimate. If this is not desirable, the imputed standard deviations can be identified using the <code>tp.sd.imputed</code> and <code>logAC50.sd.imputed</code> columns of the resulting object’s <code>fit</code> table, and these fits can be removed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">tp.sd.imputed</span>, <span class="op">!</span><span class="va">logAC50.sd.imputed</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>The resulting Hill curves can be visualized by plotting the fitted curves along with the original dose-response points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add original dose-response points</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join</a></span><span class="op">(</span><span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"endp"</span>, <span class="st">"chnm"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="va">logc</span>, y <span class="op">=</span> <span class="va">resp</span><span class="op">)</span>,</span>
+<span>    pch <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add Hill curves</span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/pmap.html" class="external-link">pmap</a></span><span class="op">(</span></span>
+<span>    <span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">endp</span>, <span class="va">chnm</span>, <span class="va">tp</span>, <span class="va">logAC50</span>, <span class="va">slope</span><span class="op">)</span>,</span>
+<span>    \<span class="op">(</span><span class="va">endp</span>, <span class="va">chnm</span>, <span class="va">tp</span>, <span class="va">logAC50</span>, <span class="va">slope</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_function.html" class="external-link">geom_function</a></span><span class="op">(</span></span>
+<span>        data <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>endp <span class="op">=</span> <span class="va">endp</span>, chnm <span class="op">=</span> <span class="va">chnm</span><span class="op">)</span>,</span>
+<span>        fun <span class="op">=</span> \<span class="op">(</span><span class="va">x</span>, <span class="va">tp</span>, <span class="va">logAC50</span>, <span class="va">slope</span><span class="op">)</span> <span class="op">{</span></span>
+<span>          <span class="va">tp</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="fl">10</span><span class="op">^</span><span class="va">logAC50</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="va">slope</span><span class="op">)</span></span>
+<span>        <span class="op">}</span>,</span>
+<span>        args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tp <span class="op">=</span> <span class="va">tp</span>, logAC50 <span class="op">=</span> <span class="va">logAC50</span>, slope <span class="op">=</span> <span class="va">slope</span><span class="op">)</span>,</span>
+<span>        color <span class="op">=</span> <span class="st">"red"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Format</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">endp</span> <span class="op">~</span> <span class="va">chnm</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span></span>
+<span>    limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e4</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_log.html" class="external-link">label_log</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="GeoTox_files/figure-html/hill-plot-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section class="section level2"><h2 id="workflow-steps">Workflow steps<a class="anchor" aria-label="anchor" href="#workflow-steps"></a>
+</h2>
+<p>There are three main steps to the GeoTox workflow: creating a GeoTox object and setting various data components, simulating population characteristics and exposure, and calculating risk scores.</p>
+<section class="level2"><h3 id="create-a-geotox-object">Create a GeoTox object<a class="anchor" aria-label="anchor" href="#create-a-geotox-object"></a>
+</h3>
+<p>Creating a GeoTox object requires providing a path to a DuckDB database file. This can be an existing file or a new file that will be created. There are several components that can be set once the object is created.</p>
+<ul>
+<li>
+<code><a href="../reference/set_boundary.html">set_boundary()</a></code>: (optional) Store spatial boundary data as a <code>BLOB</code> in the database. The boundary data can be retrieved later using <code><a href="../reference/set_boundary.html">get_boundary()</a></code> and used for visualization.</li>
+<li>
+<code><a href="../reference/set_simulated_css.html">set_simulated_css()</a></code>: Store pre-simulated steady-state plasma concentration data as a table in the database. These values are used by <code><a href="../reference/sample_simulated_css.html">sample_simulated_css()</a></code> (or the wrapper function <code><a href="../reference/simulate_population.html">simulate_population()</a></code>).</li>
+<li>
+<code><a href="../reference/add_exposure_rate_params.html">add_exposure_rate_params()</a></code>: Add parameters needed to simulate exposure rates for specific routes, e.g. inhalation. These parameters are used by <code><a href="../reference/simulate_exposure_rate.html">simulate_exposure_rate()</a></code> (or the wrapper function <code><a href="../reference/simulate_population.html">simulate_population()</a></code>).</li>
+<li>
+<code><a href="../reference/add_hill_params.html">add_hill_params()</a></code>: Add parameters from Hill curve fitting to the database. These parameters are used by <code><a href="../reference/calc_risk.html">calc_risk()</a></code> (or the wrapper function <code><a href="../reference/calc_response.html">calc_response()</a></code>).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="st">"GeoTox-introduction.duckdb"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_boundary.html">set_boundary</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_simulated_css.html">set_simulated_css</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_exposure_rate_params.html">add_exposure_rate_params</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_hill_params.html">add_hill_params</a></span><span class="op">(</span><span class="va">hill_params</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h3 id="simulate-a-population">Simulate a population<a class="anchor" aria-label="anchor" href="#simulate-a-population"></a>
+</h3>
+<p>Population characteristics (age and obesity status) and exposure can be simulated using the <code><a href="../reference/simulate_population.html">simulate_population()</a></code> function, which is a wrapper around <code><a href="../reference/simulate_age.html">simulate_age()</a></code>, <code><a href="../reference/simulate_obesity.html">simulate_obesity()</a></code>, <code><a href="../reference/simulate_exposure_rate.html">simulate_exposure_rate()</a></code>, and <code><a href="../reference/simulate_exposure.html">simulate_exposure()</a></code>. Alternatively, <code><a href="../reference/set_sample.html">set_sample()</a></code> can be used for age and/or obesity status. The resulting simulated data is stored in the database and used for subsequent calculations. In addition, <code><a href="../reference/simulate_population.html">simulate_population()</a></code> will sample steady-state plasma concentrations from the pre-simulated data using <code><a href="../reference/sample_simulated_css.html">sample_simulated_css()</a></code>, and <code><a href="../reference/set_fixed_css.html">set_fixed_css()</a></code> will be called in preparation for sensitivity analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/simulate_population.html">simulate_population</a></span><span class="op">(</span></span>
+<span>    age       <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>,</span>
+<span>    obesity   <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span>,</span>
+<span>    exposure  <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>route <span class="op">=</span> <span class="st">"inhalation"</span><span class="op">)</span>,</span>
+<span>    substance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"casn"</span>, <span class="st">"chnm"</span><span class="op">)</span>,</span>
+<span>    n         <span class="op">=</span> <span class="fl">150</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h3 id="calculate-risk">Calculate risk<a class="anchor" aria-label="anchor" href="#calculate-risk"></a>
+</h3>
+<p>Risk scores can be calculated using the <code><a href="../reference/calc_response.html">calc_response()</a></code> function, which is a wrapper around <code><a href="../reference/calc_internal_dose.html">calc_internal_dose()</a></code>, <code><a href="../reference/calc_invitro_concentration.html">calc_invitro_concentration()</a></code>, and <code><a href="../reference/calc_risk.html">calc_risk()</a></code>. Sensitivity analysis can then be performed using <code><a href="../reference/sensitivity_analysis.html">sensitivity_analysis()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/calc_response.html">calc_response</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/sensitivity_analysis.html">sensitivity_analysis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section></section><section class="section level2"><h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
+</h2>
+<p>An overview of the GeoTox object can be obtained by printing it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">GT</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>GeoTox object
+Database info:
+  dbdir: GeoTox-introduction.duckdb
+Reset seed: FALSE
+Assays: 13
+Substances: 22
+Locations: 100
+Population: 150
+Concentrations: C_ext, C_ss, D_int, C_invitro
+Risk: GCA.Eff, IA.Eff, GCA.HQ.10, IA.HQ.10
+Sensitivity: C_ext, age, css_params, fit_params, weight</code></pre>
+</div>
+</div>
+<p>Connecting to the database allows access to the various tables that store the data used in the workflow.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "age"                         "assay"
+ [3] "boundary"                    "concentration"
+ [5] "exposure"                    "exposure_rate"
+ [7] "exposure_rate_params"        "fixed_css"
+ [9] "hill_params"                 "location"
+[11] "obesity"                     "par"
+[13] "risk"                        "risk_sensitivity_C_ext"
+[15] "risk_sensitivity_age"        "risk_sensitivity_css_params"
+[17] "risk_sensitivity_fit_params" "risk_sensitivity_weight"
+[19] "route"                       "sample"
+[21] "simulated_css"               "substance"                  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>Below are the tables that exist after performing sensitivity analysis on the example dataset.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="img/tables.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are several helper functions for fetching data from the database for use in visualization. Geographical boundary data can be retrieved using <code><a href="../reference/set_boundary.html">get_boundary()</a></code> and combined with these other helper functions for plotting.</p>
+<section class="level2"><h3 id="exposure">Exposure<a class="anchor" aria-label="anchor" href="#exposure"></a>
+</h3>
+<p>Exposure data was added to the database using <code><a href="../reference/simulate_population.html">simulate_population()</a></code>, which calls <code><a href="../reference/add_exposure.html">add_exposure()</a></code> and <code><a href="../reference/simulate_exposure.html">simulate_exposure()</a></code>. The input data used to simulate exposure values is stored in the <code>exposure</code> table and can be joined with the <code>substance</code> table to retrieve any entered chemical information. Below is an example of plotting the normalized mean exposure by county and chemical name.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_exposure</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
+<span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">defer</a></span><span class="op">(</span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">geoTox</span></span>
-<span><span class="co">#&gt; GeoTox object</span></span>
-<span><span class="co">#&gt; Assays: 1</span></span>
-<span><span class="co">#&gt; Chemicals: 5</span></span>
-<span><span class="co">#&gt; Regions: m = 100</span></span>
-<span><span class="co">#&gt; Population: n = 250</span></span>
-<span><span class="co">#&gt; Data Fields:</span></span>
-<span><span class="co">#&gt;      Name          Size</span></span>
-<span><span class="co">#&gt;       age       m * (n)</span></span>
-<span><span class="co">#&gt;        IR       m * (n)</span></span>
-<span><span class="co">#&gt;   obesity       m * (n)</span></span>
-<span><span class="co">#&gt;     C_ext  m * (n x 21)</span></span>
-<span><span class="co">#&gt;      C_ss  m * (n x 21)</span></span>
-<span><span class="co">#&gt; Computed Fields:</span></span>
-<span><span class="co">#&gt;          Name                   Size</span></span>
-<span><span class="co">#&gt;         D_int           m * (n x 21)</span></span>
-<span><span class="co">#&gt;     C_invitro           m * (n x 21)</span></span>
-<span><span class="co">#&gt;          resp        m * (1 * n x 5)</span></span>
-<span><span class="co">#&gt;   sensitivity  5 * (m * (1 * n x 5))</span></span>
-<span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
-<p>Plot outputs</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/single-assay-plots-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"hill"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/single-assay-plots-2.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Picking joint bandwidth of 0.131</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/single-assay-plots-3.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level2">
-<h2 id="analysis-of-multiple-assay">Analysis of multiple assay<a class="anchor" aria-label="anchor" href="#analysis-of-multiple-assay"></a>
-</h2>
-<p>Create GeoTox object, run simulations and computations</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span>
-<span><span class="va">geoTox</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Set region and group boundaries (for plotting)</span></span>
-<span>  <span class="fu"><a href="../reference/set_boundaries.html">set_boundaries</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">county</span>,</span>
-<span>                 group  <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">$</span><span class="va">state</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Simulate populations for each region</span></span>
-<span>  <span class="fu"><a href="../reference/simulate_population.html">simulate_population</a></span><span class="op">(</span>age           <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>                      obesity       <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">obesity</span>,</span>
-<span>                      exposure      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">exposure</span>, <span class="op">~</span><span class="va">FIPS</span><span class="op">)</span>,</span>
-<span>                      simulated_css <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span>,</span>
-<span>                      n             <span class="op">=</span> <span class="va">n</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="co"># Estimated Hill parameters</span></span>
-<span>  <span class="fu"><a href="../reference/set_hill_params.html">set_hill_params</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span> <span class="op">|&gt;</span></span>
-<span>                    <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span>assay <span class="op">=</span> <span class="st">"endp"</span>, chem <span class="op">=</span> <span class="st">"casn"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">tp.sd.imputed</span>, <span class="op">!</span><span class="va">logAC50.sd.imputed</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Calculate response</span></span>
-<span>  <span class="fu"><a href="../reference/calculate_response.html">calculate_response</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># Perform sensitivity analysis</span></span>
-<span>  <span class="fu"><a href="../reference/sensitivity_analysis.html">sensitivity_analysis</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">boundary</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/set_boundary.html">get_boundary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html" class="external-link">deframe</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">geoTox</span></span>
-<span><span class="co">#&gt; GeoTox object</span></span>
-<span><span class="co">#&gt; Assays: 13</span></span>
-<span><span class="co">#&gt; Chemicals: 15</span></span>
-<span><span class="co">#&gt; Regions: m = 100</span></span>
-<span><span class="co">#&gt; Population: n = 250</span></span>
-<span><span class="co">#&gt; Data Fields:</span></span>
-<span><span class="co">#&gt;      Name          Size</span></span>
-<span><span class="co">#&gt;       age       m * (n)</span></span>
-<span><span class="co">#&gt;        IR       m * (n)</span></span>
-<span><span class="co">#&gt;   obesity       m * (n)</span></span>
-<span><span class="co">#&gt;     C_ext  m * (n x 21)</span></span>
-<span><span class="co">#&gt;      C_ss  m * (n x 21)</span></span>
-<span><span class="co">#&gt; Computed Fields:</span></span>
-<span><span class="co">#&gt;          Name                    Size</span></span>
-<span><span class="co">#&gt;         D_int            m * (n x 21)</span></span>
-<span><span class="co">#&gt;     C_invitro            m * (n x 21)</span></span>
-<span><span class="co">#&gt;          resp        m * (13 * n x 6)</span></span>
-<span><span class="co">#&gt;   sensitivity  5 * (m * (13 * n x 6))</span></span>
-<span><span class="co">#&gt; Other Fields: par, boundaries, exposure, css_sensitivity, hill_params</span></span></code></pre></div>
-<p>Plot outputs</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Multiple assays found, using first assay 'APR_HepG2_p53Act_24hr'</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/multi-assay-plots-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, assays <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/multi-assay-plots-2.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"hill"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/multi-assay-plots-3.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Multiple assays found, using first assay 'APR_HepG2_p53Act_24hr'</span></span>
-<span><span class="co">#&gt; Warning: Removed 93000 NA values</span></span>
-<span><span class="co">#&gt; Picking joint bandwidth of 0.135</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/multi-assay-plots-4.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"sensitivity"</span>, assay <span class="op">=</span> <span class="st">"TOX21_H2AX_HTRF_CHO_Agonist_ratio"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Picking joint bandwidth of 0.131</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/multi-assay-plots-5.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"exposure"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"substance"</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">substance_id</span> <span class="op">==</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">boundary</span><span class="op">$</span><span class="va">county</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">location_id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">norm</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">chnm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">boundary</span><span class="op">$</span><span class="va">state</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span>transform <span class="op">=</span> <span class="st">"sqrt"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>      axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>      strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Normalized mean exposure"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">plot_exposure</span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_exposure-1.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
 </div>
-<div class="section level2">
-<h2 id="exposure-map">Exposure Map<a class="anchor" aria-label="anchor" href="#exposure-map"></a>
-</h2>
-<p>The exposure map is the same for both single and multiple assay
-analyses. The map shows the distribution of chemical exposure across
-regions for all chemicals, not just those used in a particular
-analysis.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"exposure"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/exposure-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
-<p>If other facet labels are present they can be specified using the
-<code>chem_label</code> argument.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">geoTox</span>, type <span class="op">=</span> <span class="st">"exposure"</span>, chem_label <span class="op">=</span> <span class="st">"chnm"</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GeoTox_files/figure-html/exposure-chnm-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</div>
+</section><section class="level2"><h3 id="concentrations">Concentrations<a class="anchor" aria-label="anchor" href="#concentrations"></a>
+</h3>
+<p>Various concentration fields are stored in the <code>concentration</code> table. The helper function <code><a href="../reference/get_concentration_mean.html">get_concentration_mean()</a></code> can be used to fetch the mean values for a given concentration field, grouped by substance, route, and location. The concentration data can then be plotted similarly to the exposure data. Below are examples of plotting the mean external concentration (<code>C_ext</code>), steady-state plasma concentration (<code>C_ss</code>), internal dose (<code>D_int</code>), and <em>in vitro</em> concentration (<code>C_invitro</code>) by county and chemical name.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_concentration_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span>, <span class="va">col</span>, <span class="va">wrap_var</span> <span class="op">=</span> <span class="st">"chnm"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
+<span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">defer</a></span><span class="op">(</span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">boundary</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/set_boundary.html">get_boundary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html" class="external-link">deframe</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Substance data for joining chemical names</span></span>
+<span>  <span class="va">substance_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"substance"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_concentration_mean.html">get_concentration_mean</a></span><span class="op">(</span><span class="va">GT</span>, <span class="va">col</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">mean</span> <span class="op">==</span> <span class="fl">0</span>, <span class="cn">NA</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">substance_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">substance_id</span> <span class="op">==</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">boundary</span><span class="op">$</span><span class="va">county</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">location_id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">mean</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">wrap_var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">boundary</span><span class="op">$</span><span class="va">state</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span></span>
+<span>      transform <span class="op">=</span> <span class="st">"log10"</span>,</span>
+<span>      na.value <span class="op">=</span> <span class="st">"grey90"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>      axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Mean"</span>, <span class="va">col</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"C_ext"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The duckplyr package is configured to fall back to dplyr when it encounters an
+incompatibility. Fallback events can be collected and uploaded for analysis to
+guide future development. By default, data will be collected but no data will
+be uploaded.
+ℹ Automatic fallback uploading is not controlled and therefore disabled, see
+  `?duckplyr::fallback()`.
+✔ Number of reports ready for upload: 1.
+→ Review with `duckplyr::fallback_review()`, upload with
+  `duckplyr::fallback_upload()`.
+ℹ Configure automatic uploading with `duckplyr::fallback_config()`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_conc-1.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"C_ss"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_conc-2.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"D_int"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_conc-3.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"C_invitro"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_conc-4.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section class="level2"><h3 id="risk">Risk<a class="anchor" aria-label="anchor" href="#risk"></a>
+</h3>
+<p>Several risk metrics are stored in the <code>risk</code> table. The helper function <code><a href="../reference/get_risk_values.html">get_risk_quantiles()</a></code> can be used to fetch quantiles of these risk metrics grouped by assay and location. Below are examples of plotting the median values for the generalized concentration addition (GCA) and independent action (IA) efficacy risk scores and the hazard quotients using the 10% effective concentration (HQ.10).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_risk_quantile</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>    <span class="va">GT</span>, <span class="va">col</span>, <span class="va">wrap_var</span> <span class="op">=</span> <span class="st">"endp"</span>, <span class="va">quantiles</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Median"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
+<span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">defer</a></span><span class="op">(</span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">boundary</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/set_boundary.html">get_boundary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html" class="external-link">deframe</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Assay data for joining assay names</span></span>
+<span>  <span class="va">assay_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"assay"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_risk_values.html">get_risk_quantiles</a></span><span class="op">(</span><span class="va">GT</span>, <span class="va">col</span>, <span class="va">quantiles</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">assay_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">assay_id</span> <span class="op">==</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">boundary</span><span class="op">$</span><span class="va">county</span>, by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html" class="external-link">join_by</a></span><span class="op">(</span><span class="va">location_id</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">value</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">wrap_var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">boundary</span><span class="op">$</span><span class="va">state</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span></span>
+<span>      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>      option <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>      transform <span class="op">=</span> <span class="st">"sqrt"</span>,</span>
+<span>      na.value <span class="op">=</span> <span class="st">"grey90"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>      axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">quantiles</span><span class="op">)</span>, <span class="va">col</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"GCA.Eff"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_risk-1.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"IA.Eff"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_risk-2.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"GCA.HQ.10"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_risk-3.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"IA.HQ.10"</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_risk-4.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section class="level2"><h3 id="sensitivity">Sensitivity<a class="anchor" aria-label="anchor" href="#sensitivity"></a>
+</h3>
+<p>Results from sensitivity analyses are stored in the <code>risk_sensitivity_*</code> tables. The helper function <code><a href="../reference/get_risk_values.html">get_risk_sensitivity()</a></code> is a wrapper around <code><a href="../reference/get_risk_values.html">get_risk_values()</a></code>, which can be used to fetch sensitivity data for a given risk metric, to obtain values for all varying parameters grouped by location for a specific assay. Below is an example of plotting the sensitivity data for the IA efficacy risk score using ridgeline density plots.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_risk_sensitivity</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span>, <span class="va">metric</span>, <span class="va">assay</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_risk_values.html">get_risk_sensitivity</a></span><span class="op">(</span><span class="va">GT</span>, <span class="va">metric</span>, <span class="va">assay</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"External Concentration"</span>   <span class="op">=</span> <span class="st">"C_ext"</span>,</span>
+<span>      <span class="st">"Toxicokinetic Parameters"</span> <span class="op">=</span> <span class="st">"css_params"</span>,</span>
+<span>      <span class="st">"Weight"</span>                   <span class="op">=</span> <span class="st">"weight"</span>,</span>
+<span>      <span class="st">"Age"</span>                      <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>      <span class="st">"Concentration-Response"</span>   <span class="op">=</span> <span class="st">"fit_params"</span>,</span>
+<span>      <span class="st">"Baseline"</span>                 <span class="op">=</span> <span class="st">"baseline"</span></span>
+<span>    <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">name</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="va">idx</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span></span>
+<span>      <span class="st">"Removed "</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">idx</span><span class="op">)</span>, <span class="st">" NA from risk sensitivity data."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">idx</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"No risk sensitivity data to plot."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggridges</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/ggridges/reference/stat_density_ridges.html" class="external-link">stat_density_ridges</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>, y <span class="op">=</span> <span class="fl">0</span>, color <span class="op">=</span> <span class="va">name</span><span class="op">)</span>,</span>
+<span>      calc_ecdf <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      quantiles <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>      quantile_lines <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      fill <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>      linewidth <span class="op">=</span> <span class="fl">1</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="st">"axis_logticks"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">metric</span>, y <span class="op">=</span> <span class="st">""</span>, title <span class="op">=</span> <span class="va">assay</span>, color <span class="op">=</span> <span class="st">'Varying Parameter'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>      panel.grid.major.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      panel.grid.minor.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">metric</span> <span class="op">&lt;-</span> <span class="st">"IA.Eff"</span></span>
+<span><span class="va">assay</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>endp <span class="op">=</span> <span class="st">"TOX21_DT40_LUC"</span><span class="op">)</span></span>
+<span><span class="fu">plot_risk_sensitivity</span><span class="op">(</span><span class="va">GT</span>, <span class="va">metric</span>, <span class="va">assay</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.0495</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure><p><img src="GeoTox_files/figure-html/plot_sens-1.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">

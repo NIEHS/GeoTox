@@ -1,118 +1,189 @@
-# Simulate external exposure
+# Simulate exposure concentrations
 
-Simulate external exposure
+Simulate external exposure (C_ext) values to be stored in the
+'concentration' table of a GeoTox database.
 
 ## Usage
 
 ``` r
 simulate_exposure(
-  x,
-  expos_mean = "mean",
-  expos_sd = "sd",
-  expos_label = "casn",
-  n = 1000
+  GT,
+  n = 1000,
+  overwrite = FALSE,
+  expos_mean = NULL,
+  expos_sd = NULL,
+  sensitivity = FALSE
 )
 ```
 
 ## Arguments
 
-- x:
+- GT:
 
-  data frame or list of data frames containing exposure data.
-
-- expos_mean:
-
-  column name of mean values.
-
-- expos_sd:
-
-  column name of standard deviations.
-
-- expos_label:
-
-  column name of labeling term, required if `x` has more than one row.
+  GeoTox object.
 
 - n:
 
-  simulated sample size(s).
+  Number of individuals to simulate per location (default 1000). Ignored
+  if 'sample' table already exists.
+
+- overwrite:
+
+  Logical indicating whether to overwrite existing 'C_ext' values in the
+  'concentration' table (default FALSE).
+
+- expos_mean:
+
+  Column name of exposure concentration mean in the 'exposure' table
+  (default "mean").
+
+- expos_sd:
+
+  Column name of exposure concentration standard deviation in the
+  'exposure' table (default "sd").
+
+- sensitivity:
+
+  Logical indicating whether to simulate exposures for sensitivity
+  analysis (default FALSE).
 
 ## Value
 
-list of matrices containing inhalation rates. Matrix columns are named
-using the values in the `expos_label` column for more than one data
-frame row. Columns are sorted to have consistent order across functions.
+The updated GeoTox object, invisibly.
 
 ## Details
 
-The sample size can be either a single value or a vector the same length
-as the number of data frames in x. If a single value is provided, the
-same sample size is used for all data frames. If a vector is provided,
-each element corresponds to the sample size for each data frame in x.
+An 'external' table containing simulation data must already exist in the
+GeoTox database, which is added using
+[`add_exposure()`](https://github.com/NIEHS/GeoTox/reference/add_exposure.md).
+
+The inputs `expos_mean` and `expos_sd` will be assigned default values
+of "mean" and "sd", respectively, if not provided and not already set in
+the GeoTox object's parameters, `GT$par`. If not `NULL`, the provided
+values will also be saved to `GT$par`.
+
+If `sensitivity = TRUE`, exposure concentrations will be simulated for
+sensitivity analysis. Typically this shouldn't be used directly by the
+user, but rather called by
+[`calc_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/calc_sensitivity.md).
+In this case, the function will use the 'concentration_sensitivity'
+table instead of the 'concentration' table, and will assume that the
+'sample' table already exists.
+
+## See also
+
+[`add_exposure()`](https://github.com/NIEHS/GeoTox/reference/add_exposure.md),
+[`simulate_population()`](https://github.com/NIEHS/GeoTox/reference/simulate_population.md)
 
 ## Examples
 
 ``` r
-# Single data frame
-x <- data.frame(mean = 1:3, sd = (1:3) / 10, casn = letters[1:3])
-simulate_exposure(x, n = 5)
-#> [[1]]
-#>              a        b        c
-#> [1,] 1.0118749 1.825807 3.069007
-#> [2,] 0.9985051 1.800722 3.020591
-#> [3,] 1.1501370 2.236371 3.359616
-#> [4,] 0.9950735 2.208834 3.005477
-#> [5,] 0.9447041 2.026918 2.883992
-#> 
+# Example exposure simulation data
+exposure_df <- tibble::tribble(
+  ~FIPS, ~casn, ~route, ~mean, ~sd,
+  10000, "00-00-1", "inhalation", 10, 1,
+  10000, "00-00-2", "inhalation", 20, 1,
+  20000, "00-00-1", "inhalation", 30, 1,
+  20000, "00-00-2", "inhalation", 40, 1
+)
 
-# List of 2 data frames
-y <- data.frame(mean = 4:6, sd = 0.1, casn = letters[1:3])
-simulate_exposure(list(loc1 = x, loc2 = y), n = 5)
-#> $loc1
-#>              a        b        c
-#> [1,] 0.9709773 2.107346 2.991774
-#> [2,] 0.9372580 2.056798 2.795501
-#> [3,] 0.9196467 2.255035 2.817007
-#> [4,] 1.0967971 1.869585 3.241197
-#> [5,] 1.0738694 1.703378 2.878440
-#> 
-#> $loc2
-#>             a        b        c
-#> [1,] 3.917817 4.997201 6.145849
-#> [2,] 4.088133 4.923779 6.046758
-#> [3,] 3.989283 5.007522 5.985234
-#> [4,] 3.925764 5.151380 5.927939
-#> [5,] 3.885855 5.076009 6.215276
-#> 
-# different sample sizes
-simulate_exposure(list(loc1 = x, loc2 = y), n = c(5, 3))
-#> $loc1
-#>              a        b        c
-#> [1,] 0.9491920 1.869084 2.921560
-#> [2,] 1.0438846 2.086854 2.961969
-#> [3,] 1.0773879 2.065955 3.068951
-#> [4,] 0.9048719 1.739879 3.014626
-#> [5,] 1.0861998 2.375972 3.332553
-#> 
-#> $loc2
-#>             a        b        c
-#> [1,] 4.036732 5.013597 5.904727
-#> [2,] 3.901093 4.939445 5.916056
-#> [3,] 4.282058 4.964946 5.932905
-#> 
+# Simulate C_ext values
+GT <- GeoTox() |>
+  add_exposure(exposure_df) |>
+  simulate_exposure(n = 3)
 
-# Input has custom column names
-z <- data.frame(ave = 1:3, stdev = (1:3) / 10, chnm = letters[1:3])
-simulate_exposure(z,
-                  expos_mean = "ave",
-                  expos_sd = "stdev",
-                  expos_label = "chnm",
-                  n = 5)
-#> [[1]]
-#>              a        b        c
-#> [1,] 1.0583063 1.780812 3.249216
-#> [2,] 0.8311137 2.316820 2.961909
-#> [3,] 1.1070061 2.047741 2.777624
-#> [4,] 1.2227959 2.081375 2.740206
-#> [5,] 1.0441809 2.162632 3.154257
-#> 
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at created tables
+
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+#> # A tibble: 12 × 5
+#>       id sample_id substance_id route_id C_ext
+#>    <dbl>     <int>        <int>    <int> <dbl>
+#>  1     1         1            1        1  9.16
+#>  2     2         1            2        1 18.9 
+#>  3     3         2            1        1 10.7 
+#>  4     4         2            2        1 20.5 
+#>  5     5         3            1        1  9.49
+#>  6     6         3            2        1 18.1 
+#>  7     7         4            1        1 30.2 
+#>  8     8         4            2        1 40.4 
+#>  9     9         5            1        1 29.9 
+#> 10    10         5            2        1 39.6 
+#> 11    11         6            1        1 31.0 
+#> 12    12         6            2        1 37.8 
+
+dplyr::tbl(con, "sample") |> dplyr::collect()
+#> # A tibble: 6 × 2
+#>      id location_id
+#>   <int>       <int>
+#> 1     1           1
+#> 2     2           1
+#> 3     3           1
+#> 4     4           2
+#> 5     5           2
+#> 6     6           2
+
+dplyr::tbl(con, "location") |> dplyr::collect()
+#> # A tibble: 2 × 2
+#>      id  FIPS
+#>   <int> <dbl>
+#> 1     1 10000
+#> 2     2 20000
+
+dplyr::tbl(con, "substance") |> dplyr::collect()
+#> # A tibble: 2 × 2
+#>      id casn   
+#>   <int> <chr>  
+#> 1     1 00-00-1
+#> 2     2 00-00-2
+
+dplyr::tbl(con, "route") |> dplyr::collect()
+#> # A tibble: 1 × 2
+#>      id route     
+#>   <int> <chr>     
+#> 1     1 inhalation
+
+# Replace 'exposure' table with different column names
+names(exposure_df)[4:5] <- c("mu", "sigma")
+DBI::dbRemoveTable(con, "exposure")
+GT |> add_exposure(exposure_df)
+
+# Overwrite 'C_ext' values in existing 'concentration' table
+# Must specify new 'exposure' column names
+# Notice how the column names are added to GT$par
+str(GT$par)
+#> List of 1
+#>  $ reset_seed: logi FALSE
+GT <- GT |>
+  simulate_exposure(expos_mean = "mu", expos_sd = "sigma", overwrite = TRUE)
+str(GT$par)
+#> List of 3
+#>  $ reset_seed: logi FALSE
+#>  $ expos_mean: chr "mu"
+#>  $ expos_sd  : chr "sigma"
+
+# Look at updated 'concentration' table
+dplyr::tbl(con, "concentration") |> dplyr::collect()
+#> # A tibble: 12 × 5
+#>       id sample_id substance_id route_id C_ext
+#>    <dbl>     <int>        <int>    <int> <dbl>
+#>  1     1         1            1        1 10.7 
+#>  2     2         1            2        1 20.0 
+#>  3     3         2            1        1  9.07
+#>  4     4         2            2        1 20.4 
+#>  5     5         3            1        1  9.02
+#>  6     6         3            2        1 19.7 
+#>  7     7         4            1        1 30.3 
+#>  8     8         4            2        1 40.2 
+#>  9     9         5            1        1 29.2 
+#> 10    10         5            2        1 39.5 
+#> 11    11         6            1        1 28.2 
+#> 12    12         6            2        1 40.4 
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+#> [1] TRUE
 ```

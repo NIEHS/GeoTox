@@ -1,9 +1,9 @@
 # GeoTox
 
-`GeoTox` open-source R software package for characterizing the risk of
-perturbing molecular targets involved in adverse human health outcomes
-based on exposure to spatially-referenced stressor mixtures via the
-GeoTox framework - otherwise known as source-to-outcome-continuum
+`GeoTox` is an open-source R software package for characterizing the
+risk of perturbing molecular targets involved in adverse human health
+outcomes based on exposure to spatially-referenced stressor mixtures via
+the GeoTox framework - otherwise known as source-to-outcome-continuum
 modeling. The package, methods, and case-studies are described in
 [Messier, Reif, and Marvel, 2025, Human
 Genomics](https://doi.org/10.1186/s40246-024-00711-8).
@@ -15,8 +15,20 @@ Jan 10;855:158905.](https://pubmed.ncbi.nlm.nih.gov/36152849/)
 
 ## Installation
 
+The current stable version of the package can be installed from CRAN.
+
 ``` r
+
 install.packages("GeoTox")
+```
+
+The previous implementation of the package, which uses in-memory storage
+instead of DuckDB, can be installed by specifying the version.
+
+``` r
+
+#install.packages("pak")
+pak::pak("GeoTox@0.3.0")
 ```
 
 ## Development Version
@@ -24,20 +36,20 @@ install.packages("GeoTox")
 The development version can be installed from GitHub.
 
 ``` r
+
 #install.packages("pak")
-pak::pak("NIEHS/GeoTox")
+pak::pak("NIEHS/GeoTox@dev")
 ```
 
 ## Overview
 
 Figure 1 below shows the steps in the source-to-outcome-continuum or
-GeoTox modeling framework that is capable in the `GeoTox` package. blue
-text nodes represent an object and green text, rounded nodes represent a
-methodology or function required to go from one to the next. The
+GeoTox modeling framework that is capable in the `GeoTox` package. The
 `GeoTox` package uses R S3 object-oriented programming to create the
-**GeoTox** object. The **GeoTox** object is a list that contains all of
-the information required to run the analysis including tracking
-exposure, assays, dose-response, and geospatial referencing.
+**GeoTox** object. The **GeoTox** object contains all of the information
+required to run the analysis including tracking exposure, assays,
+dose-response, and geospatial referencing. Each component of the object
+and pipeline are stored in a relational DuckDB​​ database.
 
 ![GeoTox](reference/figures/GeoTox.png)  
 *Figure 1: Overview of the steps in the GeoTox framework*
@@ -45,7 +57,8 @@ exposure, assays, dose-response, and geospatial referencing.
 ## Getting Started
 
 Please refer to the [package website](https://niehs.github.io/GeoTox/)
-for a detailed description of how to use `GeoTox`.
+for a detailed description of how to use `GeoTox`. The development
+version can be accessed [here](https://niehs.github.io/GeoTox/dev/).
 
 ## Citation
 
@@ -65,125 +78,110 @@ issue with the appropriate label to help ensure a timely response.
 
 # Package index
 
-### GeoTox S3 Object
+## GeoTox
 
-Functions using a GeoTox object
+Initialize a GeoTox object.
 
 - [`GeoTox()`](https://github.com/NIEHS/GeoTox/reference/GeoTox.md)
-  [`plot(`*`<GeoTox>`*`)`](https://github.com/NIEHS/GeoTox/reference/GeoTox.md)
-  : GeoTox S3 object
-- [`calculate_response()`](https://github.com/NIEHS/GeoTox/reference/calculate_response.md)
-  : Calculate response
-- [`compute_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/compute_sensitivity.md)
-  : Compute response sensitivity to parameter variation.
-- [`plot_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/plot_sensitivity.md)
-  : Plot results of sensitivity analysis.
+  [`get_con()`](https://github.com/NIEHS/GeoTox/reference/GeoTox.md) :
+  GeoTox S3 object
+
+## Wrapper functions
+
+Call a single function for each major step of the workflow. Ordered by
+workflow sequence.
+
+- [`simulate_population()`](https://github.com/NIEHS/GeoTox/reference/simulate_population.md)
+  : Simulate population characteristics and exposures
+- [`calc_response()`](https://github.com/NIEHS/GeoTox/reference/calc_response.md)
+  : Calculate concentrations and risks
 - [`sensitivity_analysis()`](https://github.com/NIEHS/GeoTox/reference/sensitivity_analysis.md)
   : Perform sensitivity analysis
-- [`set_boundaries()`](https://github.com/NIEHS/GeoTox/reference/set_boundaries.md)
-  : Set GeoTox boundaries
-- [`set_hill_params()`](https://github.com/NIEHS/GeoTox/reference/set_hill_params.md)
-  : Set Hill parameters for a GeoTox object.
-- [`set_population()`](https://github.com/NIEHS/GeoTox/reference/set_population.md)
-  : Set population data
-- [`simulate_population()`](https://github.com/NIEHS/GeoTox/reference/simulate_population.md)
-  : Simulate population data
 
-### Simulate
+## Simulate population
 
-Functions that perform Monte Carlo simulation
+Generate population characteristics and exposures using Monte Carlo
+simulation.
 
-- [`sample_Css()`](https://github.com/NIEHS/GeoTox/reference/sample_Css.md)
-  :
-
-  Sample from pre-generated `C_ss` data
-
+- [`add_age()`](https://github.com/NIEHS/GeoTox/reference/add_age.md) :
+  Add age simulation data
+- [`add_exposure()`](https://github.com/NIEHS/GeoTox/reference/add_exposure.md)
+  : Add exposure simulation data
+- [`add_exposure_rate_params()`](https://github.com/NIEHS/GeoTox/reference/add_exposure_rate_params.md)
+  : Add exposure rate simulation data
+- [`add_obesity()`](https://github.com/NIEHS/GeoTox/reference/add_obesity.md)
+  : Add obesity simulation data
 - [`simulate_age()`](https://github.com/NIEHS/GeoTox/reference/simulate_age.md)
-  : Simulate ages
-
+  : Simulate age values
 - [`simulate_exposure()`](https://github.com/NIEHS/GeoTox/reference/simulate_exposure.md)
-  : Simulate external exposure
-
-- [`simulate_inhalation_rate()`](https://github.com/NIEHS/GeoTox/reference/simulate_inhalation_rate.md)
-  : Simulate inhalation rates
-
+  : Simulate exposure concentrations
+- [`simulate_exposure_rate()`](https://github.com/NIEHS/GeoTox/reference/simulate_exposure_rate.md)
+  : Simulate exposure rates
 - [`simulate_obesity()`](https://github.com/NIEHS/GeoTox/reference/simulate_obesity.md)
-  : Simulate obesity status
+  : Simulate obesity values
 
-### Calculate Functions
+### Pre-simulated C_(ss)
 
-Functions that calculate various metrics
+Set and sample from pre-simulated steady-state plasma concentrations
+C_(ss).
 
-- [`calc_concentration_response()`](https://github.com/NIEHS/GeoTox/reference/calc_concentration_response.md)
-  : Calculate the mixture response from one of three different
-  approaches: IA, GCA, or Hazard Quotient
+- [`sample_simulated_css()`](https://github.com/NIEHS/GeoTox/reference/sample_simulated_css.md)
+  : Sample from pre-simulated steady-state plasma concentrations
+- [`set_fixed_css()`](https://github.com/NIEHS/GeoTox/reference/set_fixed_css.md)
+  : Prepare steady-state plasma concentrations for sensitivity analysis
+- [`set_simulated_css()`](https://github.com/NIEHS/GeoTox/reference/set_simulated_css.md)
+  : Set pre-simulated steady-state plasma concentrations
 
-- [`calc_independent_action()`](https://github.com/NIEHS/GeoTox/reference/calc_independent_action.md)
-  : Independent Action
+### Set ‘sample’ table
+
+Set population characteristics directly instead of simulating them.
+
+- [`set_sample()`](https://github.com/NIEHS/GeoTox/reference/set_sample.md)
+  : Set sample data
+
+## Calculate response
+
+Calculate risk scores using population characteristics, exposures, and
+concentration-response data.
 
 - [`calc_internal_dose()`](https://github.com/NIEHS/GeoTox/reference/calc_internal_dose.md)
-  : Calculate internal chemical dose
-
+  : Calculate internal dose
 - [`calc_invitro_concentration()`](https://github.com/NIEHS/GeoTox/reference/calc_invitro_concentration.md)
-  :
+  : Calculate in vitro concentration
+- [`calc_risk()`](https://github.com/NIEHS/GeoTox/reference/calc_risk.md)
+  : Calculate risk scores
 
-  Calculate *in vitro* concentration
+## Sensitivity analysis
 
-- [`resp_quantiles()`](https://github.com/NIEHS/GeoTox/reference/resp_quantiles.md)
-  : Get response quantiles
+- [`calc_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/calc_sensitivity.md)
+  : Calculate risk sensitivity to a single variable
 
-### Plot
+## Hill model
 
-Plotting functions
-
-- [`plot_exposure()`](https://github.com/NIEHS/GeoTox/reference/plot_exposure.md)
-  : Plot exposure data.
-- [`plot_hill()`](https://github.com/NIEHS/GeoTox/reference/plot_hill.md)
-  : Plot Hill equation fits.
-- [`plot_resp()`](https://github.com/NIEHS/GeoTox/reference/plot_resp.md)
-  : Plot response data
-
-### Auxiliary
-
-Auxillary and helper functions
-
+- [`add_hill_params()`](https://github.com/NIEHS/GeoTox/reference/add_hill_params.md)
+  : Add Hill model parameters
 - [`fit_hill()`](https://github.com/NIEHS/GeoTox/reference/fit_hill.md)
   : Fit 2- or 3-parameter Hill model
 
-- [`hill_conc()`](https://github.com/NIEHS/GeoTox/reference/hill_conc.md)
-  : Hill model concentration
+## Boundary information
 
-- [`hill_val()`](https://github.com/NIEHS/GeoTox/reference/hill_val.md)
-  : Hill model response
+- [`set_boundary()`](https://github.com/NIEHS/GeoTox/reference/set_boundary.md)
+  [`get_boundary()`](https://github.com/NIEHS/GeoTox/reference/set_boundary.md)
+  : Store and retrieve boundary geometries
 
-- [`get_fixed_age()`](https://github.com/NIEHS/GeoTox/reference/get_fixed_age.md)
-  :
+## Utility
 
-  Get `C_ss` Data for Fixed Age
+Extract information from a GeoTox object.
 
-- [`get_fixed_css()`](https://github.com/NIEHS/GeoTox/reference/get_fixed_css.md)
-  :
+- [`get_assay_table()`](https://github.com/NIEHS/GeoTox/reference/get_risk_values.md)
+  [`get_risk_quantiles()`](https://github.com/NIEHS/GeoTox/reference/get_risk_values.md)
+  [`get_risk_sensitivity()`](https://github.com/NIEHS/GeoTox/reference/get_risk_values.md)
+  [`get_risk_values()`](https://github.com/NIEHS/GeoTox/reference/get_risk_values.md)
+  : Get risk metric results
+- [`get_concentration_mean()`](https://github.com/NIEHS/GeoTox/reference/get_concentration_mean.md)
+  : Get concentration mean values
 
-  Get Fixed `C_ss` Data
-
-- [`get_fixed_obesity()`](https://github.com/NIEHS/GeoTox/reference/get_fixed_obesity.md)
-  :
-
-  Get `C_ss` Data for Fixed Obesity Status
-
-- [`get_fixed_other()`](https://github.com/NIEHS/GeoTox/reference/get_fixed_other.md)
-  :
-
-  Get median `C_ss` Values
-
-- [`get_fixed_params()`](https://github.com/NIEHS/GeoTox/reference/get_fixed_params.md)
-  :
-
-  Get `C_ss` Data for Fixed `C_ss` Generation Parameters
-
-### Datasets
-
-Package datasets
+## Datasets
 
 - [`geo_tox_data`](https://github.com/NIEHS/GeoTox/reference/geo_tox_data.md)
   : GeoTox Data

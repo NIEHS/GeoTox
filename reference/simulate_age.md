@@ -1,70 +1,112 @@
-# Simulate ages
+# Simulate age values
 
-Simulate ages
+Simulate 'age' values to be stored in the 'sample' table of a GeoTox
+database.
 
 ## Usage
 
 ``` r
-simulate_age(x, n = 1000)
+simulate_age(GT, n = 1000, overwrite = FALSE)
 ```
 
 ## Arguments
 
-- x:
+- GT:
 
-  data frame or list of data frames containing population data for age
-  groups. Each data frame must contain columns "AGEGRP" and "TOT_POP".
+  GeoTox object.
 
 - n:
 
-  simulated sample size(s).
+  Number of individuals to simulate per location (default 1000). Ignored
+  if 'sample' table already exists.
+
+- overwrite:
+
+  Logical indicating whether to overwrite existing 'age' values in the
+  'sample' table (default FALSE).
 
 ## Value
 
-List of arrays containing simulated ages.
+The same GeoTox object, invisibly.
 
 ## Details
 
-Each data frame must contain 19 rows. The first row represents the total
-population of all age groups while the next 18 rows represent age groups
-from 0 to 89 in increments of 5 years.
+An 'age' table containing simulation data must already exist in the
+GeoTox database, which is added using
+[`add_age()`](https://github.com/NIEHS/GeoTox/reference/add_age.md).
 
-The sample size can be either a single value or a vector the same length
-as the number of data frames in x. If a single value is provided, the
-same sample size is used for all data frames. If a vector is provided,
-each element corresponds to the sample size for each data frame in x.
+## See also
+
+[`add_age()`](https://github.com/NIEHS/GeoTox/reference/add_age.md),
+[`simulate_population()`](https://github.com/NIEHS/GeoTox/reference/simulate_population.md)
 
 ## Examples
 
 ``` r
-# Single data frame
-x <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-# populate only age range 40-44, set population total of all ages
-x$TOT_POP[c(1, 10)] <- 100
-simulate_age(x, 5)
-#> [[1]]
-#> [1] 43 40 40 42 40
-#> 
+# Example age simulation data
+age_df <- data.frame(
+  FIPS = rep(c(10000, 20000), each = 19),
+  AGEGRP = rep(0:18, times = 2),
+  TOT_POP = 0
+)
+# FIPS 10000, populate age group 40-44
+age_df$TOT_POP[c(1, 10)] = 100
+# FIPS 20000, populate age groups 50-59
+age_df$TOT_POP[c(1, 12, 13) + 19] = c(200, 100, 100)
 
-# List of 2 data frames
-y <- data.frame(AGEGRP = 0:18, TOT_POP = 0)
-# populate age ranges 5-9 and 50-54
-y$TOT_POP[c(3, 12)] <- 10
-# set population total for all age groups
-y$TOT_POP[1] <- sum(y$TOT_POP)
-simulate_age(list(x = x, y = y), 15)
-#> $x
-#>  [1] 44 40 44 40 41 41 42 41 43 40 42 41 42 41 44
-#> 
-#> $y
-#>  [1] 54  5 51  5  6 53 54  9 53  6  8 52  7 52  7
-#> 
-# different sample sizes
-simulate_age(list(x = x, y = y), c(15, 10))
-#> $x
-#>  [1] 42 43 41 40 41 44 42 40 43 42 44 43 42 40 44
-#> 
-#> $y
-#>  [1] 51  9  9 50  7 54 53  8 54  5
-#> 
+# Simulate age values
+GT <- GeoTox() |>
+  add_age(age_df) |>
+  simulate_age(n = 5)
+
+# Open a connection to GeoTox database
+con <- get_con(GT)
+
+# Look at created tables
+
+dplyr::tbl(con, "sample") |> dplyr::collect()
+#> # A tibble: 10 × 3
+#>       id location_id   age
+#>    <int>       <int> <int>
+#>  1     1           1    43
+#>  2     2           1    44
+#>  3     3           1    42
+#>  4     4           1    40
+#>  5     5           1    42
+#>  6     6           2    50
+#>  7     7           2    55
+#>  8     8           2    54
+#>  9     9           2    55
+#> 10    10           2    53
+
+dplyr::tbl(con, "location") |> dplyr::collect()
+#> # A tibble: 2 × 2
+#>      id  FIPS
+#>   <int> <dbl>
+#> 1     1 10000
+#> 2     2 20000
+
+# Overwrite existing age values
+GT <- GT |> simulate_age(overwrite = TRUE)
+
+# Look at updated 'sample' table
+dplyr::tbl(con, "sample") |> dplyr::collect()
+#> # A tibble: 10 × 3
+#>       id location_id   age
+#>    <int>       <int> <int>
+#>  1     1           1    40
+#>  2     2           1    41
+#>  3     3           1    40
+#>  4     4           1    40
+#>  5     5           1    42
+#>  6     6           2    53
+#>  7     7           2    57
+#>  8     8           2    55
+#>  9     9           2    54
+#> 10    10           2    50
+
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
+#> [1] TRUE
 ```

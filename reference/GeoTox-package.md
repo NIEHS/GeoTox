@@ -20,8 +20,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Kyle Messier <kyle.messier@nih.gov>
-([ORCID](https://orcid.org/0000-0001-9508-9623))
+**Maintainer**: Skylar Marvel <skylar.marvel@nih.gov>
+([ORCID](https://orcid.org/0000-0002-2971-9743))
 
 Authors:
 
@@ -30,6 +30,9 @@ Authors:
 
 - David Reif <david.reif@nih.gov>
   ([ORCID](https://orcid.org/0000-0001-7815-6767))
+
+- Kyle Messier <kyle.messier@nih.gov>
+  ([ORCID](https://orcid.org/0000-0001-9508-9623))
 
 Other contributors:
 

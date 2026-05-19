@@ -2,24 +2,24 @@
 
 ## Authors
 
-- **Skylar Marvel**. Author. [](https://orcid.org/0000-0002-2971-9743)
+- **Skylar Marvel**. Author, maintainer.
+  [](https://orcid.org/0000-0002-2971-9743)
 
 - **David Reif**. Author. [](https://orcid.org/0000-0001-7815-6767)
 
-- **Kyle Messier**. Maintainer, author.
-  [](https://orcid.org/0000-0001-9508-9623)
+- **Kyle Messier**. Author. [](https://orcid.org/0000-0001-9508-9623)
 
 - **Spatiotemporal Exposures and Toxicology Group**. Copyright holder.
 
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/NIEHS/GeoTox/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/NIEHS/GeoTox/blob/v1.0.0/inst/CITATION)
 
 Messier K, Reif D, Marvel S (2025). “The GeoTox Package: open-source
 software for connecting spatiotemporal exposure to individual and
 population-level risk.” *Human Genomics*, **19**(1), 5.
-[doi:10.1186/s40246-024-00711-8](https://doi.org/10.1186/s40246-024-00711-8),
+[doi:10.1186/s40246-024-00711-8](https://doi.org/10.1186/s40246-024-00711-8).
 <https://doi.org/10.1186/s40246-024-00711-8>.
 
     @Article{,
