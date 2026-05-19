@@ -1,39 +1,44 @@
 library(dplyr)
-library(sf)
-library(tidyr)
-library(readr)
-library(stringr)
-library(purrr)
-library(readxl)
 library(httk)
 library(httr2)
+library(purrr)
+library(readr)
+library(readxl)
+library(sf)
+library(stringr)
+library(tibble)
+library(tidyr)
 rm(list = ls())
 
-# This dataset is documented in R/data.R and vignettes/package_data.Rmd
+# This dataset is documented in R/data.R and vignettes/package_data.qmd
 
 # Updating the raw data is an interactive process. There are several steps
 # that require manual intervention. These steps will create errors if run
 # in a non-interactive environment.
-update_data_raw <- TRUE # Last updated 1/12/2026
+update_data_raw <- TRUE # Last updated 3/20/2026
 
 geo_tox_data <- list()
 
-################################################################################
-## Chemical data
-################################################################################
+#-------------------------------------------------------------------------------
+# Chemicals
+#-------------------------------------------------------------------------------
 
-########################################
-### Exposure data
-########################################
+#---------------------------------------
+# External exposure
+#---------------------------------------
 
 # Data file too large for github, process before saving
 
 if (update_data_raw) {
 
-  filename <- "2019_Toxics_Exposure_Concentrations.xlsx"
+  filename <- "Region4b_2020ATS_Exposure_Concentrations.xlsx"
   tmp <- tempfile(filename)
   download.file(
-    paste0("https://www.epa.gov/system/files/documents/2022-12/", filename),
+    paste0(
+      "https://gaftp.epa.gov/rtrmodeling_public/AirToxScreen/2020/",
+      "Exposure%20Concentrations/",
+      filename
+    ),
     tmp
   )
   exposure <- read_xlsx(tmp)
@@ -53,12 +58,16 @@ if (update_data_raw) {
     # North Carolina counties
     filter(State == "NC", !grepl("0$", FIPS)) |>
     # Aggregate chemicals by county
-    summarize(across(-c(State:Tract), c(mean, sd)), .by = FIPS) |>
-    pivot_longer(-FIPS, names_to = "chemical") |>
-    mutate(
-      stat = if_else(grepl("_1$", chemical), "mean", "sd"),
-      chemical = gsub('.{2}$', '', chemical)
+    summarize(
+      across(
+        -c(State:Population),
+        list(mean = mean, sd = sd),
+        .names = "{col}|||{fn}"
+      ),
+      .by = FIPS
     ) |>
+    pivot_longer(-FIPS) |>
+    separate_wider_delim(name, "|||", names = c("chemical", "stat")) |>
     pivot_wider(names_from = stat) |>
     # Normalize concentrations
     mutate(norm = min_max_norm(mean), .by = chemical)
@@ -70,31 +79,31 @@ if (update_data_raw) {
 
 geo_tox_data$exposure <- exposure
 
-########################################
+#-------------------
 # Get CASRN and PREFERRED_NAME from CompTox Dashboard
-########################################
+#-------------------
 
 if (update_data_raw) {
-  stop("Manually downlaod CompTox Dashboard data from:\n",
-       "https://comptox.epa.gov/dashboard/batch-search")
+  stop(
+    "Manually downlaod CompTox Dashboard data from:\n",
+    "https://comptox.epa.gov/dashboard/batch-search"
+  )
   # Copy/paste the chemical names into the batch search field
   cat(geo_tox_data$exposure |> distinct(chemical) |> pull(), sep = "\n")
   # Save the results as "data-raw/CCD-Batch-Search.csv"
 }
 
-exposure_casrn <- read_csv("data-raw/CCD-Batch-Search.csv",
-                           show_col_types = FALSE) |>
-  filter(DTXSID != "N/A",
-         !grepl("WARNING", FOUND_BY))
+exposure_casrn <- read_csv("data-raw/CCD-Batch-Search.csv") |>
+  filter(DTXSID != "N/A", !grepl("WARNING", FOUND_BY))
 
 # Update exposure data with CompTox Dashboard data
 geo_tox_data$exposure <- geo_tox_data$exposure |>
   inner_join(exposure_casrn, by = join_by(chemical == INPUT)) |>
   select(FIPS, casn = CASRN, chnm = PREFERRED_NAME, mean, sd, norm)
 
-########################################
-### ICE cHTS data
-########################################
+#---------------------------------------
+# Active chemicals
+#---------------------------------------
 
 if (update_data_raw) {
 
@@ -129,8 +138,7 @@ if (update_data_raw) {
     # Return active chemicals
     result <- resp |> resp_body_json() |> pluck("endPoints")
 
-    fields <- c("assay", "casrn", "dtxsid", "substanceName",
-                "endpoint", "value")
+    fields <- c("assay", "casrn", "dtxsid", "substanceName", "endpoint", "value")
 
     map(fields, function(field) map_chr(result, field)) |>
       set_names(fields) |>
@@ -140,32 +148,34 @@ if (update_data_raw) {
       distinct()
   }
 
-  assays <- c("APR_HepG2_p53Act_1hr",
-              "APR_HepG2_p53Act_24hr",
-              "APR_HepG2_p53Act_72hr",
-              "ATG_p53_CIS",
-              "TOX21_DT40_LUC",
-              "TOX21_DT40_100_LUC",
-              "TOX21_DT40_657_LUC",
-              "TOX21_ELG1_LUC_Agonist",
-              "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
-              "TOX21_p53_BLA_p1_ratio",
-              "TOX21_p53_BLA_p2_ratio",
-              "TOX21_p53_BLA_p3_ratio",
-              "TOX21_p53_BLA_p4_ratio",
-              "TOX21_p53_BLA_p5_ratio")
+  assays <- c(
+    "APR_HepG2_p53Act_1hr",
+    "APR_HepG2_p53Act_24hr",
+    "APR_HepG2_p53Act_72hr",
+    "ATG_p53_CIS",
+    "TOX21_DT40_LUC",
+    "TOX21_DT40_100_LUC",
+    "TOX21_DT40_657_LUC",
+    "TOX21_ELG1_LUC_Agonist",
+    "TOX21_H2AX_HTRF_CHO_Agonist_ratio",
+    "TOX21_p53_BLA_p1_ratio",
+    "TOX21_p53_BLA_p2_ratio",
+    "TOX21_p53_BLA_p3_ratio",
+    "TOX21_p53_BLA_p4_ratio",
+    "TOX21_p53_BLA_p5_ratio"
+  )
 
   chemids <- unique(geo_tox_data$exposure$casn)
 
-  cHTS_hits_API <- get_cHTS_hits(assays = assays, chemids = chemids)
-  saveRDS(cHTS_hits_API, "data-raw/cHTS_hits_API.rds")
+  cHTS_hits <- get_cHTS_hits(assays = assays, chemids = chemids)
+  saveRDS(cHTS_hits, "data-raw/cHTS_hits.rds")
 } else {
-  cHTS_hits_API <- readRDS("data-raw/cHTS_hits_API.rds")
+  cHTS_hits <- readRDS("data-raw/cHTS_hits.rds")
 }
 
-########################################
-### Dose-response data
-########################################
+#---------------------------------------
+# Dose-response
+#---------------------------------------
 
 if (update_data_raw) {
 
@@ -204,7 +214,6 @@ if (update_data_raw) {
       tibble(
         endp = x[["assay"]],
         casn = x[["casrn"]],
-        call = x[["dsstoxsid"]],
         chnm = x[["substance"]],
         call = x[["call"]],
         logc = map_dbl(x[["concentrationResponses"]], "concentration") |> log10(),
@@ -214,9 +223,9 @@ if (update_data_raw) {
       bind_rows()
   }
 
-  assays <- unique(cHTS_hits_API$assay)
+  assays <- unique(cHTS_hits$assay)
 
-  chemids <- intersect(cHTS_hits_API$casrn, geo_tox_data$exposure$casn)
+  chemids <- intersect(cHTS_hits$casrn, geo_tox_data$exposure$casn)
 
   dose_response <- get_ICE_dose_resp(assays = assays, chemids = chemids)
   saveRDS(dose_response, "data-raw/dose_response.rds")
@@ -234,41 +243,45 @@ geo_tox_data$dose_response <- geo_tox_data$dose_response |>
   inner_join(exposure_casrn, by = join_by(casn == CASRN)) |>
   select(endp, casn, chnm = PREFERRED_NAME, logc, resp)
 
-################################################################################
-## Population data
-################################################################################
+#-------------------------------------------------------------------------------
+# Population
+#-------------------------------------------------------------------------------
 
-########################################
-### Age
-########################################
+#---------------------------------------
+# Age
+#---------------------------------------
 
 if (update_data_raw) {
   download.file(
     paste0(
       "https://www2.census.gov/programs-surveys/popest/datasets/",
-      "2010-2020/counties/asrh/CC-EST2020-ALLDATA-37.csv"),
-    "data-raw/CC-EST2020-ALLDATA-37.csv")
+      "2020-2024/counties/asrh/cc-est2024-alldata-37.csv"
+    ),
+    "data-raw/cc-est2024-alldata-37.csv"
+  )
 }
-age <- read_csv("data-raw/CC-EST2020-ALLDATA-37.csv", show_col_types = FALSE)
+age <- read_csv("data-raw/cc-est2024-alldata-37.csv", show_col_types = FALSE)
 
 geo_tox_data$age <- age |>
-  # 7/1/2019 population estimate
-  filter(YEAR == 12) |>
+  # 7/1/2020 population estimate
+  filter(YEAR == 2) |>
   # Create FIPS
   mutate(FIPS = str_c(STATE, COUNTY)) |>
   # Keep selected columns
   select(FIPS, AGEGRP, TOT_POP)
 
-########################################
-### Obesity
-########################################
+#---------------------------------------
+# Obesity status
+#---------------------------------------
 
 if (update_data_raw) {
-  stop("Manually download obesity data from:\n",
-       "https://data.cdc.gov/500-Cities-Places/",
-       "PLACES-County-Data-GIS-Friendly-Format-2020-releas/",
-       "mssc-ksj7/about_data",
-       "\nvia Actions -> API -> Download file")
+  stop(
+    "Manually download obesity data from:\n",
+    "https://data.cdc.gov/500-Cities-Places/",
+    "PLACES-County-Data-GIS-Friendly-Format-2020-releas/",
+    "mssc-ksj7/about_data",
+    "\nvia Actions -> API -> Download file"
+  )
 }
 places <- read_csv(
   "data-raw/PLACES__County_Data_(GIS_Friendly_Format),_2020_release.csv",
@@ -291,9 +304,9 @@ geo_tox_data$obesity <- places |>
   ungroup() |>
   select(-OBESITY_Crude95CI)
 
-########################################
-### Steady-state plasma concentration (Css)
-########################################
+#---------------------------------------
+# Steady-state plasma concentration (C_ss)
+#---------------------------------------
 
 if (update_data_raw) {
 
@@ -303,62 +316,74 @@ if (update_data_raw) {
   # Get CASN for which httk simulation is possible. Try using load_dawson2021,
   # load_sipes2017, or load_pradeep2020 to increase number availability.
   load_sipes2017()
-  casn <- intersect(unique(geo_tox_data$dose_response$casn),
-                    get_cheminfo(suppress.messages = TRUE))
+  casn <- intersect(
+    unique(geo_tox_data$dose_response$casn),
+    get_cheminfo(suppress.messages = TRUE)
+  )
 
   # Define population demographics for httk simulation
   pop_demo <- cross_join(
-    tibble(age_group = list(c(0, 2), c(3, 5), c(6, 10), c(11, 15),
-                            c(16, 20), c(21, 30), c(31, 40), c(41, 50),
-                            c(51, 60), c(61, 70), c(71, 100))),
-    tibble(weight = c("Normal", "Obese"))) |>
-    # Create column of lower age_group values
-    rowwise() |>
-    mutate(age_min = age_group[1]) |>
-    ungroup()
+    tibble(age_group = list(
+      c(0, 2), c(3, 5), c(6, 10), c(11, 15), c(16, 20), c(21, 30), c(31, 40),
+      c(41, 50), c(51, 60), c(61, 70), c(71, 100)
+    )),
+    tibble(weight = c("Normal", "Obese"))
+  )
 
   # Create wrapper function around httk steps
-  simulate_css <- function(chem.cas, agelim_years, weight_category,
-                           samples, verbose = TRUE) {
-
+  simulate_css <- function(
+    chem.cas,
+    agelim_years,
+    weight_category,
+    samples,
+    verbose = TRUE
+  ) {
     if (verbose) {
-      cat(chem.cas,
-          paste0("(", paste(agelim_years, collapse = ", "), ")"),
-          weight_category,
-          "\n")
+      cat(
+        chem.cas,
+        paste0("(", paste(agelim_years, collapse = ", "), ")"),
+        weight_category,
+        "\n"
+      )
     }
 
-    httkpop <- list(method = "vi",
-                    gendernum = NULL,
-                    agelim_years = agelim_years,
-                    agelim_months = NULL,
-                    weight_category = weight_category,
-                    reths = c(
-                      "Mexican American",
-                      "Other Hispanic",
-                      "Non-Hispanic White",
-                      "Non-Hispanic Black",
-                      "Other"
-                    ))
+    httkpop <- list(
+      method = "vi",
+      gendernum = NULL,
+      agelim_years = agelim_years,
+      agelim_months = NULL,
+      weight_category = weight_category,
+      reths = c(
+        "Mexican American",
+        "Other Hispanic",
+        "Non-Hispanic White",
+        "Non-Hispanic Black",
+        "Other"
+      )
+    )
 
     css <- try(
       suppressWarnings({
-        mcs <- create_mc_samples(chem.cas = chem.cas,
-                                 samples = samples,
-                                 httkpop.generate.arg.list = httkpop,
-                                 suppress.messages = TRUE)
+        mcs <- create_mc_samples(
+          chem.cas = chem.cas,
+          samples = samples,
+          httkpop.generate.arg.list = httkpop,
+          suppress.messages = TRUE
+        )
 
-        calc_analytic_css(chem.cas = chem.cas,
-                          parameters = mcs,
-                          model = "3compartmentss",
-                          suppress.messages = TRUE)
+        calc_analytic_css(
+          chem.cas = chem.cas,
+          parameters = mcs,
+          model = "3compartmentss",
+          suppress.messages = TRUE
+        )
       }),
       silent = TRUE
     )
 
     # Return
     if (is(css, "try-error")) {
-      warning(paste0("simulate_css failed to generate data for CASN ", chem.cas))
+      warning("simulate_css() failed to generate data for CASN ", chem.cas)
       list(NA)
     } else {
       list(css)
@@ -382,47 +407,29 @@ if (update_data_raw) {
   })
   simulated_css <- simulated_css[casn_keep]
 
-  # Get median Css values for each age_group
-  simulated_css <- map(
-    simulated_css,
-    function(cas_df) {
-      cas_df |>
-        nest(.by = age_group) |>
-        mutate(
-          age_median_css = map_dbl(data, function(df) median(unlist(df$css),
-                                                             na.rm = TRUE))
-        ) |>
-        unnest(data)
-    }
-  )
-
-  # Get median Css values for each weight
-  simulated_css <- map(
-    simulated_css,
-    function(cas_df) {
-      cas_df |>
-        nest(.by = weight) |>
-        mutate(
-          weight_median_css = map_dbl(data, function(df) median(unlist(df$css),
-                                                                na.rm = TRUE))
-        ) |>
-        unnest(data) |>
-        arrange(age_min, weight)
-    }
-  )
-
   saveRDS(simulated_css, "data-raw/simulated_css.rds")
 } else {
   simulated_css <- readRDS("data-raw/simulated_css.rds")
 }
 
-geo_tox_data$simulated_css <- simulated_css
+geo_tox_data$simulated_css <- simulated_css |>
+  map(\(x) {
+    x |>
+      mutate(
+        age_lb = map_int(age_group, first),
+        age_ub = map_int(age_group, last)
+      ) |>
+      select(age_lb, age_ub, weight, css) |>
+      unnest(css)
+  }) |>
+  enframe(name = "casn") |>
+  unnest(value)
 
-########################################
-### Prune data
-########################################
+#---------------------------------------
+# Retain overlap
+#---------------------------------------
 
-casn_keep <- names(geo_tox_data$simulated_css)
+casn_keep <- unique(geo_tox_data$simulated_css$casn)
 
 geo_tox_data$exposure <- geo_tox_data$exposure |>
   filter(casn %in% casn_keep)
@@ -430,17 +437,19 @@ geo_tox_data$exposure <- geo_tox_data$exposure |>
 geo_tox_data$dose_response <- geo_tox_data$dose_response |>
   filter(casn %in% casn_keep)
 
-################################################################################
-## County/State boundaries
-################################################################################
+#-------------------------------------------------------------------------------
+# County/State boundaries
+#-------------------------------------------------------------------------------
 
 if (update_data_raw) {
-  stop("Manually download county and state boundaries from:\n",
-       "https://www.census.gov/geographies/mapping-files/",
-       "time-series/geo/cartographic-boundary.html")
+  stop(
+    "Manually download county and state boundaries from:\n",
+    "https://www.census.gov/geographies/mapping-files/",
+    "time-series/geo/cartographic-boundary.html"
+  )
 }
-county <- st_read("data-raw/cb_2019_us_county_5m/cb_2019_us_county_5m.shp")
-state <- st_read("data-raw/cb_2019_us_state_5m/cb_2019_us_state_5m.shp")
+county <- st_read("data-raw/cb_2020_us_county_5m/cb_2020_us_county_5m.shp")
+state <- st_read("data-raw/cb_2020_us_state_5m/cb_2020_us_state_5m.shp")
 
 geo_tox_data$boundaries <- list(
   county = county |>
@@ -451,8 +460,8 @@ geo_tox_data$boundaries <- list(
     select(geometry)
 )
 
-################################################################################
-## Save
-################################################################################
+#-------------------------------------------------------------------------------
+# Save
+#-------------------------------------------------------------------------------
 
 usethis::use_data(geo_tox_data, overwrite = TRUE)

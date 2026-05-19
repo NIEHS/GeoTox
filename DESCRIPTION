@@ -1,54 +1,59 @@
 Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
-Version: 0.3.0.9000
+Version: 1.0.0
 Authors@R: c(
-    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut"),
+    person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2971-9743")),
-    person("David", "Reif", , "david.reif@nih.gov", role = c("aut"),
+    person("David", "Reif", , "david.reif@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0001-7815-6767")),
-    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = c("cre", "aut"),
+    person("Kyle", "Messier", , "kyle.messier@nih.gov", role = "aut",
            comment = c(ORCID = "0000-0001-9508-9623")),
-    person("Spatiotemporal Exposures and Toxicology Group", role = c("cph"))
+    person("Spatiotemporal Exposures and Toxicology Group", role = "cph")
   )
 Description: Connecting spatiotemporal exposure to individual and
-    population-level risk via source-to-outcome continuum modeling. The package,
-    methods, and case-studies are described in Messier, Reif, and Marvel (2025)
-    <doi:10.1186/s40246-024-00711-8> and Eccles et al. (2023)
-    <doi:10.1016/j.scitotenv.2022.158905>.
+    population-level risk via source-to-outcome continuum modeling. The
+    package, methods, and case-studies are described in Messier, Reif, and
+    Marvel (2025) <doi:10.1186/s40246-024-00711-8> and Eccles et al.
+    (2023) <doi:10.1016/j.scitotenv.2022.158905>.
 License: MIT + file LICENSE
 URL: https://niehs.github.io/GeoTox/, https://github.com/NIEHS/GeoTox
+BugReports: https://github.com/NIEHS/GeoTox/issues
 Depends: 
     R (>= 4.4.0)
 Imports: 
+    DBI,
+    dbplyr,
     dplyr,
-    ggplot2,
-    ggridges,
+    duckdb,
+    duckplyr,
     purrr,
     rlang,
-    sf,
-    stats,
-    stringr,
     tibble,
     tidyr,
     tidyselect,
-    truncnorm,
-    utils
+    truncnorm
 Suggests: 
-    ggpubr,
+    blob,
+    ggplot2,
+    ggridges,
     httk,
     httr2,
     knitr,
+    quarto,
     readr,
     readxl,
     rmarkdown,
-    scales,
-    testthat (>= 3.0.0)
+    sf,
+    stringr,
+    testthat (>= 3.0.0),
+    withr,
+    zip
 VignetteBuilder: 
-    knitr
+    knitr,
+    quarto
+Config/Needs/website: rmarkdown, quarto
+Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
-BugReports: https://github.com/NIEHS/GeoTox/issues
-Config/Needs/website: rmarkdown

@@ -2,72 +2,63 @@
 % Please edit documentation in R/GeoTox.R
 \name{GeoTox}
 \alias{GeoTox}
-\alias{plot.GeoTox}
+\alias{get_con}
 \title{GeoTox S3 object}
 \usage{
-GeoTox()
+GeoTox(dbname = tempfile(fileext = ".duckdb"), reset_seed = FALSE, ...)
 
-\method{plot}{GeoTox}(x, type = c("resp", "hill", "exposure", "sensitivity"), ...)
+get_con(GT)
 }
 \arguments{
-\item{x}{GeoTox object.}
+\item{dbname}{Database file name. Default is a temporary file.}
 
-\item{type}{type of plot.}
+\item{reset_seed}{Logical indicating whether to reset the user's global
+\code{.Random.seed} after certain database operations (default \code{FALSE}).}
 
-\item{...}{arguments passed to subsequent methods.}
+\item{...}{Additional arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+
+\item{GT}{GeoTox object.}
 }
 \value{
-a GeoTox S3 object
+For \code{GeoTox()}, a GeoTox S3 object. For \code{get_con()}, a database
+connection.
 }
 \description{
-An S3 object that can be used to help organize the data and results of a
-GeoTox analysis.
+Create a GeoTox object and connect to the underlying database.
+}
+\details{
+The \code{dbname} will point to a DuckDB database file. If the file does not
+already exist, a new database will be created. Additional arguments passed
+via \code{...} will be forwarded to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.
+
+The \code{reset_seed} parameter is necessary for replicating results from the
+previous GeoTox implementation. Some database functions create temporary
+tables where a random string is appended to the table name. This advances the
+\code{.Random.seed} state and causes functions that use randomness to produce
+different results between the previous and current implementations. Setting
+\code{reset_seed = TRUE} will reset the user's \code{.Random.seed} to the value it had
+before certain database operations.
+
+Various parameters will be stored in the 'par' table. These parameters will
+also be loaded into the GeoTox object as a list in \code{GT$par}. The value for
+\code{reset_seed} can only be set on initial GeoTox object creation and will be
+loaded from the 'par' table for existing databases.
 }
 \examples{
-# See the vignette for a full example:
-#   vignette("introduction", package = "geotox")
+# Create a GeoTox object
+GT <- GeoTox()
 
-\dontrun{
-# Use a subset of the package data for demonstration purposes
-set.seed(2357)
-n <- 10 # Population size
-m <- 2 # Number of regions
-idx <- if (m < 100) sample(1:100, m) else 1:100
+# Open a connection to GeoTox database
+con <- get_con(GT)
 
-geoTox <- GeoTox() |>
-  # Set region and group boundaries (for plotting)
-  set_boundaries(region = geo_tox_data$boundaries$county,
-                 group  = geo_tox_data$boundaries$state) |>
-  # Simulate populations for each region
-  simulate_population(age           = split(geo_tox_data$age, ~FIPS)[idx],
-                      obesity       = geo_tox_data$obesity[idx, ],
-                      exposure      = split(geo_tox_data$exposure, ~FIPS)[idx],
-                      simulated_css = geo_tox_data$simulated_css,
-                      n             = n) |>
-  # Estimated Hill parameters
-  set_hill_params(geo_tox_data$dose_response |>
-                    fit_hill(assay = "endp", chem = "casn") |>
-                    dplyr::filter(!tp.sd.imputed, !logAC50.sd.imputed)) |>
-  # Calculate response
-  calculate_response() |>
-  # Perform sensitivity analysis
-  sensitivity_analysis()
+# List database tables
+DBI::dbListTables(con)
 
-# Print GeoTox object
-geoTox
+# Look at the GT parameters
+dplyr::tbl(con, "par") |> dplyr::collect()
+str(GT$par)
 
-# Plot hill fits
-plot(geoTox, type = "hill")
-# Plot exposure data
-plot(geoTox, type = "exposure", ncol = 5)
-# Plot response data
-plot(geoTox, assays = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
-# Plot sensitivity data
-plot(geoTox,
-     type = "sensitivity",
-     assay = "TOX21_H2AX_HTRF_CHO_Agonist_ratio")
-}
-}
-\seealso{
-\link{plot_resp}, \link{plot_hill}, \link{plot_exposure}, \link{plot_sensitivity}
+# Clean up example
+DBI::dbDisconnect(con)
+file.remove(GT$db_info$dbdir)
 }
