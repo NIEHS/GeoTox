@@ -97,6 +97,7 @@
 #'   simulate_population(exposure = exposure_df) |>
 #'   calc_response() |>
 #'   sensitivity_analysis()
+#' 
 #' }
 #'
 #' # Load results from pre-generated database for this example
