@@ -1,4 +1,4 @@
-# GeoTox (development version)
+# GeoTox 1.0.0
 
 * Reimplementation where data are now stored in a DuckDB database rather than an
 in-memory R object.
