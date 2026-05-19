@@ -108,6 +108,10 @@ parameter varied in the sensitivity analysis.
 ## Examples
 
 ``` r
+# Example setup is shown below in \dontrun().
+# Pre-generated results will be loaded instead to avoid long example runtime.
+
+if (FALSE) { # \dontrun{
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -159,6 +163,16 @@ GT <- GeoTox() |>
   simulate_population(exposure = exposure_df) |>
   calc_response() |>
   sensitivity_analysis()
+} # }
+
+# Load results from pre-generated database for this example
+temp_dir <- tempdir()
+zip::unzip(
+  system.file("extdata", "sensitivity.duckdb.zip", package = "GeoTox"),
+  junkpaths = TRUE,
+  exdir = temp_dir
+)
+GT <- GeoTox(paste0(temp_dir, "/sensitivity.duckdb"))
 
 # Look at 'assay' table contents
 get_assay_table(GT)

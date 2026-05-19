@@ -68,16 +68,16 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 #> # A tibble: 10 × 3
 #>       id location_id   age
 #>    <int>       <int> <int>
-#>  1     1           1    40
-#>  2     2           1    41
-#>  3     3           1    40
-#>  4     4           1    42
-#>  5     5           1    40
-#>  6     6           2    51
+#>  1     1           1    43
+#>  2     2           1    44
+#>  3     3           1    42
+#>  4     4           1    40
+#>  5     5           1    42
+#>  6     6           2    50
 #>  7     7           2    55
-#>  8     8           2    55
-#>  9     9           2    50
-#> 10    10           2    55
+#>  8     8           2    54
+#>  9     9           2    55
+#> 10    10           2    53
 
 dplyr::tbl(con, "location") |> dplyr::collect()
 #> # A tibble: 2 × 2
@@ -95,15 +95,15 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 #>       id location_id   age
 #>    <int>       <int> <int>
 #>  1     1           1    40
-#>  2     2           1    44
-#>  3     3           1    44
-#>  4     4           1    41
+#>  2     2           1    41
+#>  3     3           1    40
+#>  4     4           1    40
 #>  5     5           1    42
-#>  6     6           2    59
-#>  7     7           2    54
-#>  8     8           2    51
-#>  9     9           2    59
-#> 10    10           2    56
+#>  6     6           2    53
+#>  7     7           2    57
+#>  8     8           2    55
+#>  9     9           2    54
+#> 10    10           2    50
 
 # Clean up example
 DBI::dbDisconnect(con)

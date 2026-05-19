@@ -53,9 +53,9 @@ get_concentration_mean(GT, "C_ext")
 #> # A tibble: 4 × 4
 #>   substance_id route_id location_id  mean
 #>          <int>    <int>       <int> <dbl>
-#> 1            1        1           1  9.81
-#> 2            1        1           2 30.1 
-#> 3            2        1           1 19.9 
+#> 1            1        1           1  9.92
+#> 2            1        1           2 30.0 
+#> 3            2        1           1 20.0 
 #> 4            2        1           2 40.0 
 
 # Open a connection to GeoTox database
@@ -66,16 +66,16 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 #> # A tibble: 400 × 5
 #>       id sample_id substance_id route_id C_ext
 #>    <dbl>     <int>        <int>    <int> <dbl>
-#>  1     1         1            1        1 10.0 
-#>  2     2         1            2        1 19.5 
-#>  3     3         2            1        1 10.7 
-#>  4     4         2            2        1 19.1 
-#>  5     5         3            1        1  8.73
-#>  6     6         3            2        1 18.5 
-#>  7     7         4            1        1  9.84
-#>  8     8         4            2        1 19.8 
-#>  9     9         5            1        1  9.39
-#> 10    10         5            2        1 21.6 
+#>  1     1         1            1        1  9.56
+#>  2     2         1            2        1 19.1 
+#>  3     3         2            1        1 10.5 
+#>  4     4         2            2        1 20.0 
+#>  5     5         3            1        1  8.08
+#>  6     6         3            2        1 19.5 
+#>  7     7         4            1        1  8.02
+#>  8     8         4            2        1 19.1 
+#>  9     9         5            1        1 10.5 
+#> 10    10         5            2        1 20.2 
 #> # ℹ 390 more rows
 
 # Clean up example

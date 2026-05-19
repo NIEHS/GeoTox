@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/NIEHS/GeoTox/blob/duckdb/inst/CITATION)
+[`inst/CITATION`](https://github.com/NIEHS/GeoTox/blob/dev/inst/CITATION)
 
 Messier K, Reif D, Marvel S (2025). “The GeoTox Package: open-source
 software for connecting spatiotemporal exposure to individual and

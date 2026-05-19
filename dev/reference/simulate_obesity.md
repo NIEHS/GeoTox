@@ -86,14 +86,14 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 #>       id location_id weight
 #>    <int>       <int> <chr> 
 #>  1     1           1 Normal
-#>  2     2           1 Obese 
-#>  3     3           1 Obese 
+#>  2     2           1 Normal
+#>  3     3           1 Normal
 #>  4     4           1 Normal
-#>  5     5           1 Normal
+#>  5     5           1 Obese 
 #>  6     6           2 Obese 
-#>  7     7           2 Normal
+#>  7     7           2 Obese 
 #>  8     8           2 Obese 
-#>  9     9           2 Obese 
+#>  9     9           2 Normal
 #> 10    10           2 Obese 
 
 dplyr::tbl(con, "location") |> dplyr::collect()
@@ -131,9 +131,9 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 #>  2     2           1 Normal
 #>  3     3           1 Normal
 #>  4     4           1 Normal
-#>  5     5           1 Normal
-#>  6     6           2 Normal
-#>  7     7           2 Normal
+#>  5     5           1 Obese 
+#>  6     6           2 Obese 
+#>  7     7           2 Obese 
 #>  8     8           2 Obese 
 #>  9     9           2 Obese 
 #> 10    10           2 Obese 

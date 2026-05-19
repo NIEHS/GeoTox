@@ -13,10 +13,9 @@ gathered.
 >
 > The package data are being pulled from various sources and are
 > connected using FIPS codes. FIPS codes are a simple way to connect
-> data, but they can change. For example,
-> [Connecticut](https://www.bls.gov/cew/classifications/areas/new-2024-connecticut-counties.htm)
-> began the process of going from 8 legacy counties to 9 planning
-> regions starting in 2022 and became effective in 2024.
+> data, but they can change. For example, Connecticut began the process
+> of going from 8 legacy counties to 9 planning regions starting in 2022
+> and became effective in 2024.
 
 ## Setup
 

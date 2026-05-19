@@ -102,9 +102,9 @@ dplyr::tbl(con, "exposure_rate") |> dplyr::collect()
 #> # A tibble: 3 × 3
 #>   sample_id route_id  rate
 #>       <int>    <int> <dbl>
-#> 1         1        1 0.219
-#> 2         2        1 0.234
-#> 3         3        1 0.265
+#> 1         1        1 0.181
+#> 2         2        1 0.272
+#> 3         3        1 0.260
 
 dplyr::tbl(con, "sample") |> dplyr::collect()
 #> # A tibble: 3 × 5
@@ -156,9 +156,9 @@ dplyr::tbl(con, "exposure_rate") |> dplyr::collect()
 #> # A tibble: 3 × 3
 #>   sample_id route_id  rate
 #>       <int>    <int> <dbl>
-#> 1         1        1  9.18
-#> 2         2        1  9.20
-#> 3         3        1 39.0 
+#> 1         1        1  9.03
+#> 2         2        1 11.1 
+#> 3         3        1 39.3 
 
 # Clean up example
 DBI::dbDisconnect(con)

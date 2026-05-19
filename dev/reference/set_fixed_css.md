@@ -143,12 +143,12 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 #> # A tibble: 6 × 6
 #>      id sample_id substance_id route_id C_ext  C_ss
 #>   <dbl>     <int>        <int>    <int> <dbl> <dbl>
-#> 1     1         1            1        1 11.7      1
-#> 2     2         1            2        1 19.4     21
-#> 3     3         2            1        1  8.98    11
-#> 4     4         2            2        1 19.5     31
-#> 5     5         3            1        1 30.3      2
-#> 6     6         3            2        1 39.6     22
+#> 1     1         1            1        1  9.60     1
+#> 2     2         1            2        1 19.1     21
+#> 3     3         2            1        1  6.74    11
+#> 4     4         2            2        1 21.3     31
+#> 5     5         3            1        1 30.9      2
+#> 6     6         3            2        1 38.4     22
 
 dplyr::tbl(con, "sample") |> dplyr::collect()
 #> # A tibble: 3 × 4

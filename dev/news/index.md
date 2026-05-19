@@ -2,6 +2,10 @@
 
 ## GeoTox (development version)
 
+## GeoTox 1.0.0
+
+CRAN release: 2026-05-19
+
 - Reimplementation where data are now stored in a DuckDB database rather
   than an in-memory R object.
 

@@ -121,6 +121,10 @@ set in the GeoTox parameters (`GT$par`).
 ## Examples
 
 ``` r
+# Example setup is shown below in \dontrun().
+# Pre-generated results will be loaded instead to avoid long example runtime.
+
+if (FALSE) { # \dontrun{
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -147,26 +151,43 @@ css_df <- tibble::tribble(
   "00-00-2", 50, 99,  "Obese", 32
 )
 hill_df <- tibble::tribble(
-  ~assay, ~casn, ~logc, ~resp,
-  "a1", "00-00-1",    0,  10,
-  "a1", "00-00-1",    1,  20,
-  "a1", "00-00-1",    2,  80,
-  "a1", "00-00-1",    3, 100,
-  "a1", "00-00-2", -0.5,   5,
-  "a1", "00-00-2",  0.5,  20,
-  "a1", "00-00-2",  1.5,  55,
-  "a1", "00-00-2",  2.5,  60
+  ~assay, ~model, ~casn, ~logc, ~resp,
+  "a1", "human", "00-00-1",    0,  10,
+  "a1", "human", "00-00-1",    1,  20,
+  "a1", "human", "00-00-1",    2,  80,
+  "a1", "human", "00-00-1",    3, 100,
+  "a1", "human", "00-00-2", -0.5,   5,
+  "a1", "human", "00-00-2",  0.5,  20,
+  "a1", "human", "00-00-2",  1.5,  55,
+  "a1", "human", "00-00-2",  2.5,  60,
+  "a2",   "rat", "00-00-1",   -1,   0,
+  "a2",   "rat", "00-00-1",    0,  10,
+  "a2",   "rat", "00-00-1",    1,  30,
+  "a2",   "rat", "00-00-1",    2,  40
 )
+set.seed(1234)
 GT <- GeoTox() |>
   set_sample(sample_df) |>
   set_simulated_css(css_df) |>
   add_exposure_rate_params() |>
-  add_hill_params(fit_hill(hill_df, assay = "assay", substance = "casn")) |>
+  add_hill_params(fit_hill(
+    hill_df, assay = c(name = "assay", model = "model"), substance = "casn"
+  )) |>
   simulate_population(exposure = exposure_df) |>
   calc_response()
 
 # Calculate sensitivity to age
 GT <- GT |> calc_sensitivity("age")
+} # }
+
+# Load results from pre-generated database for this example
+temp_dir <- tempdir()
+zip::unzip(
+  system.file("extdata", "sensitivity.duckdb.zip", package = "GeoTox"),
+  junkpaths = TRUE,
+  exdir = temp_dir
+)
+GT <- GeoTox(paste0(temp_dir, "/sensitivity.duckdb"))
 
 # Open a connection to GeoTox database
 con <- get_con(GT)
@@ -174,21 +195,27 @@ con <- get_con(GT)
 # Look at relevant table
 
 dplyr::tbl(con, "risk_sensitivity_age") |> dplyr::collect()
-#> # A tibble: 3 × 6
+#> # A tibble: 6 × 6
 #>   assay_id sample_id GCA.Eff IA.Eff GCA.HQ.10 IA.HQ.10
 #>      <int>     <int>   <dbl>  <dbl>     <dbl>    <dbl>
-#> 1        1         1    63.6   68.5      119.     119.
-#> 2        1         2    63.8   68.7      124.     124.
-#> 3        1         3    68.7   73.8      296.     296.
+#> 1        1         1    64.3   69.0      138.     138.
+#> 2        1         2    64.8   69.5      162.     162.
+#> 3        1         3    68.8   73.9      315.     315.
+#> 4        2         1    39.4   39.4      202.     202.
+#> 5        2         2    39.6   39.6      236.     236.
+#> 6        2         3    40.5   40.5      633.     633.
 
 # Compared to baseline risk table
 dplyr::tbl(con, "risk") |> dplyr::collect()
-#> # A tibble: 3 × 6
+#> # A tibble: 6 × 6
 #>   assay_id sample_id GCA.Eff IA.Eff GCA.HQ.10 IA.HQ.10
 #>      <int>     <int>   <dbl>  <dbl>     <dbl>    <dbl>
-#> 1        1         1    62.8   67.0      70.0     70.0
-#> 2        1         2    66.6   72.3     135.     135. 
-#> 3        1         3    64.7   70.6     174.     174. 
+#> 1        1         1    62.0   68.2      59.0     59.0
+#> 2        1         2    65.0   69.3     232.     232. 
+#> 3        1         3    68.1   73.1     190.     190. 
+#> 4        2         1    37.1   37.1      89.1     89.1
+#> 5        2         2    38.9   38.9     395.     395. 
+#> 6        2         3    38.1   38.1     393.     393. 
 
 # Clean up example
 DBI::dbDisconnect(con)

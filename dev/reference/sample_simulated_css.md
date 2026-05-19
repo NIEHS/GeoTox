@@ -119,12 +119,12 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 #> # A tibble: 6 × 6
 #>      id sample_id substance_id route_id C_ext  C_ss
 #>   <dbl>     <int>        <int>    <int> <dbl> <dbl>
-#> 1     1         1            1        1  9.57     1
-#> 2     2         1            2        1 19.3     21
-#> 3     3         2            1        1 10.7     11
-#> 4     4         2            2        1 20.9     31
-#> 5     5         3            1        1 30.6      2
-#> 6     6         3            2        1 41.0     22
+#> 1     1         1            1        1  8.54     1
+#> 2     2         1            2        1 20.5     21
+#> 3     3         2            1        1  9.20    11
+#> 4     4         2            2        1 18.8     31
+#> 5     5         3            1        1 30.4      2
+#> 6     6         3            2        1 40.9     22
 
 dplyr::tbl(con, "sample") |> dplyr::collect()
 #> # A tibble: 3 × 4
@@ -195,12 +195,12 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 #> # A tibble: 6 × 6
 #>      id sample_id substance_id route_id C_ext  C_ss
 #>   <dbl>     <int>        <int>    <int> <dbl> <dbl>
-#> 1     1         1            1        1  11.8     1
-#> 2     2         1            2        1  22.5    NA
-#> 3     3         2            1        1  11.3   -11
-#> 4     4         2            2        1  20.2    NA
-#> 5     5         3            1        1  29.7     2
-#> 6     6         3            2        1  38.2    NA
+#> 1     1         1            1        1  8.75     1
+#> 2     2         1            2        1 19.5     NA
+#> 3     3         2            1        1 10.2    -11
+#> 4     4         2            2        1 21.4     NA
+#> 5     5         3            1        1 30.3      2
+#> 6     6         3            2        1 40.4     NA
 
 # Clean up example
 DBI::dbDisconnect(con)
