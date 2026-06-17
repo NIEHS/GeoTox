@@ -1,5 +1,9 @@
 # GeoTox
 
+## Maintainer
+
+Messier, Kyle (NIH/NIEHS) <kyle.messier@nih.gov>
+
 `GeoTox` is an open-source R software package for characterizing the
 risk of perturbing molecular targets involved in adverse human health
 outcomes based on exposure to spatially-referenced stressor mixtures via
