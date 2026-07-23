@@ -3,6 +3,10 @@
 
 # GeoTox <a href="https://github.com/NIEHS/GeoTox"><img src="man/figures/logo.svg" align="right" height="139" alt="GeoTox website" /></a>
 
+## Maintainer
+
+Messier, Kyle (NIH/NIEHS) <kyle.messier@nih.gov>
+
 <!-- badges: start -->
 
 [![Project Status: Active – The project has reached a stable, usable
