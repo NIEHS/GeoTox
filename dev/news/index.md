@@ -2,6 +2,17 @@
 
 ## GeoTox (development version)
 
+- Additional arguments to the
+  [`GeoTox()`](https://github.com/NIEHS/GeoTox/dev/reference/GeoTox.md)
+  constructor are now passed to
+  [`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html)
+  instead of
+  [`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html).
+
+- DuckDB configuration section added to “Get started” article.
+
+- Use of `expect_silent()` changed to `expect_no_error()` in tests.
+
 ## GeoTox 1.0.0
 
 CRAN release: 2026-05-19

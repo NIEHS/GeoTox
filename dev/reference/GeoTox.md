@@ -24,7 +24,7 @@ get_con(GT)
 - ...:
 
   Additional arguments passed to
-  [`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html).
+  [`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html).
 
 - GT:
 
@@ -40,7 +40,7 @@ connection.
 The `dbname` will point to a DuckDB database file. If the file does not
 already exist, a new database will be created. Additional arguments
 passed via `...` will be forwarded to
-[`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html).
+[`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html).
 
 The `reset_seed` parameter is necessary for replicating results from the
 previous GeoTox implementation. Some database functions create temporary
@@ -60,6 +60,10 @@ and will be loaded from the 'par' table for existing databases.
 ``` r
 # Create a GeoTox object
 GT <- GeoTox()
+#> duckdb is keeping downloaded extensions in a temporary directory:
+#> ℹ /tmp/RtmpN9OQ6i/duckdb/extensions
+#> This is removed when the R session ends, so extensions are re-downloaded each session.
+#> ℹ To keep them, point `options(duckdb.extension_directory =)` or the `DUCKDB_EXTENSION_DIRECTORY` environment variable at a permanent path.
 
 # Open a connection to GeoTox database
 con <- get_con(GT)

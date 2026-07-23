@@ -21,6 +21,29 @@ library(tidyr)
 set.seed(2357)
 ```
 
+### DuckDB configuration
+
+DuckDB downloaded extensions are stored in a shared home directory,
+which can be controlled using explicit arguments or configuration. See
+[`?duckdb::duckdb_storage`](https://r.duckdb.org/reference/duckdb_storage.html)
+for details, which may differ depending on the version installed. The
+explicit arguments added in version 1.5.5 (e.g. `shared_home` or `home`)
+can be passed into the
+[`GeoTox()`](https://github.com/NIEHS/GeoTox/dev/reference/GeoTox.md)
+constructor, but for this vignette, we will use options settings to
+specify a temporary directory. Not setting the storage location may
+result in an information message to be printed when a connection is
+opened.
+
+``` r
+
+# duckdb.home for DuckDB v1.5.5.
+# duckdb.extension_directory for earlier versions.
+# Setting both doesn't cause problems at the time of this writing.
+tempdir <- withr::local_tempdir()
+options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+```
+
 ## Hill curve fitting
 
 Hill curve fitting is a key step in the GeoTox workflow, as it provides

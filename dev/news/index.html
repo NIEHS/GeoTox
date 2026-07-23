@@ -44,7 +44,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="geotox-development-version">GeoTox (development version)<a class="anchor" aria-label="anchor" href="#geotox-development-version"></a></h2>
-</div>
+<ul><li><p>Additional arguments to the <code><a href="../reference/GeoTox.html">GeoTox()</a></code> constructor are now passed to <code><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb::duckdb()</a></code> instead of <code><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">DBI::dbConnect()</a></code>.</p></li>
+<li><p>DuckDB configuration section added to “Get started” article.</p></li>
+<li><p>Use of <code>expect_silent()</code> changed to <code>expect_no_error()</code> in tests.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="geotox-100">GeoTox 1.0.0<a class="anchor" aria-label="anchor" href="#geotox-100"></a></h2><p class="text-muted">CRAN release: 2026-05-19</p>
 <ul><li><p>Reimplementation where data are now stored in a DuckDB database rather than an in-memory R object.</p></li>
@@ -70,7 +73,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
