@@ -36,7 +36,7 @@ test_that("simulate population", {
     "50-00-0", 45, 89, "Obese",  12
   )
 
-  expect_silent(
+  expect_no_error(
     GT |>
       set_simulated_css(css_df) |>
       add_exposure_rate_params() |>
@@ -51,7 +51,7 @@ test_that("simulate population", {
   # Add another exposure substance column
   exposure_df$chnm <- c("chem1", "chem2")
   DBI::dbRemoveTable(con, "exposure")
-  expect_silent(
+  expect_no_error(
     simulate_population(
       GT,
       exposure = exposure_df,

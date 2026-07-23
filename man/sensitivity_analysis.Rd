@@ -84,6 +84,7 @@ GT <- GeoTox() |>
 
 # Perform sensitivity analysis
 GT <- GT |> sensitivity_analysis()
+
 }
 
 # Load results from pre-generated database for this example

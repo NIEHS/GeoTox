@@ -15,7 +15,7 @@ get_con(GT)
 \item{reset_seed}{Logical indicating whether to reset the user's global
 \code{.Random.seed} after certain database operations (default \code{FALSE}).}
 
-\item{...}{Additional arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+\item{...}{Additional arguments passed to \code{\link[duckdb:duckdb]{duckdb::duckdb()}}.}
 
 \item{GT}{GeoTox object.}
 }
@@ -29,7 +29,7 @@ Create a GeoTox object and connect to the underlying database.
 \details{
 The \code{dbname} will point to a DuckDB database file. If the file does not
 already exist, a new database will be created. Additional arguments passed
-via \code{...} will be forwarded to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.
+via \code{...} will be forwarded to \code{\link[duckdb:duckdb]{duckdb::duckdb()}}.
 
 The \code{reset_seed} parameter is necessary for replicating results from the
 previous GeoTox implementation. Some database functions create temporary

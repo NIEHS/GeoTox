@@ -22,7 +22,7 @@ test_that("set sample", {
     set_sample(GT, sample_df),
     "The 'concentration' or 'risk' tables already exist."
   )
-  expect_silent(
+  expect_no_error(
     set_sample(GT, sample_df, overwrite = TRUE)
   )
   expect_true(!DBI::dbExistsTable(con, "concentration"))

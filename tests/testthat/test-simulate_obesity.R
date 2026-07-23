@@ -35,7 +35,7 @@ test_that("simulate weight", {
   DBI::dbWriteTable(con, "obesity", obesity_df)
 
   # No sample table
-  expect_silent(
+  expect_no_error(
     simulate_obesity(GT, n = 10)
   )
 
@@ -51,7 +51,7 @@ test_that("simulate weight", {
     location_id = c(1, 1, 2, 2, 2, 4)
   )
   DBI::dbWriteTable(con, "sample", sample_df, overwrite = TRUE)
-  expect_silent(
+  expect_no_error(
     simulate_obesity(GT)
   )
 

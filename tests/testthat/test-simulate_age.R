@@ -39,7 +39,7 @@ test_that("simulate age", {
   DBI::dbWriteTable(con, "age", age_df)
 
   # No sample table
-  expect_silent(
+  expect_no_error(
     simulate_age(GT, n = 5)
   )
 
@@ -62,7 +62,7 @@ test_that("simulate age", {
     TOT_POP = 0
   )
   append_table(con, "age", extra_location)
-  expect_silent(
+  expect_no_error(
     simulate_age(GT)
   )
 

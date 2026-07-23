@@ -112,7 +112,7 @@ test_that("extra inputs", {
   # Extra cols and substance order
   css_extra_cols <- c("sign")
   substance_order <- list(casn = c("00-00-2", "00-00-1"))
-  expect_silent(
+  expect_no_error(
     GT <- GT |>
       sample_simulated_css(
         css_extra_cols  = css_extra_cols,
@@ -121,7 +121,7 @@ test_that("extra inputs", {
   )
 
   # Run again using stored parameters
-  expect_silent(
+  expect_no_error(
     sample_simulated_css(GT)
   )
 

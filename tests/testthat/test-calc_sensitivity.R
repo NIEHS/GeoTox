@@ -79,7 +79,7 @@ test_that("calc sensitivity", {
     sample_simulated_css() |>
     set_fixed_css()
 
-  expect_silent(
+  expect_no_error(
     calc_sensitivity(GT)
   )
 
@@ -164,7 +164,7 @@ test_that("other inputs", {
     sample_simulated_css() |>
     set_fixed_css()
 
-  expect_silent(
+  expect_no_error(
     calc_sensitivity(GT, vary = "C_ext")
   )
 

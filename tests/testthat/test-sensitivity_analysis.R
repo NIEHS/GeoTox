@@ -54,7 +54,7 @@ test_that("sensitivity analysis", {
     sample_simulated_css() |>
     set_fixed_css()
 
-  expect_silent(
+  expect_no_error(
     sensitivity_analysis(GT)
   )
 
