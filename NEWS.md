@@ -1,4 +1,4 @@
-# GeoTox (development version)
+# GeoTox 1.0.1
 
 * Additional arguments to the `GeoTox()` constructor are now passed to
 `duckdb::duckdb()` instead of `DBI::dbConnect()`.
