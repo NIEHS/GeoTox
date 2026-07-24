@@ -61,7 +61,7 @@ and will be loaded from the 'par' table for existing databases.
 # Create a GeoTox object
 GT <- GeoTox()
 #> duckdb is keeping downloaded extensions in a temporary directory:
-#> ℹ /tmp/RtmpN9OQ6i/duckdb/extensions
+#> ℹ /tmp/RtmpT4YDfi/duckdb/extensions
 #> This is removed when the R session ends, so extensions are re-downloaded each session.
 #> ℹ To keep them, point `options(duckdb.extension_directory =)` or the `DUCKDB_EXTENSION_DIRECTORY` environment variable at a permanent path.
 
