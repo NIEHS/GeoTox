@@ -61,7 +61,7 @@ and will be loaded from the 'par' table for existing databases.
 # Create a GeoTox object
 GT <- GeoTox()
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpH5zUz0/duckdb
+#> ℹ /tmp/RtmpgeMWDU/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -72,7 +72,7 @@ GT <- GeoTox()
 # Open a connection to GeoTox database
 con <- get_con(GT)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpH5zUz0/duckdb
+#> ℹ /tmp/RtmpgeMWDU/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
