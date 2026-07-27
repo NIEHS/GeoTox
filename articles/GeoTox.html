@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">GeoTox</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/main/vignettes/articles/GeoTox.qmd"><code>vignettes/articles/GeoTox.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NIEHS/GeoTox/blob/dev/vignettes/articles/GeoTox.qmd"><code>vignettes/articles/GeoTox.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -94,11 +94,22 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2357</span><span class="op">)</span></span></code></pre></div>
 </div>
-</section><section class="section level2"><h2 id="hill-curve-fitting">Hill curve fitting<a class="anchor" aria-label="anchor" href="#hill-curve-fitting"></a>
+<section class="level2"><h3 id="duckdb-configuration">DuckDB configuration<a class="anchor" aria-label="anchor" href="#duckdb-configuration"></a>
+</h3>
+<p>DuckDB downloaded extensions are stored in a shared home directory, which can be controlled using explicit arguments or configuration. See <code><a href="https://r.duckdb.org/reference/duckdb_storage.html" class="external-link">?duckdb::duckdb_storage</a></code> for details, which may differ depending on the version installed. The explicit arguments added in version 1.5.5 (e.g. <code>shared_home</code> or <code>home</code>) can be passed into the <code><a href="../reference/GeoTox.html">GeoTox()</a></code> constructor, but for this vignette, we will use options settings to specify a temporary directory. Not setting the storage location may result in an information message to be printed when a connection is opened.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># duckdb.home for DuckDB v1.5.5.</span></span>
+<span><span class="co"># duckdb.extension_directory for earlier versions.</span></span>
+<span><span class="co"># Setting both doesn't cause problems at the time of this writing.</span></span>
+<span><span class="va">tempdir</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html" class="external-link">local_tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>duckdb.home <span class="op">=</span> <span class="va">tempdir</span>, duckdb.extension_directory <span class="op">=</span> <span class="va">tempdir</span><span class="op">)</span></span></code></pre></div>
+</div>
+</section></section><section class="section level2"><h2 id="hill-curve-fitting">Hill curve fitting<a class="anchor" aria-label="anchor" href="#hill-curve-fitting"></a>
 </h2>
 <p>Hill curve fitting is a key step in the GeoTox workflow, as it provides the parameters needed to link internal concentrations to assay responses. The <code><a href="../reference/fit_hill.html">fit_hill()</a></code> function can be used to fit Hill models to dose-response data, and the resulting parameters can be added to a GeoTox object for use in subsequent calculations. Dose-reponse data can be grouped by assay and substance to fit separate Hill curves for each combination.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hill_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_hill.html">fit_hill</a></span><span class="op">(</span></span>
 <span>  <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">dose_response</span>,</span>
 <span>  assay <span class="op">=</span> <span class="st">"endp"</span>,</span>
@@ -133,13 +144,13 @@ $substance
 </div>
 <p>Sometimes the standard deviation estimates may be missing. In these cases, <code><a href="../reference/fit_hill.html">fit_hill()</a></code> will impute missing standard deviations with the corresponding parameter estimate. If this is not desirable, the imputed standard deviations can be identified using the <code>tp.sd.imputed</code> and <code>logAC50.sd.imputed</code> columns of the resulting object’s <code>fit</code> table, and these fits can be removed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">hill_params</span><span class="op">$</span><span class="va">fit</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">tp.sd.imputed</span>, <span class="op">!</span><span class="va">logAC50.sd.imputed</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>The resulting Hill curves can be visualized by plotting the fitted curves along with the original dose-response points.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Add original dose-response points</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
@@ -198,7 +209,7 @@ $substance
 <code><a href="../reference/add_hill_params.html">add_hill_params()</a></code>: Add parameters from Hill curve fitting to the database. These parameters are used by <code><a href="../reference/calc_risk.html">calc_risk()</a></code> (or the wrapper function <code><a href="../reference/calc_response.html">calc_response()</a></code>).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">GeoTox</a></span><span class="op">(</span><span class="st">"GeoTox-introduction.duckdb"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/set_boundary.html">set_boundary</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">boundaries</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/set_simulated_css.html">set_simulated_css</a></span><span class="op">(</span><span class="va">geo_tox_data</span><span class="op">$</span><span class="va">simulated_css</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -209,7 +220,7 @@ $substance
 </h3>
 <p>Population characteristics (age and obesity status) and exposure can be simulated using the <code><a href="../reference/simulate_population.html">simulate_population()</a></code> function, which is a wrapper around <code><a href="../reference/simulate_age.html">simulate_age()</a></code>, <code><a href="../reference/simulate_obesity.html">simulate_obesity()</a></code>, <code><a href="../reference/simulate_exposure_rate.html">simulate_exposure_rate()</a></code>, and <code><a href="../reference/simulate_exposure.html">simulate_exposure()</a></code>. Alternatively, <code><a href="../reference/set_sample.html">set_sample()</a></code> can be used for age and/or obesity status. The resulting simulated data is stored in the database and used for subsequent calculations. In addition, <code><a href="../reference/simulate_population.html">simulate_population()</a></code> will sample steady-state plasma concentrations from the pre-simulated data using <code><a href="../reference/sample_simulated_css.html">sample_simulated_css()</a></code>, and <code><a href="../reference/set_fixed_css.html">set_fixed_css()</a></code> will be called in preparation for sensitivity analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/simulate_population.html">simulate_population</a></span><span class="op">(</span></span>
 <span>    age       <span class="op">=</span> <span class="va">geo_tox_data</span><span class="op">$</span><span class="va">age</span>,</span>
@@ -223,7 +234,7 @@ $substance
 </h3>
 <p>Risk scores can be calculated using the <code><a href="../reference/calc_response.html">calc_response()</a></code> function, which is a wrapper around <code><a href="../reference/calc_internal_dose.html">calc_internal_dose()</a></code>, <code><a href="../reference/calc_invitro_concentration.html">calc_invitro_concentration()</a></code>, and <code><a href="../reference/calc_risk.html">calc_risk()</a></code>. Sensitivity analysis can then be performed using <code><a href="../reference/sensitivity_analysis.html">sensitivity_analysis()</a></code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GT</span> <span class="op">&lt;-</span> <span class="va">GT</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/calc_response.html">calc_response</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/sensitivity_analysis.html">sensitivity_analysis</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -232,7 +243,7 @@ $substance
 </h2>
 <p>An overview of the GeoTox object can be obtained by printing it.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GT</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>GeoTox object
@@ -250,7 +261,7 @@ Sensitivity: C_ext, age, css_params, fit_params, weight</code></pre>
 </div>
 <p>Connecting to the database allows access to the various tables that store the data used in the workflow.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbListTables.html" class="external-link">dbListTables</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -266,7 +277,7 @@ Sensitivity: C_ext, age, css_params, fit_params, weight</code></pre>
 [19] "route"                       "sample"
 [21] "simulated_css"               "substance"                  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p>Below are the tables that exist after performing sensitivity analysis on the example dataset.</p>
@@ -283,7 +294,7 @@ Sensitivity: C_ext, age, css_params, fit_params, weight</code></pre>
 </h3>
 <p>Exposure data was added to the database using <code><a href="../reference/simulate_population.html">simulate_population()</a></code>, which calls <code><a href="../reference/add_exposure.html">add_exposure()</a></code> and <code><a href="../reference/simulate_exposure.html">simulate_exposure()</a></code>. The input data used to simulate exposure values is stored in the <code>exposure</code> table and can be joined with the <code>substance</code> table to retrieve any entered chemical information. Below is an example of plotting the normalized mean exposure by county and chemical name.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_exposure</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
 <span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">defer</a></span><span class="op">(</span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
@@ -320,7 +331,7 @@ Sensitivity: C_ext, age, css_params, fit_params, weight</code></pre>
 </h3>
 <p>Various concentration fields are stored in the <code>concentration</code> table. The helper function <code><a href="../reference/get_concentration_mean.html">get_concentration_mean()</a></code> can be used to fetch the mean values for a given concentration field, grouped by substance, route, and location. The concentration data can then be plotted similarly to the exposure data. Below are examples of plotting the mean external concentration (<code>C_ext</code>), steady-state plasma concentration (<code>C_ss</code>), internal dose (<code>D_int</code>), and <em>in vitro</em> concentration (<code>C_invitro</code>) by county and chemical name.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_concentration_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span>, <span class="va">col</span>, <span class="va">wrap_var</span> <span class="op">=</span> <span class="st">"chnm"</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeoTox.html">get_con</a></span><span class="op">(</span><span class="va">GT</span><span class="op">)</span></span>
 <span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">defer</a></span><span class="op">(</span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
@@ -373,7 +384,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"C_ss"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -381,7 +392,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"D_int"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -389,7 +400,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_concentration_mean</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"C_invitro"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -402,7 +413,7 @@ be uploaded.
 </h3>
 <p>Several risk metrics are stored in the <code>risk</code> table. The helper function <code><a href="../reference/get_risk_values.html">get_risk_quantiles()</a></code> can be used to fetch quantiles of these risk metrics grouped by assay and location. Below are examples of plotting the median values for the generalized concentration addition (GCA) and independent action (IA) efficacy risk scores and the hazard quotients using the 10% effective concentration (HQ.10).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_risk_quantile</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
 <span>    <span class="va">GT</span>, <span class="va">col</span>, <span class="va">wrap_var</span> <span class="op">=</span> <span class="st">"endp"</span>, <span class="va">quantiles</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Median"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
@@ -447,7 +458,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"IA.Eff"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -455,7 +466,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"GCA.HQ.10"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -463,7 +474,7 @@ be uploaded.
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">plot_risk_quantile</span><span class="op">(</span><span class="va">GT</span>, <span class="st">"IA.HQ.10"</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -476,7 +487,7 @@ be uploaded.
 </h3>
 <p>Results from sensitivity analyses are stored in the <code>risk_sensitivity_*</code> tables. The helper function <code><a href="../reference/get_risk_values.html">get_risk_sensitivity()</a></code> is a wrapper around <code><a href="../reference/get_risk_values.html">get_risk_values()</a></code>, which can be used to fetch sensitivity data for a given risk metric, to obtain values for all varying parameters grouped by location for a specific assay. Below is an example of plotting the sensitivity data for the IA efficacy risk score using ridgeline density plots.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_risk_sensitivity</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">GT</span>, <span class="va">metric</span>, <span class="va">assay</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_risk_values.html">get_risk_sensitivity</a></span><span class="op">(</span><span class="va">GT</span>, <span class="va">metric</span>, <span class="va">assay</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -629,7 +640,7 @@ be uploaded.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

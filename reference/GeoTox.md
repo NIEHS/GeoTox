@@ -24,7 +24,7 @@ get_con(GT)
 - ...:
 
   Additional arguments passed to
-  [`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html).
+  [`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html).
 
 - GT:
 
@@ -40,7 +40,7 @@ connection.
 The `dbname` will point to a DuckDB database file. If the file does not
 already exist, a new database will be created. Additional arguments
 passed via `...` will be forwarded to
-[`DBI::dbConnect()`](https://dbi.r-dbi.org/reference/dbConnect.html).
+[`duckdb::duckdb()`](https://r.duckdb.org/reference/duckdb.html).
 
 The `reset_seed` parameter is necessary for replicating results from the
 previous GeoTox implementation. Some database functions create temporary
@@ -60,9 +60,25 @@ and will be loaded from the 'par' table for existing databases.
 ``` r
 # Create a GeoTox object
 GT <- GeoTox()
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/RtmpH5zUz0/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 
 # Open a connection to GeoTox database
 con <- get_con(GT)
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/RtmpH5zUz0/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 
 # List database tables
 DBI::dbListTables(con)
