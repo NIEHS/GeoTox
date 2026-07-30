@@ -65,7 +65,7 @@ age_df$TOT_POP[c(1, 12, 13) + 19] = c(200, 100, 100)
 # Add age simulation data to GeoTox database
 GT <- GeoTox() |> add_age(age_df)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -73,7 +73,7 @@ GT <- GeoTox() |> add_age(age_df)
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -84,7 +84,7 @@ GT <- GeoTox() |> add_age(age_df)
 # Open a connection to GeoTox database
 con <- get_con(GT)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

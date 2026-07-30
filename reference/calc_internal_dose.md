@@ -67,7 +67,7 @@ GT <- GeoTox() |>
   add_exposure_rate_params() |>
   simulate_population(exposure = exposure_df, sample_css = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -75,7 +75,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -83,7 +83,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -91,7 +91,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -99,7 +99,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -107,7 +107,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -115,7 +115,7 @@ GT <- GeoTox() |>
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -126,7 +126,7 @@ GT <- GeoTox() |>
 # Calculate internal dose
 GT <- GT |> calc_internal_dose()
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -137,7 +137,7 @@ GT <- GT |> calc_internal_dose()
 # Open a connection to GeoTox database
 con <- get_con(GT)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgeMWDU/duckdb
+#> ℹ /tmp/RtmplZTgWH/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
