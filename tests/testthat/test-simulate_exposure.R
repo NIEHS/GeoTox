@@ -39,7 +39,7 @@ test_that("sample table already exists", {
   GT |> set_sample(sample_df) |> add_exposure(exposure_df)
 
   # No concentration table
-  expect_silent(simulate_exposure(GT))
+  expect_no_error(simulate_exposure(GT))
 
   # Overwrite
   expect_error(
@@ -49,7 +49,7 @@ test_that("sample table already exists", {
 
   # Concentration table w/o C_ext
   DBI::dbExecute(con, "ALTER TABLE concentration DROP COLUMN C_ext")
-  expect_silent(simulate_exposure(GT))
+  expect_no_error(simulate_exposure(GT))
 
   # Output
   conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
@@ -64,7 +64,7 @@ test_that("sample table already exists", {
       overwrite = TRUE,
       temporary = FALSE
     )
-  expect_silent(simulate_exposure(GT, sensitivity = TRUE))
+  expect_no_error(simulate_exposure(GT, sensitivity = TRUE))
 })
 
 test_that("sample table doesn't exist", {
@@ -84,7 +84,7 @@ test_that("sample table doesn't exist", {
   GT |> add_exposure(exposure_df)
 
   # Simulate
-  expect_silent(simulate_exposure(GT, n = 4))
+  expect_no_error(simulate_exposure(GT, n = 4))
 
   # Output
   conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()
@@ -114,12 +114,12 @@ test_that("other column names", {
   GT |> set_sample(sample_df) |> add_exposure(exposure_df)
 
   # Input column names
-  expect_silent(
+  expect_no_error(
     GT <- simulate_exposure(GT, expos_mean = "mu", expos_sd = "sigma")
   )
 
   # Using stored GT$par values
-  expect_silent(
+  expect_no_error(
     simulate_exposure(GT, overwrite = TRUE)
   )
 })
@@ -144,7 +144,7 @@ test_that("data order", {
   GT |> add_exposure(exposure_df_1) |> add_exposure(exposure_df_2)
 
   # Simulate
-  expect_silent(simulate_exposure(GT, n = 1))
+  expect_no_error(simulate_exposure(GT, n = 1))
 
   # Output
   conc_tbl <- dplyr::tbl(con, "concentration") |> dplyr::collect()

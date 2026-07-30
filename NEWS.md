@@ -1,3 +1,12 @@
+# GeoTox 1.0.1
+
+* Additional arguments to the `GeoTox()` constructor are now passed to
+`duckdb::duckdb()` instead of `DBI::dbConnect()`.
+
+* DuckDB configuration section added to "Get started" article.
+
+* Use of `expect_silent()` changed to `expect_no_error()` in tests.
+
 # GeoTox 1.0.0
 
 * Reimplementation where data are now stored in a DuckDB database rather than an

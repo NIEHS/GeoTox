@@ -132,6 +132,7 @@ GT <- GeoTox() |>
 
 # Calculate sensitivity to age
 GT <- GT |> calc_sensitivity("age")
+
 }
 
 # Load results from pre-generated database for this example

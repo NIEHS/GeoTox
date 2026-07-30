@@ -30,6 +30,19 @@ library(tidyr)
 set.seed(2357)
 ```
 
+## DuckDB configuration
+
+DuckDB downloaded extensions are stored in a shared home directory, which can be controlled using explicit arguments or configuration. See `?duckdb::duckdb_storage` for details, which may differ depending on the version installed. The explicit arguments added in version 1.5.5 (e.g. `shared_home` or `home`) can be passed into the `GeoTox()` constructor, but for this vignette, we will use options settings to specify a temporary directory. Not setting the storage location may result in an information message to be printed when a connection is opened.
+
+```{r}
+#| label: duckdb-options
+# duckdb.home for DuckDB v1.5.5.
+# duckdb.extension_directory for earlier versions.
+# Setting both doesn't cause problems at the time of this writing.
+tempdir <- withr::local_tempdir()
+options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+```
+
 # Hill curve fitting
 
 Hill curve fitting is a key step in the GeoTox workflow, as it provides the parameters needed to link internal concentrations to assay responses. The `fit_hill()` function can be used to fit Hill models to dose-response data, and the resulting parameters can be added to a GeoTox object for use in subsequent calculations. Dose-reponse data can be grouped by assay and substance to fit separate Hill curves for each combination.

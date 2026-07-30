@@ -4,7 +4,7 @@
 #'
 #' The `dbname` will point to a DuckDB database file. If the file does not
 #' already exist, a new database will be created. Additional arguments passed
-#' via `...` will be forwarded to [DBI::dbConnect()].
+#' via `...` will be forwarded to [duckdb::duckdb()].
 #'
 #' The `reset_seed` parameter is necessary for replicating results from the
 #' previous GeoTox implementation. Some database functions create temporary
@@ -22,7 +22,7 @@
 #' @param dbname Database file name. Default is a temporary file.
 #' @param reset_seed Logical indicating whether to reset the user's global
 #'   `.Random.seed` after certain database operations (default `FALSE`).
-#' @param ... Additional arguments passed to [DBI::dbConnect()].
+#' @param ... Additional arguments passed to [duckdb::duckdb()].
 #'
 #' @returns For `GeoTox()`, a GeoTox S3 object. For `get_con()`, a database
 #'   connection.
@@ -68,9 +68,8 @@ GeoTox <- function(
 #' @export
 #' @rdname GeoTox
 get_con <- function(GT) {
-  db_info <- GT$db_info
-  db_info$drv <- duckdb::duckdb()
-  do.call(DBI::dbConnect, db_info)
+  drv <- do.call(duckdb::duckdb, GT$db_info)
+  DBI::dbConnect(drv)
 }
 
 #' @export

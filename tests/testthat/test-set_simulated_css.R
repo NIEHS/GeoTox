@@ -15,7 +15,7 @@ test_that("set simulated css", {
 
   # Okay
   css_df$css <- 1
-  expect_silent(
+  expect_no_error(
     set_simulated_css(GT, css_df)
   )
 
@@ -27,7 +27,7 @@ test_that("set simulated css", {
 
   # Other substance column
   names(css_df)[1] <- "chem_id"
-  expect_silent(
+  expect_no_error(
     set_simulated_css(GT, css_df, substance = "chem_id", overwrite = TRUE)
   )
 })
