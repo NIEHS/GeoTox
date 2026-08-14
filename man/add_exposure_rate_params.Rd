@@ -46,6 +46,10 @@ in mL/kg-day.
 }
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Add both default params to GeoTox database
 GT <- GeoTox() |>
   add_exposure_rate_params() |>
@@ -87,6 +91,9 @@ dplyr::tbl(con, "route") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=simulate_exposure_rate]{simulate_exposure_rate()}}

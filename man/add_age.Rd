@@ -35,6 +35,10 @@ locations. The \code{state = "ST"} part would rename the "ST" column in \code{df
 "state" in the 'location' table.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example age simulation data
 age_df <- data.frame(
   FIPS = rep(c(10000, 20000), each = 19),
@@ -61,6 +65,9 @@ dplyr::tbl(con, "location") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=simulate_age]{simulate_age()}}

@@ -33,6 +33,10 @@
 #' @seealso [sample_simulated_css()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example pre-simulated C_ss data
 #' # Note: normally the css_df would have many more rows for each combination of
 #' # the non-'css' columns to allow for sampling.
@@ -63,6 +67,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 set_simulated_css <- function(GT, df, substance = "casn", overwrite = FALSE) {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))

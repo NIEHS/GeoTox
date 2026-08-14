@@ -27,6 +27,10 @@ use for the mean calculation. The available choices will depend on what data
 has been stored in the 'concentration' table during the simulation process.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup required tables
 exposure_df <- tibble::tribble(
   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -51,4 +55,7 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }

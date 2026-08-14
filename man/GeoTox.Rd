@@ -45,6 +45,10 @@ also be loaded into the GeoTox object as a list in \code{GT$par}. The value for
 loaded from the 'par' table for existing databases.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Create a GeoTox object
 GT <- GeoTox()
 
@@ -61,4 +65,7 @@ str(GT$par)
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }

@@ -96,6 +96,10 @@ Used in \code{\link[=sample_simulated_css]{sample_simulated_css()}}.}
 }
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example simulation data
 
 age_df <- data.frame(
@@ -170,6 +174,9 @@ dplyr::tbl(con, "fixed_css") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_age]{add_age()}}, \code{\link[=simulate_age]{simulate_age()}}, \code{\link[=add_obesity]{add_obesity()}},

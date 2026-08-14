@@ -25,6 +25,10 @@
 #' @seealso [simulate_age()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example age simulation data
 #' age_df <- data.frame(
 #'   FIPS = rep(c(10000, 20000), each = 19),
@@ -51,6 +55,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 add_age <- function(GT, df, location = "FIPS") {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))
@@ -102,6 +109,10 @@ add_assay <- function(GT, df, substance = "casn") {
 #' @seealso [simulate_exposure()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example exposure simulation data
 #' exposure_df <- tibble::tribble(
 #'   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -142,6 +153,9 @@ add_assay <- function(GT, df, substance = "casn") {
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 add_exposure <- function(
     GT, df, location = "FIPS", substance = "casn", route = "route"
 ) {
@@ -186,6 +200,10 @@ add_exposure <- function(
 #' @seealso [simulate_exposure_rate()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Add both default params to GeoTox database
 #' GT <- GeoTox() |>
 #'   add_exposure_rate_params() |>
@@ -227,6 +245,9 @@ add_exposure <- function(
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 add_exposure_rate_params <- function(
     GT, route = "inhalation", params = NULL, overwrite = FALSE
 ) {
@@ -343,6 +364,10 @@ add_exposure_rate_params <- function(
 #' @seealso [fit_hill()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example Hill model data
 #' hill_df <- tibble::tribble(
 #'   ~assay, ~model, ~casn, ~logc, ~resp,
@@ -380,6 +405,9 @@ add_exposure_rate_params <- function(
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 add_hill_params <- function(GT, hill_params) {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))
@@ -437,6 +465,10 @@ add_location <- function(GT, df) {
 #' @seealso [simulate_obesity()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example obesity simulation data
 #' obesity_df <- data.frame(
 #'   FIPS = c(10000, 20000),
@@ -474,6 +506,9 @@ add_location <- function(GT, df) {
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 add_obesity <- function(GT, df, location = "FIPS") {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))

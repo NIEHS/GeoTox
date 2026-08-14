@@ -34,6 +34,10 @@ sensitivity analysis is assumed and the \code{sensitivity} argument in the
 internal dose and in vitro concentration calculations is set to TRUE.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -92,6 +96,9 @@ dplyr::tbl(con, "risk") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=calc_internal_dose]{calc_internal_dose()}}, \code{\link[=calc_invitro_concentration]{calc_invitro_concentration()}},

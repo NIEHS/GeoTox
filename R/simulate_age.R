@@ -17,6 +17,10 @@
 #' @seealso [add_age()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example age simulation data
 #' age_df <- data.frame(
 #'   FIPS = rep(c(10000, 20000), each = 19),
@@ -51,6 +55,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 simulate_age <- function(GT, n = 1e3, overwrite = FALSE) {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))

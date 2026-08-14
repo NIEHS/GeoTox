@@ -54,6 +54,10 @@
 #' @seealso [set_simulated_css()], [set_fixed_css()], [sensitivity_analysis()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example setup is shown below in \dontrun().
 #' # Pre-generated results will be loaded instead to avoid long example runtime.
 #' 
@@ -136,6 +140,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 calc_sensitivity <- function(
     GT,
     vary = c("age", "weight", "css_params", "fit_params", "C_ext"),

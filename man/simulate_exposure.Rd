@@ -54,6 +54,10 @@ use the 'concentration_sensitivity' table instead of the 'concentration'
 table, and will assume that the 'sample' table already exists.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example exposure simulation data
 exposure_df <- tibble::tribble(
   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -102,6 +106,9 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_exposure]{add_exposure()}}, \code{\link[=simulate_population]{simulate_population()}}

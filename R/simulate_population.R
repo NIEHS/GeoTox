@@ -73,6 +73,10 @@
 #'   [simulate_exposure_rate()], [sample_simulated_css()], [set_fixed_css()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example simulation data
 #'
 #' age_df <- data.frame(
@@ -147,6 +151,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 simulate_population <- function(
     GT, age = NULL, obesity = NULL, exposure = NULL,
     simulate_rate = TRUE, sample_css = TRUE, ...

@@ -39,6 +39,10 @@ non-geometry fields will be added to the 'location' table and replaced with a
 'location_id' value so they can be linked to data in the 'sample' table.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup sf objects
 county <- sf::st_sf(
   FIPS = c(10000, 20000),
@@ -70,4 +74,7 @@ boundary |> tibble::deframe()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }

@@ -23,6 +23,10 @@
 #'   [calc_risk()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Setup required tables
 #' sample_df <- tibble::tribble(
 #'   ~FIPS, ~age, ~weight,
@@ -81,6 +85,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 calc_response <- function(GT, overwrite = FALSE, ...) {
   dots <- list(...)
   if ("risk_name" %in% names(dots) && dots$risk_name != "risk") {

@@ -53,6 +53,10 @@ table will be copied to the 'exposure_rate_sensitivity' table where the rate
 values will be overwritten.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup required tables
 # Note: 'gender' is ignored when using the default rate params
 sample_df <- tibble::tribble(
@@ -106,6 +110,9 @@ dplyr::tbl(con, "exposure_rate") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_exposure_rate_params]{add_exposure_rate_params()}}, \code{\link[=simulate_population]{simulate_population()}}

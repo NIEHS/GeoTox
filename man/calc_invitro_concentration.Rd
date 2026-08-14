@@ -31,6 +31,10 @@ called by \code{\link[=calc_sensitivity]{calc_sensitivity()}}. In this case, the
 'concentration_sensitivity' table instead of the 'concentration' table.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -75,6 +79,9 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=calc_internal_dose]{calc_internal_dose()}}, \code{\link[=calc_response]{calc_response()}}

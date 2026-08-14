@@ -54,6 +54,10 @@ Further downstream tables are not dropped automatically, but can be updated
 during subsequent simulation and analysis steps.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example sample data
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -77,6 +81,9 @@ dplyr::tbl(con, "location") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=simulate_age]{simulate_age()}}, \code{\link[=simulate_obesity]{simulate_obesity()}}, \code{\link[=simulate_population]{simulate_population()}}

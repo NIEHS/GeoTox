@@ -54,6 +54,10 @@ the desired order. If provided, the \code{substance_order} will be added to the
 GeoTox object parameter list, \code{GT$par}.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Create required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -143,6 +147,9 @@ dplyr::tbl(con, "concentration") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=set_simulated_css]{set_simulated_css()}}, \code{\link[=simulate_population]{simulate_population()}}

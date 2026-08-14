@@ -17,6 +17,10 @@
 #' @export
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Setup required tables
 #' exposure_df <- tibble::tribble(
 #'   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -41,6 +45,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 get_concentration_mean <- function(GT, col) {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))

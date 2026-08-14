@@ -24,6 +24,10 @@
 #' @export
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Setup sf objects
 #' county <- sf::st_sf(
 #'   FIPS = c(10000, 20000),
@@ -55,6 +59,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 set_boundary <- function(GT, df_list, location = "county", overwrite = FALSE) {
   if (!rlang::is_installed("sf")) { # nocov start
     stop(

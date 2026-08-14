@@ -27,6 +27,10 @@ An 'age' table containing simulation data must already exist in the GeoTox
 database, which is added using \code{\link[=add_age]{add_age()}}.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example age simulation data
 age_df <- data.frame(
   FIPS = rep(c(10000, 20000), each = 19),
@@ -61,6 +65,9 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_age]{add_age()}}, \code{\link[=simulate_population]{simulate_population()}}

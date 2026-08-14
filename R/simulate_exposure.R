@@ -34,6 +34,10 @@
 #' @seealso [add_exposure()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example exposure simulation data
 #' exposure_df <- tibble::tribble(
 #'   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -82,6 +86,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 simulate_exposure <- function(
     GT, n = 1e3, overwrite = FALSE, expos_mean = NULL, expos_sd = NULL,
     sensitivity = FALSE

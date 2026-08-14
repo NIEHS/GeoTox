@@ -37,6 +37,10 @@
 #' @seealso [add_exposure_rate_params()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Setup required tables
 #' # Note: 'gender' is ignored when using the default rate params
 #' sample_df <- tibble::tribble(
@@ -90,6 +94,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 simulate_exposure_rate <- function(
     GT, rate_extra_cols = NULL, overwrite = FALSE, sensitivity = FALSE
 ) {

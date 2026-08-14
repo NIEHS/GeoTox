@@ -27,6 +27,10 @@ C_ext. The \code{max_mult} vector allows specifying different upper bound
 multipliers for each parameter.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example setup is shown below in \dontrun().
 # Pre-generated results will be loaded instead to avoid long example runtime.
 
@@ -117,6 +121,9 @@ dplyr::tbl(con, "risk") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=calc_sensitivity]{calc_sensitivity()}}

@@ -41,6 +41,10 @@ and chemical names for substances. The \code{name = "chnm"} part would rename th
 "chnm" column in \code{df} to "name" in the 'substance' table.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example exposure simulation data
 exposure_df <- tibble::tribble(
   ~FIPS, ~casn, ~route, ~mean, ~sd,
@@ -81,6 +85,9 @@ dplyr::tbl(con, "route") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=simulate_exposure]{simulate_exposure()}}

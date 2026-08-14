@@ -75,6 +75,10 @@ specified again if they were already provided in a previous call and are set
 in the GeoTox parameters (\code{GT$par}).
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example setup is shown below in \dontrun().
 # Pre-generated results will be loaded instead to avoid long example runtime.
 
@@ -157,6 +161,9 @@ dplyr::tbl(con, "risk") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=set_simulated_css]{set_simulated_css()}}, \code{\link[=set_fixed_css]{set_fixed_css()}}, \code{\link[=sensitivity_analysis]{sensitivity_analysis()}}

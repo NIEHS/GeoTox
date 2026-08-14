@@ -18,6 +18,10 @@ The same GeoTox object, invisibly.
 Create or add to the 'hill_params' table in a GeoTox database.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example Hill model data
 hill_df <- tibble::tribble(
   ~assay, ~model, ~casn, ~logc, ~resp,
@@ -55,6 +59,9 @@ dplyr::tbl(con, "substance") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=fit_hill]{fit_hill()}}

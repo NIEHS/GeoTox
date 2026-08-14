@@ -44,6 +44,10 @@ already set in the GeoTox object's parameters, \code{GT$par}. If not \code{NULL}
 provided values will also be saved to \code{GT$par}.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example obesity simulation data
 obesity_df <- data.frame(
   FIPS = c(10000, 20000),
@@ -84,6 +88,9 @@ dplyr::tbl(con, "sample") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_obesity]{add_obesity()}}, \code{\link[=simulate_population]{simulate_population()}}

@@ -44,6 +44,10 @@
 #' @seealso [set_simulated_css()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Create required tables
 #' sample_df <- tibble::tribble(
 #'   ~FIPS, ~age, ~weight,
@@ -133,6 +137,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 sample_simulated_css <- function(
     GT, css_extra_cols = NULL, substance_order = NULL
 ) {

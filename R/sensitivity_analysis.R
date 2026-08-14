@@ -17,6 +17,10 @@
 #' @seealso [calc_sensitivity()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example setup is shown below in \dontrun().
 #' # Pre-generated results will be loaded instead to avoid long example runtime.
 #' 
@@ -107,6 +111,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 sensitivity_analysis <- function(
     GT, max_mult = c(1.5, 1.5, 1.5, 1.5, 1.5), ...
 ) {

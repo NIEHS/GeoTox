@@ -44,6 +44,10 @@ substances. The \code{name = "chnm"} part would rename the "chnm" column in \cod
 to "name" in the 'substance' table.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Example pre-simulated C_ss data
 # Note: normally the css_df would have many more rows for each combination of
 # the non-'css' columns to allow for sampling.
@@ -74,6 +78,9 @@ dplyr::tbl(con, "substance") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=sample_simulated_css]{sample_simulated_css()}}

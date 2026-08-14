@@ -29,6 +29,10 @@
 #' @export
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Create a GeoTox object
 #' GT <- GeoTox()
 #'
@@ -45,6 +49,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 GeoTox <- function(
     dbname = tempfile(fileext = ".duckdb"), reset_seed = FALSE, ...
 ) {

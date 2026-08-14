@@ -26,6 +26,10 @@
 #' @seealso [add_obesity()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example obesity simulation data
 #' obesity_df <- data.frame(
 #'   FIPS = c(10000, 20000),
@@ -66,6 +70,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 simulate_obesity <- function(
     GT, n = 1e3, overwrite = FALSE, obes_prev = NULL, obes_sd = NULL
 ) {

@@ -1,6 +1,6 @@
 Package: GeoTox
 Title: Spatiotemporal Mixture Risk Assessment
-Version: 1.0.1.9000
+Version: 1.0.1.9001
 Authors@R: c(
     person("Skylar", "Marvel", , "skylar.marvel@nih.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2971-9743")),
@@ -52,7 +52,7 @@ VignetteBuilder:
     knitr,
     quarto
 Config/Needs/website: rmarkdown, quarto
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true

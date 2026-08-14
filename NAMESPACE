@@ -31,5 +31,7 @@ export(simulate_exposure)
 export(simulate_exposure_rate)
 export(simulate_obesity)
 export(simulate_population)
-importFrom(rlang,.data)
-importFrom(rlang,.env)
+importFrom(rlang,
+  .data,
+  .env
+)

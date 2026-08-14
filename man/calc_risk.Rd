@@ -46,6 +46,10 @@ stored in the 'risk' table in the GeoTox object, unless a different
 directly by the user, but rather by calling \code{\link[=calc_sensitivity]{calc_sensitivity()}}.
 }
 \examples{
+\dontshow{
+  tempdir <- withr::local_tempdir()
+  op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+}
 # Setup required tables
 sample_df <- tibble::tribble(
   ~FIPS, ~age, ~weight,
@@ -103,6 +107,9 @@ dplyr::tbl(con, "risk") |> dplyr::collect()
 # Clean up example
 DBI::dbDisconnect(con)
 file.remove(GT$db_info$dbdir)
+\dontshow{
+  options(op)
+}
 }
 \seealso{
 \code{\link[=add_hill_params]{add_hill_params()}}, \code{\link[=calc_invitro_concentration]{calc_invitro_concentration()}},

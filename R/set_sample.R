@@ -43,6 +43,10 @@
 #' @seealso [simulate_age()], [simulate_obesity()], [simulate_population()]
 #'
 #' @examples
+#' \dontshow{
+#'   tempdir <- withr::local_tempdir()
+#'   op <- options(duckdb.home = tempdir, duckdb.extension_directory = tempdir)
+#' }
 #' # Example sample data
 #' sample_df <- tibble::tribble(
 #'   ~FIPS, ~age, ~weight,
@@ -66,6 +70,9 @@
 #' # Clean up example
 #' DBI::dbDisconnect(con)
 #' file.remove(GT$db_info$dbdir)
+#' \dontshow{
+#'   options(op)
+#' }
 set_sample <- function(GT, df, location = "FIPS", overwrite = FALSE) {
   con <- get_con(GT)
   on.exit(DBI::dbDisconnect(con))
