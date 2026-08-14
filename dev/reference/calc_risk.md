@@ -113,47 +113,6 @@ GT <- GeoTox() |>
   simulate_population(exposure = exposure_df) |>
   calc_internal_dose() |>
   calc_invitro_concentration()
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpCsVbRU/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
-#> ℹ See ?duckdb_storage for details and alternatives.
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpCsVbRU/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
-#> ℹ See ?duckdb_storage for details and alternatives.
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpCsVbRU/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
-#> ℹ See ?duckdb_storage for details and alternatives.
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpCsVbRU/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
-#> ℹ See ?duckdb_storage for details and alternatives.
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpCsVbRU/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
-#> ℹ See ?duckdb_storage for details and alternatives.
-#> ℹ This message has been shown 60 times and will not be shown again this session.
 
 # Calculate risk
 GT <- GT |> calc_risk()
